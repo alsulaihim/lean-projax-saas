@@ -24,12 +24,16 @@ export default function Home() {
               </Link>
               <Link
                 href="http://localhost:3070/login"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-black hover:text-gray-700 font-medium transition"
               >
                 Sign In
               </Link>
               <Link
                 href="http://localhost:3070/signup"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
               >
                 Get Started Free
@@ -62,6 +66,8 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 lg:justify-start justify-center">
                 <Link
                   href="http://localhost:3070/signup"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition flex items-center justify-center"
                 >
                   Start Free Trial

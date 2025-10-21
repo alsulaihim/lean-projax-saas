@@ -33,8 +33,8 @@ export function Header({ user }: HeaderProps) {
 
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' })
-    router.push('/login')
-    router.refresh()
+    // Redirect to marketing site after logout
+    window.location.href = 'http://localhost:3071'
   }
 
   return (
