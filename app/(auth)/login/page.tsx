@@ -1,18 +1,31 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { CheckCircle2 } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showSignupSuccess, setShowSignupSuccess] = useState(false)
+
+  useEffect(() => {
+    // Show success message if redirected from signup
+    if (searchParams.get('signup') === 'success') {
+      setShowSignupSuccess(true)
+      setTimeout(() => setShowSignupSuccess(false), 8000)
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,13 +62,21 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-white">
       <Card className="w-full max-w-md border-2 border-black">
         <CardHeader className="space-y-4 text-center">
-          <CardTitle className="text-3xl font-bold">BPI Assignment Platform</CardTitle>
+          <CardTitle className="text-3xl font-bold">Lean Projax</CardTitle>
           <div className="h-px bg-black" />
           <CardDescription className="text-base text-gray-600">
             Six Sigma Workflow Automation
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {showSignupSuccess && (
+            <Alert className="mb-4 border-green-600 bg-green-50">
+              <CheckCircle2 className="h-4 w-4 text-green-600" />
+              <AlertDescription className="text-green-800">
+                Account created successfully! Please sign in to continue.
+              </AlertDescription>
+            </Alert>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
@@ -101,7 +122,14 @@ export default function LoginPage() {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
 
-            <div className="text-xs text-center text-gray-500 pt-4">
+            <div className="text-center text-sm text-gray-600 pt-4">
+              Don&apos;t have an account?{' '}
+              <Link href="/signup" className="text-black font-medium hover:underline">
+                Sign up for free
+              </Link>
+            </div>
+
+            <div className="text-xs text-center text-gray-500 pt-2 border-t pt-4">
               <p>Test credentials:</p>
               <p className="font-mono mt-1">analyst@example.com / password123</p>
             </div>
