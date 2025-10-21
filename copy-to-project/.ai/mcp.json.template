@@ -1,0 +1,91 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/mcp-server-github",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+      }
+    },
+    "memory": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/mcp-server-memory"
+    },
+    "filesystem": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/mcp-server-filesystem",
+      "args": [
+        "/Users/YOUR_USERNAME"
+      ]
+    },
+    "docker": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/docker-mcp",
+      "env": {
+        "DOCKER_MCP_LOCAL": "true"
+      }
+    },
+    "chrome-devtools": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/chrome-devtools-mcp"
+    },
+    "stripe": {
+      "command": "node",
+      "args": [
+        "/Users/YOUR_USERNAME/.npm-global/lib/node_modules/@stripe/mcp/dist/index.js",
+        "--tools=all",
+        "--api-key=YOUR_STRIPE_API_KEY_HERE"
+      ]
+    },
+    "paypal": {
+      "command": "node",
+      "args": [
+        "/Users/YOUR_USERNAME/.npm-global/lib/node_modules/@paypal/mcp/dist/index.js",
+        "--tools=all"
+      ],
+      "env": {
+        "PAYPAL_ACCESS_TOKEN": "YOUR_PAYPAL_ACCESS_TOKEN_HERE",
+        "PAYPAL_ENVIRONMENT": "SANDBOX"
+      }
+    },
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "experimental:mcp"
+      ]
+    },
+    "supabase": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/supabase-mcp",
+      "env": {
+        "SUPABASE_URL": "YOUR_SUPABASE_PROJECT_URL",
+        "SUPABASE_ANON_KEY": "YOUR_SUPABASE_ANON_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY": "YOUR_SUPABASE_SERVICE_ROLE_KEY"
+      }
+    },
+    "railway": {
+      "command": "/Users/YOUR_USERNAME/.npm-global/bin/railway-mcp-server"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@jpisnice/shadcn-ui-mcp-server"
+      ]
+    },
+    "gcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google-cloud/gcloud-mcp"
+      ]
+    },
+    "sonarqube": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "sonarqube-mcp-server@latest"
+      ],
+      "env": {
+        "SONARQUBE_URL": "https://sonarcloud.io",
+        "SONARQUBE_TOKEN": "YOUR_SONARQUBE_TOKEN_HERE"
+      }
+    }
+  }
+}

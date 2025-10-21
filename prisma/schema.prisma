@@ -8,13 +8,20 @@ datasource db {
 }
 
 model User {
-  id                 String       @id @default(uuid())
-  email              String       @unique
+  id                 String              @id @default(uuid())
+  email              String              @unique
   name               String
   role               UserRole
   passwordHash       String
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  
+  // Subscription fields
+  subscriptionTier   SubscriptionTier    @default(FREE)
+  subscriptionStatus SubscriptionStatus  @default(TRIAL)
+  trialEndsAt        DateTime?
+  companyName        String?
+  
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
   createdAssignments Assignment[]
   auditLogs          AuditLog[]
 
@@ -339,4 +346,16 @@ enum WasteType {
   OVER_PROCESSING
   DEFECTS
   SKILLS
+}
+
+enum SubscriptionTier {
+  FREE
+  PRO
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  EXPIRED
+  CANCELLED
 }
