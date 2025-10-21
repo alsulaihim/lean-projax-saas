@@ -10,12 +10,15 @@ export default async function AssignmentsPage() {
     return null
   }
 
-  // Filter assignments based on user role
-  const whereClause =
-    user.role === UserRole.EXECUTIVE ||
-    user.role === UserRole.PROCESS_OWNER
+  // SaaS Multi-tenancy: Users only see their own assignments
+  // Filter assignments to show only user's own assignments
+  const whereClause = {
+    createdById: user.id,
+    // Optional: Filter by status for specific roles if needed
+    ...(user.role === UserRole.EXECUTIVE || user.role === UserRole.PROCESS_OWNER
       ? { status: 'COMPLETED' as const }
-      : {}
+      : {})
+  }
 
   const assignments = await prisma.assignment.findMany({
     where: whereClause,
