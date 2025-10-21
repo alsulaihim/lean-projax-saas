@@ -20,15 +20,23 @@ async function createFacilityGrantingAssignment() {
     console.log('🏭 Creating comprehensive Facility Granting Assignment...')
     console.log('=' .repeat(60))
 
-    // Get Mashael M as the creator
-    const creator = await prisma.user.findUnique({
-      where: { email: 'mashael@sample.com' }
+    // Get the creator (check for coco first, fall back to mashael)
+    let creator = await prisma.user.findUnique({
+      where: { email: 'coco@sample.com' }
     })
 
     if (!creator) {
-      console.log('❌ User mashael@sample.com not found. Please create the user first.')
+      creator = await prisma.user.findUnique({
+        where: { email: 'mashael@sample.com' }
+      })
+    }
+
+    if (!creator) {
+      console.log('❌ User not found. Please create coco@sample.com or mashael@sample.com first.')
       return
     }
+
+    console.log(`📧 Using creator: ${creator.email} (${creator.name})`)
 
     // Create the assignment
     const assignment = await prisma.assignment.create({
@@ -601,7 +609,7 @@ async function createFacilityGrantingAssignment() {
     console.log(`  FMEA Entries: ${fmeaCount}`)
     console.log(`  Fishbone Causes: ${fishboneCount}`)
     console.log(`  Recommendations: ${recommendations.length}`)
-    console.log('\n🔗 Access URL: http://localhost:3020/assignments/' + assignment.id)
+    console.log('\n🔗 Access URL: http://localhost:3070/assignments/' + assignment.id)
 
   } catch (error) {
     console.error('❌ Error creating assignment:', error)
