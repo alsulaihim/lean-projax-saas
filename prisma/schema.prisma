@@ -1,0 +1,342 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String       @id @default(uuid())
+  email              String       @unique
+  name               String
+  role               UserRole
+  passwordHash       String
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  createdAssignments Assignment[]
+  auditLogs          AuditLog[]
+
+  @@index([email])
+}
+
+model Assignment {
+  id              String              @id @default(uuid())
+  title           String
+  objective       String
+  status          AssignmentStatus    @default(DRAFT)
+  createdById     String
+  completedAt     DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  createdBy       User                @relation(fields: [createdById], references: [id])
+  auditLogs       AuditLog[]
+  charter         AssignmentCharter?
+  ctqRequirements CTQRequirement[]
+  fmeaEntries     FMEAEntry[]
+  processes       Process[]
+  recommendations Recommendation[]
+  vocStatements   VOCStatement[]
+
+  @@index([createdById])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Process {
+  id                 String             @id @default(uuid())
+  assignmentId       String
+  processName        String
+  processOwner       String?
+  order              Int
+  lowerSpecLimit     Float?
+  upperSpecLimit     Float?
+  targetValue        Float?
+  sampleMean         Float?
+  sampleStdDev       Float?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  fmeaEntries        FMEAEntry[]
+  fishboneCategories FishboneCategory[]
+  assignment         Assignment         @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  sipocEntries       SIPOCEntry[]
+  vsmSteps           VSMStep[]
+
+  @@index([assignmentId])
+  @@index([order])
+}
+
+model VOCStatement {
+  id              String           @id @default(uuid())
+  assignmentId    String
+  customerSegment String
+  voiceStatement  String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  ctqRequirements CTQRequirement[]
+  assignment      Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@index([assignmentId])
+}
+
+model CTQRequirement {
+  id                  String        @id @default(uuid())
+  assignmentId        String
+  vocStatementId      String?
+  ctqDescription      String
+  measurementCriteria String
+  targetValue         String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  assignment          Assignment    @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  vocStatement        VOCStatement? @relation(fields: [vocStatementId], references: [id])
+
+  @@index([assignmentId])
+  @@index([vocStatementId])
+}
+
+model SIPOCEntry {
+  id        String      @id @default(uuid())
+  processId String
+  column    SIPOCColumn
+  order     Int
+  value     String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  process   Process     @relation(fields: [processId], references: [id], onDelete: Cascade)
+
+  @@index([processId])
+  @@index([column, order])
+}
+
+model VSMStep {
+  id              String        @id @default(uuid())
+  processId       String
+  stepNumber      Int
+  stepName        String
+  processTime     Float         // Process time in minutes
+  waitingTime     Float         @default(0) // Waiting time in minutes
+  // cycleTime is calculated as processTime + waitingTime
+  valueMeasure    ValueMeasure  @default(NON_VALUE_ADDED)
+  stakeholder     String?
+  wasteType       WasteType?
+  remarks         String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  process         Process       @relation(fields: [processId], references: [id], onDelete: Cascade)
+
+  // Legacy fields for backward compatibility (will be removed later)
+  durationMinutes Float?
+  waitTimeMinutes Float?
+  valueAdded      Boolean       @default(false)
+  notes           String?
+
+  @@index([processId])
+  @@index([stepNumber])
+}
+
+model FishboneCategory {
+  id        String               @id @default(uuid())
+  processId String
+  category  FishboneCategoryType
+  order     Int
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  process   Process              @relation(fields: [processId], references: [id], onDelete: Cascade)
+  causes    FishboneCause[]
+
+  @@index([processId])
+}
+
+model FishboneCause {
+  id               String           @id @default(uuid())
+  categoryId       String
+  causeDescription String
+  order            Int
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  category         FishboneCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+}
+
+model FMEAEntry {
+  id                 String     @id @default(uuid())
+  assignmentId       String
+  processId          String?
+  failureMode        String
+  effectsOfFailure   String
+  severity           Int
+  potentialCauses    String
+  occurrence         Int
+  currentControls    String
+  detection          Int
+  rpn                Int
+  recommendedActions String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  assignment         Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  process            Process?   @relation(fields: [processId], references: [id])
+
+  @@index([assignmentId])
+  @@index([processId])
+  @@index([rpn])
+}
+
+model Recommendation {
+  id                       String                   @id @default(uuid())
+  assignmentId             String
+  recommendationTitle      String
+  description              String
+  expectedImpact           String
+  implementationDifficulty ImplementationDifficulty
+  estimatedCostSavings     String?
+  linkedFMEAIds            String[]
+  linkedFishboneCauseIds   String[]
+  status                   RecommendationStatus     @default(PROPOSED)
+  createdAt                DateTime                 @default(now())
+  updatedAt                DateTime                 @updatedAt
+  assignment               Assignment               @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@index([assignmentId])
+  @@index([status])
+}
+
+model AuditLog {
+  id            String      @id @default(uuid())
+  assignmentId  String
+  userId        String
+  action        AuditAction
+  entityType    String
+  entityId      String?
+  changeDetails Json?
+  timestamp     DateTime    @default(now())
+  assignment    Assignment  @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id])
+
+  @@index([assignmentId])
+  @@index([userId])
+  @@index([timestamp])
+}
+
+model AssignmentCharter {
+  id                    String                    @id @default(uuid())
+  assignmentId          String                    @unique
+  // Assignment Information
+  assignmentName        String
+  programSponsor        String?
+  processOwner          String?
+  programManagement     String?
+  projectTeam           String?
+  // Project Overview
+  strategicAlignment    String?
+  problemStatement      String?
+  businessCase          String?
+  goalMetric            String?
+  expectedDeliverables  String?
+  // Project Scope
+  inScope               String?
+  outOfScope            String?
+  // Customer Drivers & Benefits
+  drivers               String?
+  nonFinancialBenefits  String?
+  // Leverage
+  existingLeverage      String?
+  futureLeverage        String?
+  // Risk, Constraints and Assumptions
+  risks                 String?
+  constraints           String?
+  assumptions           String?
+  // Assignment Team
+  businessStakeholders  String?
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+  assignment            Assignment                @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  scheduleItems         CharterScheduleItem[]
+
+  @@index([assignmentId])
+}
+
+model CharterScheduleItem {
+  id          String            @id @default(uuid())
+  charterId   String
+  milestone   String
+  startDate   DateTime?
+  endDate     DateTime?
+  order       Int
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  charter     AssignmentCharter @relation(fields: [charterId], references: [id], onDelete: Cascade)
+
+  @@index([charterId])
+  @@index([order])
+}
+
+enum UserRole {
+  BPI_TEAM
+  TEAM_LEAD
+  EXECUTIVE
+  PROCESS_OWNER
+}
+
+enum AssignmentStatus {
+  DRAFT
+  COMPLETED
+  REOPENED
+}
+
+enum SIPOCColumn {
+  SUPPLIER
+  INPUT
+  PROCESS
+  OUTPUT
+  CUSTOMER
+}
+
+enum FishboneCategoryType {
+  PEOPLE
+  PROCESS
+  EQUIPMENT
+  MATERIALS
+  ENVIRONMENT
+  MANAGEMENT
+}
+
+enum ImplementationDifficulty {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RecommendationStatus {
+  PROPOSED
+  APPROVED
+  IMPLEMENTED
+}
+
+enum AuditAction {
+  CREATED
+  UPDATED
+  COMPLETED
+  REOPENED
+  DELETED
+  ACCESSED
+}
+
+enum ValueMeasure {
+  VALUE_ADDED
+  ESSENTIAL_NON_VALUE
+  NON_VALUE_ADDED
+}
+
+enum WasteType {
+  TRANSPORT
+  INVENTORY
+  MOTION
+  WAITING
+  OVER_PRODUCTION
+  OVER_PROCESSING
+  DEFECTS
+  SKILLS
+}

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: lean-projax-postgres-docker
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lean_projax_dev
+    ports:
+      - "5434:5432"  # Use different port to avoid conflict with existing containers
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: lean-projax-app
+    ports:
+      - "3020:3020"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/lean_projax_dev?connect_timeout=300"
+      NEXTAUTH_URL: "http://localhost:3020"
+      NEXTAUTH_SECRET: "niF0PSTK6W2Z7W4HjlFSm+eqXkiFSwEs9zWYot7TeBM="
+      NEXT_PUBLIC_API_URL: "http://localhost:3021"
+      NODE_ENV: "development"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "npx prisma db push && npx prisma db seed && npm run dev"
+
+volumes:
+  postgres_data:
