@@ -58,7 +58,7 @@ npm run dev
 
 ### 5. Access the Platform
 
-Open [http://localhost:3020](http://localhost:3020)
+Open [http://localhost:3070](http://localhost:3070)
 
 **Login with test account:**
 - Email: `analyst@example.com`

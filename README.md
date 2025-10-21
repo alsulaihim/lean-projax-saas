@@ -50,7 +50,7 @@ A Six Sigma workflow automation platform for Business Process Improvement teams.
    Copy `.env.example` to `.env.local` and update with your values:
    ```env
    DATABASE_URL="postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/lean_projax_dev"
-   NEXTAUTH_URL="http://localhost:3020"
+   NEXTAUTH_URL="http://localhost:3070"
    NEXTAUTH_SECRET="GENERATE_A_SECURE_RANDOM_STRING_HERE"
    NEXT_PUBLIC_API_URL="http://localhost:3021"
    ```
@@ -81,7 +81,7 @@ A Six Sigma workflow automation platform for Business Process Improvement teams.
 
 6. **Open your browser**
 
-   Navigate to [http://localhost:3020](http://localhost:3020)
+   Navigate to [http://localhost:3070](http://localhost:3070)
 
 ### Test Credentials
 

@@ -24,10 +24,10 @@ services:
       dockerfile: Dockerfile.dev
     container_name: lean-projax-app
     ports:
-      - "3020:3020"
+      - "3070:3070"
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/lean_projax_dev?connect_timeout=300"
-      NEXTAUTH_URL: "http://localhost:3020"
+      NEXTAUTH_URL: "http://localhost:3070"
       NEXTAUTH_SECRET: "niF0PSTK6W2Z7W4HjlFSm+eqXkiFSwEs9zWYot7TeBM="
       NEXT_PUBLIC_API_URL: "http://localhost:3021"
       NODE_ENV: "development"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { CheckCircle2, Clock, Circle } from 'lucide-react'
 import { VOCSection } from '@/components/sections/voc-section'
 import { SIPOCSection } from '@/components/sections/sipoc-section'
 import { VSMSection } from '@/components/sections/vsm-section'
@@ -14,7 +15,6 @@ import { AuditLogSection } from '@/components/sections/audit-log-section'
 import { ProcessManager } from '@/components/sections/process-manager'
 import { AIAnalysisSection } from '@/components/sections/ai-analysis-section'
 import { CharterSection } from '@/components/sections/charter-section'
-import { ProgressNavigation } from '@/components/ui/progress-navigation'
 import type { Prisma } from '@prisma/client'
 
 type AssignmentWithRelations = Prisma.AssignmentGetPayload<{
@@ -60,7 +60,6 @@ interface AssignmentTabsProps {
 
 export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculated }: AssignmentTabsProps) {
   const [activeTab, setActiveTab] = useState('charter')
-  const [navigationCollapsed, setNavigationCollapsed] = useState(false)
 
   // Count items for tab badges
   const counts = {
@@ -156,20 +155,75 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
   }, [progressPercentage, onProgressCalculated])
 
   return (
-    <div className="grid grid-cols-12 gap-6">
-      {/* Progress Navigation Sidebar */}
-      <div className={navigationCollapsed ? "col-span-1" : "col-span-3"}>
-        <ProgressNavigation
-          assignmentId={assignment.id}
-          sections={sectionStatus}
-          currentSection={currentSection}
-          isCollapsed={navigationCollapsed}
-          onToggleCollapse={() => setNavigationCollapsed(!navigationCollapsed)}
-        />
+    <div className="w-full">
+      {/* Horizontal Progress Bar */}
+      <div className="mb-6 bg-white border-2 border-gray-300 rounded-lg p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h3 className="font-semibold text-lg">Assignment Progress</h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Complete all required sections to finalize the assignment
+            </p>
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-bold text-blue-600">{progressPercentage}%</div>
+            <div className="text-xs text-gray-500">Complete</div>
+          </div>
+        </div>
+        
+        {/* Progress Bar */}
+        <div className="relative h-4 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-blue-600 to-green-500 transition-all duration-500 ease-out"
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+        
+        {/* Section Status Indicators */}
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4">
+          {[
+            { key: 'voc', label: 'VOC/CTQ' },
+            { key: 'sipoc', label: 'SIPOC' },
+            { key: 'vsm', label: 'VSM' },
+            { key: 'fishbone', label: 'Fishbone' },
+            { key: 'fmea', label: 'FMEA' },
+            { key: 'recommendations', label: 'Recommendations' }
+          ].map(({ key, label }) => {
+            const status = sectionStatus[key as keyof typeof sectionStatus]
+            const isComplete = status?.completed
+            const hasData = status?.hasData
+            
+            return (
+              <div 
+                key={key}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all ${
+                  isComplete 
+                    ? 'bg-green-50 border-green-500' 
+                    : hasData 
+                    ? 'bg-blue-50 border-blue-400' 
+                    : 'bg-gray-50 border-gray-300'
+                }`}
+              >
+                {isComplete ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                ) : hasData ? (
+                  <Clock className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                ) : (
+                  <Circle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                )}
+                <span className={`text-xs font-medium ${
+                  isComplete ? 'text-green-700' : hasData ? 'text-blue-700' : 'text-gray-600'
+                }`}>
+                  {label}
+                </span>
+              </div>
+            )
+          })}
+        </div>
       </div>
 
       {/* Main Content Area */}
-      <div className={navigationCollapsed ? "col-span-11" : "col-span-9"}>
+      <div className="w-full">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="w-full justify-start border-b-2 border-black bg-white h-auto flex-wrap">
         <TabsTrigger
