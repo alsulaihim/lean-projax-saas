@@ -269,10 +269,12 @@ a16e2807 - feat: add marketing site and signup functionality
 ### Implemented:
 - ✅ Password hashing with bcrypt (10 rounds)
 - ✅ Email uniqueness enforced by database
+- ✅ **Multi-tenant data isolation** - Users only see their own assignments
 - ✅ HTTPS-ready configuration
 - ✅ `rel="noopener noreferrer"` on external links
 - ✅ Server-side input validation
 - ✅ SQL injection protection (Prisma ORM)
+- ✅ User-specific queries prevent data leakage
 
 ### To Implement:
 - ⚠️ Rate limiting on signup endpoint
@@ -303,6 +305,8 @@ a16e2807 - feat: add marketing site and signup functionality
 - ✅ 14-day trial period tracked
 - ✅ Links open in new tabs
 - ✅ Logout returns to marketing site
+- ✅ **SaaS multi-tenancy implemented** - Users only see their own assignments
+- ✅ New users start with empty assignment list
 - ✅ All changes committed to dev branch
 - ✅ No errors in either application
 - ✅ Professional UI maintained
