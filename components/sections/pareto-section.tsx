@@ -117,16 +117,16 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
     <div className="space-y-6">
       <Card className="border-2 border-black">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-2xl">Pareto Analysis - Process Step Optimization</CardTitle>
-              <CardDescription>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex-1">
+              <CardTitle className="text-xl md:text-2xl">Pareto Analysis - Process Step Optimization</CardTitle>
+              <CardDescription className="text-sm">
                 Identify the vital few process steps that contribute to 80% of the cycle time
               </CardDescription>
             </div>
             {processes.length > 0 && (
               <Select value={selectedProcessId} onValueChange={setSelectedProcessId}>
-                <SelectTrigger className="w-[250px]">
+                <SelectTrigger className="w-full md:w-[250px]">
                   <SelectValue placeholder="Select a process" />
                 </SelectTrigger>
                 <SelectContent>
@@ -143,30 +143,30 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Summary Stats */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <Card className="border border-gray-300">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <Clock className="h-5 w-5 mx-auto mb-2 text-gray-600" />
-                  <p className="text-sm text-gray-500 mb-1">Total Cycle Time</p>
-                  <p className="text-2xl font-bold">{formatDuration(totalValue)}</p>
+                  <Clock className="h-4 w-4 md:h-5 md:w-5 mx-auto mb-2 text-gray-600" />
+                  <p className="text-xs md:text-sm text-gray-500 mb-1">Total Cycle Time</p>
+                  <p className="text-lg md:text-2xl font-bold">{formatDuration(totalValue)}</p>
                 </div>
               </CardContent>
             </Card>
             <Card className="border border-gray-300">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <Activity className="h-5 w-5 mx-auto mb-2 text-gray-600" />
-                  <p className="text-sm text-gray-500 mb-1">Total Steps</p>
-                  <p className="text-2xl font-bold">{items.length}</p>
+                  <Activity className="h-4 w-4 md:h-5 md:w-5 mx-auto mb-2 text-gray-600" />
+                  <p className="text-xs md:text-sm text-gray-500 mb-1">Total Steps</p>
+                  <p className="text-lg md:text-2xl font-bold">{items.length}</p>
                 </div>
               </CardContent>
             </Card>
             <Card className="border border-red-300 bg-red-50">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-sm text-red-700 mb-1 font-medium">Vital Few (80%)</p>
-                  <p className="text-2xl font-bold text-red-800">{vitalFewCount}</p>
+                  <p className="text-xs md:text-sm text-red-700 mb-1 font-medium">Vital Few (80%)</p>
+                  <p className="text-lg md:text-2xl font-bold text-red-800">{vitalFewCount}</p>
                   <p className="text-xs text-red-600 mt-1">
                     {items.length > 0 ? ((vitalFewCount / items.length) * 100).toFixed(1) : 0}% of steps
                   </p>
@@ -174,10 +174,10 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
               </CardContent>
             </Card>
             <Card className="border border-blue-300 bg-blue-50">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-sm text-blue-700 mb-1 font-medium">Trivial Many (20%)</p>
-                  <p className="text-2xl font-bold text-blue-800">{trivialManyCount}</p>
+                  <p className="text-xs md:text-sm text-blue-700 mb-1 font-medium">Trivial Many (20%)</p>
+                  <p className="text-lg md:text-2xl font-bold text-blue-800">{trivialManyCount}</p>
                   <p className="text-xs text-blue-600 mt-1">
                     {items.length > 0 ? ((trivialManyCount / items.length) * 100).toFixed(1) : 0}% of steps
                   </p>
@@ -188,10 +188,10 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
 
           {/* Info Box */}
           <Card className="border border-blue-300 bg-blue-50">
-            <CardContent className="pt-6">
-              <div className="flex gap-3">
-                <TrendingUp className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-blue-800">
+            <CardContent className="pt-4 md:pt-6">
+              <div className="flex gap-2 md:gap-3">
+                <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="text-xs md:text-sm text-blue-800">
                   <p className="font-medium mb-1">Process Optimization with Pareto Analysis:</p>
                   <p>
                     This analysis shows which process steps consume the most time. Focus improvement
@@ -204,15 +204,20 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
           </Card>
 
           {/* Interactive Pareto Chart */}
-          <ParetoChart
-            data={chartData}
-            title="Process Step Cycle Time Distribution"
-            height={400}
-            className="border-2 border-gray-300"
-          />
+          <div className="w-full overflow-x-auto">
+            <div className="min-w-[320px]">
+              <ParetoChart
+                data={chartData}
+                title="Process Step Cycle Time Distribution"
+                height={400}
+                className="border-2 border-gray-300"
+              />
+            </div>
+          </div>
 
           {/* Detailed Table */}
           <div className="border-2 border-black rounded-lg overflow-x-auto">
+            <div className="min-w-[800px]">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100">
@@ -287,14 +292,15 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
                 })}
               </TableBody>
             </Table>
+            </div>
           </div>
 
           {/* Insights & Recommendations */}
           <Card className="border border-green-300 bg-green-50">
-            <CardContent className="pt-6">
-              <div className="flex gap-3">
-                <AlertCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-green-900">
+            <CardContent className="pt-4 md:pt-6">
+              <div className="flex gap-2 md:gap-3">
+                <AlertCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div className="text-xs md:text-sm text-green-900">
                   <p className="font-medium mb-2">Analysis Insights:</p>
                   <ul className="space-y-1 list-disc list-inside">
                     {insights.map((insight, index) => (
@@ -308,10 +314,10 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
 
           {/* Action Items */}
           <Card className="border border-yellow-300 bg-yellow-50">
-            <CardContent className="pt-6">
-              <div className="flex gap-3">
-                <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-yellow-900">
+            <CardContent className="pt-4 md:pt-6">
+              <div className="flex gap-2 md:gap-3">
+                <AlertCircle className="h-4 w-4 md:h-5 md:w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="text-xs md:text-sm text-yellow-900">
                   <p className="font-medium mb-2">Recommended Actions:</p>
                   <ul className="space-y-1 list-disc list-inside">
                     <li>

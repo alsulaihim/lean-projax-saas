@@ -100,11 +100,11 @@ export function ProcessCapabilityChart({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full -mx-4 md:mx-0">
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={distributionData}
-          margin={{ top: 40, right: 40, left: 50, bottom: 60 }}
+          margin={{ top: 40, right: 10, left: 10, bottom: 60 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 

@@ -86,14 +86,14 @@ export default async function DashboardPage() {
     : 0
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Executive Dashboard</h1>
-        <p className="text-gray-600">Six Sigma process improvement overview</p>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">Executive Dashboard</h1>
+        <p className="text-sm md:text-base text-gray-600">Six Sigma process improvement overview</p>
       </div>
 
       {/* Key Metrics */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-3 md:gap-4 grid-cols-2 md:grid-cols-4">
         <Card className="border-black">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Assignments</CardTitle>
@@ -148,7 +148,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Process Metrics */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 md:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Card className="border-black">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">VOC Statements</CardTitle>
@@ -183,25 +183,25 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
         {/* Recent Assignments */}
         <Card className="border-2 border-black">
           <CardHeader>
-            <CardTitle>Recent Assignments</CardTitle>
+            <CardTitle className="text-base md:text-lg">Recent Assignments</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentAssignments.map((assignment) => (
-                <div key={assignment.id} className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium leading-none">
+                <div key={assignment.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <p className="text-sm font-medium leading-none truncate">
                       {assignment.title}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs md:text-sm text-gray-500 truncate">
                       {assignment.createdBy.name} • {assignment._count.vocStatements} VOCs • {assignment._count.recommendations} Recs
                     </p>
                   </div>
-                  <div className={`px-2 py-1 text-xs rounded border ${
+                  <div className={`px-2 py-1 text-xs rounded border w-fit ${
                     assignment.status === 'COMPLETED'
                       ? 'bg-green-100 text-green-800 border-green-300'
                       : assignment.status === 'DRAFT'
@@ -219,17 +219,17 @@ export default async function DashboardPage() {
         {/* Top Risks */}
         <Card className="border-2 border-black">
           <CardHeader>
-            <CardTitle>Top Risk Items (by RPN)</CardTitle>
+            <CardTitle className="text-base md:text-lg">Top Risk Items (by RPN)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {topRisks.map((risk) => (
                 <div key={risk.id} className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium leading-none">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <p className="text-sm font-medium leading-none flex-1 min-w-0">
                       {risk.failureMode}
                     </p>
-                    <span className={`px-2 py-1 text-xs font-bold rounded ${
+                    <span className={`px-2 py-1 text-xs font-bold rounded w-fit whitespace-nowrap ${
                       risk.rpn >= 200
                         ? 'bg-red-100 text-red-800'
                         : risk.rpn >= 100
@@ -239,7 +239,7 @@ export default async function DashboardPage() {
                       RPN: {risk.rpn}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 truncate">
                     {risk.process?.assignment?.title || 'N/A'}
                   </p>
                 </div>

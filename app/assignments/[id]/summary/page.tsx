@@ -42,6 +42,7 @@ import Link from 'next/link'
 import { ParetoChart } from '@/components/charts/pareto-chart'
 import { ProcessCapabilityChart } from '@/components/charts/process-capability-chart'
 import { FishboneAnalysisViewer } from '@/components/fishbone-analysis-viewer'
+import { SummaryTabs } from '@/components/summary-tabs'
 
 export default async function ComprehensiveSummaryPage({
   params
@@ -209,48 +210,50 @@ export default async function ComprehensiveSummaryPage({
   }
 
   return (
-    <div className="max-w-[1800px] mx-auto py-6 px-4">
+    <div className="max-w-[1800px] mx-auto py-4 md:py-6 px-3 md:px-4">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="mb-4 md:mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <Link href={`/assignments/${id}`}>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="w-fit">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Assignment
+              <span className="hidden sm:inline">Back to Assignment</span>
+              <span className="sm:hidden">Back</span>
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold">{assignment.title}</h1>
-            <p className="text-gray-600 mt-1">Comprehensive Summary Dashboard</p>
+            <h1 className="text-xl md:text-3xl font-bold">{assignment.title}</h1>
+            <p className="text-sm md:text-base text-gray-600 mt-1">Comprehensive Summary Dashboard</p>
           </div>
         </div>
         <div className="flex gap-2">
           <Link href={`/api/assignments/${id}/export`}>
-            <Button className="bg-black text-white hover:bg-gray-800">
+            <Button className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto" size="sm">
               <FileDown className="h-4 w-4 mr-2" />
-              Export PDF
+              <span className="hidden sm:inline">Export PDF</span>
+              <span className="sm:hidden">PDF</span>
             </Button>
           </Link>
         </div>
       </div>
 
       {/* Assignment Overview Card */}
-      <Card className="mb-6 border-2 border-black">
+      <Card className="mb-4 md:mb-6 border-2 border-black">
         <CardHeader>
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle className="text-xl">Assignment Overview</CardTitle>
-              <CardDescription className="mt-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+            <div className="flex-1">
+              <CardTitle className="text-lg md:text-xl">Assignment Overview</CardTitle>
+              <CardDescription className="mt-2 text-sm">
                 {assignment.objective}
               </CardDescription>
             </div>
-            <span className={`px-3 py-1 text-sm font-medium border rounded-full ${getStatusColor(assignment.status)}`}>
+            <span className={`px-3 py-1 text-xs md:text-sm font-medium border rounded-full w-fit ${getStatusColor(assignment.status)}`}>
               {assignment.status}
             </span>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
             <div>
               <p className="text-sm text-gray-500">Created By</p>
               <p className="font-medium">{assignment.createdBy.name}</p>
@@ -278,68 +281,68 @@ export default async function ComprehensiveSummaryPage({
       </Card>
 
       {/* Overall Metrics Dashboard */}
-      <div className="grid grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 md:gap-4 mb-4 md:mb-6">
         <Card className="border border-gray-300">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="text-center">
-              <Users className="h-6 w-6 mx-auto mb-2 text-gray-600" />
+              <Users className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-gray-600" />
               <p className="text-xs text-gray-500">VOC Statements</p>
-              <p className="text-2xl font-bold">{totalVOC}</p>
+              <p className="text-xl md:text-2xl font-bold">{totalVOC}</p>
               <p className="text-xs text-gray-400 mt-1">{totalCTQ} CTQs</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border border-gray-300">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="text-center">
-              <Activity className="h-6 w-6 mx-auto mb-2 text-gray-600" />
+              <Activity className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-gray-600" />
               <p className="text-xs text-gray-500">Overall Efficiency</p>
-              <p className="text-2xl font-bold">{vsmMetrics.efficiencyRatio.toFixed(1)}%</p>
+              <p className="text-xl md:text-2xl font-bold">{vsmMetrics.efficiencyRatio.toFixed(1)}%</p>
               <p className="text-xs text-gray-400 mt-1">VA Ratio</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border border-red-300 bg-red-50">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="text-center">
-              <AlertTriangle className="h-6 w-6 mx-auto mb-2 text-red-600" />
+              <AlertTriangle className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-red-600" />
               <p className="text-xs text-red-700">High Risk</p>
-              <p className="text-2xl font-bold text-red-800">{highRiskFMEA.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-red-800">{highRiskFMEA.length}</p>
               <p className="text-xs text-red-600 mt-1">RPN ≥ 200</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border border-yellow-300 bg-yellow-50">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="text-center">
-              <AlertCircle className="h-6 w-6 mx-auto mb-2 text-yellow-600" />
+              <AlertCircle className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-yellow-600" />
               <p className="text-xs text-yellow-700">Medium Risk</p>
-              <p className="text-2xl font-bold text-yellow-800">{mediumRiskFMEA.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-yellow-800">{mediumRiskFMEA.length}</p>
               <p className="text-xs text-yellow-600 mt-1">RPN 100-199</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border border-green-300 bg-green-50">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="text-center">
-              <CheckCircle2 className="h-6 w-6 mx-auto mb-2 text-green-600" />
+              <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-green-600" />
               <p className="text-xs text-green-700">Recommendations</p>
-              <p className="text-2xl font-bold text-green-800">{assignment.recommendations.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-green-800">{assignment.recommendations.length}</p>
               <p className="text-xs text-green-600 mt-1">Total</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border border-blue-300 bg-blue-50">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="text-center">
-              <Layers className="h-6 w-6 mx-auto mb-2 text-blue-600" />
+              <Layers className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-blue-600" />
               <p className="text-xs text-blue-700">Processes</p>
-              <p className="text-2xl font-bold text-blue-800">{assignment.processes.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-blue-800">{assignment.processes.length}</p>
               <p className="text-xs text-blue-600 mt-1">Analyzed</p>
             </div>
           </CardContent>
@@ -347,21 +350,10 @@ export default async function ComprehensiveSummaryPage({
       </div>
 
       {/* Process-by-Process Analysis */}
-      <Tabs defaultValue={assignment.processes[0]?.id || "overview"} className="space-y-4">
-        <TabsList className="w-full justify-start bg-white border-2 border-black h-auto flex-wrap">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-black data-[state=active]:text-white">
-            Overall Summary
-          </TabsTrigger>
-          {assignment.processes.map(process => (
-            <TabsTrigger
-              key={process.id}
-              value={process.id}
-              className="data-[state=active]:bg-black data-[state=active]:text-white"
-            >
-              {process.processName}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+      <SummaryTabs
+        defaultValue={assignment.processes[0]?.id || "overview"}
+        processes={assignment.processes.map(p => ({ id: p.id, processName: p.processName }))}
+      >
 
         {/* Overall Summary Tab */}
         <TabsContent value="overview" className="space-y-6">
@@ -375,31 +367,31 @@ export default async function ComprehensiveSummaryPage({
               {assignment.vocStatements.length > 0 ? (
                 <div className="space-y-6">
                   {/* VOC Summary */}
-                  <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
                     <Card className="border border-blue-300 bg-blue-50">
-                      <CardContent className="pt-4">
+                      <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
-                          <Users className="h-6 w-6 mx-auto mb-2 text-blue-600" />
-                          <p className="text-sm text-blue-700">Total VOC</p>
-                          <p className="text-3xl font-bold text-blue-800">{totalVOC}</p>
+                          <Users className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-blue-600" />
+                          <p className="text-xs md:text-sm text-blue-700">Total VOC</p>
+                          <p className="text-2xl md:text-3xl font-bold text-blue-800">{totalVOC}</p>
                         </div>
                       </CardContent>
                     </Card>
                     <Card className="border border-purple-300 bg-purple-50">
-                      <CardContent className="pt-4">
+                      <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
-                          <Target className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                          <p className="text-sm text-purple-700">Total CTQ</p>
-                          <p className="text-3xl font-bold text-purple-800">{totalCTQ}</p>
+                          <Target className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-purple-600" />
+                          <p className="text-xs md:text-sm text-purple-700">Total CTQ</p>
+                          <p className="text-2xl md:text-3xl font-bold text-purple-800">{totalCTQ}</p>
                         </div>
                       </CardContent>
                     </Card>
                     <Card className="border border-green-300 bg-green-50">
-                      <CardContent className="pt-4">
+                      <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
-                          <Activity className="h-6 w-6 mx-auto mb-2 text-green-600" />
-                          <p className="text-sm text-green-700">CTQ per VOC</p>
-                          <p className="text-3xl font-bold text-green-800">
+                          <Activity className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-green-600" />
+                          <p className="text-xs md:text-sm text-green-700">CTQ per VOC</p>
+                          <p className="text-2xl md:text-3xl font-bold text-green-800">
                             {totalVOC > 0 ? (totalCTQ / totalVOC).toFixed(1) : '0'}
                           </p>
                         </div>
@@ -409,6 +401,7 @@ export default async function ComprehensiveSummaryPage({
 
                   {/* VOC/CTQ Details Table */}
                   <div className="overflow-x-auto">
+                    <div className="min-w-[600px]">
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-gray-100">
@@ -456,6 +449,7 @@ export default async function ComprehensiveSummaryPage({
                         ))}
                       </TableBody>
                     </Table>
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -467,8 +461,8 @@ export default async function ComprehensiveSummaryPage({
           {/* Combined Pareto Analysis */}
           <Card className="border-2 border-black">
             <CardHeader>
-              <CardTitle>Combined Pareto Analysis - All Processes</CardTitle>
-              <CardDescription>80/20 analysis across all process steps</CardDescription>
+              <CardTitle className="text-lg md:text-xl">Combined Pareto Analysis - All Processes</CardTitle>
+              <CardDescription className="text-sm">80/20 analysis across all process steps</CardDescription>
             </CardHeader>
             <CardContent>
               <ParetoChart
@@ -494,11 +488,12 @@ export default async function ComprehensiveSummaryPage({
           {/* Process Comparison Table */}
           <Card className="border-2 border-black">
             <CardHeader>
-              <CardTitle>Process Performance Comparison</CardTitle>
-              <CardDescription>Key metrics across all processes</CardDescription>
+              <CardTitle className="text-lg md:text-xl">Process Performance Comparison</CardTitle>
+              <CardDescription className="text-sm">Key metrics across all processes</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
+                <div className="min-w-[900px]">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-100">
@@ -551,6 +546,7 @@ export default async function ComprehensiveSummaryPage({
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -558,14 +554,15 @@ export default async function ComprehensiveSummaryPage({
           {/* All FMEA High Risks */}
           <Card className="border-2 border-red-500">
             <CardHeader className="bg-red-50">
-              <CardTitle className="text-red-800">Critical Risk Items - All Processes</CardTitle>
-              <CardDescription className="text-red-600">
+              <CardTitle className="text-red-800 text-lg md:text-xl">Critical Risk Items - All Processes</CardTitle>
+              <CardDescription className="text-red-600 text-sm">
                 Failure modes requiring immediate attention (RPN ≥ 200)
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-4">
               {highRiskFMEA.length > 0 ? (
                 <div className="overflow-x-auto">
+                  <div className="min-w-[700px]">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -601,6 +598,7 @@ export default async function ComprehensiveSummaryPage({
                       })}
                     </TableBody>
                   </Table>
+                  </div>
                 </div>
               ) : (
                 <p className="text-center text-gray-500 py-8">No high-risk items identified</p>
@@ -622,30 +620,30 @@ export default async function ComprehensiveSummaryPage({
                   <CardDescription>Detailed analysis and visualizations</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-6 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">VSM Steps</p>
-                      <p className="text-xl font-bold">{metric.vsmMetrics.stepCount}</p>
+                      <p className="text-xs md:text-sm text-gray-500">VSM Steps</p>
+                      <p className="text-lg md:text-xl font-bold">{metric.vsmMetrics.stepCount}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Efficiency</p>
-                      <p className="text-xl font-bold">{metric.vsmMetrics.efficiencyRatio.toFixed(1)}%</p>
+                      <p className="text-xs md:text-sm text-gray-500">Efficiency</p>
+                      <p className="text-lg md:text-xl font-bold">{metric.vsmMetrics.efficiencyRatio.toFixed(1)}%</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Cycle Time</p>
-                      <p className="text-xl font-bold">{metric.vsmMetrics.totalCycleTime} min</p>
+                      <p className="text-xs md:text-sm text-gray-500">Cycle Time</p>
+                      <p className="text-lg md:text-xl font-bold">{metric.vsmMetrics.totalCycleTime} min</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">FMEA Risks</p>
-                      <p className="text-xl font-bold">{metric.fmeaStats.total}</p>
+                      <p className="text-xs md:text-sm text-gray-500">FMEA Risks</p>
+                      <p className="text-lg md:text-xl font-bold">{metric.fmeaStats.total}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">SIPOC Steps</p>
-                      <p className="text-xl font-bold">{metric.sipocSteps}</p>
+                      <p className="text-xs md:text-sm text-gray-500">SIPOC Steps</p>
+                      <p className="text-lg md:text-xl font-bold">{metric.sipocSteps}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Root Causes</p>
-                      <p className="text-xl font-bold">{metric.fishboneStats.totalCauses}</p>
+                      <p className="text-xs md:text-sm text-gray-500">Root Causes</p>
+                      <p className="text-lg md:text-xl font-bold">{metric.fishboneStats.totalCauses}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -731,11 +729,12 @@ export default async function ComprehensiveSummaryPage({
               {/* 2. VSM Analysis */}
               <Card className="border-2 border-black">
                 <CardHeader>
-                  <CardTitle>Value Stream Mapping (VSM)</CardTitle>
-                  <CardDescription>Process flow and time analysis</CardDescription>
+                  <CardTitle className="text-lg md:text-xl">Value Stream Mapping (VSM)</CardTitle>
+                  <CardDescription className="text-sm">Process flow and time analysis</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
+                    <div className="min-w-[600px]">
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-gray-100">
@@ -770,25 +769,26 @@ export default async function ComprehensiveSummaryPage({
                         })}
                       </TableBody>
                     </Table>
+                    </div>
                   </div>
 
-                  <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <div className="grid grid-cols-4 gap-4 text-center">
+                  <div className="mt-4 p-3 md:p-4 bg-gray-50 rounded-lg">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
                       <div>
-                        <p className="text-sm text-gray-500">Total Process Time</p>
-                        <p className="text-lg font-bold">{metric.vsmMetrics.totalProcessTime} min</p>
+                        <p className="text-xs md:text-sm text-gray-500">Total Process Time</p>
+                        <p className="text-base md:text-lg font-bold">{metric.vsmMetrics.totalProcessTime} min</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Total Wait Time</p>
-                        <p className="text-lg font-bold">{metric.vsmMetrics.totalWaitTime} min</p>
+                        <p className="text-xs md:text-sm text-gray-500">Total Wait Time</p>
+                        <p className="text-base md:text-lg font-bold">{metric.vsmMetrics.totalWaitTime} min</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Value-Added Time</p>
-                        <p className="text-lg font-bold text-green-600">{metric.vsmMetrics.valueAddedTime} min</p>
+                        <p className="text-xs md:text-sm text-gray-500">Value-Added Time</p>
+                        <p className="text-base md:text-lg font-bold text-green-600">{metric.vsmMetrics.valueAddedTime} min</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Non-Value-Added Time</p>
-                        <p className="text-lg font-bold text-red-600">{metric.vsmMetrics.nonValueAddedTime} min</p>
+                        <p className="text-xs md:text-sm text-gray-500">Non-Value-Added Time</p>
+                        <p className="text-base md:text-lg font-bold text-red-600">{metric.vsmMetrics.nonValueAddedTime} min</p>
                       </div>
                     </div>
                   </div>
@@ -798,8 +798,8 @@ export default async function ComprehensiveSummaryPage({
               {/* 3. Pareto Chart for this Process */}
               <Card className="border-2 border-black">
                 <CardHeader>
-                  <CardTitle>Pareto Analysis</CardTitle>
-                  <CardDescription>80/20 analysis of process steps by cycle time</CardDescription>
+                  <CardTitle className="text-lg md:text-xl">Pareto Analysis</CardTitle>
+                  <CardDescription className="text-sm">80/20 analysis of process steps by cycle time</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {metric.paretoData.items.length > 0 ? (
@@ -822,8 +822,8 @@ export default async function ComprehensiveSummaryPage({
               {/* 4. Fishbone Summary */}
               <Card className="border-2 border-black">
                 <CardHeader>
-                  <CardTitle>Fishbone (Ishikawa) Analysis</CardTitle>
-                  <CardDescription>Root cause analysis for vital few steps (Pareto ≤80%)</CardDescription>
+                  <CardTitle className="text-lg md:text-xl">Fishbone (Ishikawa) Analysis</CardTitle>
+                  <CardDescription className="text-sm">Root cause analysis for vital few steps (Pareto ≤80%)</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <FishboneAnalysisViewer
@@ -837,32 +837,32 @@ export default async function ComprehensiveSummaryPage({
               {/* 5. FMEA Summary for this Process */}
               <Card className="border-2 border-black">
                 <CardHeader>
-                  <CardTitle>FMEA Risk Analysis</CardTitle>
-                  <CardDescription>Failure modes and risk assessment</CardDescription>
+                  <CardTitle className="text-lg md:text-xl">FMEA Risk Analysis</CardTitle>
+                  <CardDescription className="text-sm">Failure modes and risk assessment</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-3 gap-4 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-4">
                     <Card className={`border ${metric.fmeaStats.high > 0 ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}>
-                      <CardContent className="pt-4">
+                      <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
-                          <p className="text-sm text-gray-500">High Risk</p>
-                          <p className="text-2xl font-bold">{metric.fmeaStats.high}</p>
+                          <p className="text-xs md:text-sm text-gray-500">High Risk</p>
+                          <p className="text-xl md:text-2xl font-bold">{metric.fmeaStats.high}</p>
                         </div>
                       </CardContent>
                     </Card>
                     <Card className={`border ${metric.fmeaStats.medium > 0 ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300'}`}>
-                      <CardContent className="pt-4">
+                      <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
-                          <p className="text-sm text-gray-500">Medium Risk</p>
-                          <p className="text-2xl font-bold">{metric.fmeaStats.medium}</p>
+                          <p className="text-xs md:text-sm text-gray-500">Medium Risk</p>
+                          <p className="text-xl md:text-2xl font-bold">{metric.fmeaStats.medium}</p>
                         </div>
                       </CardContent>
                     </Card>
                     <Card className="border border-green-500 bg-green-50">
-                      <CardContent className="pt-4">
+                      <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
-                          <p className="text-sm text-gray-500">Low Risk</p>
-                          <p className="text-2xl font-bold">{metric.fmeaStats.low}</p>
+                          <p className="text-xs md:text-sm text-gray-500">Low Risk</p>
+                          <p className="text-xl md:text-2xl font-bold">{metric.fmeaStats.low}</p>
                         </div>
                       </CardContent>
                     </Card>
@@ -870,6 +870,7 @@ export default async function ComprehensiveSummaryPage({
 
                   {metric.fmeaStats.topRisks.length > 0 && (
                     <div className="overflow-x-auto">
+                      <div className="min-w-[500px]">
                       <Table>
                         <TableHeader>
                           <TableRow className="bg-gray-100">
@@ -896,6 +897,7 @@ export default async function ComprehensiveSummaryPage({
                           ))}
                         </TableBody>
                       </Table>
+                      </div>
                     </div>
                   )}
                 </CardContent>
@@ -905,11 +907,11 @@ export default async function ComprehensiveSummaryPage({
               {metric.capabilityData && (
                 <Card className="border-2 border-black">
                   <CardHeader>
-                    <CardTitle>Process Capability Analysis</CardTitle>
-                    <CardDescription>Statistical process control metrics</CardDescription>
+                    <CardTitle className="text-lg md:text-xl">Process Capability Analysis</CardTitle>
+                    <CardDescription className="text-sm">Statistical process control metrics</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                       <div>
                         <ProcessCapabilityChart
                           lowerSpec={process.lowerSpecLimit!}
@@ -920,27 +922,27 @@ export default async function ComprehensiveSummaryPage({
                           height={250}
                         />
                       </div>
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-3 md:space-y-4">
+                        <div className="grid grid-cols-2 gap-3 md:gap-4">
                           <div>
-                            <p className="text-sm text-gray-500">Cp (Potential)</p>
-                            <p className="text-xl font-bold">{metric.capabilityData.cp?.toFixed(3) || '-'}</p>
+                            <p className="text-xs md:text-sm text-gray-500">Cp (Potential)</p>
+                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.cp?.toFixed(3) || '-'}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">Cpk (Actual)</p>
-                            <p className="text-xl font-bold">{metric.capabilityData.cpk?.toFixed(3) || '-'}</p>
+                            <p className="text-xs md:text-sm text-gray-500">Cpk (Actual)</p>
+                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.cpk?.toFixed(3) || '-'}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">Sigma Level</p>
-                            <p className="text-xl font-bold">{metric.capabilityData.sigmaLevel?.toFixed(3) || '-'}σ</p>
+                            <p className="text-xs md:text-sm text-gray-500">Sigma Level</p>
+                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.sigmaLevel?.toFixed(3) || '-'}σ</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">PPM</p>
-                            <p className="text-xl font-bold">{metric.capabilityData.ppm?.toFixed(0) || '-'}</p>
+                            <p className="text-xs md:text-sm text-gray-500">PPM</p>
+                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.ppm?.toFixed(0) || '-'}</p>
                           </div>
                         </div>
                         <div className="p-3 bg-gray-50 rounded">
-                          <p className="text-sm font-medium mb-1">Process Status</p>
+                          <p className="text-xs md:text-sm font-medium mb-1">Process Status</p>
                           <Badge className={
                             metric.capabilityData.isCapable ? 'bg-green-600' : 'bg-red-600'
                           }>
@@ -955,19 +957,20 @@ export default async function ComprehensiveSummaryPage({
             </TabsContent>
           )
         })}
-      </Tabs>
+      </SummaryTabs>
 
       {/* Recommendations Section */}
       <Card className="mt-6 border-2 border-green-500">
         <CardHeader className="bg-green-50">
-          <CardTitle className="text-green-800">Recommendations</CardTitle>
-          <CardDescription className="text-green-600">
+          <CardTitle className="text-lg md:text-xl text-green-800">Recommendations</CardTitle>
+          <CardDescription className="text-sm text-green-600">
             Improvement actions and implementation status (sorted by difficulty: low to high)
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-4">
           {assignment.recommendations.length > 0 ? (
             <div className="overflow-x-auto">
+              <div className="min-w-[900px]">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-100">
@@ -1021,6 +1024,7 @@ export default async function ComprehensiveSummaryPage({
                     ))}
                 </TableBody>
               </Table>
+              </div>
             </div>
           ) : (
             <p className="text-center text-gray-500 py-8">No recommendations available</p>

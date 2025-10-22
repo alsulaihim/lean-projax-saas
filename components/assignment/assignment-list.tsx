@@ -153,19 +153,128 @@ export function AssignmentList({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div className="text-sm text-gray-600">
           Showing {assignments.length} assignment{assignments.length !== 1 ? 's' : ''}
         </div>
         {canCreateAssignment && (
-          <Button onClick={handleCreateNew} className="bg-black text-white hover:bg-gray-800">
+          <Button onClick={handleCreateNew} className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto">
             <Plus className="mr-2 h-4 w-4" />
             New Assignment
           </Button>
         )}
       </div>
 
-      <div className="border-2 border-black rounded-lg overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-3">
+        {assignments.map((assignment) => {
+          // Calculate progress
+          const counts = {
+            voc: assignment.vocStatements.length,
+            ctq: assignment.vocStatements.reduce((acc, voc) => acc + voc.ctqRequirements.length, 0),
+            sipoc: assignment.processes.reduce((acc, p) => acc + p.sipocEntries.length, 0),
+            vsm: assignment.processes.reduce((acc, p) => acc + p.vsmSteps.length, 0),
+            fishbone: assignment.processes.reduce((acc, p) =>
+              acc + p.fishboneCategories.reduce((sum, cat) => sum + cat.causes.length, 0), 0
+            ),
+            fmea: assignment.processes.reduce((acc, p) => acc + p.fmeaEntries.length, 0),
+            recommendations: assignment.recommendations.length
+          }
+
+          const sectionStatus = {
+            voc: counts.voc >= 3 && counts.ctq >= counts.voc * 2,
+            sipoc: counts.sipoc >= 5 && assignment.processes.length > 0 &&
+                   assignment.processes.every(p => p.sipocEntries.length >= 5),
+            vsm: counts.vsm >= 5 && assignment.processes.every(p => p.vsmSteps.length >= 5),
+            fishbone: assignment.processes.length > 0 &&
+                     assignment.processes.every(p =>
+                       p.fishboneCategories.length >= 6 &&
+                       p.fishboneCategories.every(cat => cat.causes.length >= 3)
+                     ),
+            fmea: counts.fmea >= 5 && assignment.processes.every(p => p.fmeaEntries.length >= 5),
+            recommendations: counts.recommendations >= 5
+          }
+
+          const requiredSections = ['voc', 'sipoc', 'vsm', 'fishbone', 'fmea', 'recommendations']
+          const completedCount = requiredSections.filter(section =>
+            sectionStatus[section as keyof typeof sectionStatus]
+          ).length
+          const progress = Math.round((completedCount / requiredSections.length) * 100)
+
+          return (
+            <div
+              key={assignment.id}
+              className="border-2 border-gray-200 rounded-lg p-4 hover:border-black transition-colors cursor-pointer"
+              onClick={() => handleOpenAssignment(assignment.id)}
+            >
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1 min-w-0 pr-4">
+                  <h3 className="font-semibold text-gray-900 truncate">{assignment.title}</h3>
+                  <p className="text-sm text-gray-500 mt-1">{assignment.createdBy.name}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className={`${statusStyles[assignment.status] || statusStyles.DRAFT} text-xs`}
+                  >
+                    {assignment.status}
+                  </Badge>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-300 hover:bg-gray-100 h-8 w-8 p-0"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleOpenAssignment(assignment.id)}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        Open Assignment
+                      </DropdownMenuItem>
+                      {(userRole === UserRole.EXECUTIVE ||
+                        userRole === UserRole.BPI_TEAM ||
+                        userRole === UserRole.TEAM_LEAD ||
+                        assignment.createdById === userId) && (
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setAssignmentToDelete(assignment)
+                            setDeleteDialogOpen(true)
+                          }}
+                          className="text-red-600 focus:text-red-600"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete Assignment
+                        </DropdownMenuItem>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-black transition-all"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-600 font-medium">{progress}%</span>
+                </div>
+                <p className="text-xs text-gray-500">
+                  Modified {formatDistanceToNow(new Date(assignment.updatedAt))}
+                </p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block border-2 border-black rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="bg-gray-50 border-b-2 border-black hover:bg-gray-50">

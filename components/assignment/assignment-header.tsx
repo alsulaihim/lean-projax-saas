@@ -15,7 +15,8 @@ import {
   FileDown,
   AlertCircle,
   Trash2,
-  BarChart3
+  BarChart3,
+  MoreHorizontal
 } from 'lucide-react'
 import {
   AlertDialog,
@@ -28,6 +29,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { UserRole } from '@prisma/client'
 import type { Assignment, User } from '@prisma/client'
 import { useToast } from '@/lib/hooks/useToast'
@@ -159,18 +166,21 @@ export function AssignmentHeader({
           </AlertDescription>
         </Alert>
       )}
-      <div className="max-w-[1600px] mx-auto px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
+      <div className="max-w-[1600px] mx-auto px-4 py-3 md:py-4">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
           <Button
             variant="ghost"
             onClick={() => router.push(assignmentsPath)}
-            className="hover:bg-gray-100"
+            className="hover:bg-gray-100 w-fit"
+            size="sm"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
-            Back to Assignments
+            <span className="hidden sm:inline">Back to Assignments</span>
+            <span className="sm:hidden">Back</span>
           </Button>
 
-          <div className="flex items-center gap-2">
+          {/* Desktop action buttons */}
+          <div className="hidden lg:flex items-center gap-2">
             <Button
               variant="outline"
               onClick={() => router.push(summaryPath)}
@@ -270,32 +280,100 @@ export function AssignmentHeader({
               </Button>
             )}
           </div>
+
+          {/* Mobile action buttons - Compact layout */}
+          <div className="flex lg:hidden items-center gap-2 flex-wrap">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(summaryPath)}
+              className="border-blue-600 text-blue-600 hover:bg-blue-50 flex-1 sm:flex-none"
+            >
+              <BarChart3 className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Summary</span>
+            </Button>
+
+            {canEdit && assignment.status === 'DRAFT' && (
+              <Button
+                onClick={() => handleStatusChange('COMPLETED')}
+                disabled={isSaving || progressPercentage < 100}
+                size="sm"
+                className={progressPercentage < 100
+                  ? "bg-gray-400 text-white cursor-not-allowed flex-1 sm:flex-none"
+                  : "bg-green-600 text-white hover:bg-green-700 flex-1 sm:flex-none"
+                }
+              >
+                <CheckCircle className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Complete</span>
+              </Button>
+            )}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="border-gray-300">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleExportPDF} disabled={isDemo}>
+                  <FileDown className="mr-2 h-4 w-4" />
+                  Export PDF
+                </DropdownMenuItem>
+                {canEdit && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      if (!isDemo) handleDelete()
+                    }}
+                    disabled={isDemo || isDeleting}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                  </DropdownMenuItem>
+                )}
+                {userRole === UserRole.TEAM_LEAD && assignment.status === 'COMPLETED' && (
+                  <DropdownMenuItem onClick={() => handleStatusChange('REOPENED')} disabled={isSaving}>
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Reopen
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <div>
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{assignment.title}</h1>
-              <p className="text-gray-600 mb-2">{assignment.objective}</p>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-3">
+            <div className="flex-1">
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <h1 className="text-2xl md:text-3xl font-bold flex-1">{assignment.title}</h1>
+                <Badge
+                  variant="outline"
+                  className={`${statusColors[assignment.status]} border px-2 py-1 text-xs whitespace-nowrap`}
+                >
+                  {statusLabels[assignment.status]}
+                </Badge>
+              </div>
+              <p className="text-gray-600 mb-2 text-sm md:text-base">{assignment.objective}</p>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs md:text-sm text-gray-500">
                 <span>Created by: {assignment.createdBy.name}</span>
-                <span>•</span>
+                <span className="hidden sm:inline">•</span>
                 <span>Created: {new Date(assignment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
                 {assignment.completedAt && (
                   <>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <span>Completed: {new Date(assignment.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
                   </>
                 )}
               </div>
+              {canEdit && assignment.status === 'DRAFT' && (
+                <div className="mt-2 lg:hidden">
+                  <Badge variant="outline" className="border-gray-300 text-xs">
+                    Progress: {progressPercentage}%
+                  </Badge>
+                </div>
+              )}
             </div>
-
-            <Badge
-              variant="outline"
-              className={`${statusColors[assignment.status]} border px-3 py-1`}
-            >
-              {statusLabels[assignment.status]}
-            </Badge>
           </div>
         </div>
       </div>

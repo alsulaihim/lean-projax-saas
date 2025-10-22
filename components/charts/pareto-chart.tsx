@@ -108,7 +108,7 @@ export function ParetoChart({
           </Button>
         )}
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0 md:px-6">
         <ResponsiveContainer width="100%" height={height}>
           <ComposedChart
             data={data}

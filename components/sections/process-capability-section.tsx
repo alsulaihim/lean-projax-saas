@@ -173,18 +173,18 @@ export function ProcessCapabilitySection({
     <div className="space-y-6">
       <Card className="border-2 border-black">
         <CardHeader>
-          <CardTitle className="text-2xl">Process Capability Analysis</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl md:text-2xl">Process Capability Analysis</CardTitle>
+          <CardDescription className="text-sm">
             Calculate Cp and Cpk to measure process performance against specifications
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Info Box */}
           <Card className="border border-blue-300 bg-blue-50">
-            <CardContent className="pt-6">
-              <div className="flex gap-3">
-                <TrendingUp className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm">
+            <CardContent className="pt-4 md:pt-6">
+              <div className="flex gap-2 md:gap-3">
+                <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="text-xs md:text-sm">
                   <p className="font-medium text-blue-900 mb-2">Process Capability Formulas:</p>
                   <ul className="space-y-1 text-blue-800">
                     <li><strong>Cp</strong> = (USL - LSL) / (6 × σ) - Measures potential capability</li>
@@ -198,6 +198,7 @@ export function ProcessCapabilitySection({
 
           {/* Process Capability Table */}
           <div className="border-2 border-black rounded-lg overflow-x-auto">
+            <div className="min-w-[900px]">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100">
@@ -371,6 +372,7 @@ export function ProcessCapabilitySection({
                 })}
               </TableBody>
             </Table>
+            </div>
           </div>
 
           {/* Bell Curve Visualization */}
@@ -381,58 +383,60 @@ export function ProcessCapabilitySection({
                 selectedProcess.sampleStdDev === null) return null
 
             return (
-              <div className="mt-6">
-                <BellCurveChart
-                  mean={selectedProcess.sampleMean}
-                  standardDeviation={selectedProcess.sampleStdDev}
-                  lsl={selectedProcess.lowerSpecLimit ?? undefined}
-                  usl={selectedProcess.upperSpecLimit ?? undefined}
-                  target={selectedProcess.targetValue ?? undefined}
-                  title={`Process Distribution: ${selectedProcess.processName}`}
-                  height={400}
-                  showStatistics={true}
-                />
+              <div className="mt-6 w-full overflow-x-auto">
+                <div className="min-w-[320px]">
+                  <BellCurveChart
+                    mean={selectedProcess.sampleMean}
+                    standardDeviation={selectedProcess.sampleStdDev}
+                    lsl={selectedProcess.lowerSpecLimit ?? undefined}
+                    usl={selectedProcess.upperSpecLimit ?? undefined}
+                    target={selectedProcess.targetValue ?? undefined}
+                    title={`Process Distribution: ${selectedProcess.processName}`}
+                    height={400}
+                    showStatistics={true}
+                  />
+                </div>
               </div>
             )
           })()}
 
           {/* Summary Stats */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <Card className="border border-gray-300">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-1">Processes Analyzed</p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-xs md:text-sm text-gray-500 mb-1">Processes Analyzed</p>
+                  <p className="text-lg md:text-2xl font-bold">
                     {processesWithCapability.filter(p => p.cpk !== null).length} / {processes.length}
                   </p>
                 </div>
               </CardContent>
             </Card>
             <Card className="border border-gray-300">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-1">Excellent (Cpk ≥ 2.0)</p>
-                  <p className="text-2xl font-bold text-green-600">
+                  <p className="text-xs md:text-sm text-gray-500 mb-1">Excellent (Cpk ≥ 2.0)</p>
+                  <p className="text-lg md:text-2xl font-bold text-green-600">
                     {processesWithCapability.filter(p => p.cpk !== null && p.cpk >= 2.0).length}
                   </p>
                 </div>
               </CardContent>
             </Card>
             <Card className="border border-gray-300">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-1">Adequate (Cpk ≥ 1.33)</p>
-                  <p className="text-2xl font-bold text-blue-600">
+                  <p className="text-xs md:text-sm text-gray-500 mb-1">Adequate (Cpk ≥ 1.33)</p>
+                  <p className="text-lg md:text-2xl font-bold text-blue-600">
                     {processesWithCapability.filter(p => p.cpk !== null && p.cpk >= 1.33 && p.cpk < 2.0).length}
                   </p>
                 </div>
               </CardContent>
             </Card>
             <Card className="border border-gray-300">
-              <CardContent className="pt-6">
+              <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-1">Poor (Cpk &lt; 1.0)</p>
-                  <p className="text-2xl font-bold text-red-600">
+                  <p className="text-xs md:text-sm text-gray-500 mb-1">Poor (Cpk &lt; 1.0)</p>
+                  <p className="text-lg md:text-2xl font-bold text-red-600">
                     {processesWithCapability.filter(p => p.cpk !== null && p.cpk < 1.0).length}
                   </p>
                 </div>
@@ -442,9 +446,9 @@ export function ProcessCapabilitySection({
 
           {/* Instructions */}
           <Card className="border border-gray-300">
-            <CardContent className="pt-6">
-              <h4 className="font-medium mb-2">How to Use:</h4>
-              <ol className="text-sm space-y-1 list-decimal list-inside text-gray-700">
+            <CardContent className="pt-4 md:pt-6">
+              <h4 className="font-medium mb-2 text-sm md:text-base">How to Use:</h4>
+              <ol className="text-xs md:text-sm space-y-1 list-decimal list-inside text-gray-700">
                 <li>Define specification limits (LSL, USL) and target value for each process</li>
                 <li>Collect sample data and calculate the mean (x̄) and standard deviation (σ)</li>
                 <li>Click Edit to enter these values for each process</li>

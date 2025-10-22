@@ -2,7 +2,15 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CheckCircle2, Clock, Circle } from 'lucide-react'
+import { CheckCircle2, Clock, Circle, Menu } from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 import { VOCSection } from '@/components/sections/voc-section'
 import { SIPOCSection } from '@/components/sections/sipoc-section'
 import { VSMSection } from '@/components/sections/vsm-section'
@@ -60,6 +68,7 @@ interface AssignmentTabsProps {
 
 export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculated }: AssignmentTabsProps) {
   const [activeTab, setActiveTab] = useState('charter')
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   // Count items for tab badges
   const counts = {
@@ -129,6 +138,28 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
 
   const _currentSection = tabToSection[activeTab]
 
+  // Tab configuration with labels and counts
+  const tabsConfig = [
+    { value: 'charter', label: 'Charter', count: null },
+    { value: 'voc-ctq', label: 'VOC/CTQ', count: counts.voc > 0 ? `${counts.voc}/${counts.ctq}` : null },
+    { value: 'sipoc', label: 'SIPOC', count: counts.sipoc > 0 ? counts.sipoc : null },
+    { value: 'vsm', label: 'VSM', count: counts.vsm > 0 ? counts.vsm : null },
+    { value: 'pareto', label: 'Pareto', count: null },
+    { value: 'fishbone', label: 'Fishbone', count: counts.fishbone > 0 ? counts.fishbone : null },
+    { value: 'fmea', label: 'FMEA', count: counts.fmea > 0 ? counts.fmea : null },
+    { value: 'process-capability', label: 'Process Capability', shortLabel: 'Capability', count: null },
+    { value: 'recommendations', label: 'Recommendations', count: counts.recommendations > 0 ? counts.recommendations : null },
+    ...(assignment.status === 'COMPLETED' ? [{ value: 'ai-analysis', label: 'AI Analysis', count: null }] : []),
+    { value: 'audit-log', label: 'Audit Log', count: null }
+  ]
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value)
+    setIsSheetOpen(false)
+  }
+
+  const currentTabLabel = tabsConfig.find(t => t.value === activeTab)?.label || 'Charter'
+
   // Calculate overall progress percentage
   const progressPercentage = useMemo(() => {
     const requiredSections = ['voc', 'sipoc', 'vsm', 'fishbone', 'fmea', 'recommendations']
@@ -151,16 +182,16 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
   return (
     <div className="w-full">
       {/* Horizontal Progress Bar */}
-      <div className="mb-6 bg-white border-2 border-gray-300 rounded-lg p-6 shadow-sm">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <h3 className="font-semibold text-lg">Assignment Progress</h3>
-            <p className="text-sm text-gray-600 mt-1">
+      <div className="mb-6 bg-white border-2 border-gray-300 rounded-lg p-4 md:p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+          <div className="flex-1">
+            <h3 className="font-semibold text-base md:text-lg">Assignment Progress</h3>
+            <p className="text-xs md:text-sm text-gray-600 mt-1">
               Complete all required sections to finalize the assignment
             </p>
           </div>
-          <div className="text-right">
-            <div className="text-3xl font-bold text-blue-600">{progressPercentage}%</div>
+          <div className="text-left sm:text-right">
+            <div className="text-2xl md:text-3xl font-bold text-blue-600">{progressPercentage}%</div>
             <div className="text-xs text-gray-500">Complete</div>
           </div>
         </div>
@@ -174,7 +205,7 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
         </div>
         
         {/* Section Status Indicators */}
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 md:gap-3 mt-4">
           {[
             { key: 'voc', label: 'VOC/CTQ' },
             { key: 'sipoc', label: 'SIPOC' },
@@ -186,26 +217,26 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
             const status = sectionStatus[key as keyof typeof sectionStatus]
             const isComplete = status?.completed
             const hasData = status?.hasData
-            
+
             return (
-              <div 
+              <div
                 key={key}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all ${
-                  isComplete 
-                    ? 'bg-green-50 border-green-500' 
-                    : hasData 
-                    ? 'bg-blue-50 border-blue-400' 
+                className={`flex items-center gap-1.5 md:gap-2 px-2 md:px-3 py-2 rounded-lg border-2 transition-all ${
+                  isComplete
+                    ? 'bg-green-50 border-green-500'
+                    : hasData
+                    ? 'bg-blue-50 border-blue-400'
                     : 'bg-gray-50 border-gray-300'
                 }`}
               >
                 {isComplete ? (
-                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                  <CheckCircle2 className="h-3.5 w-3.5 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
                 ) : hasData ? (
-                  <Clock className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                  <Clock className="h-3.5 w-3.5 md:h-4 md:w-4 text-blue-600 flex-shrink-0" />
                 ) : (
-                  <Circle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                  <Circle className="h-3.5 w-3.5 md:h-4 md:w-4 text-gray-400 flex-shrink-0" />
                 )}
-                <span className={`text-xs font-medium ${
+                <span className={`text-xs font-medium truncate ${
                   isComplete ? 'text-green-700' : hasData ? 'text-blue-700' : 'text-gray-600'
                 }`}>
                   {label}
@@ -218,8 +249,51 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
 
       {/* Main Content Area */}
       <div className="w-full">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="w-full justify-start border-b-2 border-black bg-white h-auto flex-wrap">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+      {/* Mobile: Burger Menu */}
+      <div className="md:hidden mb-4">
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="w-full justify-between border-2 border-black">
+              <span className="font-medium">{currentTabLabel}</span>
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[280px] sm:w-[320px]">
+            <SheetHeader>
+              <SheetTitle>Assignment Sections</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 space-y-2">
+              {tabsConfig.map((tab) => (
+                <button
+                  key={tab.value}
+                  onClick={() => handleTabChange(tab.value)}
+                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                    activeTab === tab.value
+                      ? 'bg-black text-white font-medium'
+                      : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>{tab.label}</span>
+                    {tab.count && (
+                      <span className={`text-xs px-2 py-0.5 rounded ${
+                        activeTab === tab.value ? 'bg-white text-black' : 'bg-gray-200'
+                      }`}>
+                        {tab.count}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Desktop: Regular Tabs */}
+      <div className="hidden md:block">
+        <TabsList className="w-full justify-start border-b-2 border-black bg-white h-auto flex-wrap">
         <TabsTrigger
           value="charter"
           className="data-[state=active]:bg-black data-[state=active]:text-white"
@@ -317,6 +391,7 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
           Audit Log
         </TabsTrigger>
       </TabsList>
+      </div>
 
       <div className="mt-6">
         <TabsContent value="charter" className="space-y-4">

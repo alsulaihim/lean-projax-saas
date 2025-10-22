@@ -71,7 +71,7 @@ export function AssignmentWrapper({
         progressPercentage={progressPercentage}
       />
 
-      <div className="w-full px-6 py-6">
+      <div className="w-full px-4 md:px-6 py-4 md:py-6">
         {isDemo && <DemoBanner />}
 
         <AssignmentTabs
