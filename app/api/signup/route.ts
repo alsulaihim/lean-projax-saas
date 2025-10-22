@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { rateLimitSignup } from '@/lib/rate-limit'
-import { validatePassword } from '@/lib/password-validator'
 import { generateVerificationToken, sendVerificationEmail } from '@/lib/email'
+import { signupSchema, formatZodError } from '@/lib/validations/auth'
 
 /**
  * User Signup API Route
@@ -49,40 +49,25 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { email, name, password, companyName } = body
-
-    // Validate required fields
-    if (!email || !name || !password) {
-      return NextResponse.json(
-        { error: 'Email, name, and password are required' },
-        { status: 400 }
-      )
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      )
-    }
-
-    // Validate password strength
-    const passwordValidation = validatePassword(password)
-    if (!passwordValidation.isValid) {
+    
+    // Validate input with Zod schema (type-safe validation)
+    const validation = signupSchema.safeParse(body)
+    
+    if (!validation.success) {
       return NextResponse.json(
         { 
-          error: 'Password does not meet security requirements',
-          details: passwordValidation.errors
+          error: 'Invalid input data',
+          details: formatZodError(validation.error)
         },
         { status: 400 }
       )
     }
 
-    // Check if user already exists
+    const { email, name, password, companyName } = validation.data
+
+    // Check if user already exists (email already lowercased and trimmed by Zod)
     const existingUser = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() }
+      where: { email }
     })
 
     if (existingUser) {
@@ -104,13 +89,13 @@ export async function POST(request: NextRequest) {
     const verificationExpiry = new Date()
     verificationExpiry.setHours(verificationExpiry.getHours() + 24) // Expires in 24 hours
 
-    // Create new user with default settings
+    // Create new user with default settings (email and name already processed by Zod)
     const user = await prisma.user.create({
       data: {
-        email: email.toLowerCase().trim(),
-        name: name.trim(),
+        email,
+        name,
         passwordHash,
-        companyName: companyName?.trim() || null,
+        companyName,
         role: 'BPI_TEAM', // Default role for new users
         subscriptionTier: 'FREE', // Start with free tier
         subscriptionStatus: 'TRIAL', // 14-day trial

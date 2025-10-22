@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { verifyEmailSchema, formatZodError } from '@/lib/validations/auth'
 
 /**
  * Email Verification API Route
@@ -21,14 +22,22 @@ import { prisma } from '@/lib/prisma'
  */
 export async function POST(request: NextRequest) {
   try {
-    const { token } = await request.json()
-
-    if (!token) {
+    const body = await request.json()
+    
+    // Validate input with Zod schema
+    const validation = verifyEmailSchema.safeParse(body)
+    
+    if (!validation.success) {
       return NextResponse.json(
-        { error: 'Verification token is required' },
+        { 
+          error: 'Invalid verification token',
+          details: formatZodError(validation.error)
+        },
         { status: 400 }
       )
     }
+
+    const { token } = validation.data
 
     // Find user with this verification token
     const user = await prisma.user.findUnique({

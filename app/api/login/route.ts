@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import { SignJWT } from 'jose'
 import prisma from '@/lib/prisma'
 import { rateLimitLogin } from '@/lib/rate-limit'
+import { loginSchema, formatZodError } from '@/lib/validations/auth'
 
 if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET environment variable is required')
@@ -21,15 +22,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { email, password } = await request.json()
+    const body = await request.json()
 
-    // Input validation
-    if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
+    // Validate input with Zod schema (type-safe validation)
+    const validation = loginSchema.safeParse(body)
+    
+    if (!validation.success) {
       return NextResponse.json(
-        { error: 'Email and password required' },
+        { 
+          error: 'Invalid input data',
+          details: formatZodError(validation.error)
+        },
         { status: 400 }
       )
     }
+
+    const { email, password } = validation.data
 
     // Query user from database using Prisma connection pool
     const user = await prisma.user.findUnique({
