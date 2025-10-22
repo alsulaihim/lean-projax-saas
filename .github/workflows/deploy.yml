@@ -30,9 +30,17 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run database migrations
-        run: npx prisma db push
+        run: |
+          if [ -d "prisma/migrations" ]; then
+            npx prisma migrate deploy
+          else
+            echo "⚠️ No migrations directory found, skipping migrate deploy"
+            npx prisma db push --accept-data-loss
+          fi
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
@@ -46,6 +54,7 @@ jobs:
           EMAIL_PROVIDER: ${{ secrets.EMAIL_PROVIDER }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       # Option 1: Deploy to Vercel
       - name: Deploy to Vercel
@@ -82,6 +91,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: 'marketing/package-lock.json'
 
       - name: Install marketing dependencies
         run: cd marketing && npm ci
@@ -116,15 +126,30 @@ jobs:
     needs: [deploy-platform, deploy-marketing]
     
     steps:
+      - name: Wait for deployment propagation
+        run: sleep 30
+
       - name: Check platform health
         run: |
-          curl -f ${{ secrets.PLATFORM_URL }}/api/health || echo "Platform health check failed"
-        continue-on-error: true
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.PLATFORM_URL }}/api/health)
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Platform health check passed (HTTP $RESPONSE)"
+          else
+            echo "⚠️ Platform health check returned HTTP $RESPONSE"
+            exit 1
+          fi
+        continue-on-error: false
 
       - name: Check marketing site
         run: |
-          curl -f ${{ secrets.MARKETING_URL }} || echo "Marketing site health check failed"
-        continue-on-error: true
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.MARKETING_URL }})
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Marketing site health check passed (HTTP $RESPONSE)"
+          else
+            echo "⚠️ Marketing site returned HTTP $RESPONSE"
+            exit 1
+          fi
+        continue-on-error: false
 
       - name: Notify deployment success
         run: echo "✅ Deployment completed successfully!"
