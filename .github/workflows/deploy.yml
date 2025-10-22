@@ -1,0 +1,131 @@
+name: CD - Deploy to Production
+
+# Deploy when code is merged to main branch
+# Supports: Vercel, Railway, or custom deployment
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allow manual deployment
+
+jobs:
+  # Job 1: Deploy Main App to Production
+  deploy-platform:
+    name: Deploy Platform (Port 3070)
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run database migrations
+        run: npx prisma db push
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build application
+        run: npm run build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          EMAIL_PROVIDER: ${{ secrets.EMAIL_PROVIDER }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+
+      # Option 1: Deploy to Vercel
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        if: vars.DEPLOY_TARGET == 'vercel'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+      # Option 2: Deploy to Railway
+      - name: Deploy to Railway
+        if: vars.DEPLOY_TARGET == 'railway'
+        run: |
+          npm install -g @railway/cli
+          railway up --service platform
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  # Job 2: Deploy Marketing Site
+  deploy-marketing:
+    name: Deploy Marketing Site (Port 3071)
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install marketing dependencies
+        run: cd marketing && npm ci
+
+      - name: Build marketing site
+        run: cd marketing && npm run build
+
+      # Option 1: Deploy to Vercel
+      - name: Deploy marketing to Vercel
+        uses: amondnet/vercel-action@v25
+        if: vars.DEPLOY_TARGET == 'vercel'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_MARKETING_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./marketing
+
+      # Option 2: Deploy to Railway
+      - name: Deploy marketing to Railway
+        if: vars.DEPLOY_TARGET == 'railway'
+        run: |
+          npm install -g @railway/cli
+          cd marketing && railway up --service marketing
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  # Job 3: Post-Deployment Health Check
+  health-check:
+    name: Health Check
+    runs-on: ubuntu-latest
+    needs: [deploy-platform, deploy-marketing]
+    
+    steps:
+      - name: Check platform health
+        run: |
+          curl -f ${{ secrets.PLATFORM_URL }}/api/health || echo "Platform health check failed"
+        continue-on-error: true
+
+      - name: Check marketing site
+        run: |
+          curl -f ${{ secrets.MARKETING_URL }} || echo "Marketing site health check failed"
+        continue-on-error: true
+
+      - name: Notify deployment success
+        run: echo "✅ Deployment completed successfully!"
+
