@@ -68,9 +68,9 @@ export default async function DemoAssignmentsPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Assignments</h1>
-        <p className="text-gray-600">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">Assignments</h1>
+        <p className="text-sm md:text-base text-gray-600">
           Manage and track Six Sigma improvement assignments
         </p>
       </div>
