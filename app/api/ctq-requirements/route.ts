@@ -9,21 +9,42 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { vocStatementId, ctqDescription, measurementCriteria, targetValue, assignmentId } = await request.json()
+    const body = await request.json()
+    const { 
+      vocId, 
+      requirement, 
+      unit, 
+      lowerSpec, 
+      targetSpec, 
+      upperSpec,
+      assignmentId 
+    } = body
 
-    // Input validation
-    if (!vocStatementId || !assignmentId) {
-      return NextResponse.json({ error: 'Missing required fields: vocStatementId and assignmentId' }, { status: 400 })
+    // Input validation - assignmentId is required, vocId is optional
+    if (!assignmentId) {
+      return NextResponse.json({ error: 'Missing required field: assignmentId' }, { status: 400 })
     }
+
+    if (!requirement) {
+      return NextResponse.json({ error: 'Missing required field: requirement (CTQ description)' }, { status: 400 })
+    }
+
+    // Build measurement criteria from specs
+    const specs = []
+    if (lowerSpec) specs.push(`LSL: ${lowerSpec}`)
+    if (targetSpec) specs.push(`Target: ${targetSpec}`)
+    if (upperSpec) specs.push(`USL: ${upperSpec}`)
+    const measurementCriteria = unit ? `${specs.join(', ')} ${unit}` : specs.join(', ')
+    const targetValue = targetSpec ? `${targetSpec} ${unit || ''}`.trim() : null
 
     // Create CTQ requirement and audit log atomically
     const ctq = await prisma.$transaction(async (tx) => {
       const newCtq = await tx.cTQRequirement.create({
         data: {
-          vocStatementId,
+          vocStatementId: vocId || null, // Optional link to VOC
           assignmentId,
-          ctqDescription,
-          measurementCriteria,
+          ctqDescription: requirement,
+          measurementCriteria: measurementCriteria || 'Not specified',
           targetValue
         }
       })
@@ -37,9 +58,10 @@ export async function POST(request: NextRequest) {
           entityType: 'CTQRequirement',
           entityId: newCtq.id,
           changeDetails: {
-            ctqDescription,
+            requirement,
             measurementCriteria,
-            targetValue
+            targetValue,
+            vocId
           }
         }
       })
