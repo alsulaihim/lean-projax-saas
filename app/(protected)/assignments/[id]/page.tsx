@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import { prisma } from '@/lib/prisma'
 import { AssignmentWrapper } from '@/components/assignment/assignment-wrapper'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 
 interface AssignmentPageProps {
   params: Promise<{

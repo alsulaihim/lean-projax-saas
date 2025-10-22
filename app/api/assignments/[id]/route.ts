@@ -28,7 +28,7 @@ export async function DELETE(
     }
 
     // Only allow deletion by the creator or manager role
-    if (assignment.createdById !== user.id && user.role !== 'MANAGER') {
+    if (assignment.createdById !== user.id && user.role !== 'TEAM_LEAD') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 

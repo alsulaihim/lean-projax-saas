@@ -62,7 +62,7 @@ export async function GET(
         .replace(/\s+/g, '_')
         .substring(0, 200)
 
-      return new NextResponse(pdfBuffer, {
+      return new NextResponse(pdfBuffer as unknown as BodyInit, {
         headers: {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="${sanitizedFilename}_Report.pdf"`
@@ -172,7 +172,7 @@ export async function GET(
           </tr>
         `).join('')}
       </table>
-      <p><strong>Total Lead Time:</strong> ${process.vsmSteps.reduce((sum, s) => sum + s.durationMinutes + (s.waitTimeMinutes || 0), 0)} minutes</p>
+      <p><strong>Total Lead Time:</strong> ${process.vsmSteps.reduce((sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0), 0)} minutes</p>
     ` : ''}
 
     ${process.fmeaEntries.length > 0 ? `

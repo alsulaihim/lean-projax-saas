@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { AssignmentHeader } from '@/components/assignment/assignment-header'
 import { AssignmentTabs } from '@/components/assignment/assignment-tabs'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 import type { Prisma } from '@prisma/client'
 
 type AssignmentWithRelations = Prisma.AssignmentGetPayload<{

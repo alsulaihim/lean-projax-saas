@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import { prisma } from '@/lib/prisma'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   FileText,

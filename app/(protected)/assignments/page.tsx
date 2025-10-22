@@ -1,7 +1,7 @@
 import { getUser } from '@/lib/auth-check'
 import { prisma } from '@/lib/prisma'
 import { AssignmentList } from '@/components/assignment/assignment-list'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 
 export default async function AssignmentsPage() {
   const user = await getUser()

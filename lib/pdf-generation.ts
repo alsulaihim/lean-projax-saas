@@ -104,11 +104,11 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
     .filter(f => f.rpn >= 200).length
 
   const totalCycleTime = assignment.processes.reduce((sum, p) =>
-    sum + p.vsmSteps.reduce((s, step) => s + step.durationMinutes + (step.waitTimeMinutes || 0), 0), 0
+    sum + p.vsmSteps.reduce((s, step) => s + (step.durationMinutes || 0) + (step.waitTimeMinutes || 0), 0), 0
   )
 
   const valueAddedTime = assignment.processes.reduce((sum, p) =>
-    sum + p.vsmSteps.filter(s => s.valueAdded).reduce((s, step) => s + step.durationMinutes, 0), 0
+    sum + p.vsmSteps.filter(s => s.valueAdded).reduce((s, step) => s + (step.durationMinutes || 0), 0), 0
   )
 
   const efficiency = totalCycleTime > 0 ? ((valueAddedTime / totalCycleTime) * 100).toFixed(1) : '0'
@@ -831,12 +831,12 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
         </thead>
         <tbody>
           ${process.vsmSteps.map(step => {
-            const totalTime = step.durationMinutes + (step.waitTimeMinutes || 0)
+            const totalTime = (step.durationMinutes || 0) + (step.waitTimeMinutes || 0)
             return `
               <tr class="${step.valueAdded ? 'value-added' : 'non-value-added'}">
                 <td>${step.stepNumber}</td>
                 <td>${escapeHtml(step.stepName)}</td>
-                <td>${step.durationMinutes}</td>
+                <td>${step.durationMinutes || 0}</td>
                 <td>${step.waitTimeMinutes || 0}</td>
                 <td><strong>${totalTime}</strong></td>
                 <td>${step.valueAdded ? '✓ Value-Added' : '✗ Non-Value'}</td>
@@ -849,12 +849,12 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
       <div class="info-box">
         <strong>VSM Metrics:</strong>
         <ul>
-          <li>Total Lead Time: ${process.vsmSteps.reduce((sum, s) => sum + s.durationMinutes + (s.waitTimeMinutes || 0), 0)} minutes</li>
-          <li>Value-Added Time: ${process.vsmSteps.filter(s => s.valueAdded).reduce((sum, s) => sum + s.durationMinutes, 0)} minutes</li>
+          <li>Total Lead Time: ${process.vsmSteps.reduce((sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0), 0)} minutes</li>
+          <li>Value-Added Time: ${process.vsmSteps.filter(s => s.valueAdded).reduce((sum, s) => sum + (s.durationMinutes || 0), 0)} minutes</li>
           <li>Process Efficiency: ${
             (() => {
-              const total = process.vsmSteps.reduce((sum, s) => sum + s.durationMinutes + (s.waitTimeMinutes || 0), 0)
-              const valueAdded = process.vsmSteps.filter(s => s.valueAdded).reduce((sum, s) => sum + s.durationMinutes, 0)
+              const total = process.vsmSteps.reduce((sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0), 0)
+              const valueAdded = process.vsmSteps.filter(s => s.valueAdded).reduce((sum, s) => sum + (s.durationMinutes || 0), 0)
               return total > 0 ? ((valueAdded / total) * 100).toFixed(1) : '0'
             })()
           }%</li>

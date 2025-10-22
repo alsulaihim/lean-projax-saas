@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(test:*)",
+      "Bash(cat:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(awk:*)",
+      "Bash(for file in \"components/sections/ai-assessment.tsx\" \"components/sections/process-manager.tsx\" \"components/ui/progress-navigation.tsx\")",
+      "Bash(do head -5 \"$file\")",
+      "Bash(lsof:*)",
+      "Bash(ps:*)",
+      "Bash(kill:*)",
+      "Bash(npm run build:*)",
+      "Bash(for file in \"app/(protected)/assignments/[id]/page.tsx\" \"app/(protected)/dashboard/page.tsx\" \"components/assignment/assignment-header.tsx\" \"components/assignment/assignment-wrapper.tsx\" \"components/layout/header.tsx\")",
+      "Bash(do)",
+      "Bash(echo \"Updated: $file\")",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

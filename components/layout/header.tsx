@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { User, LogOut } from 'lucide-react'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 
 interface HeaderProps {
   user: {

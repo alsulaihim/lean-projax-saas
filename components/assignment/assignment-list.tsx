@@ -29,7 +29,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Plus, MoreHorizontal, Trash2, Eye } from 'lucide-react'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 import { formatDistanceToNow } from '@/lib/utils/date'
 import { useToast } from '@/lib/hooks/useToast'
 

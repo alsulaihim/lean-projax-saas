@@ -101,7 +101,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           usl: p.upperSpecLimit
         } : null
       })),
-      highPriorityRecommendations: assignment.recommendations.filter(r => r.priority === 'HIGH').length
+      highPriorityRecommendations: assignment.recommendations.filter(r => r.implementationDifficulty === 'LOW').length
     }
 
     // Create AI prompt

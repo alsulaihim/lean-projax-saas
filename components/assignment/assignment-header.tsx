@@ -28,7 +28,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 import type { Assignment, User } from '@prisma/client'
 import { useToast } from '@/lib/hooks/useToast'
 
