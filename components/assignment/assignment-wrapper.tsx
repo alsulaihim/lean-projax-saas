@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { AssignmentHeader } from '@/components/assignment/assignment-header'
 import { AssignmentTabs } from '@/components/assignment/assignment-tabs'
+import { DemoBanner } from '@/components/demo-banner'
+import { DemoWelcomeModal } from '@/components/demo-welcome-modal'
+import { useDemoMode } from '@/hooks/use-demo-mode'
 import { UserRole } from '@prisma/client'
 import type { Prisma } from '@prisma/client'
 
@@ -50,6 +53,7 @@ export function AssignmentWrapper({
 }: AssignmentWrapperProps) {
   const [progressPercentage, setProgressPercentage] = useState(0)
   const [key, setKey] = useState(0)
+  const { isDemo } = useDemoMode()
 
   // Force re-render when assignment data changes (for optimistic updates)
   useEffect(() => {
@@ -58,6 +62,8 @@ export function AssignmentWrapper({
 
   return (
     <div className="min-h-screen bg-white" key={key}>
+      {isDemo && <DemoWelcomeModal />}
+
       <AssignmentHeader
         assignment={assignment}
         canEdit={canEdit}
@@ -66,6 +72,8 @@ export function AssignmentWrapper({
       />
 
       <div className="w-full px-6 py-6">
+        {isDemo && <DemoBanner />}
+
         <AssignmentTabs
           assignment={assignment}
           canEdit={canEdit}

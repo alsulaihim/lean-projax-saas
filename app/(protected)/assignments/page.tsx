@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import { prisma } from '@/lib/prisma'
 import { AssignmentList } from '@/components/assignment/assignment-list'
@@ -9,6 +10,17 @@ export default async function AssignmentsPage() {
   if (!user) {
     return null
   }
+
+  // Redirect demo users to demo-specific page
+  if (user.isDemo) {
+    redirect('/demo/assignments')
+  }
+
+  // Check if user is demo user
+  const userData = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { isDemo: true },
+  })
 
   // SaaS Multi-tenancy: Users only see their own assignments
   // Filter assignments to show only user's own assignments
@@ -53,9 +65,10 @@ export default async function AssignmentsPage() {
     },
   })
 
+  // Demo users cannot create assignments
   const canCreateAssignment =
-    user.role === UserRole.BPI_TEAM ||
-    user.role === UserRole.TEAM_LEAD
+    !userData?.isDemo &&
+    (user.role === UserRole.BPI_TEAM || user.role === UserRole.TEAM_LEAD)
 
   return (
     <div>

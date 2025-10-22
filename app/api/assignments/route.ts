@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
+import { checkDemoMode } from '@/lib/demo-check'
+import { checkDemoUser, demoUserResponse } from '@/lib/demo-guard'
 
 export async function POST(request: NextRequest) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  // Prevent demo users from modifying data
+  const demoCheck = checkDemoMode(user)
+  if (demoCheck) return demoCheck
+
+  // Block demo users from creating assignments
+  if (await checkDemoUser(user.id)) {
+    return demoUserResponse()
   }
 
   try {

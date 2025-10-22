@@ -134,7 +134,7 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
   return (
     <div className="space-y-8 max-w-[1400px] mx-auto">
       {/* Header Actions */}
-      <div className="flex justify-between items-center sticky top-0 bg-white py-4 z-10 border-b-2 border-gray-200">
+      <div className="flex justify-between items-center sticky top-[200px] bg-white py-4 z-10 border-b-2 border-gray-200">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Assignment Charter</h1>
           <p className="text-sm text-gray-600 mt-1">Comprehensive project definition and planning document</p>

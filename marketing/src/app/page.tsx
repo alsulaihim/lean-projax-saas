@@ -76,10 +76,12 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
-                  href="#demo"
+                  href={`${PLATFORM_URL}/demo-login`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white text-black px-8 py-4 rounded-lg text-lg font-semibold border-2 border-black hover:bg-gray-50 transition"
                 >
-                  Watch Demo
+                  Try Demo
                 </Link>
               </div>
               <p className="text-sm text-gray-500 mt-4">14-day free trial. No credit card required.</p>

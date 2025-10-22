@@ -41,7 +41,8 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
+        credentials: 'same-origin'
       })
 
       const data = await response.json()
@@ -49,9 +50,8 @@ export default function LoginPage() {
       if (!response.ok) {
         setError(data.error || 'Invalid email or password')
       } else {
-        // First refresh to update the cookie state
-        router.refresh()
-        // Then navigate to assignments
+        // Wait briefly for cookie to be set, then redirect
+        await new Promise(resolve => setTimeout(resolve, 100))
         window.location.href = '/assignments'
       }
     } catch {

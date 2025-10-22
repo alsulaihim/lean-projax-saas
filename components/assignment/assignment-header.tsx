@@ -31,6 +31,7 @@ import {
 import { UserRole } from '@prisma/client'
 import type { Assignment, User } from '@prisma/client'
 import { useToast } from '@/lib/hooks/useToast'
+import { useDemoMode } from '@/hooks/use-demo-mode'
 
 interface AssignmentHeaderProps {
   assignment: Assignment & {
@@ -61,6 +62,7 @@ export function AssignmentHeader({
 }: AssignmentHeaderProps) {
   const router = useRouter()
   const { toast } = useToast()
+  const { isDemo } = useDemoMode()
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [showIncompleteWarning, setShowIncompleteWarning] = useState(false)
@@ -143,6 +145,9 @@ export function AssignmentHeader({
     }
   }
 
+  const summaryPath = isDemo ? `/demo/assignments/${assignment.id}/summary` : `/assignments/${assignment.id}/summary`
+  const assignmentsPath = isDemo ? '/demo/assignments' : '/assignments'
+
   return (
     <div className="border-b-2 border-black bg-white sticky top-0 z-10">
       {showIncompleteWarning && (
@@ -158,7 +163,7 @@ export function AssignmentHeader({
         <div className="flex items-center justify-between mb-4">
           <Button
             variant="ghost"
-            onClick={() => router.push('/assignments')}
+            onClick={() => router.push(assignmentsPath)}
             className="hover:bg-gray-100"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
@@ -168,7 +173,7 @@ export function AssignmentHeader({
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              onClick={() => router.push(`/assignments/${assignment.id}/summary`)}
+              onClick={() => router.push(summaryPath)}
               className="border-blue-600 text-blue-600 hover:bg-blue-50"
             >
               <BarChart3 className="h-4 w-4 mr-2" />
@@ -178,7 +183,9 @@ export function AssignmentHeader({
             <Button
               variant="outline"
               onClick={handleExportPDF}
+              disabled={isDemo}
               className="border-black hover:bg-gray-100"
+              title={isDemo ? 'PDF export is not available in demo mode' : ''}
             >
               <FileDown className="h-4 w-4 mr-2" />
               Export PDF
@@ -189,8 +196,12 @@ export function AssignmentHeader({
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="border-red-600 text-red-600 hover:bg-red-50"
-                    disabled={isDeleting}
+                    className={isDemo
+                      ? "border-red-300 text-red-300 cursor-not-allowed"
+                      : "border-red-600 text-red-600 hover:bg-red-50"
+                    }
+                    disabled={isDeleting || isDemo}
+                    title={isDemo ? 'Delete is not available in demo mode' : ''}
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Delete Assignment
@@ -269,11 +280,11 @@ export function AssignmentHeader({
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <span>Created by: {assignment.createdBy.name}</span>
                 <span>•</span>
-                <span>Created: {new Date(assignment.createdAt).toLocaleDateString()}</span>
+                <span>Created: {new Date(assignment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
                 {assignment.completedAt && (
                   <>
                     <span>•</span>
-                    <span>Completed: {new Date(assignment.completedAt).toLocaleDateString()}</span>
+                    <span>Completed: {new Date(assignment.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
                   </>
                 )}
               </div>

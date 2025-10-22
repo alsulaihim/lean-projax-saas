@@ -13,6 +13,7 @@ export interface User {
   email: string
   name: string
   role: UserRole
+  isDemo?: boolean
 }
 
 export async function getUser(): Promise<User | null> {

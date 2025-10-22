@@ -62,6 +62,7 @@ interface AssignmentListProps {
   canCreateAssignment: boolean
   userRole: UserRole
   userId?: string
+  isDemo?: boolean
 }
 
 const statusStyles: Record<string, string> = {
@@ -75,6 +76,7 @@ export function AssignmentList({
   canCreateAssignment,
   userRole,
   userId,
+  isDemo = false,
 }: AssignmentListProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -83,11 +85,13 @@ export function AssignmentList({
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleCreateNew = () => {
-    router.push('/assignments/new')
+    const newPath = isDemo ? '/demo/assignments/new' : '/assignments/new'
+    router.push(newPath)
   }
 
   const handleOpenAssignment = (id: string) => {
-    router.push(`/assignments/${id}`)
+    const assignmentPath = isDemo ? `/demo/assignments/${id}` : `/assignments/${id}`
+    router.push(assignmentPath)
   }
 
   const handleDeleteAssignment = async () => {

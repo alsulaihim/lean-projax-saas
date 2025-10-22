@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getUser } from '@/lib/auth-check'
+import { checkDemoMode } from '@/lib/demo-check'
 import { prisma } from '@/lib/prisma'
 
 interface RouteParams {
@@ -14,6 +15,9 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+  // Prevent demo users from modifying data
+  const demoCheck = checkDemoMode(user)
+  if (demoCheck) return demoCheck
 
     const { id: assignmentId } = await params
     const body = await request.json()

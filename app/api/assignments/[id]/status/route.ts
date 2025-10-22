@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { AssignmentStatus } from '@prisma/client'
+import { checkDemoUser, demoUserResponse } from '@/lib/demo-guard'
 
 export async function PATCH(
   request: NextRequest,
@@ -10,6 +11,14 @@ export async function PATCH(
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  // Prevent demo users from modifying data
+  const demoCheck = checkDemoMode(user)
+  if (demoCheck) return demoCheck
+
+  // Block demo users from changing assignment status
+  if (await checkDemoUser(user.id)) {
+    return demoUserResponse()
   }
 
   const { id } = await params

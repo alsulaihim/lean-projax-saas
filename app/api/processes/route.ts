@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getUser } from '@/lib/auth-check'
+import { checkDemoMode } from '@/lib/demo-check'
 import prisma from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
@@ -8,6 +9,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+  // Prevent demo users from modifying data
+  const demoCheck = checkDemoMode(user)
+  if (demoCheck) return demoCheck
 
     const body = await request.json()
     const { assignmentId, processName, processOwner, order } = body

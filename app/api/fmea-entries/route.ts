@@ -7,6 +7,9 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  // Prevent demo users from modifying data
+  const demoCheck = checkDemoMode(user)
+  if (demoCheck) return demoCheck
 
   try {
     const {

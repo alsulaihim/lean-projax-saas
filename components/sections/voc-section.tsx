@@ -41,7 +41,7 @@ interface VOCSectionProps {
   userId: string
 }
 
-export function VOCSection({ assignmentId, vocStatements, canEdit, userId: _userId }: VOCSectionProps) {
+export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOCSectionProps) {
   const router = useRouter()
   const [isAddingVOC, setIsAddingVOC] = useState(false)
   const [expandedVOCs, setExpandedVOCs] = useState<Set<string>>(new Set())

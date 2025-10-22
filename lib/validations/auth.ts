@@ -116,15 +116,20 @@ export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>
 
 /**
  * Helper function to format Zod errors for API responses
- * 
+ *
  * Converts Zod validation errors to user-friendly format
- * 
+ *
  * @param error - Zod error object
  * @returns Object with field names and error messages
  */
-export function formatZodError(error: z.ZodError) {
+export function formatZodError(error: z.ZodError | undefined) {
+  if (!error || !error.errors) {
+    console.error('formatZodError called with invalid error:', error)
+    return { _error: ['Validation failed'] }
+  }
+
   const formatted: Record<string, string[]> = {}
-  
+
   error.errors.forEach((err) => {
     const field = err.path.join('.')
     if (!formatted[field]) {
@@ -132,7 +137,7 @@ export function formatZodError(error: z.ZodError) {
     }
     formatted[field].push(err.message)
   })
-  
+
   return formatted
 }
 

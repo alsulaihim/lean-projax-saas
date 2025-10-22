@@ -17,10 +17,19 @@ export default async function AssignmentPage({ params }: AssignmentPageProps) {
     redirect('/login')
   }
 
+  // Redirect demo users to demo-specific page
+  if (user.isDemo) {
+    redirect('/demo/assignments')
+  }
+
   const { id } = await params
 
-  const assignment = await prisma.assignment.findUnique({
-    where: { id },
+  // Multi-tenancy: Only allow users to access their own assignments
+  const assignment = await prisma.assignment.findFirst({
+    where: {
+      id,
+      createdById: user.id  // Users can only access their own assignments
+    },
     include: {
       createdBy: true,
       charter: {

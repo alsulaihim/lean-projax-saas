@@ -19,7 +19,17 @@
       "Bash(do)",
       "Bash(echo \"Updated: $file\")",
       "Bash(done)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npx prisma:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(psql:*)",
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "Read(//Users/alsulaihim/All-Day-Dev/**)",
+      "Bash(source:*)",
+      "Bash(npx tsx:*)",
+      "Bash(open test-login.html)"
     ],
     "deny": [],
     "ask": []

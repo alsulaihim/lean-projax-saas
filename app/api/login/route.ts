@@ -22,7 +22,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+    } catch (jsonError) {
+      console.error('Failed to parse JSON:', jsonError)
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400 }
+      )
+    }
 
     // Validate input with Zod schema (type-safe validation)
     const validation = loginSchema.safeParse(body)
@@ -48,7 +57,8 @@ export async function POST(request: NextRequest) {
         name: true,
         role: true,
         passwordHash: true,
-        emailVerified: true
+        emailVerified: true,
+        isDemo: true
       }
     })
 
@@ -72,11 +82,23 @@ export async function POST(request: NextRequest) {
     // Check if email is verified
     if (!user.emailVerified) {
       return NextResponse.json(
-        { 
+        {
           error: 'Please verify your email address before signing in. Check your inbox for the verification link.',
           code: 'EMAIL_NOT_VERIFIED'
         },
         { status: 403 } // 403 Forbidden - authenticated but not authorized
+      )
+    }
+
+    // IMPORTANT: Normal login page should NOT allow demo users
+    // Demo users must use /demo/login
+    if (user.isDemo) {
+      return NextResponse.json(
+        {
+          error: 'Demo users must sign in at the demo login page.',
+          code: 'DEMO_USER_BLOCKED'
+        },
+        { status: 403 }
       )
     }
 
@@ -85,7 +107,8 @@ export async function POST(request: NextRequest) {
       id: user.id,
       email: user.email,
       name: user.name,
-      role: user.role
+      role: user.role,
+      isDemo: user.isDemo || false
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
