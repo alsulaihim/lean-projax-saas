@@ -37,6 +37,17 @@ export default function SignupPage() {
     confirmPassword: '',
     companyName: ''
   })
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
+
+  // Real-time password validation for UX feedback
+  const passwordChecks = {
+    minLength: formData.password.length >= 10,
+    hasUppercase: /[A-Z]/.test(formData.password),
+    hasLowercase: /[a-z]/.test(formData.password),
+    hasNumber: /[0-9]/.test(formData.password),
+    hasSpecial: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password),
+    passwordsMatch: formData.password.length > 0 && formData.password === formData.confirmPassword
+  }
 
   /**
    * Handle input field changes
@@ -218,18 +229,94 @@ export default function SignupPage() {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
+                onFocus={() => setShowPasswordRequirements(true)}
                 disabled={isLoading}
                 className="border-black"
                 required
               />
-              <div className="text-xs text-gray-600 mt-2 space-y-1">
-                <p className="font-medium">Password requirements:</p>
-                <ul className="list-disc list-inside space-y-0.5 text-gray-500">
-                  <li>At least 10 characters</li>
-                  <li>One uppercase & one lowercase letter</li>
-                  <li>One number & one special character</li>
-                </ul>
-              </div>
+              
+              {/* Real-time Password Strength Indicator */}
+              {showPasswordRequirements && formData.password.length > 0 && (
+                <div className="mt-3 p-4 bg-gray-50 border border-gray-200 rounded-lg space-y-2">
+                  <p className="text-sm font-medium text-gray-700 mb-2">Password Requirements:</p>
+                  
+                  <div className="space-y-1.5">
+                    {/* Minimum Length */}
+                    <div className={`flex items-center gap-2 text-sm transition-colors ${
+                      passwordChecks.minLength ? 'text-green-700' : 'text-gray-500'
+                    }`}>
+                      {passwordChecks.minLength ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <X className="h-4 w-4 text-gray-400" />
+                      )}
+                      <span>At least 10 characters</span>
+                    </div>
+
+                    {/* Uppercase */}
+                    <div className={`flex items-center gap-2 text-sm transition-colors ${
+                      passwordChecks.hasUppercase ? 'text-green-700' : 'text-gray-500'
+                    }`}>
+                      {passwordChecks.hasUppercase ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <X className="h-4 w-4 text-gray-400" />
+                      )}
+                      <span>Contains uppercase letter (A-Z)</span>
+                    </div>
+
+                    {/* Lowercase */}
+                    <div className={`flex items-center gap-2 text-sm transition-colors ${
+                      passwordChecks.hasLowercase ? 'text-green-700' : 'text-gray-500'
+                    }`}>
+                      {passwordChecks.hasLowercase ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <X className="h-4 w-4 text-gray-400" />
+                      )}
+                      <span>Contains lowercase letter (a-z)</span>
+                    </div>
+
+                    {/* Number */}
+                    <div className={`flex items-center gap-2 text-sm transition-colors ${
+                      passwordChecks.hasNumber ? 'text-green-700' : 'text-gray-500'
+                    }`}>
+                      {passwordChecks.hasNumber ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <X className="h-4 w-4 text-gray-400" />
+                      )}
+                      <span>Contains number (0-9)</span>
+                    </div>
+
+                    {/* Special Character */}
+                    <div className={`flex items-center gap-2 text-sm transition-colors ${
+                      passwordChecks.hasSpecial ? 'text-green-700' : 'text-gray-500'
+                    }`}>
+                      {passwordChecks.hasSpecial ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <X className="h-4 w-4 text-gray-400" />
+                      )}
+                      <span>Contains special character (!@#$%^&* etc.)</span>
+                    </div>
+                  </div>
+
+                  {/* Overall Strength Indicator */}
+                  <div className="mt-3 pt-3 border-t border-gray-300">
+                    {Object.values(passwordChecks).filter(Boolean).length === 6 ? (
+                      <div className="flex items-center gap-2 text-green-700 font-medium">
+                        <CheckCircle2 className="h-5 w-5" />
+                        <span>Strong password! ✓</span>
+                      </div>
+                    ) : (
+                      <div className="text-gray-600 text-sm">
+                        {Object.values(passwordChecks).filter(Boolean).length} of 5 requirements met
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -245,6 +332,25 @@ export default function SignupPage() {
                 className="border-black"
                 required
               />
+              
+              {/* Password Match Indicator */}
+              {formData.confirmPassword.length > 0 && (
+                <div className={`flex items-center gap-2 text-sm mt-2 ${
+                  passwordChecks.passwordsMatch ? 'text-green-700' : 'text-red-600'
+                }`}>
+                  {passwordChecks.passwordsMatch ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      <span>Passwords match ✓</span>
+                    </>
+                  ) : (
+                    <>
+                      <X className="h-4 w-4" />
+                      <span>Passwords do not match</span>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             <Button
