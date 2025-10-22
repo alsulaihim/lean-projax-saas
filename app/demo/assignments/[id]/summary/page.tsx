@@ -247,39 +247,39 @@ export default async function DemoComprehensiveSummaryPage({
       {/* Assignment Overview Card */}
       <Card className="mb-4 md:mb-6 border-2 border-black">
         <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-            <div className="flex-1">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start justify-between gap-3">
               <CardTitle className="text-lg md:text-xl">Assignment Overview</CardTitle>
-              <CardDescription className="mt-2 text-sm">
-                {assignment.objective}
-              </CardDescription>
+              <span className={`px-2 md:px-3 py-1 text-xs md:text-sm font-medium border rounded-full whitespace-nowrap ${getStatusColor(assignment.status)}`}>
+                {assignment.status}
+              </span>
             </div>
-            <span className={`px-3 py-1 text-xs md:text-sm font-medium border rounded-full w-fit ${getStatusColor(assignment.status)}`}>
-              {assignment.status}
-            </span>
+            <CardDescription className="text-sm">
+              {assignment.objective}
+            </CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
             <div>
-              <p className="text-sm text-gray-500">Created By</p>
-              <p className="font-medium">{assignment.createdBy.name}</p>
+              <p className="text-xs md:text-sm text-gray-500">Created By</p>
+              <p className="text-sm md:text-base font-medium truncate">{assignment.createdBy.name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Created Date</p>
-              <p className="font-medium">{new Date(assignment.createdAt).toLocaleDateString()}</p>
+              <p className="text-xs md:text-sm text-gray-500">Created Date</p>
+              <p className="text-sm md:text-base font-medium">{new Date(assignment.createdAt).toLocaleDateString()}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Processes</p>
-              <p className="font-medium">{assignment.processes.length}</p>
+              <p className="text-xs md:text-sm text-gray-500">Processes</p>
+              <p className="text-sm md:text-base font-medium">{assignment.processes.length}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">VOC/CTQ</p>
-              <p className="font-medium">{totalVOC}/{totalCTQ}</p>
+              <p className="text-xs md:text-sm text-gray-500">VOC/CTQ</p>
+              <p className="text-sm md:text-base font-medium">{totalVOC}/{totalCTQ}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Completion</p>
-              <p className="font-medium">
+              <p className="text-xs md:text-sm text-gray-500">Completion</p>
+              <p className="text-sm md:text-base font-medium">
                 {assignment.completedAt ? new Date(assignment.completedAt).toLocaleDateString() : 'In Progress'}
               </p>
             </div>
@@ -739,9 +739,8 @@ export default async function DemoComprehensiveSummaryPage({
                   <CardTitle className="text-lg md:text-xl">Value Stream Mapping (VSM)</CardTitle>
                   <CardDescription className="text-sm">Process flow and time analysis</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <div className="min-w-[600px]">
+                <CardContent className="overflow-x-auto p-0 md:p-6">
+                  <div className="min-w-[600px]">
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-gray-100">
@@ -776,10 +775,9 @@ export default async function DemoComprehensiveSummaryPage({
                         })}
                       </TableBody>
                     </Table>
-                    </div>
                   </div>
 
-                  <div className="mt-4 p-3 md:p-4 bg-gray-50 rounded-lg">
+                  <div className="mt-4 mx-3 md:mx-0 p-3 md:p-4 bg-gray-50 rounded-lg">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
                       <div>
                         <p className="text-xs md:text-sm text-gray-500">Total Process Time</p>
