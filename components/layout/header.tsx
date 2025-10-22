@@ -41,10 +41,7 @@ export function Header({ user }: HeaderProps) {
     <header className="border-b-2 border-black bg-white">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <div>
-            <h1 className="text-2xl font-bold">Lean Projax</h1>
-            <p className="text-sm text-gray-600">Six Sigma Workflow Automation</p>
-          </div>
+          <span className="text-3xl text-red-700 font-[family-name:var(--font-orbitron)]">Lean Projax</span>
           <nav className="flex gap-4">
             <Button
               variant="ghost"
