@@ -96,7 +96,7 @@ export async function GET(
             user: true
           },
           orderBy: {
-            createdAt: 'desc'
+            timestamp: 'desc'
           },
           take: limit,
           skip: skip

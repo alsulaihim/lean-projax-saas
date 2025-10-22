@@ -90,7 +90,7 @@ export async function PATCH(
             action: 'UPDATED',
             entityType: 'Process',
             entityId: updatedProcess.id,
-            changes: changes.join(', ')
+            changeDetails: { changes: changes.join(', ') }
           }
         })
       }
@@ -158,7 +158,7 @@ export async function DELETE(
             action: 'DELETED',
             entityType: 'Process',
             entityId: id,
-            changes: `Deleted process: ${process.processName}`
+            changeDetails: { message: `Deleted process: ${process.processName}` }
           }
         })
       }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
+import { AssignmentStatus } from '@prisma/client'
 
 export async function PATCH(
   request: NextRequest,
@@ -96,10 +97,10 @@ export async function PATCH(
 
     // Update assignment status
     const updateData: {
-      status: string
+      status: AssignmentStatus
       completedAt?: Date | null
     } = {
-      status
+      status: status as AssignmentStatus
     }
 
     // Set completedAt timestamp if completing

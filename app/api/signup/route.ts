@@ -112,7 +112,8 @@ export async function POST(request: NextRequest) {
         subscriptionTier: true,
         subscriptionStatus: true,
         trialEndsAt: true,
-        createdAt: true
+        createdAt: true,
+        emailVerified: true
       }
     })
 

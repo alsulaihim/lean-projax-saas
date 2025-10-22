@@ -14,7 +14,7 @@ export async function POST() {
 
     for (const process of processes) {
       // Check if SIPOC entries already exist
-      const existingEntries = await prisma.sipocEntry.count({
+      const existingEntries = await prisma.sIPOCEntry.count({
         where: { processId: process.id }
       })
 
@@ -62,40 +62,40 @@ export async function POST() {
 
       // Create SIPOC entries atomically for this process
       await prisma.$transaction(async (tx) => {
-        const sipocEntries = sipocData.flatMap(row => [
+        const sipocEntries = sipocData.flatMap((row, index) => [
           {
             processId: process.id,
-            category: 'SUPPLIER',
-            item: row.supplier,
-            description: `Supplier for ${process.processName}`
+            column: 'SUPPLIER' as const,
+            order: index,
+            value: row.supplier
           },
           {
             processId: process.id,
-            category: 'INPUT',
-            item: row.input,
-            description: `Input for ${process.processName}`
+            column: 'INPUT' as const,
+            order: index,
+            value: row.input
           },
           {
             processId: process.id,
-            category: 'PROCESS',
-            item: row.process,
-            description: `Process step in ${process.processName}`
+            column: 'PROCESS' as const,
+            order: index,
+            value: row.process
           },
           {
             processId: process.id,
-            category: 'OUTPUT',
-            item: row.output,
-            description: `Output from ${process.processName}`
+            column: 'OUTPUT' as const,
+            order: index,
+            value: row.output
           },
           {
             processId: process.id,
-            category: 'CUSTOMER',
-            item: row.customer,
-            description: `Customer of ${process.processName}`
+            column: 'CUSTOMER' as const,
+            order: index,
+            value: row.customer
           }
         ])
 
-        await tx.sipocEntry.createMany({
+        await tx.sIPOCEntry.createMany({
           data: sipocEntries
         })
       })
