@@ -732,9 +732,9 @@ export default async function ComprehensiveSummaryPage({
                   <CardTitle className="text-lg md:text-xl">Value Stream Mapping (VSM)</CardTitle>
                   <CardDescription className="text-sm">Process flow and time analysis</CardDescription>
                 </CardHeader>
-                <CardContent className="overflow-x-auto p-0 md:p-6">
-                  <div className="min-w-[600px]">
-                    <Table>
+                <CardContent className="p-0 md:p-6">
+                  <div className="overflow-x-auto">
+                    <Table className="min-w-[600px]">
                       <TableHeader>
                         <TableRow className="bg-gray-100">
                           <TableHead className="w-[50px]">#</TableHead>
@@ -770,7 +770,7 @@ export default async function ComprehensiveSummaryPage({
                     </Table>
                   </div>
 
-                  <div className="mt-4 mx-3 md:mx-0 p-3 md:p-4 bg-gray-50 rounded-lg">
+                  <div className="mt-4 p-3 md:p-4 bg-gray-50 rounded-lg mx-3 md:mx-0">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
                       <div>
                         <p className="text-xs md:text-sm text-gray-500">Total Process Time</p>
@@ -868,8 +868,7 @@ export default async function ComprehensiveSummaryPage({
 
                   {metric.fmeaStats.topRisks.length > 0 && (
                     <div className="overflow-x-auto">
-                      <div className="min-w-[500px]">
-                      <Table>
+                      <Table className="min-w-[500px]">
                         <TableHeader>
                           <TableRow className="bg-gray-100">
                             <TableHead>Failure Mode</TableHead>
@@ -895,7 +894,6 @@ export default async function ComprehensiveSummaryPage({
                           ))}
                         </TableBody>
                       </Table>
-                      </div>
                     </div>
                   )}
                 </CardContent>
