@@ -38,7 +38,7 @@ interface ParetoSectionProps {
   processes: ProcessWithVSM[]
 }
 
-export function ParetoSection({ assignmentId, processes }: ParetoSectionProps) {
+export function ParetoSection({ assignmentId: _assignmentId, processes }: ParetoSectionProps) {
   const [selectedProcessId, setSelectedProcessId] = useState<string>('all')
 
   // Filter processes based on selection

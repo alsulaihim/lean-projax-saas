@@ -2,8 +2,6 @@
 
 import React from 'react'
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -13,7 +11,6 @@ import {
   Area,
   ComposedChart
 } from 'recharts'
-import { Card } from '@/components/ui/card'
 
 interface ProcessCapabilityChartProps {
   lowerSpec: number

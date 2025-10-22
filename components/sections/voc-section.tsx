@@ -27,7 +27,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Plus, Trash2, ChevronDown, ChevronUp, Edit2, Save, X } from 'lucide-react'
+import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import type { Prisma } from '@prisma/client'
 
 type VOCWithCTQ = Prisma.VOCStatementGetPayload<{
@@ -41,11 +41,11 @@ interface VOCSectionProps {
   userId: string
 }
 
-export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOCSectionProps) {
+export function VOCSection({ assignmentId, vocStatements, canEdit, userId: _userId }: VOCSectionProps) {
   const router = useRouter()
   const [isAddingVOC, setIsAddingVOC] = useState(false)
   const [expandedVOCs, setExpandedVOCs] = useState<Set<string>>(new Set())
-  const [editingVOC, setEditingVOC] = useState<string | null>(null)
+  const [_editingVOC, _setEditingVOC] = useState<string | null>(null)
   const [addingCTQ, setAddingCTQ] = useState<string | null>(null)
 
   // Form states
@@ -174,7 +174,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
     setExpandedVOCs(newExpanded)
   }
 
-  const priorityColors = {
+  const _priorityColors = {
     1: 'bg-red-100 text-red-800 border-red-300',
     2: 'bg-orange-100 text-orange-800 border-orange-300',
     3: 'bg-yellow-100 text-yellow-800 border-yellow-300',
@@ -182,7 +182,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
     5: 'bg-gray-100 text-gray-800 border-gray-300'
   }
 
-  const typeLabels = {
+  const _typeLabels = {
     CUSTOMER_NEED: 'Customer Need',
     PAIN_POINT: 'Pain Point',
     EXPECTATION: 'Expectation'

@@ -28,7 +28,7 @@ import {
   TableRow,
   TableFooter,
 } from '@/components/ui/table'
-import { Plus, Trash2, Edit2, ArrowRight, Clock, AlertCircle, Activity, TrendingUp, Timer, Calculator } from 'lucide-react'
+import { Plus, Trash2, Edit2, Clock, Timer, Calculator } from 'lucide-react'
 import type { Prisma } from '@prisma/client'
 
 type ProcessWithVSM = Prisma.ProcessGetPayload<{
@@ -70,7 +70,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     stepName: '',
     processTime: '',
     waitingTime: '',
-    valueMeasure: 'NON_VALUE_ADDED' as any,
+    valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'NON_VALUE_ADDED',
     stakeholder: '',
     wasteType: '',
     remarks: ''
@@ -80,7 +80,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     stepName: '',
     processTime: '',
     waitingTime: '',
-    valueMeasure: 'NON_VALUE_ADDED' as any,
+    valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'NON_VALUE_ADDED',
     stakeholder: '',
     wasteType: '',
     remarks: ''

@@ -19,15 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Plus, Trash2, Edit2, CheckCircle2, XCircle, Circle } from 'lucide-react'
+import { Plus, Trash2, Edit2, CheckCircle2, Circle } from 'lucide-react'
 import type { Recommendation, FMEAEntry, ImplementationDifficulty, RecommendationStatus } from '@prisma/client'
 import type { Prisma } from '@prisma/client'
 

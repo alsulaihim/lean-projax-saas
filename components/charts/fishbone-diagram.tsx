@@ -293,7 +293,7 @@ export function FishboneDiagram({
     return { nodes, edges }
   }, [categories, problemStatement])
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+  const [nodes, _setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const onConnect = useCallback(

@@ -47,7 +47,7 @@ interface AuditLogSectionProps {
   auditLogs: AuditLogWithUser[]
 }
 
-export function AuditLogSection({ assignmentId, auditLogs }: AuditLogSectionProps) {
+export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: AuditLogSectionProps) {
   const [filterAction, setFilterAction] = useState<string>('ALL')
   const [filterEntityType, setFilterEntityType] = useState<string>('ALL')
   const [searchTerm, setSearchTerm] = useState('')

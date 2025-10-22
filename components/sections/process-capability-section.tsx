@@ -5,13 +5,6 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
   Card,
   CardContent,
   CardDescription,
@@ -26,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Edit2, Save, X, AlertCircle, CheckCircle2, TrendingUp, BarChart3, Eye } from 'lucide-react'
+import { Edit2, Save, X, AlertCircle, CheckCircle2, TrendingUp, BarChart3 } from 'lucide-react'
 import { BellCurveChart } from '@/components/charts/bell-curve-chart'
 import type { Process } from '@prisma/client'
 

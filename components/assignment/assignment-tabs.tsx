@@ -127,7 +127,7 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
     'recommendations': 'recommendations'
   }
 
-  const currentSection = tabToSection[activeTab]
+  const _currentSection = tabToSection[activeTab]
 
   // Calculate overall progress percentage
   const progressPercentage = useMemo(() => {
