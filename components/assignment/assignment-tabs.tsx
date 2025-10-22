@@ -74,49 +74,43 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
     recommendations: assignment.recommendations.length
   }
 
-  // Calculate completion status for progress navigation - stricter criteria
+  // Calculate completion status - lenient criteria (1+ entry is enough)
   const sectionStatus = {
     voc: {
-      completed: counts.voc >= 3 && counts.ctq >= counts.voc * 2,
+      completed: counts.voc >= 1 && counts.ctq >= 1, // At least 1 VOC and 1 CTQ
       hasData: counts.voc > 0
     },
     sipoc: {
-      completed: counts.sipoc >= 5 && assignment.processes.length > 0 &&
-                 assignment.processes.every(p => p.sipocEntries.length >= 5), // All SIPOC elements
+      completed: counts.sipoc >= 1 && assignment.processes.length > 0, // At least 1 SIPOC entry
       hasData: counts.sipoc > 0
     },
     vsm: {
-      completed: counts.vsm >= 5 && assignment.processes.every(p => p.vsmSteps.length >= 5),
+      completed: counts.vsm >= 1, // At least 1 VSM step
       hasData: counts.vsm > 0
     },
     fishbone: {
-      completed: assignment.processes.length > 0 &&
-                 assignment.processes.every(p =>
-                   p.fishboneCategories.length >= 6 &&
-                   p.fishboneCategories.every(cat => cat.causes.length >= 3)
-                 ), // Each process has 6 categories with 3+ causes each
+      completed: counts.fishbone >= 1, // At least 1 fishbone cause
       hasData: counts.fishbone > 0
     },
     fmea: {
-      completed: counts.fmea >= 5 && assignment.processes.every(p => p.fmeaEntries.length >= 5),
+      completed: counts.fmea >= 1, // At least 1 FMEA entry
       hasData: counts.fmea > 0
     },
     pareto: {
-      completed: counts.vsm >= 5, // Optional but needs VSM data
+      completed: counts.vsm >= 1, // Optional - has VSM data
       hasData: counts.vsm > 0
     },
     capability: {
-      completed: assignment.processes.length > 0 &&
-                 assignment.processes.every(p =>
-                   p.lowerSpecLimit !== null &&
-                   p.upperSpecLimit !== null &&
-                   p.sampleMean !== null &&
-                   p.sampleStdDev !== null
-                 ), // Optional but needs all data if used
+      completed: assignment.processes.some(p =>
+        p.lowerSpecLimit !== null &&
+        p.upperSpecLimit !== null &&
+        p.sampleMean !== null &&
+        p.sampleStdDev !== null
+      ), // At least one process has capability data
       hasData: assignment.processes.some(p => p.sampleMean !== null)
     },
     recommendations: {
-      completed: counts.recommendations >= 5,
+      completed: counts.recommendations >= 1, // At least 1 recommendation
       hasData: counts.recommendations > 0
     }
   }

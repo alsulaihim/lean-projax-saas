@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AssignmentHeader } from '@/components/assignment/assignment-header'
 import { AssignmentTabs } from '@/components/assignment/assignment-tabs'
 import { UserRole } from '@/lib/types'
@@ -49,9 +49,15 @@ export function AssignmentWrapper({
   userId
 }: AssignmentWrapperProps) {
   const [progressPercentage, setProgressPercentage] = useState(0)
+  const [key, setKey] = useState(0)
+
+  // Force re-render when assignment data changes (for optimistic updates)
+  useEffect(() => {
+    setKey(prev => prev + 1)
+  }, [assignment])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" key={key}>
       <AssignmentHeader
         assignment={assignment}
         canEdit={canEdit}
