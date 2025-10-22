@@ -260,7 +260,7 @@ export default function SignupPage() {
                       {passwordChecks.hasUppercase ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
-                        <X className="h-4 w-4 text-gray-400" />
+                        <XIcon className="h-4 w-4 text-gray-400" />
                       )}
                       <span>Contains uppercase letter (A-Z)</span>
                     </div>
@@ -272,7 +272,7 @@ export default function SignupPage() {
                       {passwordChecks.hasLowercase ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
-                        <X className="h-4 w-4 text-gray-400" />
+                        <XIcon className="h-4 w-4 text-gray-400" />
                       )}
                       <span>Contains lowercase letter (a-z)</span>
                     </div>
@@ -284,7 +284,7 @@ export default function SignupPage() {
                       {passwordChecks.hasNumber ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
-                        <X className="h-4 w-4 text-gray-400" />
+                        <XIcon className="h-4 w-4 text-gray-400" />
                       )}
                       <span>Contains number (0-9)</span>
                     </div>
@@ -296,7 +296,7 @@ export default function SignupPage() {
                       {passwordChecks.hasSpecial ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
-                        <X className="h-4 w-4 text-gray-400" />
+                        <XIcon className="h-4 w-4 text-gray-400" />
                       )}
                       <span>Contains special character (!@#$%^&* etc.)</span>
                     </div>
@@ -345,7 +345,7 @@ export default function SignupPage() {
                     </>
                   ) : (
                     <>
-                      <X className="h-4 w-4" />
+                      <XIcon className="h-4 w-4" />
                       <span>Passwords do not match</span>
                     </>
                   )}
