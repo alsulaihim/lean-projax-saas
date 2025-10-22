@@ -29,7 +29,8 @@
       "Read(//Users/alsulaihim/All-Day-Dev/**)",
       "Bash(source:*)",
       "Bash(npx tsx:*)",
-      "Bash(open test-login.html)"
+      "Bash(open test-login.html)",
+      "Bash(git revert:*)"
     ],
     "deny": [],
     "ask": []

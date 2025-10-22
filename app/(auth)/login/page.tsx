@@ -9,6 +9,12 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { CheckCircle2 } from 'lucide-react'
+import { Orbitron } from 'next/font/google'
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  variable: '--font-orbitron',
+})
 
 export default function LoginPage() {
   const router = useRouter()
@@ -65,7 +71,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-white">
       <Card className="w-full max-w-md border-2 border-black">
         <CardHeader className="space-y-4 text-center">
-          <CardTitle className="text-3xl font-bold">Lean Projax</CardTitle>
+          <CardTitle className={`text-4xl text-red-700 ${orbitron.className}`}>
+            Lean Projax
+          </CardTitle>
           <div className="h-px bg-black" />
           <CardDescription className="text-base text-gray-600">
             Six Sigma Workflow Automation
@@ -138,11 +146,6 @@ export default function LoginPage() {
               <Link href="/signup" className="text-black font-medium hover:underline">
                 Sign up for free
               </Link>
-            </div>
-
-            <div className="text-xs text-center text-gray-500 pt-2 border-t pt-4">
-              <p>Test credentials:</p>
-              <p className="font-mono mt-1">analyst@example.com / password123</p>
             </div>
           </form>
         </CardContent>
