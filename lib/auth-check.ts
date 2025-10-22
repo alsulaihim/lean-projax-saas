@@ -34,7 +34,7 @@ export async function getUser(): Promise<User | null> {
     }
 
     return payload as User
-  } catch (error) {
+  } catch {
     return null
   }
 }

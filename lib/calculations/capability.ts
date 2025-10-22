@@ -159,8 +159,9 @@ function cpkToDPMO(cpk: number): number {
 /**
  * Convert DPMO to Sigma Level
  * Uses the actual relationship without double-counting the shift
+ * @internal - Utility function for future use
  */
-function dpmoToSigmaLevel(dpmo: number): number {
+function _dpmoToSigmaLevel(dpmo: number): number {
   // For practical Six Sigma calculations:
   // The relationship between Cpk and Sigma Level is approximately:
   // Sigma Level = 3 * Cpk (for short-term capability)

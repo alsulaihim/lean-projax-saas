@@ -48,11 +48,13 @@ export async function GET() {
       })),
       passwordTest
     })
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    const errorCode = error && typeof error === 'object' && 'code' in error ? String(error.code) : undefined
     return NextResponse.json({
       success: false,
-      error: error.message,
-      code: error.code
+      error: errorMessage,
+      code: errorCode
     }, { status: 500 })
   }
 }

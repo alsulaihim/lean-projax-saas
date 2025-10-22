@@ -44,7 +44,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         assignmentId,
         ...charterData,
         scheduleItems: {
-          create: scheduleItems.map((item: any, index: number) => ({
+          create: scheduleItems.map((item: { milestone: string; startDate: string; endDate: string }, index: number) => ({
             milestone: item.milestone,
             startDate: item.startDate,
             endDate: item.endDate,
@@ -127,7 +127,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         data: {
           ...charterData,
           scheduleItems: {
-            create: scheduleItems.map((item: any, index: number) => ({
+            create: scheduleItems.map((item: { milestone: string; startDate: string; endDate: string }, index: number) => ({
               milestone: item.milestone,
               startDate: item.startDate,
               endDate: item.endDate,

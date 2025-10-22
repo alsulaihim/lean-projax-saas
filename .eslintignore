@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+
+# Backup and temporary files
+**/*-original.*
+**/*-temp.*
+**/*reordered*.*
+
+# Test and script files (using CommonJS)
+scripts/
+test-*.js
+*.test.js
+*.spec.js
+
+# Generated files
+next-env.d.ts
+.next/
+marketing/next-env.d.ts
+marketing/.next/
+
+# Prisma seed files (can use any types for flexibility)
+prisma/seed*.ts
+prisma/fix-*.ts

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -26,20 +26,7 @@ export default function VerifyEmailPage() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    const token = searchParams.get('token')
-    
-    if (!token) {
-      setStatus('error')
-      setMessage('Invalid verification link. Token is missing.')
-      return
-    }
-
-    // Verify the token
-    verifyEmail(token)
-  }, [searchParams])
-
-  const verifyEmail = async (token: string) => {
+  const verifyEmail = useCallback(async (token: string) => {
     try {
       const response = await fetch('/api/verify-email', {
         method: 'POST',
@@ -66,7 +53,20 @@ export default function VerifyEmailPage() {
       setStatus('error')
       setMessage('Network error. Please try again.')
     }
-  }
+  }, [router])
+
+  useEffect(() => {
+    const token = searchParams.get('token')
+
+    if (!token) {
+      setStatus('error')
+      setMessage('Invalid verification link. Token is missing.')
+      return
+    }
+
+    // Verify the token
+    verifyEmail(token)
+  }, [searchParams, verifyEmail])
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">

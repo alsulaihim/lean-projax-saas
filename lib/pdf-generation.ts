@@ -42,7 +42,8 @@ function escapeHtml(unsafe: string | null | undefined): string {
 }
 
 // Sanitize filename to prevent path traversal
-function sanitizeFilename(filename: string): string {
+// @internal - Utility function for future use
+function _sanitizeFilename(filename: string): string {
   return filename
     .replace(/[^a-zA-Z0-9_\- ]/g, '_')
     .replace(/\s+/g, '_')
