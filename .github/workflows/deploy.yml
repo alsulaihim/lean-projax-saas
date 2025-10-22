@@ -36,10 +36,15 @@ jobs:
       - name: Run database migrations
         run: |
           if [ -d "prisma/migrations" ]; then
+            echo "✅ Running production migrations..."
             npx prisma migrate deploy
           else
-            echo "⚠️ No migrations directory found, skipping migrate deploy"
-            npx prisma db push --accept-data-loss
+            echo "❌ ERROR: No migrations directory found"
+            echo "Production deployments require proper migrations. Please run:"
+            echo "  npx prisma migrate dev --name init"
+            echo "  git add prisma/migrations"
+            echo "  git commit -m 'feat: add initial database migration'"
+            exit 1
           fi
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}

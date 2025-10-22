@@ -2,6 +2,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, CheckCircle2, BarChart3, FileText, Users, Zap } from 'lucide-react'
 
+const PLATFORM_URL = process.env.NEXT_PUBLIC_PLATFORM_URL || 'http://localhost:3070'
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
@@ -23,7 +25,7 @@ export default function Home() {
                 Docs
               </Link>
               <Link
-                href="http://localhost:3070/login"
+                href={`${PLATFORM_URL}/login`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-black hover:text-gray-700 font-medium transition"
@@ -31,7 +33,7 @@ export default function Home() {
                 Sign In
               </Link>
               <Link
-                href="http://localhost:3070/signup"
+                href={`${PLATFORM_URL}/signup`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
@@ -65,7 +67,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 lg:justify-start justify-center">
                 <Link
-                  href="http://localhost:3070/signup"
+                  href={`${PLATFORM_URL}/signup`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition flex items-center justify-center"

@@ -304,7 +304,7 @@ export default function SignupPage() {
 
                   {/* Overall Strength Indicator */}
                   <div className="mt-3 pt-3 border-t border-gray-300">
-                    {Object.values(passwordChecks).filter(Boolean).length === 6 ? (
+                    {Object.values(passwordChecks).filter(Boolean).length === 5 ? (
                       <div className="flex items-center gap-2 text-green-700 font-medium">
                         <CheckCircle2 className="h-5 w-5" />
                         <span>Strong password! ✓</span>

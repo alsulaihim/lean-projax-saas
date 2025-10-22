@@ -18,8 +18,8 @@ import { RateLimiter } from 'limiter'
  * - Reduces server load from malicious traffic
  */
 
-// Store limiters per IP address
-const limiters = new Map<string, RateLimiter>()
+// Store limiters per IP address with last access timestamp
+const limiters = new Map<string, { limiter: RateLimiter; lastAccess: number }>()
 
 /**
  * Get or create rate limiter for an IP address
@@ -31,15 +31,22 @@ const limiters = new Map<string, RateLimiter>()
  */
 function getLimiter(ip: string, tokensPerInterval: number, interval: 'hour' | 'minute'): RateLimiter {
   const key = `${ip}-${tokensPerInterval}-${interval}`
-  
+
   if (!limiters.has(key)) {
     limiters.set(
       key,
-      new RateLimiter({ tokensPerInterval, interval, fireImmediately: true })
+      {
+        limiter: new RateLimiter({ tokensPerInterval, interval, fireImmediately: true }),
+        lastAccess: Date.now()
+      }
     )
   }
-  
-  return limiters.get(key)!
+
+  // Update last access timestamp
+  const entry = limiters.get(key)!
+  entry.lastAccess = Date.now()
+
+  return entry.limiter
 }
 
 /**
@@ -135,16 +142,35 @@ export async function rateLimitAPI(request: Request): Promise<boolean> {
 
 /**
  * Cleanup old limiters periodically
- * 
+ *
  * Runs every hour to prevent memory leaks
- * Removes limiters for IPs that haven't been seen recently
+ * Only removes limiters that haven't been accessed in 24 hours
+ * This preserves rate limiting for active users while freeing memory for inactive ones
  */
 if (typeof window === 'undefined') {
   // Server-side only
+  const CLEANUP_INTERVAL = 60 * 60 * 1000 // 1 hour
+  const LIMITER_TTL = 24 * 60 * 60 * 1000 // 24 hours
+
   setInterval(() => {
-    // Clear limiters every hour to prevent memory leaks
+    const now = Date.now()
+    const keysToDelete: string[] = []
+
+    // Find limiters that haven't been accessed in 24 hours
+    for (const [key, entry] of limiters.entries()) {
+      if (now - entry.lastAccess > LIMITER_TTL) {
+        keysToDelete.push(key)
+      }
+    }
+
+    // Remove stale limiters
+    keysToDelete.forEach(key => limiters.delete(key))
+
+    if (keysToDelete.length > 0) {
+      console.log(`Rate limiter cleanup: removed ${keysToDelete.length} stale limiters`)
+    }
+
     // In production, consider using Redis for distributed rate limiting
-    limiters.clear()
-  }, 60 * 60 * 1000) // 1 hour
+  }, CLEANUP_INTERVAL)
 }
 
