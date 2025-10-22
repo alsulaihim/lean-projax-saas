@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
+import { rateLimitSignup } from '@/lib/rate-limit'
+import { validatePassword } from '@/lib/password-validator'
+import { generateVerificationToken, sendVerificationEmail } from '@/lib/email'
 
 /**
  * User Signup API Route
@@ -36,6 +39,15 @@ import bcrypt from 'bcryptjs'
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 3 signups per hour per IP
+    const isAllowed = await rateLimitSignup(request)
+    if (!isAllowed) {
+      return NextResponse.json(
+        { error: 'Too many signup attempts. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const { email, name, password, companyName } = body
 
@@ -56,10 +68,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate password length
-    if (password.length < 8) {
+    // Validate password strength
+    const passwordValidation = validatePassword(password)
+    if (!passwordValidation.isValid) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters long' },
+        { 
+          error: 'Password does not meet security requirements',
+          details: passwordValidation.errors
+        },
         { status: 400 }
       )
     }
@@ -83,6 +99,11 @@ export async function POST(request: NextRequest) {
     const trialEndsAt = new Date()
     trialEndsAt.setDate(trialEndsAt.getDate() + 14)
 
+    // Generate email verification token
+    const verificationToken = generateVerificationToken()
+    const verificationExpiry = new Date()
+    verificationExpiry.setHours(verificationExpiry.getHours() + 24) // Expires in 24 hours
+
     // Create new user with default settings
     const user = await prisma.user.create({
       data: {
@@ -93,7 +114,10 @@ export async function POST(request: NextRequest) {
         role: 'BPI_TEAM', // Default role for new users
         subscriptionTier: 'FREE', // Start with free tier
         subscriptionStatus: 'TRIAL', // 14-day trial
-        trialEndsAt
+        trialEndsAt,
+        emailVerified: false, // Must verify email before login
+        verificationToken,
+        verificationExpiry
       },
       select: {
         id: true,
@@ -111,8 +135,16 @@ export async function POST(request: NextRequest) {
       id: user.id,
       email: user.email,
       tier: user.subscriptionTier,
-      trialEnds: user.trialEndsAt
+      trialEnds: user.trialEndsAt,
+      emailVerified: user.emailVerified
     })
+
+    // Send verification email
+    const emailSent = await sendVerificationEmail(user.email, user.name, verificationToken)
+    
+    if (!emailSent) {
+      console.warn('⚠️  Failed to send verification email, but user was created')
+    }
 
     return NextResponse.json(
       {

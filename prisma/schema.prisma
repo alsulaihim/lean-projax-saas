@@ -14,6 +14,11 @@ model User {
   role               UserRole
   passwordHash       String
   
+  // Email verification fields
+  emailVerified      Boolean             @default(false)
+  verificationToken  String?             @unique
+  verificationExpiry DateTime?
+  
   // Subscription fields
   subscriptionTier   SubscriptionTier    @default(FREE)
   subscriptionStatus SubscriptionStatus  @default(TRIAL)
@@ -26,6 +31,7 @@ model User {
   auditLogs          AuditLog[]
 
   @@index([email])
+  @@index([verificationToken])
 }
 
 model Assignment {

@@ -23,7 +23,10 @@ export default function LoginPage() {
     // Show success message if redirected from signup
     if (searchParams.get('signup') === 'success') {
       setShowSignupSuccess(true)
-      setTimeout(() => setShowSignupSuccess(false), 8000)
+      
+      // Extended timeout if verification pending
+      const timeout = searchParams.get('verify') === 'pending' ? 15000 : 8000
+      setTimeout(() => setShowSignupSuccess(false), timeout)
     }
   }, [searchParams])
 
@@ -70,10 +73,18 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           {showSignupSuccess && (
-            <Alert className="mb-4 border-green-600 bg-green-50">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800">
-                Account created successfully! Please sign in to continue.
+            <Alert className="mb-4 border-blue-600 bg-blue-50">
+              <CheckCircle2 className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-800">
+                <strong>Account created successfully!</strong>
+                <br />
+                {searchParams.get('verify') === 'pending' ? (
+                  <>Please check your email inbox for a verification link. You must verify your email before you can sign in.</>
+                ) : searchParams.get('verified') === 'true' ? (
+                  <>Your email is verified! You can now sign in.</>
+                ) : (
+                  <>Please sign in to continue.</>
+                )}
               </AlertDescription>
             </Alert>
           )}

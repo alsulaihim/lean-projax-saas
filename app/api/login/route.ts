@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { SignJWT } from 'jose'
 import prisma from '@/lib/prisma'
+import { rateLimitLogin } from '@/lib/rate-limit'
 
 if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET environment variable is required')
@@ -11,6 +12,15 @@ const JWT_SECRET = new TextEncoder().encode(process.env.NEXTAUTH_SECRET)
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 10 login attempts per hour per IP
+    const isAllowed = await rateLimitLogin(request)
+    if (!isAllowed) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again in an hour.' },
+        { status: 429 }
+      )
+    }
+
     const { email, password } = await request.json()
 
     // Input validation
@@ -29,7 +39,8 @@ export async function POST(request: NextRequest) {
         email: true,
         name: true,
         role: true,
-        passwordHash: true
+        passwordHash: true,
+        emailVerified: true
       }
     })
 
@@ -47,6 +58,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
+      )
+    }
+
+    // Check if email is verified
+    if (!user.emailVerified) {
+      return NextResponse.json(
+        { 
+          error: 'Please verify your email address before signing in. Check your inbox for the verification link.',
+          code: 'EMAIL_NOT_VERIFIED'
+        },
+        { status: 403 } // 403 Forbidden - authenticated but not authorized
       )
     }
 

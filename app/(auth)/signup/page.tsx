@@ -67,8 +67,25 @@ export default function SignupPage() {
       return 'Please enter a valid email address'
     }
 
-    if (formData.password.length < 8) {
-      return 'Password must be at least 8 characters long'
+    // Enhanced password validation
+    if (formData.password.length < 10) {
+      return 'Password must be at least 10 characters long'
+    }
+
+    if (!/[A-Z]/.test(formData.password)) {
+      return 'Password must contain at least one uppercase letter'
+    }
+
+    if (!/[a-z]/.test(formData.password)) {
+      return 'Password must contain at least one lowercase letter'
+    }
+
+    if (!/[0-9]/.test(formData.password)) {
+      return 'Password must contain at least one number'
+    }
+
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password)) {
+      return 'Password must contain at least one special character'
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -116,8 +133,8 @@ export default function SignupPage() {
       const data = await response.json()
 
       if (response.ok) {
-        // Success - redirect to login with success message
-        router.push('/login?signup=success')
+        // Success - redirect to login with message about email verification
+        router.push('/login?signup=success&verify=pending')
       } else {
         // Server error
         setError(data.error || 'Failed to create account. Please try again.')
@@ -205,7 +222,14 @@ export default function SignupPage() {
                 className="border-black"
                 required
               />
-              <p className="text-xs text-gray-500">Must be at least 8 characters</p>
+              <div className="text-xs text-gray-600 mt-2 space-y-1">
+                <p className="font-medium">Password requirements:</p>
+                <ul className="list-disc list-inside space-y-0.5 text-gray-500">
+                  <li>At least 10 characters</li>
+                  <li>One uppercase & one lowercase letter</li>
+                  <li>One number & one special character</li>
+                </ul>
+              </div>
             </div>
 
             <div className="space-y-2">
