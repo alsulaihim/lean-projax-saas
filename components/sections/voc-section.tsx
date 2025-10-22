@@ -326,27 +326,43 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {voc.ctqRequirements.map((ctq) => (
-                              <TableRow key={ctq.id}>
-                                <TableCell className="font-medium">{ctq.ctqDescription}</TableCell>
-                                <TableCell>{ctq.measurementCriteria}</TableCell>
-                                <TableCell>{ctq.targetValue || '-'}</TableCell>
-                                <TableCell>-</TableCell>
-                                <TableCell>-</TableCell>
-                                {canEdit && (
-                                  <TableCell>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={() => handleDeleteCTQ(ctq.id)}
-                                      className="text-red-600 hover:text-red-800"
-                                    >
-                                      <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                  </TableCell>
-                                )}
-                              </TableRow>
-                            ))}
+                            {voc.ctqRequirements.map((ctq) => {
+                              // Parse measurement criteria to extract values
+                              // Format: "LSL: 10, Target: 15, USL: 20 minutes"
+                              const criteria = ctq.measurementCriteria || ''
+                              const lslMatch = criteria.match(/LSL:\s*([\d.]+)/)
+                              const targetMatch = criteria.match(/Target:\s*([\d.]+)/)
+                              const uslMatch = criteria.match(/USL:\s*([\d.]+)/)
+                              // Extract unit (everything after the numbers)
+                              const unitMatch = criteria.match(/\d\s+(.+)$/)
+                              
+                              const lowerSpec = lslMatch ? lslMatch[1] : '-'
+                              const target = targetMatch ? targetMatch[1] : '-'
+                              const upperSpec = uslMatch ? uslMatch[1] : '-'
+                              const unit = unitMatch ? unitMatch[1] : '-'
+                              
+                              return (
+                                <TableRow key={ctq.id}>
+                                  <TableCell className="font-medium">{ctq.ctqDescription}</TableCell>
+                                  <TableCell>{unit}</TableCell>
+                                  <TableCell className="text-center">{lowerSpec}</TableCell>
+                                  <TableCell className="text-center font-medium">{target}</TableCell>
+                                  <TableCell className="text-center">{upperSpec}</TableCell>
+                                  {canEdit && (
+                                    <TableCell>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleDeleteCTQ(ctq.id)}
+                                        className="text-red-600 hover:text-red-800"
+                                      >
+                                        <Trash2 className="h-4 w-4" />
+                                      </Button>
+                                    </TableCell>
+                                  )}
+                                </TableRow>
+                              )
+                            })}
                           </TableBody>
                         </Table>
                       ) : (
