@@ -537,7 +537,7 @@ export default async function ComprehensiveSummaryPage({
                         <TableCell className="text-center">{metric.sipocSteps}</TableCell>
                         <TableCell className="text-center">{metric.fishboneStats.totalCauses}</TableCell>
                         <TableCell className="text-center">
-                          {metric.capabilityData ? (
+                          {metric.capabilityData && metric.capabilityData.cpk !== null ? (
                             <Badge variant="outline" className={
                               metric.capabilityData.isCapable ? 'border-green-500 text-green-700' : 'border-red-500 text-red-700'
                             }>

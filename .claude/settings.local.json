@@ -18,7 +18,8 @@
       "Bash(for file in \"app/(protected)/assignments/[id]/page.tsx\" \"app/(protected)/dashboard/page.tsx\" \"components/assignment/assignment-header.tsx\" \"components/assignment/assignment-wrapper.tsx\" \"components/layout/header.tsx\")",
       "Bash(do)",
       "Bash(echo \"Updated: $file\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(npm run dev)"
     ],
     "deny": [],
     "ask": []
