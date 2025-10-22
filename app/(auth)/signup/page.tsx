@@ -248,7 +248,7 @@ export default function SignupPage() {
                       {passwordChecks.minLength ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
-                        <X className="h-4 w-4 text-gray-400" />
+                        <XIcon className="h-4 w-4 text-gray-400" />
                       )}
                       <span>At least 10 characters</span>
                     </div>
