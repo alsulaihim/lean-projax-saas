@@ -70,7 +70,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     stepName: '',
     processTime: '',
     waitingTime: '',
-    valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'NON_VALUE_ADDED',
+    valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
     stakeholder: '',
     wasteType: '',
     remarks: ''
@@ -80,7 +80,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     stepName: '',
     processTime: '',
     waitingTime: '',
-    valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'NON_VALUE_ADDED',
+    valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
     stakeholder: '',
     wasteType: '',
     remarks: ''

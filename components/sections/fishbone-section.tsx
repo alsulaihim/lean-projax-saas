@@ -40,10 +40,9 @@ interface FishboneSectionProps {
 
 type CategoryType = 'PEOPLE' | 'PROCESS' | 'EQUIPMENT' | 'MATERIALS' | 'ENVIRONMENT' | 'MANAGEMENT'
 
-export function FishboneSection({ assignmentId, processes, canEdit, userId: _userId }: FishboneSectionProps) {
+export function FishboneSection({ assignmentId, processes, canEdit, userId }: FishboneSectionProps) {
   const router = useRouter()
   const [selectedProcess, setSelectedProcess] = useState<string>(processes[0]?.id || '')
-  const [_selectedCategory, _setSelectedCategory] = useState<CategoryType>('PEOPLE')
   const [isAddingCause, setIsAddingCause] = useState(false)
   const [editingCause, setEditingCause] = useState<string | null>(null)
   const [showVisualization, setShowVisualization] = useState(true)
