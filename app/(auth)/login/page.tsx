@@ -62,16 +62,79 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <Card className="w-full max-w-md border-2 border-black">
-        <CardHeader className="space-y-4 text-center">
-          <CardTitle className="text-3xl font-bold">Lean Projax</CardTitle>
-          <div className="h-px bg-black" />
-          <CardDescription className="text-base text-gray-600">
-            Six Sigma Workflow Automation
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="min-h-screen flex bg-white">
+      {/* Hero Section - Left Side */}
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-gray-50 to-gray-100 p-12 flex-col justify-between overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-40">
+          <img
+            src="/images/hero-meeting.png"
+            alt="Six Sigma Analytics"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Content Overlay */}
+        <div className="relative z-10">
+          <div className="mb-8">
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">Lean Projax</h1>
+            <div className="h-1 w-24 bg-black mb-6" />
+            <p className="text-2xl text-gray-700 font-light">
+              Six Sigma Workflow Automation
+            </p>
+          </div>
+        </div>
+
+        <div className="relative z-10 space-y-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Data-Driven Decision Making</h3>
+              <p className="text-gray-600">Transform complex processes with real-time analytics and actionable insights</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Streamlined Workflows</h3>
+              <p className="text-gray-600">Automate DMAIC processes and eliminate inefficiencies across your organization</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Collaborative Teams</h3>
+              <p className="text-gray-600">Empower cross-functional teams with role-based access and audit trails</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Login Form - Right Side */}
+      <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
+        <Card className="w-full max-w-md border-2 border-black">
+          <CardHeader className="space-y-4 text-center">
+            <CardTitle className="text-3xl font-bold">Welcome Back</CardTitle>
+            <div className="h-px bg-black" />
+            <CardDescription className="text-base text-gray-600">
+              Sign in to your account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
           {showSignupSuccess && (
             <Alert className="mb-4 border-blue-600 bg-blue-50">
               <CheckCircle2 className="h-4 w-4 text-blue-600" />
@@ -147,6 +210,7 @@ export default function LoginPage() {
           </form>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }
