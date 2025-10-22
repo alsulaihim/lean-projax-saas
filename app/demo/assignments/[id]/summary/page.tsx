@@ -152,7 +152,7 @@ export default async function DemoComprehensiveSummaryPage({
 
     // Process capability
     let capabilityData = null
-    if (process.lowerSpecLimit && process.upperSpecLimit && process.sampleMean && process.sampleStdDev) {
+    if (process.lowerSpecLimit !== null && process.upperSpecLimit !== null && process.sampleMean !== null && process.sampleStdDev !== null) {
       capabilityData = analyzeProcessCapability({
         lowerSpecLimit: process.lowerSpecLimit,
         upperSpecLimit: process.upperSpecLimit,
