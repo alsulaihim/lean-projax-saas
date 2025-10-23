@@ -667,39 +667,43 @@ export default async function ComprehensiveSummaryPage({
                       <TableBody>
                         {(() => {
                           // Group SIPOC entries by row (using the actual schema fields: column and value)
-                          const suppliers = process.sipocEntries.filter(e => e.column === 'SUPPLIER').sort((a, b) => a.order - b.order)
-                          const inputs = process.sipocEntries.filter(e => e.column === 'INPUT').sort((a, b) => a.order - b.order)
-                          const processes = process.sipocEntries.filter(e => e.column === 'PROCESS').sort((a, b) => a.order - b.order)
-                          const outputs = process.sipocEntries.filter(e => e.column === 'OUTPUT').sort((a, b) => a.order - b.order)
-                          const customers = process.sipocEntries.filter(e => e.column === 'CUSTOMER').sort((a, b) => a.order - b.order)
+                          // Create maps keyed by order to handle sparse order values
+                          const supplierMap = new Map(process.sipocEntries.filter(e => e.column === 'SUPPLIER').map(e => [e.order, e.value]))
+                          const inputMap = new Map(process.sipocEntries.filter(e => e.column === 'INPUT').map(e => [e.order, e.value]))
+                          const processMap = new Map(process.sipocEntries.filter(e => e.column === 'PROCESS').map(e => [e.order, e.value]))
+                          const outputMap = new Map(process.sipocEntries.filter(e => e.column === 'OUTPUT').map(e => [e.order, e.value]))
+                          const customerMap = new Map(process.sipocEntries.filter(e => e.column === 'CUSTOMER').map(e => [e.order, e.value]))
 
-                          const maxRows = Math.max(
-                            suppliers.length,
-                            inputs.length,
-                            processes.length,
-                            outputs.length,
-                            customers.length,
-                            1 // At least one row
-                          )
+                          // Get all unique order values across all columns
+                          const allOrders = [...new Set([
+                            ...Array.from(supplierMap.keys()),
+                            ...Array.from(inputMap.keys()),
+                            ...Array.from(processMap.keys()),
+                            ...Array.from(outputMap.keys()),
+                            ...Array.from(customerMap.keys())
+                          ])].sort((a, b) => a - b)
+
+                          const maxRows = Math.max(allOrders.length, 1)
 
                           const rows = []
                           for (let i = 0; i < maxRows; i++) {
+                            const orderValue = allOrders[i]
                             rows.push(
                               <TableRow key={i}>
                                 <TableCell className="text-sm">
-                                  {suppliers[i] ? suppliers[i].value : <span className="text-gray-400 italic">-</span>}
+                                  {supplierMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {inputs[i] ? inputs[i].value : <span className="text-gray-400 italic">-</span>}
+                                  {inputMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {processes[i] ? processes[i].value : <span className="text-gray-400 italic">-</span>}
+                                  {processMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {outputs[i] ? outputs[i].value : <span className="text-gray-400 italic">-</span>}
+                                  {outputMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {customers[i] ? customers[i].value : <span className="text-gray-400 italic">-</span>}
+                                  {customerMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
                                 </TableCell>
                               </TableRow>
                             )
@@ -756,9 +760,13 @@ export default async function ComprehensiveSummaryPage({
                               <TableCell className="text-center">{waitingTime} min</TableCell>
                               <TableCell className="text-center font-bold">{cycleTime} min</TableCell>
                               <TableCell>
-                                <Badge variant="outline" className={getValueMeasureColor(step.valueMeasure)}>
-                                  {step.valueMeasure.replace(/_/g, ' ')}
-                                </Badge>
+                                {step.valueMeasure ? (
+                                  <Badge variant="outline" className={getValueMeasureColor(step.valueMeasure)}>
+                                    {step.valueMeasure.replace(/_/g, ' ')}
+                                  </Badge>
+                                ) : (
+                                  <span className="text-gray-400">-</span>
+                                )}
                               </TableCell>
                             </TableRow>
                           )
