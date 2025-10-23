@@ -10,6 +10,7 @@ import {
   Edge,
   Node,
   Background,
+  BackgroundVariant,
   Controls,
   MiniMap,
   NodeTypes,
@@ -319,7 +320,7 @@ export function FishboneDiagram({
             attributionPosition="bottom-right"
             defaultViewport={{ x: 0, y: 0, zoom: 0.7 }}
           >
-            <Background variant="dots" gap={16} size={1} />
+            <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
             <Controls />
             <MiniMap
               nodeColor={(node) => {

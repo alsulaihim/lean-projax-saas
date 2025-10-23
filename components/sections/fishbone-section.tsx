@@ -254,7 +254,7 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
               problemStatement={currentProcess.processName}
               categories={currentProcess.fishboneCategories.map(cat => ({
                 id: cat.id,
-                categoryName: categoryLabels[cat.categoryType as CategoryType] || cat.categoryType,
+                categoryName: categoryLabels[cat.category as CategoryType] || cat.category,
                 causes: cat.causes.map(cause => ({
                   id: cause.id,
                   causeName: cause.causeDescription,

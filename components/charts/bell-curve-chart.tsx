@@ -272,7 +272,7 @@ export function BellCurveChart({
                 stroke="#ef4444"
                 strokeWidth={2}
                 strokeDasharray="5 5"
-                label={{ value: `LSL: ${lsl}`, position: 'topLeft', offset: 10 }}
+                label={{ value: `LSL: ${lsl}`, position: 'top', offset: 10 }}
               />
             )}
             {usl && (
@@ -281,7 +281,7 @@ export function BellCurveChart({
                 stroke="#ef4444"
                 strokeWidth={2}
                 strokeDasharray="5 5"
-                label={{ value: `USL: ${usl}`, position: 'topRight', offset: 10 }}
+                label={{ value: `USL: ${usl}`, position: 'top', offset: 10 }}
               />
             )}
             {target && (

@@ -136,7 +136,7 @@ export function ProcessCapabilityChart({
             strokeDasharray="5 5"
             label={{
               value: `LSL: ${lowerSpec}`,
-              position: 'topLeft',
+              position: 'top',
               offset: 10,
               style: { fill: '#ef4444', fontSize: 11 }
             }}
@@ -149,7 +149,7 @@ export function ProcessCapabilityChart({
             strokeDasharray="5 5"
             label={{
               value: `USL: ${upperSpec}`,
-              position: 'topRight',
+              position: 'top',
               offset: 10,
               style: { fill: '#ef4444', fontSize: 11 }
             }}

@@ -42,13 +42,12 @@ interface FishboneSectionEnhancedProps {
 type CategoryType = 'PEOPLE' | 'PROCESS' | 'EQUIPMENT' | 'MATERIALS' | 'ENVIRONMENT' | 'MANAGEMENT'
 
 // Calculate Pareto analysis for a process
-function calculatePareto(steps: Array<{
+function calculatePareto<T extends {
   processTime?: number | null
   durationMinutes?: number | null
   waitingTime?: number | null
   waitTimeMinutes?: number | null
-  [key: string]: unknown
-}>) {
+}>(steps: T[]) {
   // Sort steps by total time (process + waiting) in descending order
   const sortedSteps = steps
     .map(step => ({
@@ -415,7 +414,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
               )}
 
               {/* Visual Fishbone Diagram */}
-              {showVisualization && currentFishboneData && (
+              {showVisualization && currentFishboneData && currentProcess && (
                 <FishboneDiagram
                   problemStatement={`${currentProcess.processName}: ${currentFishboneData.step.stepName}`}
                   categories={currentFishboneData.categories.map(cat => ({

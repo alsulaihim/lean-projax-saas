@@ -12,6 +12,11 @@ import type { Prisma } from '@prisma/client'
 type AssignmentWithRelations = Prisma.AssignmentGetPayload<{
   include: {
     createdBy: true
+    charter: {
+      include: {
+        scheduleItems: true
+      }
+    }
     processes: {
       include: {
         sipocEntries: true

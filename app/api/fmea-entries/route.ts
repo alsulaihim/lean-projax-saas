@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
+import { checkDemoMode } from '@/lib/demo-check'
 
 export async function POST(request: NextRequest) {
   const user = await getUser()

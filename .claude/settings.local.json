@@ -34,7 +34,11 @@
       "Bash(git reset:*)",
       "Bash(npm test)",
       "Bash(npm run:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(while read file)",
+      "Bash(do if ! grep -q \"from ''''@/lib/demo-check''''\" \"$file\")",
+      "Bash(then echo \"$file\")",
+      "Bash(fi)"
     ],
     "deny": [],
     "ask": []
