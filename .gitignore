@@ -63,4 +63,7 @@ logs
 
 # cookies and secrets
 cookies.txt
+.staging-secrets.txt
+.production-secrets.txt
+*-secrets.txt
 
