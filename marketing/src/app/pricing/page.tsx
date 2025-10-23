@@ -22,8 +22,6 @@ export default function Pricing() {
               </Link>
               <Link
                 href={`${PLATFORM_URL}/login`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="text-black hover:text-gray-700 font-medium transition"
               >
                 Sign In
@@ -216,8 +214,6 @@ export default function Pricing() {
 
               <Link
                 href={`${PLATFORM_URL}/signup`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="block w-full bg-white text-black text-center px-6 py-3 rounded-lg font-semibold border-2 border-gray-300 hover:border-gray-400 transition"
               >
                 Get started
@@ -300,8 +296,6 @@ export default function Pricing() {
 
               <Link
                 href={`${PLATFORM_URL}/signup`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="block w-full bg-black text-white text-center px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
               >
                 Get started
