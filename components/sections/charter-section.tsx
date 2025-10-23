@@ -132,55 +132,67 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
   }
 
   return (
-    <div className="space-y-8 max-w-[1400px] mx-auto">
-      {/* Header Actions */}
-      <div className="flex justify-between items-center sticky top-[200px] bg-white py-4 z-10 border-b-2 border-gray-200">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Assignment Charter</h1>
-          <p className="text-sm text-gray-600 mt-1">Comprehensive project definition and planning document</p>
-        </div>
-        {canEdit && !isEditing && (
-          <Button
-            onClick={() => setIsEditing(true)}
-            variant="outline"
-            className="border-2 border-black"
-          >
-            <Edit2 className="h-4 w-4 mr-2" />
-            Edit Charter
-          </Button>
-        )}
-        {isEditing && (
-          <div className="flex gap-2">
-            <Button
-              onClick={() => {
-                if (charter) {
-                  setIsEditing(false)
-                  router.refresh()
-                }
-              }}
-              variant="outline"
-              disabled={loading || !charter}
-            >
-              <X className="h-4 w-4 mr-2" />
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSave}
-              disabled={loading || !formData.assignmentName}
-              className="bg-black text-white hover:bg-gray-800"
-            >
-              <Save className="h-4 w-4 mr-2" />
-              {loading ? 'Saving...' : 'Save Charter'}
-            </Button>
+    <div className="space-y-6 max-w-[1400px] mx-auto">
+      {/* Header Card */}
+      <Card className="border-2 border-black shadow-lg bg-gradient-to-r from-gray-50 to-white">
+        <CardContent className="py-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Assignment Charter</h1>
+              <p className="text-sm md:text-base text-gray-600">Comprehensive project definition and planning document</p>
+            </div>
+            <div className="flex gap-2 flex-shrink-0">
+              {canEdit && !isEditing && (
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  variant="outline"
+                  className="border-2 border-black hover:bg-black hover:text-white transition-colors"
+                >
+                  <Edit2 className="h-4 w-4 mr-2" />
+                  Edit Charter
+                </Button>
+              )}
+              {isEditing && (
+                <>
+                  <Button
+                    onClick={() => {
+                      if (charter) {
+                        setIsEditing(false)
+                        router.refresh()
+                      }
+                    }}
+                    variant="outline"
+                    disabled={loading || !charter}
+                    className="border-2 border-gray-300"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleSave}
+                    disabled={loading || !formData.assignmentName}
+                    className="bg-black text-white hover:bg-gray-800"
+                  >
+                    <Save className="h-4 w-4 mr-2" />
+                    {loading ? 'Saving...' : 'Save Charter'}
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
-        )}
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Assignment Information */}
-      <Card className="border-2 border-black shadow-sm">
-        <CardHeader className="bg-gray-50 border-b-2 border-black">
-          <CardTitle className="text-xl font-bold uppercase tracking-wide">1. Assignment Information</CardTitle>
-          <CardDescription className="text-sm mt-1">Core project identification and team structure</CardDescription>
+      <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+          <div className="flex items-center gap-3">
+            <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+            <div>
+              <CardTitle className="text-lg md:text-xl font-bold">Assignment Information</CardTitle>
+              <CardDescription className="text-xs md:text-sm mt-1">Core project identification and team structure</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           <div>
@@ -263,10 +275,15 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
       {/* Project Overview & Scope - Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Project Overview */}
-        <Card className="border-2 border-black shadow-sm">
-          <CardHeader className="bg-gray-50 border-b-2 border-black">
-            <CardTitle className="text-xl font-bold uppercase tracking-wide">2. Project Overview</CardTitle>
-            <CardDescription className="text-sm mt-1">Strategic context and objectives</CardDescription>
+        <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+            <div className="flex items-center gap-3">
+              <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+              <div>
+                <CardTitle className="text-lg md:text-xl font-bold">Project Overview</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">Strategic context and objectives</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             {[
@@ -294,10 +311,15 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
         </Card>
 
         {/* Project Scope */}
-        <Card className="border-2 border-black shadow-sm">
-          <CardHeader className="bg-gray-50 border-b-2 border-black">
-            <CardTitle className="text-xl font-bold uppercase tracking-wide">3. Project Scope</CardTitle>
-            <CardDescription className="text-sm mt-1">Boundaries and limitations</CardDescription>
+        <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+            <div className="flex items-center gap-3">
+              <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+              <div>
+                <CardTitle className="text-lg md:text-xl font-bold">Project Scope</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">Boundaries and limitations</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             <div>
@@ -332,13 +354,18 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
       </div>
 
       {/* Assignment Schedule */}
-      <Card className="border-2 border-black shadow-sm">
-        <CardHeader className="bg-gray-50 border-b-2 border-black">
-          <CardTitle className="text-xl font-bold uppercase tracking-wide flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            4. Assignment Schedule
-          </CardTitle>
-          <CardDescription className="text-sm mt-1">Project timeline and key milestones</CardDescription>
+      <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+          <div className="flex items-center gap-3">
+            <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</div>
+            <div>
+              <CardTitle className="text-lg md:text-xl font-bold flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                Assignment Schedule
+              </CardTitle>
+              <CardDescription className="text-xs md:text-sm mt-1">Project timeline and key milestones</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="pt-6">
           <Table>
@@ -385,10 +412,15 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
       {/* Customer Drivers & Leverage - Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Customer Drivers & Benefits */}
-        <Card className="border-2 border-black shadow-sm">
-          <CardHeader className="bg-gray-50 border-b-2 border-black">
-            <CardTitle className="text-xl font-bold uppercase tracking-wide">5. Customer Drivers & Benefits</CardTitle>
-            <CardDescription className="text-sm mt-1">Key motivators and advantages</CardDescription>
+        <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+            <div className="flex items-center gap-3">
+              <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">5</div>
+              <div>
+                <CardTitle className="text-lg md:text-xl font-bold">Customer Drivers & Benefits</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">Key motivators and advantages</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             <div>
@@ -422,10 +454,15 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
         </Card>
 
         {/* Leverage In & Out */}
-        <Card className="border-2 border-black shadow-sm">
-          <CardHeader className="bg-gray-50 border-b-2 border-black">
-            <CardTitle className="text-xl font-bold uppercase tracking-wide">6. Leverage In & Out</CardTitle>
-            <CardDescription className="text-sm mt-1">Resource utilization and sharing</CardDescription>
+        <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+            <div className="flex items-center gap-3">
+              <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">6</div>
+              <div>
+                <CardTitle className="text-lg md:text-xl font-bold">Leverage In & Out</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">Resource utilization and sharing</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             <div>
@@ -462,10 +499,15 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
       {/* Risk Management & Team - Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Risk, Constraints and Assumptions */}
-        <Card className="border-2 border-black shadow-sm">
-          <CardHeader className="bg-gray-50 border-b-2 border-black">
-            <CardTitle className="text-xl font-bold uppercase tracking-wide">7. Risk, Constraints & Assumptions</CardTitle>
-            <CardDescription className="text-sm mt-1">Project challenges and considerations</CardDescription>
+        <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+            <div className="flex items-center gap-3">
+              <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">7</div>
+              <div>
+                <CardTitle className="text-lg md:text-xl font-bold">Risk, Constraints & Assumptions</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">Project challenges and considerations</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             <div>
@@ -513,10 +555,15 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
         </Card>
 
         {/* Assignment Team */}
-        <Card className="border-2 border-black shadow-sm">
-          <CardHeader className="bg-gray-50 border-b-2 border-black">
-            <CardTitle className="text-xl font-bold uppercase tracking-wide">8. Assignment Team</CardTitle>
-            <CardDescription className="text-sm mt-1">Key stakeholders and participants</CardDescription>
+        <Card className="border-2 border-black shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-black">
+            <div className="flex items-center gap-3">
+              <div className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">8</div>
+              <div>
+                <CardTitle className="text-lg md:text-xl font-bold">Assignment Team</CardTitle>
+                <CardDescription className="text-xs md:text-sm mt-1">Key stakeholders and participants</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="pt-6">
             <div>
