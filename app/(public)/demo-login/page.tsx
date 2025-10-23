@@ -52,64 +52,66 @@ export default function DemoLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-full max-w-5xl px-4 py-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
+    <div className="min-h-screen flex items-center justify-center bg-white p-4 sm:p-6">
+      <div className="w-full max-w-5xl">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Left side - Demo info */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6 order-2 lg:order-1">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-4">
-                <Play className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4">
+                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
                 Interactive Demo
               </div>
-              <h1 className={`text-5xl mb-4 text-gray-900 ${orbitron.className}`}>
-                Lean Projax
-              </h1>
-              <p className="text-xl text-gray-600 mb-6">
+              <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
+                <h1 className={`text-3xl sm:text-4xl lg:text-5xl mb-3 sm:mb-4 text-gray-900 ${orbitron.className}`}>
+                  Lean Projax
+                </h1>
+              </a>
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-4 sm:mb-6">
                 Experience Six Sigma Workflow Automation
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <Eye className="h-6 w-6 text-blue-600" />
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <Eye className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">Explore Full Features</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Explore Full Features</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
                     Test all DMAIC tools including VOC analysis, process mapping, and statistical controls
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <Shield className="h-6 w-6 text-blue-600" />
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">Safe Sandbox Environment</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Safe Sandbox Environment</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
                     Pre-populated with sample data. Changes won't affect real projects
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <Play className="h-6 w-6 text-blue-600" />
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <Play className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">No Setup Required</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">No Setup Required</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
                     Jump right in and start exploring without any installation
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 border-t">
-              <p className="text-sm text-gray-500">
+            <div className="pt-4 sm:pt-6 border-t">
+              <p className="text-xs sm:text-sm text-gray-500">
                 Ready for the full experience?{' '}
                 <Link href="/signup" className="text-blue-600 font-medium hover:text-blue-700 hover:underline">
                   Create a free account
@@ -119,15 +121,15 @@ export default function DemoLoginPage() {
           </div>
 
           {/* Right side - Login form */}
-          <Card className="w-full border-2 border-gray-200 shadow-lg">
-            <CardHeader className="space-y-4 text-center bg-gradient-to-br from-blue-50 to-indigo-50 border-b-2 border-gray-200">
-              <CardTitle className="text-2xl font-bold text-gray-900">Demo Access</CardTitle>
-              <CardDescription className="text-base text-gray-600">
+          <Card className="w-full border-2 border-gray-200 shadow-lg order-1 lg:order-2">
+            <CardHeader className="space-y-3 sm:space-y-4 text-center bg-gradient-to-br from-blue-50 to-indigo-50 border-b-2 border-gray-200 px-4 sm:px-6">
+              <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">Demo Access</CardTitle>
+              <CardDescription className="text-sm sm:text-base text-gray-600">
                 Sign in to explore the platform
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <CardContent className="pt-4 sm:pt-6 px-4 sm:px-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
                 Email
@@ -138,7 +140,7 @@ export default function DemoLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-gray-300 focus:border-blue-600"
+                className="border-gray-300 focus:border-blue-600 h-11"
                 readOnly
               />
             </div>
@@ -154,7 +156,7 @@ export default function DemoLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="border-gray-300 focus:border-blue-600"
+                className="border-gray-300 focus:border-blue-600 h-11"
               />
             </div>
 
@@ -167,7 +169,7 @@ export default function DemoLoginPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white hover:bg-blue-700 h-11"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 h-11 text-base"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -182,8 +184,8 @@ export default function DemoLoginPage() {
               )}
             </Button>
 
-            <div className="text-center pt-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg">
+            <div className="text-center pt-2 sm:pt-4">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-50 rounded-lg">
                 <div className="text-xs text-gray-500">
                   <span className="font-medium text-gray-700">Demo credentials:</span>
                   <p className="font-mono mt-1 text-gray-600">demo@leanprojax.com / demo123</p>

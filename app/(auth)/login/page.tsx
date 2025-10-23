@@ -17,7 +17,6 @@ const orbitron = Orbitron({
 })
 
 function LoginContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -68,22 +67,24 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-white p-4 sm:p-6">
       <Card className="w-full max-w-md border-2 border-black">
-        <CardHeader className="space-y-4 text-center">
-          <CardTitle className={`text-4xl text-red-700 ${orbitron.className}`}>
-            Lean Projax
-          </CardTitle>
+        <CardHeader className="space-y-3 sm:space-y-4 text-center px-4 sm:px-6">
+          <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
+            <CardTitle className={`text-3xl sm:text-4xl text-red-700 ${orbitron.className}`}>
+              Lean Projax
+            </CardTitle>
+          </a>
           <div className="h-px bg-black" />
-          <CardDescription className="text-base text-gray-600">
+          <CardDescription className="text-sm sm:text-base text-gray-600">
             Six Sigma Workflow Automation
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           {showSignupSuccess && (
             <Alert className="mb-4 border-blue-600 bg-blue-50">
               <CheckCircle2 className="h-4 w-4 text-blue-600" />
-              <AlertDescription className="text-blue-800">
+              <AlertDescription className="text-blue-800 text-sm">
                 <strong>Account created successfully!</strong>
                 <br />
                 {searchParams.get('verify') === 'pending' ? (
@@ -96,7 +97,7 @@ function LoginContent() {
               </AlertDescription>
             </Alert>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
                 Email
@@ -108,7 +109,7 @@ function LoginContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-gray-300 focus:border-black"
+                className="border-gray-300 focus:border-black h-11"
               />
             </div>
 
@@ -123,12 +124,12 @@ function LoginContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="border-gray-300 focus:border-black"
+                className="border-gray-300 focus:border-black h-11"
               />
             </div>
 
             {error && (
-              <div className="text-sm text-black font-medium border border-black p-3 bg-gray-50">
+              <div className="text-sm text-black font-medium border border-black p-3 bg-gray-50 rounded">
                 {error}
               </div>
             )}
@@ -136,12 +137,12 @@ function LoginContent() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-black text-white hover:bg-gray-800"
+              className="w-full bg-black text-white hover:bg-gray-800 h-11 text-base"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
 
-            <div className="text-center text-sm text-gray-600 pt-4">
+            <div className="text-center text-sm text-gray-600 pt-2 sm:pt-4">
               Don&apos;t have an account?{' '}
               <Link href="/signup" className="text-black font-medium hover:underline">
                 Sign up for free
@@ -156,13 +157,15 @@ function LoginContent() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
         <Card className="w-full max-w-md border-2 border-black">
-          <CardHeader className="space-y-1">
-            <CardTitle className={`text-3xl font-bold text-center ${orbitron.className}`}>
-              <span className="text-red-700">Lean Projax</span>
-            </CardTitle>
-            <CardDescription className="text-center text-gray-600">
+          <CardHeader className="space-y-3 sm:space-y-4 px-4 sm:px-6 text-center">
+            <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
+              <CardTitle className={`text-3xl sm:text-4xl font-bold ${orbitron.className}`}>
+                <span className="text-red-700">Lean Projax</span>
+              </CardTitle>
+            </a>
+            <CardDescription className="text-gray-600 text-sm sm:text-base">
               Loading...
             </CardDescription>
           </CardHeader>

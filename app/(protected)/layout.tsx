@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getUser } from '@/lib/auth-check'
+import { getFullUser } from '@/lib/auth-check'
 import { Header } from '@/components/layout/header'
 
 export default async function ProtectedLayout({
@@ -7,7 +7,7 @@ export default async function ProtectedLayout({
 }: {
   children: React.ReactNode
 }) {
-  const user = await getUser()
+  const user = await getFullUser()
 
   if (!user) {
     redirect('/login')

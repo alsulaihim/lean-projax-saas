@@ -32,6 +32,7 @@ model User {
   updatedAt          DateTime            @updatedAt
   createdAssignments Assignment[]
   auditLogs          AuditLog[]
+  payments           Payment[]
 
   @@index([email])
   @@index([verificationToken])
@@ -368,4 +369,51 @@ enum SubscriptionStatus {
   ACTIVE
   EXPIRED
   CANCELLED
+}
+
+enum PaymentProvider {
+  STRIPE
+  PAYPAL
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+model Payment {
+  id                String          @id @default(uuid())
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Payment details
+  amount            Float
+  currency          String          @default("USD")
+  provider          PaymentProvider
+  status            PaymentStatus   @default(PENDING)
+
+  // Provider-specific IDs
+  stripePaymentId   String?         @unique
+  paypalOrderId     String?         @unique
+
+  // Subscription details
+  subscriptionTier  SubscriptionTier
+  billingPeriod     String          // "monthly" or "annual"
+
+  // Metadata
+  description       String?
+  metadata          Json?           // Additional provider-specific data
+
+  // Timestamps
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  paidAt            DateTime?
+
+  @@index([userId])
+  @@index([stripePaymentId])
+  @@index([paypalOrderId])
+  @@index([status])
 }

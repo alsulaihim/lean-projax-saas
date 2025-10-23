@@ -388,7 +388,11 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
                         onChange={(e) => updateScheduleItem(index, 'startDate', e.target.value)}
                       />
                     ) : (
-                      item.startDate ? new Date(item.startDate).toLocaleDateString() : '-'
+                      item.startDate ? new Date(item.startDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                      }) : '-'
                     )}
                   </TableCell>
                   <TableCell>
@@ -399,7 +403,11 @@ export function CharterSection({ assignmentId, charter, canEdit, userId }: Chart
                         onChange={(e) => updateScheduleItem(index, 'endDate', e.target.value)}
                       />
                     ) : (
-                      item.endDate ? new Date(item.endDate).toLocaleDateString() : '-'
+                      item.endDate ? new Date(item.endDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                      }) : '-'
                     )}
                   </TableCell>
                 </TableRow>

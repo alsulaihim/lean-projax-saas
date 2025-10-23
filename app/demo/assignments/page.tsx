@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import { prisma } from '@/lib/prisma'
 import { AssignmentList } from '@/components/assignment/assignment-list'
-import { UserRole } from '@prisma/client'
 
 export default async function DemoAssignmentsPage() {
   const user = await getUser()

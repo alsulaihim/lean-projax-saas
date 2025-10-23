@@ -84,7 +84,7 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
   }
 
   // Calculate completion status - lenient criteria (1+ entry is enough)
-  const sectionStatus = {
+  const sectionStatus = useMemo(() => ({
     voc: {
       completed: counts.voc >= 1 && counts.ctq >= 1, // At least 1 VOC and 1 CTQ
       hasData: counts.voc > 0
@@ -122,7 +122,7 @@ export function AssignmentTabs({ assignment, canEdit, userId, onProgressCalculat
       completed: counts.recommendations >= 1, // At least 1 recommendation
       hasData: counts.recommendations > 0
     }
-  }
+  }), [counts.voc, counts.ctq, counts.sipoc, counts.vsm, counts.fishbone, counts.fmea, counts.recommendations, assignment.processes])
 
   // Map tab values to section IDs for progress navigation
   const tabToSection: Record<string, string> = {

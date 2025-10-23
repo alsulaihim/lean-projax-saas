@@ -9,6 +9,12 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, Loader2, Check, X as XIcon, CheckCircle2 } from 'lucide-react'
+import { Orbitron } from 'next/font/google'
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  variable: '--font-orbitron',
+})
 
 /**
  * Signup Page Component
@@ -159,16 +165,20 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
       <Card className="w-full max-w-md border-2 border-black">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">Create an account</CardTitle>
-          <CardDescription className="text-gray-600">
+        <CardHeader className="space-y-2 sm:space-y-3 text-center px-4 sm:px-6">
+          <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
+            <CardTitle className={`text-2xl sm:text-3xl font-bold text-red-700 ${orbitron.className}`}>
+              Lean Projax
+            </CardTitle>
+          </a>
+          <CardDescription className="text-gray-600 text-sm sm:text-base">
             Start your 14-day free trial. No credit card required.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="px-4 sm:px-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             {error && (
               <Alert variant="destructive" className="border-red-600">
                 <AlertCircle className="h-4 w-4" />
@@ -177,7 +187,7 @@ export default function SignupPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
+              <Label htmlFor="email" className="text-sm">Email *</Label>
               <Input
                 id="email"
                 name="email"
@@ -186,13 +196,13 @@ export default function SignupPage() {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={isLoading}
-                className="border-black"
+                className="border-black h-11"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
+              <Label htmlFor="name" className="text-sm">Full Name *</Label>
               <Input
                 id="name"
                 name="name"
@@ -201,13 +211,13 @@ export default function SignupPage() {
                 value={formData.name}
                 onChange={handleChange}
                 disabled={isLoading}
-                className="border-black"
+                className="border-black h-11"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name (Optional)</Label>
+              <Label htmlFor="companyName" className="text-sm">Company Name (Optional)</Label>
               <Input
                 id="companyName"
                 name="companyName"
@@ -216,12 +226,12 @@ export default function SignupPage() {
                 value={formData.companyName}
                 onChange={handleChange}
                 disabled={isLoading}
-                className="border-black"
+                className="border-black h-11"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password *</Label>
+              <Label htmlFor="password" className="text-sm">Password *</Label>
               <Input
                 id="password"
                 name="password"
@@ -231,7 +241,7 @@ export default function SignupPage() {
                 onChange={handleChange}
                 onFocus={() => setShowPasswordRequirements(true)}
                 disabled={isLoading}
-                className="border-black"
+                className="border-black h-11"
                 required
               />
               
@@ -320,7 +330,7 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password *</Label>
+              <Label htmlFor="confirmPassword" className="text-sm">Confirm Password *</Label>
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -329,10 +339,10 @@ export default function SignupPage() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 disabled={isLoading}
-                className="border-black"
+                className="border-black h-11"
                 required
               />
-              
+
               {/* Password Match Indicator */}
               {formData.confirmPassword.length > 0 && (
                 <div className={`flex items-center gap-2 text-sm mt-2 ${
@@ -355,7 +365,7 @@ export default function SignupPage() {
 
             <Button
               type="submit"
-              className="w-full bg-black text-white hover:bg-gray-800"
+              className="w-full bg-black text-white hover:bg-gray-800 h-11 text-base"
               disabled={isLoading}
             >
               {isLoading ? (

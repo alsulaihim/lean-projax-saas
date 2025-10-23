@@ -135,6 +135,8 @@ jobs:
 
       - name: Validate Prisma schema
         run: npx prisma validate
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/testdb
 
       - name: Push schema to test database
         run: npx prisma db push --skip-generate

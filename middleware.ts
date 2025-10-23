@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   // Check if accessing protected routes
   // IMPORTANT: Check demo routes FIRST to avoid matching /demo/assignments with /assignments
   const isDemoRoute = pathname.startsWith('/demo/assignments') || pathname.startsWith('/demo/dashboard')
-  const isProtectedRoute = !isDemoRoute && (pathname.startsWith('/assignments') || pathname.startsWith('/dashboard'))
+  const isProtectedRoute = !isDemoRoute && (pathname.startsWith('/assignments') || pathname.startsWith('/dashboard') || pathname.startsWith('/upgrade'))
 
   // If accessing protected routes, verify authentication
   if (isProtectedRoute || isDemoRoute) {
@@ -55,5 +55,6 @@ export const config = {
     '/dashboard/:path*',
     '/demo/assignments/:path*',
     '/demo/dashboard/:path*',
+    '/upgrade/:path*',
   ]
 }

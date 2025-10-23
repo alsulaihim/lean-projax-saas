@@ -42,7 +42,11 @@
       "Bash(npx tsc:*)",
       "Bash(timeout 120 npm run build)",
       "Bash(npm install:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(xargs kill:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)"
     ],
     "deny": [],
     "ask": []

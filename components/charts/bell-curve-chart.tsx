@@ -67,6 +67,7 @@ function erf(x: number): number {
 }
 
 // Convert DPMO to Sigma Level using standard Six Sigma table
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function dpmoToSigmaLevel(dpmo: number): number {
   // Standard Six Sigma conversion table (with 1.5 sigma shift already included)
   const sigmaTable = [

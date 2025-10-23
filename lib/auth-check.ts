@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers'
 import { jwtVerify } from 'jose'
-import type { UserRole } from '@prisma/client'
+import type { UserRole, SubscriptionTier, SubscriptionStatus } from '@prisma/client'
+import { prisma } from './prisma'
 
 if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET environment variable is required')
@@ -14,6 +15,12 @@ export interface User {
   name: string
   role: UserRole
   isDemo?: boolean
+}
+
+export interface FullUser extends User {
+  subscriptionTier: SubscriptionTier
+  subscriptionStatus: SubscriptionStatus
+  trialEndsAt: Date | null
 }
 
 export async function getUser(): Promise<User | null> {
@@ -48,6 +55,44 @@ export async function getUser(): Promise<User | null> {
       name,
       role: role as UserRole,
       isDemo: typeof isDemo === 'boolean' ? isDemo : undefined
+    }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Get full user with subscription data from database
+ * Use this when you need subscription information (e.g., in layouts, headers)
+ */
+export async function getFullUser(): Promise<FullUser | null> {
+  const user = await getUser()
+
+  if (!user) {
+    return null
+  }
+
+  try {
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        subscriptionTier: true,
+        subscriptionStatus: true,
+        trialEndsAt: true,
+      }
+    })
+
+    if (!dbUser) {
+      return null
+    }
+
+    return {
+      ...dbUser,
+      isDemo: user.isDemo
     }
   } catch {
     return null
