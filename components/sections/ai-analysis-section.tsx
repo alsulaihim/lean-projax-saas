@@ -38,26 +38,28 @@ export function AIAnalysisSection({ assignment }: AIAnalysisSectionProps) {
   const [activeSubTab, setActiveSubTab] = useState('assessment')
 
   return (
-    <Card className="border-2 border-black h-[calc(100vh-12rem)]">
+    <Card className="border-2 border-black w-full max-w-full">
       <CardHeader>
         <CardTitle>AI Analysis</CardTitle>
         <CardDescription>
           Get AI-powered insights and analysis of your Six Sigma assignment
         </CardDescription>
       </CardHeader>
-      <CardContent className="h-[calc(100%-6rem)] flex flex-col">
-        <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full flex-1 flex flex-col">
+      <CardContent className="w-full">
+        <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="assessment">Assessment</TabsTrigger>
             <TabsTrigger value="chat">Chat with AI</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="assessment" className="mt-6 flex-1 overflow-y-auto">
+          <TabsContent value="assessment" className="mt-6 w-full max-w-full">
             <AIAssessment assignment={assignment} />
           </TabsContent>
 
-          <TabsContent value="chat" className="mt-6 flex-1">
-            <AIChat assignmentId={assignment.id} />
+          <TabsContent value="chat" className="mt-6 w-full max-w-full">
+            <div className="h-[600px]">
+              <AIChat assignmentId={assignment.id} />
+            </div>
           </TabsContent>
         </Tabs>
       </CardContent>

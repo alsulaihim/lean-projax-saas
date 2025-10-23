@@ -108,7 +108,7 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-full overflow-hidden">
       {!assessment && (
         <div className="flex flex-col items-center justify-center py-12">
           <Sparkles className="h-16 w-16 text-gray-400 mb-4" />
@@ -145,8 +145,8 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
       )}
 
       {assessment && (
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
+        <div className="space-y-6 w-full max-w-full">
+          <div className="flex justify-between items-center flex-wrap gap-4">
             <h3 className="text-xl font-bold">Assessment Results</h3>
             <Button
               variant="outline"
@@ -166,7 +166,7 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
           </div>
 
           {/* Overview */}
-          <Card className="border-2 border-black">
+          <Card className="border-2 border-black w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Sparkles className="h-5 w-5" />
@@ -174,12 +174,12 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 leading-relaxed">{assessment.overview}</p>
+              <p className="text-gray-700 leading-relaxed break-words">{assessment.overview}</p>
             </CardContent>
           </Card>
 
           {/* Key Metrics */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Card className="border-2 border-black">
               <CardContent className="pt-6">
                 <div className="text-center">
@@ -200,14 +200,14 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-2">Risk Level</p>
-                  <p className="text-3xl font-bold">{assessment.metrics.riskLevel}</p>
+                  <p className="text-3xl font-bold break-words">{assessment.metrics.riskLevel}</p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
           {/* Key Insights */}
-          <Card className="border-2 border-black">
+          <Card className="border-2 border-black w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5" />
@@ -221,7 +221,7 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-sm font-semibold mt-0.5">
                       {index + 1}
                     </span>
-                    <span className="text-gray-700 leading-relaxed">{insight}</span>
+                    <span className="text-gray-700 leading-relaxed break-words flex-1 min-w-0">{insight}</span>
                   </li>
                 ))}
               </ul>
@@ -229,7 +229,7 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
           </Card>
 
           {/* Deep Insights */}
-          <div>
+          <div className="w-full">
             <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Lightbulb className="h-5 w-5" />
               Deep Insights to Consider
@@ -238,14 +238,14 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
               {assessment.deepInsights.map((insight, index) => (
                 <Card
                   key={index}
-                  className={`border-2 ${getCategoryColor(insight.category)}`}
+                  className={`border-2 ${getCategoryColor(insight.category)} w-full`}
                 >
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0">{getCategoryIcon(insight.category)}</div>
-                      <div className="flex-1">
-                        <h5 className="font-semibold mb-2">{insight.title}</h5>
-                        <p className="text-sm text-gray-700 leading-relaxed">
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-semibold mb-2 break-words">{insight.title}</h5>
+                        <p className="text-sm text-gray-700 leading-relaxed break-words">
                           {insight.description}
                         </p>
                       </div>

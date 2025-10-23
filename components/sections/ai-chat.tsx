@@ -89,9 +89,9 @@ export function AIChat({ assignmentId }: AIChatProps) {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full max-w-full">
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto space-y-4 p-4 border-2 border-black rounded-lg bg-gray-50">
+      <div className={`flex-1 space-y-3 p-4 border-2 border-black rounded-lg bg-gray-50 max-w-full ${messages.length === 0 ? 'overflow-hidden' : 'overflow-y-auto'}`}>
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <Bot className="h-16 w-16 text-gray-400 mb-4" />
@@ -106,25 +106,25 @@ export function AIChat({ assignmentId }: AIChatProps) {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'} w-full`}
           >
             {message.role === 'assistant' && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-                <Bot className="h-5 w-5" />
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-black text-white flex items-center justify-center mt-1">
+                <Bot className="h-4 w-4" />
               </div>
             )}
 
             <Card
-              className={`max-w-[80%] ${
+              className={`max-w-[75%] break-words ${
                 message.role === 'user'
                   ? 'bg-black text-white border-black'
                   : 'bg-white border-2 border-gray-200'
               }`}
             >
-              <CardContent className="p-4">
-                <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
+              <CardContent className="p-2.5">
+                <p className="text-sm whitespace-pre-wrap leading-relaxed break-words">{message.content}</p>
                 <p
-                  className={`text-xs mt-2 ${
+                  className={`text-xs mt-1.5 ${
                     message.role === 'user' ? 'text-gray-300' : 'text-gray-500'
                   }`}
                 >
@@ -137,20 +137,20 @@ export function AIChat({ assignmentId }: AIChatProps) {
             </Card>
 
             {message.role === 'user' && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                <User className="h-5 w-5" />
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center mt-1">
+                <User className="h-4 w-4" />
               </div>
             )}
           </div>
         ))}
 
         {loading && (
-          <div className="flex gap-3 justify-start">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-              <Bot className="h-5 w-5" />
+          <div className="flex gap-2 justify-start">
+            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-black text-white flex items-center justify-center mt-1">
+              <Bot className="h-4 w-4" />
             </div>
             <Card className="bg-white border-2 border-gray-200">
-              <CardContent className="p-4">
+              <CardContent className="p-2.5">
                 <Loader2 className="h-5 w-5 animate-spin text-gray-500" />
               </CardContent>
             </Card>
@@ -169,20 +169,20 @@ export function AIChat({ assignmentId }: AIChatProps) {
       )}
 
       {/* Input Area */}
-      <div className="mt-4 flex gap-2">
+      <div className="mt-4 flex gap-2 w-full">
         <Textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question about your assignment..."
-          className="min-h-[60px] max-h-[120px] resize-none border-2 border-black"
+          className="min-h-[60px] max-h-[120px] resize-none border-2 border-black flex-1"
           disabled={loading}
         />
         <Button
           onClick={sendMessage}
           disabled={!input.trim() || loading}
-          className="bg-black text-white hover:bg-gray-800 px-6"
+          className="bg-black text-white hover:bg-gray-800 px-6 flex-shrink-0"
         >
           {loading ? (
             <Loader2 className="h-5 w-5 animate-spin" />
