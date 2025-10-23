@@ -28,13 +28,15 @@ const roleLabels: Record<UserRole, string> = {
   [UserRole.PROCESS_OWNER]: 'Process Owner',
 }
 
+const MARKETING_URL = process.env.NEXT_PUBLIC_MARKETING_URL || 'http://localhost:3071'
+
 export function Header({ user }: HeaderProps) {
   const router = useRouter()
 
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' })
     // Redirect to marketing site after logout
-    window.location.href = 'http://localhost:3071'
+    window.location.href = MARKETING_URL
   }
 
   return (
