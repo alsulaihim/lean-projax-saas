@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,18 +9,10 @@ import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 /**
- * Email Verification Page
- * 
- * Purpose: Verify user's email address via token from verification email
- * 
- * Flow:
- * 1. User clicks link in verification email
- * 2. Page loads with token in URL query
- * 3. Automatically verifies token with API
- * 4. Shows success or error message
- * 5. Redirects to login on success
+ * Email Verification Content Component
+ * Handles the actual verification logic with search params
  */
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
@@ -135,6 +127,43 @@ export default function VerifyEmailPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+/**
+ * Email Verification Page
+ *
+ * Purpose: Verify user's email address via token from verification email
+ *
+ * Flow:
+ * 1. User clicks link in verification email
+ * 2. Page loads with token in URL query
+ * 3. Automatically verifies token with API
+ * 4. Shows success or error message
+ * 5. Redirects to login on success
+ */
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <Card className="w-full max-w-md border-2 border-black">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-3xl font-bold">Email Verification</CardTitle>
+            <CardDescription className="text-gray-600">
+              Loading verification...
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-8">
+              <Loader2 className="h-12 w-12 animate-spin mx-auto text-blue-600 mb-4" />
+              <p className="text-gray-600">Please wait...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   )
 }
 

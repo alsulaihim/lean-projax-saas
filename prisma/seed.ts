@@ -120,17 +120,17 @@ async function main() {
 
   // Add SIPOC entries using batch insert for better performance
   const sipocData = [
-    { column: 'SUPPLIER', value: 'Warehouse Staff', order: 1 },
-    { column: 'SUPPLIER', value: 'IT Systems', order: 2 },
-    { column: 'INPUT', value: 'Customer Orders', order: 1 },
-    { column: 'INPUT', value: 'Inventory Data', order: 2 },
-    { column: 'PROCESS', value: 'Receive Order', order: 1 },
-    { column: 'PROCESS', value: 'Pick Items', order: 2 },
-    { column: 'PROCESS', value: 'Pack and Ship', order: 3 },
-    { column: 'OUTPUT', value: 'Shipped Package', order: 1 },
-    { column: 'OUTPUT', value: 'Tracking Number', order: 2 },
-    { column: 'CUSTOMER', value: 'End Customers', order: 1 },
-    { column: 'CUSTOMER', value: 'Customer Service', order: 2 }
+    { column: 'SUPPLIER' as const, value: 'Warehouse Staff', order: 1 },
+    { column: 'SUPPLIER' as const, value: 'IT Systems', order: 2 },
+    { column: 'INPUT' as const, value: 'Customer Orders', order: 1 },
+    { column: 'INPUT' as const, value: 'Inventory Data', order: 2 },
+    { column: 'PROCESS' as const, value: 'Receive Order', order: 1 },
+    { column: 'PROCESS' as const, value: 'Pick Items', order: 2 },
+    { column: 'PROCESS' as const, value: 'Pack and Ship', order: 3 },
+    { column: 'OUTPUT' as const, value: 'Shipped Package', order: 1 },
+    { column: 'OUTPUT' as const, value: 'Tracking Number', order: 2 },
+    { column: 'CUSTOMER' as const, value: 'End Customers', order: 1 },
+    { column: 'CUSTOMER' as const, value: 'Customer Service', order: 2 }
   ]
 
   await prisma.sIPOCEntry.createMany({
