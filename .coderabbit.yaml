@@ -1,0 +1,150 @@
+# CodeRabbit Configuration for Lean Projax
+# Automated code review settings
+
+# Enable automatic reviews on pull requests
+reviews:
+  # Request changes if critical issues found
+  request_changes_workflow: true
+
+  # Enable auto-reviews
+  auto_review:
+    enabled: true
+    drafts: false # Don't review draft PRs
+    base_branches:
+      - main
+      - staging
+      - dev
+
+  # Files/paths to exclude from review
+  path_filters:
+    excluded:
+      - "**/*.md" # Documentation files
+      - "**/package-lock.json"
+      - "**/pnpm-lock.yaml"
+      - "**/*.log"
+      - ".next/**"
+      - "node_modules/**"
+      - "dist/**"
+      - "build/**"
+      - "coverage/**"
+      - "prisma/migrations/**" # Auto-generated migrations
+
+# Review checklist - CodeRabbit will check for these
+checklist:
+  - "Code follows Next.js and React best practices"
+  - "No secrets or API keys committed"
+  - "Proper error handling implemented"
+  - "TypeScript types are properly defined"
+  - "Database queries are optimized"
+  - "Authentication checks are in place"
+  - "Demo mode checks exist where needed"
+  - "Environment variables are documented"
+  - "No console.log in production code"
+  - "Prisma queries use proper error handling"
+
+# Language-specific settings
+language_settings:
+  typescript:
+    enabled: true
+    lint_checks: true
+  javascript:
+    enabled: true
+    lint_checks: true
+  react:
+    enabled: true
+    hooks_rules: true # Check React Hooks rules
+
+# Pattern-based checks (regex)
+pattern_checks:
+  # Check for hardcoded URLs
+  - pattern: 'http://localhost:\d+'
+    message: "⚠️ Hardcoded localhost URL detected. Consider using environment variables."
+    severity: "warning"
+    files:
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+    exclude:
+      - "**/*.test.*"
+      - "**/test-*.{ts,js}"
+
+  # Check for TODO/FIXME comments
+  - pattern: '(TODO|FIXME|HACK):'
+    message: "📝 TODO/FIXME comment found. Consider creating a GitHub issue."
+    severity: "info"
+
+  # Check for console.log (should use proper logging)
+  - pattern: 'console\.(log|debug|info|warn|error)'
+    message: "🔍 Console statement detected. Use proper logging in production."
+    severity: "warning"
+    exclude:
+      - "**/*.test.*"
+      - "**/scripts/**"
+
+  # Check for commented code
+  - pattern: '^\s*//\s*[a-zA-Z].*\('
+    message: "💀 Commented code detected. Remove if no longer needed."
+    severity: "info"
+
+  # Check for missing error handling in async functions
+  - pattern: 'async\s+\w+\s*\([^)]*\)\s*\{[^}]*\}'
+    message: "⚠️ Async function should have try-catch error handling."
+    severity: "warning"
+    files:
+      - "**/api/**/*.ts"
+
+  # Check for Prisma queries without error handling
+  - pattern: 'prisma\.\w+\.(create|update|delete|findMany|findUnique)'
+    message: "🗄️ Prisma query should be wrapped in try-catch."
+    severity: "warning"
+
+  # Check for authentication bypasses (security)
+  - pattern: 'isDemo\s*=\s*true'
+    message: "🔒 Demo mode assignment detected. Verify this is intentional."
+    severity: "info"
+
+  # Check for sensitive data in responses
+  - pattern: '(password|secret|token|apiKey|privateKey)'
+    message: "🚨 CRITICAL: Potential sensitive data exposure. Review carefully!"
+    severity: "error"
+    files:
+      - "**/api/**/*.ts"
+
+# Comment settings
+comments:
+  # Enable PR summary
+  summary:
+    enabled: true
+
+  # Enable inline code suggestions
+  inline_suggestions:
+    enabled: true
+
+  # Enable file-level comments
+  file_level:
+    enabled: true
+
+# Chat settings
+chat:
+  # Enable @coderabbitai commands
+  enabled: true
+
+  # Auto-reply to mentions
+  auto_reply:
+    enabled: true
+
+# Knowledge base
+knowledge_base:
+  # Use project's documentation for context
+  files:
+    - "README.md"
+    - "DEVELOPMENT_WORKFLOW.md"
+    - "QUICK_START.md"
+    - "RAILWAY_DEPLOYMENT.md"
+
+# Tools integration
+tools:
+  github_actions:
+    enabled: true
+    check_workflow_files: true
