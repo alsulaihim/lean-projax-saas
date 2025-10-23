@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import { Header } from '@/components/layout/header'
+import { SubscriptionTier, SubscriptionStatus } from '@prisma/client'
 
 export default async function DemoLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser()
@@ -15,9 +16,16 @@ export default async function DemoLayout({ children }: { children: React.ReactNo
     redirect('/assignments')
   }
 
+  // Add subscription fields for demo user
+  const userWithSubscription = {
+    ...user,
+    subscriptionTier: user.subscriptionTier || SubscriptionTier.FREE,
+    subscriptionStatus: user.subscriptionStatus || SubscriptionStatus.ACTIVE,
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Header user={user} />
+      <Header user={userWithSubscription} />
       <main className="w-full py-8 px-6">{children}</main>
     </div>
   )
