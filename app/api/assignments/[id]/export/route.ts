@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { generatePDF } from '@/lib/pdf-generation'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Authentication check
   const user = await getUser()
   if (!user) {
@@ -25,27 +22,27 @@ export async function GET(
           include: {
             sipocEntries: true,
             vsmSteps: {
-              orderBy: { stepNumber: 'asc' }
+              orderBy: { stepNumber: 'asc' },
             },
             fishboneCategories: {
               include: {
-                causes: true
-              }
+                causes: true,
+              },
             },
-            fmeaEntries: true
+            fmeaEntries: true,
           },
-          orderBy: { order: 'asc' }
+          orderBy: { order: 'asc' },
         },
         vocStatements: {
           include: {
-            ctqRequirements: true
+            ctqRequirements: true,
           },
-          orderBy: { createdAt: 'asc' }
+          orderBy: { createdAt: 'asc' },
         },
         recommendations: {
-          orderBy: { createdAt: 'asc' }
-        }
-      }
+          orderBy: { createdAt: 'asc' },
+        },
+      },
     })
 
     if (!assignment) {
@@ -65,8 +62,8 @@ export async function GET(
       return new NextResponse(pdfBuffer as unknown as BodyInit, {
         headers: {
           'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="${sanitizedFilename}_Report.pdf"`
-        }
+          'Content-Disposition': `attachment; filename="${sanitizedFilename}_Report.pdf"`,
+        },
       })
     } catch (pdfError) {
       console.warn('PDF generation failed, falling back to HTML:', pdfError)
@@ -108,11 +105,15 @@ export async function GET(
   </div>
 
   <h2>1. Voice of Customer (VOC) & Critical to Quality (CTQ)</h2>
-  ${assignment.vocStatements.map(voc => `
+  ${assignment.vocStatements
+    .map(
+      voc => `
     <div style="margin-bottom: 30px;">
       <h3>VOC: ${voc.voiceStatement}</h3>
       <p><strong>Customer Segment:</strong> ${voc.customerSegment}</p>
-      ${voc.ctqRequirements.length > 0 ? `
+      ${
+        voc.ctqRequirements.length > 0
+          ? `
         <h4>CTQ Requirements:</h4>
         <table>
           <tr>
@@ -120,23 +121,35 @@ export async function GET(
             <th>Measurement Criteria</th>
             <th>Target Value</th>
           </tr>
-          ${voc.ctqRequirements.map(ctq => `
+          ${voc.ctqRequirements
+            .map(
+              ctq => `
             <tr>
               <td>${ctq.ctqDescription}</td>
               <td>${ctq.measurementCriteria}</td>
               <td>${ctq.targetValue || '-'}</td>
             </tr>
-          `).join('')}
+          `
+            )
+            .join('')}
         </table>
-      ` : '<p>No CTQ requirements defined</p>'}
+      `
+          : '<p>No CTQ requirements defined</p>'
+      }
     </div>
-  `).join('')}
+  `
+    )
+    .join('')}
 
-  ${assignment.processes.map((process, index) => `
+  ${assignment.processes
+    .map(
+      (process, index) => `
     <h2>Process ${index + 1}: ${process.processName}</h2>
     <p>${process.processOwner ? `Owner: ${process.processOwner}` : ''}</p>
 
-    ${process.sipocEntries.length > 0 ? `
+    ${
+      process.sipocEntries.length > 0
+        ? `
       <h3>SIPOC Diagram</h3>
       <table>
         <tr>
@@ -146,15 +159,26 @@ export async function GET(
           <th>Outputs</th>
           <th>Customers</th>
         </tr>
-        ${['SUPPLIER', 'INPUT', 'PROCESS', 'OUTPUT', 'CUSTOMER'].map(column => `
+        ${['SUPPLIER', 'INPUT', 'PROCESS', 'OUTPUT', 'CUSTOMER']
+          .map(
+            column => `
           <tr>
-            <td>${process.sipocEntries.filter(e => e.column === column).map(e => e.value).join('<br>')}</td>
+            <td>${process.sipocEntries
+              .filter(e => e.column === column)
+              .map(e => e.value)
+              .join('<br>')}</td>
           </tr>
-        `).join('')}
+        `
+          )
+          .join('')}
       </table>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${process.vsmSteps.length > 0 ? `
+    ${
+      process.vsmSteps.length > 0
+        ? `
       <h3>Value Stream Map</h3>
       <table>
         <tr>
@@ -163,19 +187,27 @@ export async function GET(
           <th>Wait Time (min)</th>
           <th>Value Added</th>
         </tr>
-        ${process.vsmSteps.map(step => `
+        ${process.vsmSteps
+          .map(
+            step => `
           <tr>
             <td>${step.stepName}</td>
             <td>${step.durationMinutes || 0}</td>
             <td>${step.waitTimeMinutes || 0}</td>
             <td>${step.valueAdded ? 'Yes' : 'No'}</td>
           </tr>
-        `).join('')}
+        `
+          )
+          .join('')}
       </table>
       <p><strong>Total Lead Time:</strong> ${process.vsmSteps.reduce((sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0), 0)} minutes</p>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${process.fmeaEntries.length > 0 ? `
+    ${
+      process.fmeaEntries.length > 0
+        ? `
       <h3>FMEA Analysis</h3>
       <table>
         <tr>
@@ -187,7 +219,10 @@ export async function GET(
           <th>Detection</th>
           <th>RPN</th>
         </tr>
-        ${process.fmeaEntries.sort((a, b) => b.rpn - a.rpn).map(fmea => `
+        ${process.fmeaEntries
+          .sort((a, b) => b.rpn - a.rpn)
+          .map(
+            fmea => `
           <tr class="${fmea.rpn >= 200 ? 'rpn-high' : fmea.rpn >= 100 ? 'rpn-medium' : 'rpn-low'}">
             <td>${fmea.failureMode}</td>
             <td>${fmea.effectsOfFailure}</td>
@@ -197,12 +232,20 @@ export async function GET(
             <td>${fmea.detection}</td>
             <td>${fmea.rpn}</td>
           </tr>
-        `).join('')}
+        `
+          )
+          .join('')}
       </table>
-    ` : ''}
-  `).join('')}
+    `
+        : ''
+    }
+  `
+    )
+    .join('')}
 
-  ${assignment.recommendations.length > 0 ? `
+  ${
+    assignment.recommendations.length > 0
+      ? `
     <h2>Recommendations</h2>
     <table>
       <tr>
@@ -212,7 +255,9 @@ export async function GET(
         <th>Difficulty</th>
         <th>Status</th>
       </tr>
-      ${assignment.recommendations.map(rec => `
+      ${assignment.recommendations
+        .map(
+          rec => `
         <tr>
           <td>${rec.recommendationTitle}</td>
           <td>${rec.description}</td>
@@ -220,9 +265,13 @@ export async function GET(
           <td>${rec.implementationDifficulty}</td>
           <td>${rec.status}</td>
         </tr>
-      `).join('')}
+      `
+        )
+        .join('')}
     </table>
-  ` : ''}
+  `
+      : ''
+  }
 
   <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #ccc;">
     <p style="text-align: center; color: #666;">
@@ -242,16 +291,12 @@ export async function GET(
       return new NextResponse(html, {
         headers: {
           'Content-Type': 'text/html',
-          'Content-Disposition': `attachment; filename="${sanitizedFilename}_Report.html"`
-        }
+          'Content-Disposition': `attachment; filename="${sanitizedFilename}_Report.html"`,
+        },
       })
     }
-
   } catch (error) {
     console.error('Failed to export assignment:', error)
-    return NextResponse.json(
-      { error: 'Failed to export assignment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to export assignment' }, { status: 500 })
   }
 }

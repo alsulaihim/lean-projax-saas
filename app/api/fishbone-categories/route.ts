@@ -17,18 +17,15 @@ export async function POST(request: NextRequest) {
 
     // Input validation
     if (!processId || !assignmentId || !category) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Check if category already exists to prevent race condition
     const existingCategory = await prisma.fishboneCategory.findFirst({
       where: {
         processId,
-        category
-      }
+        category,
+      },
     })
 
     if (existingCategory) {
@@ -36,16 +33,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Create fishbone category and audit log atomically
-    const fishboneCategory = await prisma.$transaction(async (tx) => {
+    const fishboneCategory = await prisma.$transaction(async tx => {
       const newCategory = await tx.fishboneCategory.create({
         data: {
           processId,
           category,
-          order: order || 0
+          order: order || 0,
         },
         include: {
-          causes: true
-        }
+          causes: true,
+        },
       })
 
       await tx.auditLog.create({
@@ -57,9 +54,9 @@ export async function POST(request: NextRequest) {
           entityId: newCategory.id,
           changeDetails: {
             category,
-            order: order || 0
-          }
-        }
+            order: order || 0,
+          },
+        },
       })
 
       return newCategory
@@ -68,9 +65,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(fishboneCategory)
   } catch (error) {
     console.error('Failed to create fishbone category:', error)
-    return NextResponse.json(
-      { error: 'Failed to create fishbone category' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create fishbone category' }, { status: 500 })
   }
 }

@@ -12,7 +12,7 @@ jobs:
   review:
     name: Automated Code Review
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,15 +31,15 @@ jobs:
       - name: Run all checks
         run: |
           echo "🔍 Running quality checks..."
-          
+
           # TypeScript compilation
           echo "📘 TypeScript check..."
           npx tsc --noEmit
-          
+
           # ESLint
           echo "🔧 ESLint check..."
           npm run lint || true
-          
+
           # Build test
           echo "🏗️ Build test..."
           npm run build
@@ -70,4 +70,3 @@ jobs:
               repo: context.repo.repo,
               body: '✅ Automated checks completed! Review the workflow logs for details.'
             })
-

@@ -78,8 +78,7 @@ async function main() {
         'Customer complaints about slow responses, competitive pressure (competitors average 18 hours), revenue impact from churn.',
       nonFinancialBenefits:
         'Improved employee morale, better customer relationships, enhanced brand reputation, reduced stress on support team.',
-      existingLeverage:
-        'Existing CRM system, trained support staff, established knowledge base.',
+      existingLeverage: 'Existing CRM system, trained support staff, established knowledge base.',
       futureLeverage:
         'Process improvements can be applied to phone support, model for other operational improvements, case study for sales.',
       risks:
@@ -234,7 +233,7 @@ async function main() {
   ]
 
   await Promise.all(
-    sipocData.map((item) =>
+    sipocData.map(item =>
       prisma.sIPOCEntry.create({
         data: {
           processId: process.id,
@@ -292,7 +291,7 @@ async function main() {
   ]
 
   await Promise.all(
-    sipocData2.map((item) =>
+    sipocData2.map(item =>
       prisma.sIPOCEntry.create({
         data: {
           processId: process2.id,
@@ -351,7 +350,7 @@ async function main() {
   ]
 
   await Promise.all(
-    sipocData3.map((item) =>
+    sipocData3.map(item =>
       prisma.sIPOCEntry.create({
         data: {
           processId: process3.id,
@@ -453,7 +452,7 @@ async function main() {
   ]
 
   await Promise.all(
-    vsmSteps2.map((step) =>
+    vsmSteps2.map(step =>
       prisma.vSMStep.create({
         data: {
           processId: process2.id,
@@ -461,7 +460,10 @@ async function main() {
           stepName: step.stepName,
           processTime: step.processTime,
           waitingTime: step.waitingTime,
-          valueMeasure: step.valueMeasure as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
+          valueMeasure: step.valueMeasure as
+            | 'VALUE_ADDED'
+            | 'ESSENTIAL_NON_VALUE'
+            | 'NON_VALUE_ADDED',
           wasteType: step.wasteType as 'WAITING' | null,
           stakeholder: step.stakeholder,
           remarks: step.remarks,
@@ -550,7 +552,7 @@ async function main() {
   ]
 
   await Promise.all(
-    vsmSteps3.map((step) =>
+    vsmSteps3.map(step =>
       prisma.vSMStep.create({
         data: {
           processId: process3.id,
@@ -558,7 +560,10 @@ async function main() {
           stepName: step.stepName,
           processTime: step.processTime,
           waitingTime: step.waitingTime,
-          valueMeasure: step.valueMeasure as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
+          valueMeasure: step.valueMeasure as
+            | 'VALUE_ADDED'
+            | 'ESSENTIAL_NON_VALUE'
+            | 'NON_VALUE_ADDED',
           wasteType: step.wasteType as 'WAITING' | null,
           stakeholder: step.stakeholder,
           remarks: step.remarks,
@@ -835,7 +840,7 @@ async function main() {
   ]
 
   await Promise.all(
-    vsmSteps.map((step) =>
+    vsmSteps.map(step =>
       prisma.vSMStep.create({
         data: {
           processId: process.id,
@@ -843,7 +848,10 @@ async function main() {
           stepName: step.stepName,
           processTime: step.processTime,
           waitingTime: step.waitingTime,
-          valueMeasure: step.valueMeasure as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
+          valueMeasure: step.valueMeasure as
+            | 'VALUE_ADDED'
+            | 'ESSENTIAL_NON_VALUE'
+            | 'NON_VALUE_ADDED',
           wasteType: step.wasteType as 'WAITING' | null,
           stakeholder: step.stakeholder,
           remarks: step.remarks,
@@ -1004,7 +1012,7 @@ async function main() {
   ]
 
   await Promise.all(
-    fmeaEntries.map((entry) =>
+    fmeaEntries.map(entry =>
       prisma.fMEAEntry.create({
         data: {
           assignmentId: demoAssignment.id,
@@ -1095,7 +1103,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error seeding demo data:', e)
     process.exit(1)
   })

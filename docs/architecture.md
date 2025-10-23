@@ -18,10 +18,10 @@ We'll use `create-next-app` with TypeScript and Tailwind CSS as the foundation, 
 
 ### Change Log
 
-| Date | Version | Description | Author |
-|------|---------|-------------|--------|
-| 2025-09-30 | 1.0 | Initial architecture document created from PRD v1.0 | Winston (Architect) |
-| 2025-09-30 | 1.1 | Added react-flow for visual Six Sigma diagrams | Winston (Architect) |
+| Date       | Version | Description                                         | Author              |
+| ---------- | ------- | --------------------------------------------------- | ------------------- |
+| 2025-09-30 | 1.0     | Initial architecture document created from PRD v1.0 | Winston (Architect) |
+| 2025-09-30 | 1.1     | Added react-flow for visual Six Sigma diagrams      | Winston (Architect) |
 
 ---
 
@@ -35,6 +35,7 @@ The BPI Assignment Platform is a **monolithic Next.js 14+ application with serve
 
 **Platform:** Vercel + Supabase
 **Key Services:**
+
 - **Hosting:** Vercel (Next.js native platform with automatic deployments)
 - **Database:** Supabase PostgreSQL 15+ with Prisma ORM
 - **Authentication:** NextAuth.js with Supabase as credentials provider
@@ -95,34 +96,34 @@ graph TB
 
 ### Technology Stack Table
 
-| Category | Technology | Version | Purpose | Rationale |
-|----------|-----------|---------|---------|-----------|
-| Frontend Language | TypeScript | 5.3+ | Type-safe development | Strict mode catches errors at compile time, critical for calculation accuracy (NFR2) |
-| Frontend Framework | Next.js | 14.1+ | Full-stack React framework | App Router with RSC, built-in API routes, automatic code splitting, Vercel-optimized |
-| UI Component Library | shadcn/ui | Latest | Accessible component primitives | Radix UI primitives + Tailwind, customizable black/white theme, WCAG AA compliant |
-| State Management | Zustand | 4.5+ | Client-side global state | Lightweight (1KB), no boilerplate, perfect for unsaved changes tracking and user session |
-| Backend Language | TypeScript | 5.3+ | Shared types across stack | Single language reduces context switching, enables type sharing via `/lib/types` |
-| Backend Framework | Next.js API Routes | 14.1+ | Serverless API endpoints | Collocated with frontend, automatic deployment, Edge runtime support |
-| API Style | REST | - | HTTP-based API | Simple, stateless, well-understood; tRPC unnecessary for this scale |
-| Database | PostgreSQL | 15+ | Relational database | ACID compliance for financial data integrity, JSON fields for flexibility, mature ecosystem |
-| ORM | Prisma | 5.9+ | Type-safe database client | Auto-generated types from schema, migration management, connection pooling |
-| Cache | React Query | 5.0+ | Server state management | Automatic caching, request deduplication, optimistic updates, stale-while-revalidate |
-| File Storage | Vercel Blob | Latest | PDF and CSV storage | Integrated with Vercel, simple API, included in Pro plan |
-| Authentication | NextAuth.js | 5.0+ | Session management | Supports credentials provider, JWT/database sessions, role-based access control |
-| Frontend Testing | Vitest | 1.2+ | Unit test runner | Fast, Vite-powered, Jest-compatible API, ESM native |
-| Backend Testing | Vitest | 1.2+ | API integration tests | Same tool as frontend for consistency, supports supertest-style API testing |
-| E2E Testing | Playwright | 1.41+ | End-to-end workflows | Cross-browser testing, built-in test runner, trace viewer for debugging |
-| Build Tool | Next.js Compiler | 14.1+ | Production builds | Rust-based SWC compiler, minification, tree-shaking built-in |
-| Bundler | Turbopack | 14.1+ | Development bundler | Fast HMR, incremental bundling (Next.js 14 default) |
-| IaC Tool | N/A | - | Infrastructure as code | Vercel/Supabase managed services require no IaC for MVP |
-| CI/CD | Vercel Git Integration | Latest | Automated deployments | Automatic preview deployments per PR, production deployment on merge to main |
-| Monitoring | Vercel Analytics | Latest | Web vitals & metrics | Built-in performance monitoring, Core Web Vitals tracking |
-| Logging | Vercel Logs | Latest | Application logs | Centralized logging with search, Edge Function logs included |
-| Error Tracking | Sentry | Latest | Error monitoring | Client/server error capture, source maps, release tracking (optional but recommended) |
-| CSS Framework | Tailwind CSS | 3.4+ | Utility-first styling | Rapid development, small bundle size with purging, shadcn/ui integration |
-| Charting Library | Recharts | 2.10+ | Data visualization | React-native charts, composable API, supports Pareto/bell curve requirements |
-| Diagram Library | @xyflow/react (react-flow) | 12.0+ | Interactive diagrams | Node-based diagrams for Fishbone, SIPOC visual, Process Flow, Traceability graphs |
-| PDF Generation | Puppeteer | 21.11+ | Server-side PDF export | Headless Chrome for high-fidelity PDF rendering of charts and react-flow diagrams |
+| Category             | Technology                 | Version | Purpose                         | Rationale                                                                                   |
+| -------------------- | -------------------------- | ------- | ------------------------------- | ------------------------------------------------------------------------------------------- |
+| Frontend Language    | TypeScript                 | 5.3+    | Type-safe development           | Strict mode catches errors at compile time, critical for calculation accuracy (NFR2)        |
+| Frontend Framework   | Next.js                    | 14.1+   | Full-stack React framework      | App Router with RSC, built-in API routes, automatic code splitting, Vercel-optimized        |
+| UI Component Library | shadcn/ui                  | Latest  | Accessible component primitives | Radix UI primitives + Tailwind, customizable black/white theme, WCAG AA compliant           |
+| State Management     | Zustand                    | 4.5+    | Client-side global state        | Lightweight (1KB), no boilerplate, perfect for unsaved changes tracking and user session    |
+| Backend Language     | TypeScript                 | 5.3+    | Shared types across stack       | Single language reduces context switching, enables type sharing via `/lib/types`            |
+| Backend Framework    | Next.js API Routes         | 14.1+   | Serverless API endpoints        | Collocated with frontend, automatic deployment, Edge runtime support                        |
+| API Style            | REST                       | -       | HTTP-based API                  | Simple, stateless, well-understood; tRPC unnecessary for this scale                         |
+| Database             | PostgreSQL                 | 15+     | Relational database             | ACID compliance for financial data integrity, JSON fields for flexibility, mature ecosystem |
+| ORM                  | Prisma                     | 5.9+    | Type-safe database client       | Auto-generated types from schema, migration management, connection pooling                  |
+| Cache                | React Query                | 5.0+    | Server state management         | Automatic caching, request deduplication, optimistic updates, stale-while-revalidate        |
+| File Storage         | Vercel Blob                | Latest  | PDF and CSV storage             | Integrated with Vercel, simple API, included in Pro plan                                    |
+| Authentication       | NextAuth.js                | 5.0+    | Session management              | Supports credentials provider, JWT/database sessions, role-based access control             |
+| Frontend Testing     | Vitest                     | 1.2+    | Unit test runner                | Fast, Vite-powered, Jest-compatible API, ESM native                                         |
+| Backend Testing      | Vitest                     | 1.2+    | API integration tests           | Same tool as frontend for consistency, supports supertest-style API testing                 |
+| E2E Testing          | Playwright                 | 1.41+   | End-to-end workflows            | Cross-browser testing, built-in test runner, trace viewer for debugging                     |
+| Build Tool           | Next.js Compiler           | 14.1+   | Production builds               | Rust-based SWC compiler, minification, tree-shaking built-in                                |
+| Bundler              | Turbopack                  | 14.1+   | Development bundler             | Fast HMR, incremental bundling (Next.js 14 default)                                         |
+| IaC Tool             | N/A                        | -       | Infrastructure as code          | Vercel/Supabase managed services require no IaC for MVP                                     |
+| CI/CD                | Vercel Git Integration     | Latest  | Automated deployments           | Automatic preview deployments per PR, production deployment on merge to main                |
+| Monitoring           | Vercel Analytics           | Latest  | Web vitals & metrics            | Built-in performance monitoring, Core Web Vitals tracking                                   |
+| Logging              | Vercel Logs                | Latest  | Application logs                | Centralized logging with search, Edge Function logs included                                |
+| Error Tracking       | Sentry                     | Latest  | Error monitoring                | Client/server error capture, source maps, release tracking (optional but recommended)       |
+| CSS Framework        | Tailwind CSS               | 3.4+    | Utility-first styling           | Rapid development, small bundle size with purging, shadcn/ui integration                    |
+| Charting Library     | Recharts                   | 2.10+   | Data visualization              | React-native charts, composable API, supports Pareto/bell curve requirements                |
+| Diagram Library      | @xyflow/react (react-flow) | 12.0+   | Interactive diagrams            | Node-based diagrams for Fishbone, SIPOC visual, Process Flow, Traceability graphs           |
+| PDF Generation       | Puppeteer                  | 21.11+  | Server-side PDF export          | Headless Chrome for high-fidelity PDF rendering of charts and react-flow diagrams           |
 
 ---
 
@@ -133,6 +134,7 @@ graph TB
 **Purpose:** Represents system users with role-based access (BPI Team, Team Lead, Executive, Process Owner)
 
 **Key Attributes:**
+
 - `id`: string (UUID) - Primary identifier
 - `email`: string (unique) - Login credential and identifier
 - `name`: string - Display name
@@ -148,21 +150,22 @@ enum UserRole {
   BPI_TEAM = 'BPI_TEAM',
   TEAM_LEAD = 'TEAM_LEAD',
   EXECUTIVE = 'EXECUTIVE',
-  PROCESS_OWNER = 'PROCESS_OWNER'
+  PROCESS_OWNER = 'PROCESS_OWNER',
 }
 
 interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
-  passwordHash: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  email: string
+  name: string
+  role: UserRole
+  passwordHash: string
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
 **Relationships:**
+
 - One-to-many with Assignment (as creator)
 - One-to-many with AuditLog (as actor)
 
@@ -173,6 +176,7 @@ interface User {
 **Purpose:** Top-level container for Six Sigma analysis projects with state machine workflow
 
 **Key Attributes:**
+
 - `id`: string (UUID) - Primary identifier
 - `title`: string - Assignment name
 - `objective`: string - Business goal description
@@ -188,30 +192,31 @@ interface User {
 enum AssignmentStatus {
   DRAFT = 'DRAFT',
   COMPLETED = 'COMPLETED',
-  REOPENED = 'REOPENED'
+  REOPENED = 'REOPENED',
 }
 
 interface Assignment {
-  id: string;
-  title: string;
-  objective: string;
-  status: AssignmentStatus;
-  createdById: string;
-  completedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  title: string
+  objective: string
+  status: AssignmentStatus
+  createdById: string
+  completedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
 
   // Relations
-  createdBy?: User;
-  processes?: Process[];
-  vocStatements?: VOCStatement[];
-  ctqRequirements?: CTQRequirement[];
-  fmeaEntries?: FMEAEntry[];
-  recommendations?: Recommendation[];
+  createdBy?: User
+  processes?: Process[]
+  vocStatements?: VOCStatement[]
+  ctqRequirements?: CTQRequirement[]
+  fmeaEntries?: FMEAEntry[]
+  recommendations?: Recommendation[]
 }
 ```
 
 **Relationships:**
+
 - Many-to-one with User (creator)
 - One-to-many with Process
 - One-to-many with VOCStatement, CTQRequirement
@@ -225,6 +230,7 @@ interface Assignment {
 **Purpose:** Individual process being analyzed within an assignment (supports multi-process analysis)
 
 **Key Attributes:**
+
 - `id`: string (UUID) - Primary identifier
 - `assignmentId`: string (FK to Assignment) - Parent assignment
 - `processName`: string - Process identifier
@@ -240,35 +246,36 @@ interface Assignment {
 
 ```typescript
 interface Process {
-  id: string;
-  assignmentId: string;
-  processName: string;
-  processOwner: string | null;
-  order: number;
-  lowerSpecLimit: number | null;
-  upperSpecLimit: number | null;
-  targetValue: number | null;
-  sampleMean: number | null;
-  sampleStdDev: number | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  assignmentId: string
+  processName: string
+  processOwner: string | null
+  order: number
+  lowerSpecLimit: number | null
+  upperSpecLimit: number | null
+  targetValue: number | null
+  sampleMean: number | null
+  sampleStdDev: number | null
+  createdAt: Date
+  updatedAt: Date
 
   // Relations
-  assignment?: Assignment;
-  sipocEntries?: SIPOCEntry[];
-  vsmSteps?: VSMStep[];
-  fishboneCategories?: FishboneCategory[];
+  assignment?: Assignment
+  sipocEntries?: SIPOCEntry[]
+  vsmSteps?: VSMStep[]
+  fishboneCategories?: FishboneCategory[]
 }
 
 // Computed fields (not stored)
 interface ProcessCapability {
-  cp: number | null;  // (USL - LSL) / (6 * σ)
-  cpk: number | null; // min((USL - μ) / (3σ), (μ - LSL) / (3σ))
-  sigmaLevel: number | null; // Cpk * 3 + 1.5
+  cp: number | null // (USL - LSL) / (6 * σ)
+  cpk: number | null // min((USL - μ) / (3σ), (μ - LSL) / (3σ))
+  sigmaLevel: number | null // Cpk * 3 + 1.5
 }
 ```
 
 **Relationships:**
+
 - Many-to-one with Assignment
 - One-to-many with SIPOCEntry, VSMStep, FishboneCategory
 
@@ -279,6 +286,7 @@ interface ProcessCapability {
 **Purpose:** Voice of Customer statements capturing user needs and pain points
 
 **Key Attributes:**
+
 - `id`: string (UUID)
 - `assignmentId`: string (FK)
 - `customerSegment`: string - User type/persona
@@ -288,12 +296,12 @@ interface ProcessCapability {
 
 ```typescript
 interface VOCStatement {
-  id: string;
-  assignmentId: string;
-  customerSegment: string;
-  voiceStatement: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  assignmentId: string
+  customerSegment: string
+  voiceStatement: string
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -304,6 +312,7 @@ interface VOCStatement {
 **Purpose:** Critical to Quality requirements derived from VOC
 
 **Key Attributes:**
+
 - `id`: string (UUID)
 - `assignmentId`: string (FK)
 - `vocStatementId`: string | null (FK) - Source VOC linkage
@@ -315,14 +324,14 @@ interface VOCStatement {
 
 ```typescript
 interface CTQRequirement {
-  id: string;
-  assignmentId: string;
-  vocStatementId: string | null;
-  ctqDescription: string;
-  measurementCriteria: string;
-  targetValue: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  assignmentId: string
+  vocStatementId: string | null
+  ctqDescription: string
+  measurementCriteria: string
+  targetValue: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -333,6 +342,7 @@ interface CTQRequirement {
 **Purpose:** SIPOC (Suppliers, Inputs, Process, Outputs, Customers) high-level process mapping
 
 **Key Attributes:**
+
 - `id`: string (UUID)
 - `processId`: string (FK)
 - `column`: SIPOCColumn enum - Which SIPOC column
@@ -347,17 +357,17 @@ enum SIPOCColumn {
   INPUT = 'INPUT',
   PROCESS = 'PROCESS',
   OUTPUT = 'OUTPUT',
-  CUSTOMER = 'CUSTOMER'
+  CUSTOMER = 'CUSTOMER',
 }
 
 interface SIPOCEntry {
-  id: string;
-  processId: string;
-  column: SIPOCColumn;
-  order: number;
-  value: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  processId: string
+  column: SIPOCColumn
+  order: number
+  value: string
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -368,6 +378,7 @@ interface SIPOCEntry {
 **Purpose:** Value Stream Mapping detailed step-level data for Pareto analysis
 
 **Key Attributes:**
+
 - `id`: string (UUID)
 - `processId`: string (FK)
 - `stepNumber`: number - Sequence in process
@@ -381,24 +392,24 @@ interface SIPOCEntry {
 
 ```typescript
 interface VSMStep {
-  id: string;
-  processId: string;
-  stepNumber: number;
-  stepName: string;
-  durationMinutes: number;
-  waitTimeMinutes: number | null;
-  valueAdded: boolean;
-  notes: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  processId: string
+  stepNumber: number
+  stepName: string
+  durationMinutes: number
+  waitTimeMinutes: number | null
+  valueAdded: boolean
+  notes: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 // Aggregated metrics (computed from VSMStep array)
 interface VSMMetrics {
-  totalCycleTime: number;
-  valueAddedTime: number;
-  nonValueAddedTime: number;
-  efficiencyRatio: number; // valueAddedTime / totalCycleTime
+  totalCycleTime: number
+  valueAddedTime: number
+  nonValueAddedTime: number
+  efficiencyRatio: number // valueAddedTime / totalCycleTime
 }
 ```
 
@@ -417,27 +428,27 @@ enum FishboneCategoryType {
   EQUIPMENT = 'EQUIPMENT',
   MATERIALS = 'MATERIALS',
   ENVIRONMENT = 'ENVIRONMENT',
-  MANAGEMENT = 'MANAGEMENT'
+  MANAGEMENT = 'MANAGEMENT',
 }
 
 interface FishboneCategory {
-  id: string;
-  processId: string;
-  category: FishboneCategoryType;
-  order: number;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  processId: string
+  category: FishboneCategoryType
+  order: number
+  createdAt: Date
+  updatedAt: Date
 
-  causes?: FishboneCause[];
+  causes?: FishboneCause[]
 }
 
 interface FishboneCause {
-  id: string;
-  categoryId: string;
-  causeDescription: string;
-  order: number;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  categoryId: string
+  causeDescription: string
+  order: number
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -448,6 +459,7 @@ interface FishboneCause {
 **Purpose:** Failure Mode and Effects Analysis with auto-calculated RPN
 
 **Key Attributes:**
+
 - `severity`: number (1-10) - Impact severity
 - `occurrence`: number (1-10) - Frequency likelihood
 - `detection`: number (1-10) - Detectability (1=easy, 10=hard)
@@ -457,20 +469,20 @@ interface FishboneCause {
 
 ```typescript
 interface FMEAEntry {
-  id: string;
-  assignmentId: string;
-  processId: string | null;
-  failureMode: string;
-  effectsOfFailure: string;
-  severity: number; // 1-10
-  potentialCauses: string;
-  occurrence: number; // 1-10
-  currentControls: string;
-  detection: number; // 1-10
-  rpn: number; // Computed: severity * occurrence * detection
-  recommendedActions: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  assignmentId: string
+  processId: string | null
+  failureMode: string
+  effectsOfFailure: string
+  severity: number // 1-10
+  potentialCauses: string
+  occurrence: number // 1-10
+  currentControls: string
+  detection: number // 1-10
+  rpn: number // Computed: severity * occurrence * detection
+  recommendedActions: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -486,28 +498,28 @@ interface FMEAEntry {
 enum ImplementationDifficulty {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH'
+  HIGH = 'HIGH',
 }
 
 enum RecommendationStatus {
   PROPOSED = 'PROPOSED',
   APPROVED = 'APPROVED',
-  IMPLEMENTED = 'IMPLEMENTED'
+  IMPLEMENTED = 'IMPLEMENTED',
 }
 
 interface Recommendation {
-  id: string;
-  assignmentId: string;
-  recommendationTitle: string;
-  description: string;
-  expectedImpact: string;
-  implementationDifficulty: ImplementationDifficulty;
-  estimatedCostSavings: string | null;
-  linkedFMEAIds: string[]; // JSON array
-  linkedFishboneCauseIds: string[]; // JSON array
-  status: RecommendationStatus;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  assignmentId: string
+  recommendationTitle: string
+  description: string
+  expectedImpact: string
+  implementationDifficulty: ImplementationDifficulty
+  estimatedCostSavings: string | null
+  linkedFMEAIds: string[] // JSON array
+  linkedFishboneCauseIds: string[] // JSON array
+  status: RecommendationStatus
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -526,18 +538,18 @@ enum AuditAction {
   COMPLETED = 'COMPLETED',
   REOPENED = 'REOPENED',
   DELETED = 'DELETED',
-  ACCESSED = 'ACCESSED'
+  ACCESSED = 'ACCESSED',
 }
 
 interface AuditLog {
-  id: string;
-  assignmentId: string;
-  userId: string;
-  action: AuditAction;
-  entityType: string; // 'Assignment', 'VOCStatement', etc.
-  entityId: string | null;
-  changeDetails: Record<string, any> | null; // JSON
-  timestamp: Date;
+  id: string
+  assignmentId: string
+  userId: string
+  action: AuditAction
+  entityType: string // 'Assignment', 'VOCStatement', etc.
+  entityId: string | null
+  changeDetails: Record<string, any> | null // JSON
+  timestamp: Date
 }
 ```
 
@@ -671,6 +683,7 @@ Base URL: `https://bpi-platform.vercel.app/api`
 ### API Response Format
 
 **Success Response:**
+
 ```typescript
 {
   data: T; // Actual payload
@@ -683,6 +696,7 @@ Base URL: `https://bpi-platform.vercel.app/api`
 ```
 
 **Error Response:**
+
 ```typescript
 {
   error: {
@@ -715,6 +729,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Session management and role-based access control context
 
 **Key Interfaces:**
+
 - `useSession()` hook exposing `{ user, status, signIn, signOut }`
 - `ProtectedRoute` component wrapping pages requiring authentication
 
@@ -729,6 +744,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** List view of all assignments with filtering and status indicators
 
 **Key Interfaces:**
+
 - Renders assignment table with columns: Title, Status, Last Modified, Created By
 - "New Assignment" button (role-gated)
 - Filter dropdowns: Status, Created By
@@ -744,6 +760,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Container component managing assignment state and navigation
 
 **Key Interfaces:**
+
 - Story-driven tab navigation: VOC/CTQ, Processes, FMEA, Recommendations
 - Assignment status indicator and action buttons (Mark Complete, Reopen)
 - Auto-save status indicator
@@ -759,6 +776,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Dual-table interface for Voice of Customer and CTQ requirements
 
 **Key Interfaces:**
+
 - VOC table with inline editing (customerSegment, voiceStatement)
 - CTQ table with inline editing and VOC linkage dropdown
 - "Add VOC Statement" and "Add CTQ Requirement" buttons
@@ -774,6 +792,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** 5-column spreadsheet interface for SIPOC data entry with optional visual diagram
 
 **Key Interfaces:**
+
 - **Data Entry Mode:** Editable grid with columns: Suppliers, Inputs, Process, Outputs, Customers
 - **Visual Diagram Mode:** Interactive process flow using react-flow showing:
   - Left-to-right flow from Suppliers → Inputs → Process → Outputs → Customers
@@ -794,6 +813,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Process step data entry with real-time metric calculations
 
 **Key Interfaces:**
+
 - Editable table: Step #, Name, Duration, Wait Time, Value Added, Notes
 - Summary metrics at top: Total Cycle Time, Value-Added Time, Efficiency Ratio
 - Drag-drop row reordering
@@ -809,6 +829,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Automated Pareto chart generation from VSM data
 
 **Key Interfaces:**
+
 - Bar chart (duration descending) with cumulative percentage line
 - 80% threshold indicator
 - Hover tooltips with step details
@@ -824,6 +845,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** 6M category root cause entry with visual diagram representation
 
 **Key Interfaces:**
+
 - **Data Entry Mode:** Accordion/card layout for 6 categories with inline text entry for causes
 - **Visual Diagram Mode:** Interactive Fishbone diagram using react-flow with:
   - Central spine showing effect/problem
@@ -845,6 +867,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Input form for spec limits + calculated Cp/Cpk/Sigma display + bell curve
 
 **Key Interfaces:**
+
 - Input form: LSL, USL, Target, Sample Mean, Sample Std Dev
 - Metrics cards with color-coded indicators (Green/Yellow/Red)
 - Bell curve chart with spec limit markers
@@ -860,6 +883,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Failure mode entry with auto-calculated RPN and sortable columns
 
 **Key Interfaces:**
+
 - Editable table: Failure Mode, Effects, S, O, D, RPN (read-only), Actions
 - RPN cell color-coding: Red (≥200), Yellow (100-199), Green (<100)
 - Column sorting (default: RPN descending)
@@ -875,6 +899,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Recommendation creation with FMEA/Fishbone linkage and visual traceability
 
 **Key Interfaces:**
+
 - Form: Title, Description, Expected Impact, Difficulty, Cost Savings
 - Multi-select dropdowns: Linked FMEA Entries, Linked Fishbone Causes
 - **Traceability display:**
@@ -893,6 +918,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Reusable tooltip showing formula and substituted values
 
 **Key Interfaces:**
+
 - Renders info icon next to calculated values
 - Popover displays: Formula notation, Substituted values, "Learn More" link
 
@@ -909,6 +935,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Business logic for assignment CRUD and state transitions
 
 **Key Interfaces:**
+
 - `createAssignment(data)` - Creates assignment with DRAFT status
 - `updateAssignment(id, data)` - Updates editable fields
 - `completeAssignment(id, userId)` - Transitions to COMPLETED (with auth check)
@@ -926,6 +953,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** All Six Sigma calculation logic with 100% accuracy
 
 **Key Interfaces:**
+
 - `calculateParetoData(vsmSteps)` - Sorts by duration, computes cumulative %
 - `calculateRPN(severity, occurrence, detection)` - S × O × D
 - `calculateCp(usl, lsl, stdDev)` - Process capability
@@ -943,6 +971,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Server-side PDF rendering of complete assignments
 
 **Key Interfaces:**
+
 - `generateAssignmentPDF(assignmentId)` - Returns PDF buffer
 - Uses Puppeteer to render HTML template with embedded charts
 
@@ -957,6 +986,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Enforces role-based access control on API routes
 
 **Key Interfaces:**
+
 - `requireAuth(handler)` - Wraps handler, checks session exists
 - `requireRole(roles)(handler)` - Wraps handler, checks user.role in allowed roles
 - `canEditAssignment(userId, role, assignment)` - Business logic for edit permissions
@@ -972,6 +1002,7 @@ All API routes (except `/api/auth/*`) require authentication via NextAuth.js ses
 **Responsibility:** Records all state changes and access for compliance
 
 **Key Interfaces:**
+
 - `logAction(assignmentId, userId, action, entityType, entityId, changeDetails)`
 - `getAuditLog(assignmentId, filters)` - Paginated audit entries
 
@@ -1064,6 +1095,7 @@ graph TB
 **No external APIs required for MVP.**
 
 The BPI Assignment Platform is self-contained with all functionality implemented internally. Future phases may integrate:
+
 - SMTP service for email notifications (SendGrid, Postmark)
 - Cloud storage for large CSV imports (AWS S3 direct upload)
 - AI service for root cause suggestions (OpenAI API)
@@ -1700,33 +1732,34 @@ export function AssignmentList({ initialData }: Props) {
 
 ```typescript
 // lib/stores/assignment.store.ts
-import { create } from 'zustand';
-import { Assignment } from '@prisma/client';
+import { create } from 'zustand'
+import { Assignment } from '@prisma/client'
 
 interface AssignmentState {
-  currentAssignment: Assignment | null;
-  unsavedChanges: boolean;
-  lastSavedAt: Date | null;
+  currentAssignment: Assignment | null
+  unsavedChanges: boolean
+  lastSavedAt: Date | null
 
-  setCurrentAssignment: (assignment: Assignment) => void;
-  markUnsaved: () => void;
-  markSaved: () => void;
-  reset: () => void;
+  setCurrentAssignment: (assignment: Assignment) => void
+  markUnsaved: () => void
+  markSaved: () => void
+  reset: () => void
 }
 
-export const useAssignmentStore = create<AssignmentState>((set) => ({
+export const useAssignmentStore = create<AssignmentState>(set => ({
   currentAssignment: null,
   unsavedChanges: false,
   lastSavedAt: null,
 
-  setCurrentAssignment: (assignment) => set({ currentAssignment: assignment }),
+  setCurrentAssignment: assignment => set({ currentAssignment: assignment }),
   markUnsaved: () => set({ unsavedChanges: true }),
   markSaved: () => set({ unsavedChanges: false, lastSavedAt: new Date() }),
   reset: () => set({ currentAssignment: null, unsavedChanges: false, lastSavedAt: null }),
-}));
+}))
 ```
 
 **State Management Patterns:**
+
 - **Server State:** React Query for API data caching with stale-while-revalidate
 - **Client State:** Zustand for global UI state (current assignment, unsaved changes)
 - **Form State:** React Hook Form for individual form validation
@@ -1797,33 +1830,25 @@ export class APIError extends Error {
     public status: number,
     public details?: any
   ) {
-    super(message);
+    super(message)
   }
 }
 
-export async function apiClient<T>(
-  url: string,
-  options?: RequestInit
-): Promise<T> {
+export async function apiClient<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
     },
-  });
+  })
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new APIError(
-      error.error.code,
-      error.error.message,
-      response.status,
-      error.error.details
-    );
+    const error = await response.json()
+    throw new APIError(error.error.code, error.error.message, response.status, error.error.details)
   }
 
-  return response.json();
+  return response.json()
 }
 ```
 
@@ -1831,37 +1856,34 @@ export async function apiClient<T>(
 
 ```typescript
 // lib/services/assignment.service.ts
-import { apiClient } from '@/lib/utils/api-client';
-import { Assignment, AssignmentStatus } from '@prisma/client';
+import { apiClient } from '@/lib/utils/api-client'
+import { Assignment, AssignmentStatus } from '@prisma/client'
 
 export class AssignmentService {
   static async getAll(): Promise<Assignment[]> {
-    return apiClient<Assignment[]>('/api/assignments');
+    return apiClient<Assignment[]>('/api/assignments')
   }
 
   static async getById(id: string): Promise<Assignment> {
-    return apiClient<Assignment>(`/api/assignments/${id}`);
+    return apiClient<Assignment>(`/api/assignments/${id}`)
   }
 
-  static async create(data: {
-    title: string;
-    objective: string;
-  }): Promise<Assignment> {
+  static async create(data: { title: string; objective: string }): Promise<Assignment> {
     return apiClient<Assignment>('/api/assignments', {
       method: 'POST',
       body: JSON.stringify(data),
-    });
+    })
   }
 
   static async complete(id: string): Promise<Assignment> {
     return apiClient<Assignment>(`/api/assignments/${id}/complete`, {
       method: 'POST',
-    });
+    })
   }
 
   static async exportPDF(id: string): Promise<Blob> {
-    const response = await fetch(`/api/assignments/${id}/export/pdf`);
-    return response.blob();
+    const response = await fetch(`/api/assignments/${id}/export/pdf`)
+    return response.blob()
   }
 }
 ```
@@ -1958,64 +1980,58 @@ export class AssignmentService {
 
 ```typescript
 // app/api/assignments/[id]/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { AssignmentService } from '@/lib/services/assignment.service';
-import { handleAPIError } from '@/lib/middleware/error.middleware';
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { AssignmentService } from '@/lib/services/assignment.service'
+import { handleAPIError } from '@/lib/middleware/error.middleware'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions)
 
     if (!session) {
       return NextResponse.json(
         { error: { code: 'UNAUTHORIZED', message: 'Authentication required' } },
         { status: 401 }
-      );
+      )
     }
 
     const assignment = await AssignmentService.getById(
       params.id,
       session.user.id,
       session.user.role
-    );
+    )
 
-    return NextResponse.json({ data: assignment });
+    return NextResponse.json({ data: assignment })
   } catch (error) {
-    return handleAPIError(error);
+    return handleAPIError(error)
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions)
 
     if (!session) {
       return NextResponse.json(
         { error: { code: 'UNAUTHORIZED', message: 'Authentication required' } },
         { status: 401 }
-      );
+      )
     }
 
-    const body = await request.json();
+    const body = await request.json()
 
     const assignment = await AssignmentService.update(
       params.id,
       body,
       session.user.id,
       session.user.role
-    );
+    )
 
-    return NextResponse.json({ data: assignment });
+    return NextResponse.json({ data: assignment })
   } catch (error) {
-    return handleAPIError(error);
+    return handleAPIError(error)
   }
 }
 ```
@@ -2026,15 +2042,16 @@ export async function PUT(
 
 ```typescript
 // lib/services/assignment.service.ts
-import { prisma } from '@/lib/prisma/client';
-import { Assignment, UserRole, AssignmentStatus } from '@prisma/client';
-import { AuditLogService } from './audit-log.service';
+import { prisma } from '@/lib/prisma/client'
+import { Assignment, UserRole, AssignmentStatus } from '@prisma/client'
+import { AuditLogService } from './audit-log.service'
 
 export class AssignmentService {
   static async getAll(userId: string, userRole: UserRole): Promise<Assignment[]> {
-    const where = userRole === 'EXECUTIVE' || userRole === 'PROCESS_OWNER'
-      ? { status: AssignmentStatus.COMPLETED }
-      : {}; // BPI_TEAM and TEAM_LEAD see all
+    const where =
+      userRole === 'EXECUTIVE' || userRole === 'PROCESS_OWNER'
+        ? { status: AssignmentStatus.COMPLETED }
+        : {} // BPI_TEAM and TEAM_LEAD see all
 
     return prisma.assignment.findMany({
       where,
@@ -2047,14 +2064,10 @@ export class AssignmentService {
         },
       },
       orderBy: { updatedAt: 'desc' },
-    });
+    })
   }
 
-  static async getById(
-    id: string,
-    userId: string,
-    userRole: UserRole
-  ): Promise<Assignment> {
+  static async getById(id: string, userId: string, userRole: UserRole): Promise<Assignment> {
     const assignment = await prisma.assignment.findUnique({
       where: { id },
       include: {
@@ -2074,10 +2087,10 @@ export class AssignmentService {
         fmeaEntries: { orderBy: { rpn: 'desc' } },
         recommendations: true,
       },
-    });
+    })
 
     if (!assignment) {
-      throw new Error('Assignment not found');
+      throw new Error('Assignment not found')
     }
 
     // Authorization check
@@ -2085,13 +2098,13 @@ export class AssignmentService {
       assignment.createdById === userId ||
       userRole === 'TEAM_LEAD' ||
       (userRole === 'EXECUTIVE' && assignment.status === AssignmentStatus.COMPLETED) ||
-      (userRole === 'PROCESS_OWNER' && assignment.status === AssignmentStatus.COMPLETED);
+      (userRole === 'PROCESS_OWNER' && assignment.status === AssignmentStatus.COMPLETED)
 
     if (!canAccess) {
-      throw new Error('Unauthorized access');
+      throw new Error('Unauthorized access')
     }
 
-    return assignment;
+    return assignment
   }
 
   static async create(
@@ -2104,7 +2117,7 @@ export class AssignmentService {
         createdById: userId,
         status: AssignmentStatus.DRAFT,
       },
-    });
+    })
 
     await AuditLogService.log({
       assignmentId: assignment.id,
@@ -2112,18 +2125,14 @@ export class AssignmentService {
       action: 'CREATED',
       entityType: 'Assignment',
       entityId: assignment.id,
-    });
+    })
 
-    return assignment;
+    return assignment
   }
 
-  static async complete(
-    id: string,
-    userId: string,
-    userRole: UserRole
-  ): Promise<Assignment> {
+  static async complete(id: string, userId: string, userRole: UserRole): Promise<Assignment> {
     if (userRole !== 'TEAM_LEAD') {
-      throw new Error('Only Team Leads can complete assignments');
+      throw new Error('Only Team Leads can complete assignments')
     }
 
     const assignment = await prisma.assignment.update({
@@ -2132,7 +2141,7 @@ export class AssignmentService {
         status: AssignmentStatus.COMPLETED,
         completedAt: new Date(),
       },
-    });
+    })
 
     await AuditLogService.log({
       assignmentId: id,
@@ -2140,9 +2149,9 @@ export class AssignmentService {
       action: 'COMPLETED',
       entityType: 'Assignment',
       entityId: id,
-    });
+    })
 
-    return assignment;
+    return assignment
   }
 }
 ```
@@ -2194,41 +2203,41 @@ sequenceDiagram
 
 ```typescript
 // lib/middleware/auth.middleware.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { UserRole } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { UserRole } from '@prisma/client'
 
 export async function requireAuth(request: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   if (!session) {
     return NextResponse.json(
       { error: { code: 'UNAUTHORIZED', message: 'Authentication required' } },
       { status: 401 }
-    );
+    )
   }
 
-  return session;
+  return session
 }
 
 export function requireRole(allowedRoles: UserRole[]) {
   return async (request: NextRequest) => {
-    const session = await requireAuth(request);
+    const session = await requireAuth(request)
 
     if (session instanceof NextResponse) {
-      return session; // Auth failed, return error response
+      return session // Auth failed, return error response
     }
 
     if (!allowedRoles.includes(session.user.role as UserRole)) {
       return NextResponse.json(
         { error: { code: 'FORBIDDEN', message: 'Insufficient permissions' } },
         { status: 403 }
-      );
+      )
     }
 
-    return session;
-  };
+    return session
+  }
 }
 
 export function canEditAssignment(
@@ -2237,7 +2246,7 @@ export function canEditAssignment(
   userRole: UserRole
 ): boolean {
   // TEAM_LEAD can edit any assignment
-  if (userRole === 'TEAM_LEAD') return true;
+  if (userRole === 'TEAM_LEAD') return true
 
   // BPI_TEAM can edit own assignments if DRAFT or REOPENED
   if (
@@ -2245,10 +2254,10 @@ export function canEditAssignment(
     assignment.createdById === userId &&
     (assignment.status === 'DRAFT' || assignment.status === 'REOPENED')
   ) {
-    return true;
+    return true
   }
 
-  return false;
+  return false
 }
 ```
 
@@ -2543,17 +2552,20 @@ volumes:
 ### Deployment Strategy
 
 **Frontend Deployment:**
+
 - **Platform:** Vercel (Next.js native deployment)
 - **Build Command:** `pnpm build`
 - **Output Directory:** `.next`
 - **CDN/Edge:** Vercel Edge Network with automatic CDN caching for static assets
 
 **Backend Deployment:**
+
 - **Platform:** Vercel Serverless Functions (Next.js API routes auto-deployed)
 - **Build Command:** Included in frontend build
 - **Deployment Method:** Git push to `main` branch triggers automatic deployment
 
 **Database Deployment:**
+
 - **Platform:** Supabase PostgreSQL (managed service)
 - **Connection Pooling:** Built-in with Supabase
 - **Migrations:** Automatic via `prisma migrate deploy` in build step
@@ -2657,13 +2669,14 @@ jobs:
 
 ### Environments
 
-| Environment | Frontend URL | Backend URL | Purpose |
-|-------------|--------------|-------------|---------|
-| Development | http://localhost:3000 | http://localhost:3000/api | Local development and testing |
-| Staging | https://bpi-platform-staging.vercel.app | https://bpi-platform-staging.vercel.app/api | Pre-production testing and QA |
-| Production | https://bpi-platform.vercel.app | https://bpi-platform.vercel.app/api | Live environment for end users |
+| Environment | Frontend URL                            | Backend URL                                 | Purpose                        |
+| ----------- | --------------------------------------- | ------------------------------------------- | ------------------------------ |
+| Development | http://localhost:3000                   | http://localhost:3000/api                   | Local development and testing  |
+| Staging     | https://bpi-platform-staging.vercel.app | https://bpi-platform-staging.vercel.app/api | Pre-production testing and QA  |
+| Production  | https://bpi-platform.vercel.app         | https://bpi-platform.vercel.app/api         | Live environment for end users |
 
 **Branch Strategy:**
+
 - `main` → Production deployment
 - `staging` → Staging deployment
 - `feature/*` → Ephemeral preview deployments (Vercel auto-generates URLs)
@@ -2675,16 +2688,19 @@ jobs:
 ### Security Requirements
 
 **Frontend Security:**
+
 - **CSP Headers:** `Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';` (configured in `next.config.js`)
 - **XSS Prevention:** React auto-escapes JSX, DOMPurify for user-provided rich text (future)
 - **Secure Storage:** Session tokens in httpOnly cookies, no localStorage for sensitive data
 
 **Backend Security:**
+
 - **Input Validation:** Zod schemas for all API route inputs, enforce max lengths and data types
 - **Rate Limiting:** Vercel Edge Functions have built-in DDoS protection; consider Upstash Redis for API-level rate limiting (future)
 - **CORS Policy:** `Access-Control-Allow-Origin` limited to frontend domain only
 
 **Authentication Security:**
+
 - **Token Storage:** JWT session tokens in httpOnly, secure, sameSite=strict cookies
 - **Session Management:** 7-day expiration, sliding window refresh
 - **Password Policy:** Minimum 8 characters, bcrypt hashing with salt rounds=10
@@ -2692,6 +2708,7 @@ jobs:
 ### Performance Optimization
 
 **Frontend Performance:**
+
 - **Bundle Size Target:** <300KB initial JS bundle (Tailwind purging, tree-shaking)
 - **Loading Strategy:**
   - Server Components for initial page loads
@@ -2703,6 +2720,7 @@ jobs:
   - Image optimization via Next.js Image component
 
 **Backend Performance:**
+
 - **Response Time Target:** <500ms for API routes (p95), <2s for page loads
 - **Database Optimization:**
   - Prisma connection pooling (max 10 connections)
@@ -2803,12 +2821,12 @@ describe('ParetoChart', () => {
 
 ```typescript
 // tests/integration/api/assignments.test.ts
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { prisma } from '@/lib/prisma/client';
-import { testClient } from '../helpers/test-client';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { prisma } from '@/lib/prisma/client'
+import { testClient } from '../helpers/test-client'
 
 describe('POST /api/assignments', () => {
-  let userId: string;
+  let userId: string
 
   beforeAll(async () => {
     // Create test user
@@ -2819,13 +2837,13 @@ describe('POST /api/assignments', () => {
         role: 'BPI_TEAM',
         passwordHash: 'hashed',
       },
-    });
-    userId = user.id;
-  });
+    })
+    userId = user.id
+  })
 
   afterAll(async () => {
-    await prisma.user.delete({ where: { id: userId } });
-  });
+    await prisma.user.delete({ where: { id: userId } })
+  })
 
   it('creates assignment with DRAFT status', async () => {
     const response = await testClient.post('/api/assignments', {
@@ -2836,68 +2854,68 @@ describe('POST /api/assignments', () => {
       headers: {
         'x-user-id': userId, // Mock auth
       },
-    });
+    })
 
-    expect(response.status).toBe(200);
-    expect(response.data.status).toBe('DRAFT');
-    expect(response.data.title).toBe('Test Assignment');
-  });
+    expect(response.status).toBe(200)
+    expect(response.data.status).toBe('DRAFT')
+    expect(response.data.title).toBe('Test Assignment')
+  })
 
   it('returns 401 if not authenticated', async () => {
     const response = await testClient.post('/api/assignments', {
       body: { title: 'Test', objective: 'Test' },
-    });
+    })
 
-    expect(response.status).toBe(401);
-    expect(response.error.code).toBe('UNAUTHORIZED');
-  });
-});
+    expect(response.status).toBe(401)
+    expect(response.error.code).toBe('UNAUTHORIZED')
+  })
+})
 ```
 
 **E2E Test:**
 
 ```typescript
 // tests/e2e/assignment-workflow.spec.ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test'
 
 test('complete assignment workflow', async ({ page }) => {
   // Login
-  await page.goto('/login');
-  await page.fill('input[name="email"]', 'analyst@example.com');
-  await page.fill('input[name="password"]', 'password123');
-  await page.click('button[type="submit"]');
-  await expect(page).toHaveURL('/assignments');
+  await page.goto('/login')
+  await page.fill('input[name="email"]', 'analyst@example.com')
+  await page.fill('input[name="password"]', 'password123')
+  await page.click('button[type="submit"]')
+  await expect(page).toHaveURL('/assignments')
 
   // Create new assignment
-  await page.click('text=New Assignment');
-  await page.fill('input[name="title"]', 'E2E Test Assignment');
-  await page.fill('textarea[name="objective"]', 'Test objective');
-  await page.click('button:has-text("Create")');
-  await expect(page).toHaveURL(/\/assignments\/[a-z0-9-]+\/voc/);
+  await page.click('text=New Assignment')
+  await page.fill('input[name="title"]', 'E2E Test Assignment')
+  await page.fill('textarea[name="objective"]', 'Test objective')
+  await page.click('button:has-text("Create")')
+  await expect(page).toHaveURL(/\/assignments\/[a-z0-9-]+\/voc/)
 
   // Add VOC statement
-  await page.click('text=Add VOC Statement');
-  await page.fill('input[name="customerSegment"]', 'Internal Users');
-  await page.fill('textarea[name="voiceStatement"]', 'Process is too slow');
-  await page.click('button:has-text("Save")');
-  await expect(page.locator('text=Process is too slow')).toBeVisible();
+  await page.click('text=Add VOC Statement')
+  await page.fill('input[name="customerSegment"]', 'Internal Users')
+  await page.fill('textarea[name="voiceStatement"]', 'Process is too slow')
+  await page.click('button:has-text("Save")')
+  await expect(page.locator('text=Process is too slow')).toBeVisible()
 
   // Navigate to SIPOC
-  await page.click('text=Processes');
-  await page.click('text=Add Process');
-  await page.fill('input[name="processName"]', 'Order Fulfillment');
-  await page.click('button:has-text("Create")');
-  await page.click('text=SIPOC');
+  await page.click('text=Processes')
+  await page.click('text=Add Process')
+  await page.fill('input[name="processName"]', 'Order Fulfillment')
+  await page.click('button:has-text("Create")')
+  await page.click('text=SIPOC')
 
   // Add SIPOC entry
-  await page.click('text=Add Row');
-  await page.fill('.sipoc-grid input', 'Customer Order');
-  await page.click('body'); // Trigger auto-save
-  await expect(page.locator('text=All changes saved')).toBeVisible();
+  await page.click('text=Add Row')
+  await page.fill('.sipoc-grid input', 'Customer Order')
+  await page.click('body') // Trigger auto-save
+  await expect(page.locator('text=All changes saved')).toBeVisible()
 
   // Verify assignment status is DRAFT
-  await expect(page.locator('[data-status="DRAFT"]')).toBeVisible();
-});
+  await expect(page.locator('[data-status="DRAFT"]')).toBeVisible()
+})
 ```
 
 ---
@@ -2919,17 +2937,17 @@ test('complete assignment workflow', async ({ page }) => {
 
 ### Naming Conventions
 
-| Element | Frontend | Backend | Example |
-|---------|----------|---------|---------|
-| Components | PascalCase | - | `AssignmentHeader.tsx` |
-| Hooks | camelCase with 'use' | - | `useAutoSave.ts` |
-| Services | PascalCase | PascalCase | `AssignmentService` |
-| API Routes | kebab-case | kebab-case | `/api/assignments/[id]/voc/statements` |
-| Database Tables | snake_case | snake_case | `voc_statements` |
-| Database Fields | camelCase (Prisma) | camelCase | `createdById` |
-| React Props | camelCase | - | `isLoading`, `onSubmit` |
-| Functions | camelCase | camelCase | `calculatePareto()` |
-| Constants | SCREAMING_SNAKE_CASE | SCREAMING_SNAKE_CASE | `MAX_SIPOC_ENTRIES` |
+| Element         | Frontend             | Backend              | Example                                |
+| --------------- | -------------------- | -------------------- | -------------------------------------- |
+| Components      | PascalCase           | -                    | `AssignmentHeader.tsx`                 |
+| Hooks           | camelCase with 'use' | -                    | `useAutoSave.ts`                       |
+| Services        | PascalCase           | PascalCase           | `AssignmentService`                    |
+| API Routes      | kebab-case           | kebab-case           | `/api/assignments/[id]/voc/statements` |
+| Database Tables | snake_case           | snake_case           | `voc_statements`                       |
+| Database Fields | camelCase (Prisma)   | camelCase            | `createdById`                          |
+| React Props     | camelCase            | -                    | `isLoading`, `onSubmit`                |
+| Functions       | camelCase            | camelCase            | `calculatePareto()`                    |
+| Constants       | SCREAMING_SNAKE_CASE | SCREAMING_SNAKE_CASE | `MAX_SIPOC_ENTRIES`                    |
 
 ---
 
@@ -2978,12 +2996,12 @@ sequenceDiagram
 ```typescript
 interface ApiError {
   error: {
-    code: string;           // 'UNAUTHORIZED', 'VALIDATION_ERROR', 'NOT_FOUND', etc.
-    message: string;        // Human-readable message for display
-    details?: Record<string, any>; // Field-level errors for forms
-    timestamp: string;      // ISO 8601 timestamp
-    requestId: string;      // Unique ID for debugging
-  };
+    code: string // 'UNAUTHORIZED', 'VALIDATION_ERROR', 'NOT_FOUND', etc.
+    message: string // Human-readable message for display
+    details?: Record<string, any> // Field-level errors for forms
+    timestamp: string // ISO 8601 timestamp
+    requestId: string // Unique ID for debugging
+  }
 }
 ```
 
@@ -2999,15 +3017,12 @@ export class APIError extends Error {
     public details?: any,
     public requestId?: string
   ) {
-    super(message);
-    this.name = 'APIError';
+    super(message)
+    this.name = 'APIError'
   }
 }
 
-export async function apiClient<T>(
-  url: string,
-  options?: RequestInit
-): Promise<T> {
+export async function apiClient<T>(url: string, options?: RequestInit): Promise<T> {
   try {
     const response = await fetch(url, {
       ...options,
@@ -3015,23 +3030,23 @@ export async function apiClient<T>(
         'Content-Type': 'application/json',
         ...options?.headers,
       },
-    });
+    })
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json()
       throw new APIError(
         error.error.code,
         error.error.message,
         response.status,
         error.error.details,
         error.error.requestId
-      );
+      )
     }
 
-    return response.json();
+    return response.json()
   } catch (error) {
     if (error instanceof APIError) {
-      throw error;
+      throw error
     }
 
     // Network error or JSON parsing error
@@ -3039,21 +3054,21 @@ export async function apiClient<T>(
       'NETWORK_ERROR',
       'Unable to connect to server. Please check your internet connection.',
       0
-    );
+    )
   }
 }
 
 // Usage in component:
 try {
-  await AssignmentService.create({ title, objective });
+  await AssignmentService.create({ title, objective })
 } catch (error) {
   if (error instanceof APIError) {
     if (error.code === 'VALIDATION_ERROR') {
       // Show field-level errors
-      setFormErrors(error.details);
+      setFormErrors(error.details)
     } else {
       // Show toast notification
-      toast.error(error.message);
+      toast.error(error.message)
     }
   }
 }
@@ -3063,16 +3078,16 @@ try {
 
 ```typescript
 // lib/middleware/error.middleware.ts
-import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
+import { NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 
 export function handleAPIError(error: unknown): NextResponse {
-  const requestId = crypto.randomUUID();
+  const requestId = crypto.randomUUID()
 
   // Log to Sentry
   Sentry.captureException(error, {
     tags: { requestId },
-  });
+  })
 
   // Known application errors
   if (error instanceof Error) {
@@ -3087,7 +3102,7 @@ export function handleAPIError(error: unknown): NextResponse {
           },
         },
         { status: 404 }
-      );
+      )
     }
 
     if (error.message.includes('Unauthorized')) {
@@ -3101,12 +3116,12 @@ export function handleAPIError(error: unknown): NextResponse {
           },
         },
         { status: 403 }
-      );
+      )
     }
   }
 
   // Generic server error (don't expose internal details)
-  console.error('Unhandled API error:', error);
+  console.error('Unhandled API error:', error)
   return NextResponse.json(
     {
       error: {
@@ -3117,15 +3132,15 @@ export function handleAPIError(error: unknown): NextResponse {
       },
     },
     { status: 500 }
-  );
+  )
 }
 
 // Usage in API route:
 try {
-  const assignment = await AssignmentService.create(data, userId);
-  return NextResponse.json({ data: assignment });
+  const assignment = await AssignmentService.create(data, userId)
+  return NextResponse.json({ data: assignment })
 } catch (error) {
-  return handleAPIError(error);
+  return handleAPIError(error)
 }
 ```
 
@@ -3143,6 +3158,7 @@ try {
 ### Key Metrics
 
 **Frontend Metrics:**
+
 - **Core Web Vitals:**
   - LCP (Largest Contentful Paint) < 2.5s
   - FID (First Input Delay) < 100ms
@@ -3152,6 +3168,7 @@ try {
 - **User Interactions:** Button clicks, form submissions, navigation events
 
 **Backend Metrics:**
+
 - **Request Rate:** Total requests per minute, by endpoint
 - **Error Rate:** 5xx errors < 1% of total requests
 - **Response Time:**
@@ -3161,6 +3178,7 @@ try {
 - **Database Query Performance:** Slow queries (>1s) logged and alerted
 
 **Business Metrics:**
+
 - **Assignment Creation Rate:** New assignments per day/week
 - **Assignment Completion Rate:** % of DRAFT assignments marked COMPLETED within 30 days
 - **User Activity:** Active users per day, logins per day
@@ -3184,21 +3202,22 @@ try {
 
 ```typescript
 // lib/utils/logger.ts
-import pino from 'pino';
+import pino from 'pino'
 
 export const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
   formatters: {
-    level: (label) => ({ level: label }),
+    level: label => ({ level: label }),
   },
-});
+})
 
 // Usage:
-logger.info({ assignmentId, userId }, 'Assignment created');
-logger.error({ error, assignmentId }, 'Failed to complete assignment');
+logger.info({ assignmentId, userId }, 'Assignment created')
+logger.error({ error, assignmentId }, 'Failed to complete assignment')
 ```
 
 **Log Levels:**
+
 - **ERROR:** Application errors, failed requests, database errors
 - **WARN:** Validation failures, rate limit warnings, deprecated API usage
 - **INFO:** State transitions, user actions, successful operations
@@ -3208,9 +3227,10 @@ logger.error({ error, assignmentId }, 'Failed to complete assignment');
 
 ## Checklist Results Report
 
-*(To be populated after architecture review)*
+_(To be populated after architecture review)_
 
 This section will contain the results of executing the architect-checklist validation. The checklist ensures:
+
 - All PRD requirements have architectural solutions
 - Technology choices are justified and consistent
 - Performance targets are achievable with proposed architecture
@@ -3257,4 +3277,4 @@ This section will contain the results of executing the architect-checklist valid
 
 ---
 
-*Document prepared using BMAD™ Core fullstack architecture template v2.0*
+_Document prepared using BMAD™ Core fullstack architecture template v2.0_

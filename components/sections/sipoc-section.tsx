@@ -12,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -54,18 +48,22 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
     input: '',
     process: '',
     output: '',
-    customer: ''
+    customer: '',
   })
 
   const currentProcess = processes.find(p => p.id === selectedProcess)
   const sipocColumns = ['SUPPLIER', 'INPUT', 'PROCESS', 'OUTPUT', 'CUSTOMER'] as const
 
-  const groupedEntries = sipocColumns.reduce((acc, column) => {
-    acc[column] = currentProcess?.sipocEntries
-      .filter(entry => entry.column === column)
-      .sort((a, b) => a.order - b.order) || []
-    return acc
-  }, {} as Record<typeof sipocColumns[number], any>)
+  const groupedEntries = sipocColumns.reduce(
+    (acc, column) => {
+      acc[column] =
+        currentProcess?.sipocEntries
+          .filter(entry => entry.column === column)
+          .sort((a, b) => a.order - b.order) || []
+      return acc
+    },
+    {} as Record<(typeof sipocColumns)[number], any>
+  )
 
   const handleAddRow = async () => {
     if (!currentProcess) return
@@ -73,33 +71,32 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
     setLoading(true)
     try {
       // Get the next order number for each column
-      const nextOrder = Math.max(
-        ...Object.values(groupedEntries).map(arr => arr.length),
-        0
-      ) + 1
+      const nextOrder = Math.max(...Object.values(groupedEntries).map(arr => arr.length), 0) + 1
 
       // Create all 5 entries for the row
-      const promises = sipocColumns.map(column => {
-        const fieldName = column.toLowerCase() as keyof typeof rowForm
-        const value = rowForm[fieldName]
+      const promises = sipocColumns
+        .map(column => {
+          const fieldName = column.toLowerCase() as keyof typeof rowForm
+          const value = rowForm[fieldName]
 
-        // Only create entry if there's a value
-        if (value) {
-          return fetch('/api/sipoc-entries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              processId: currentProcess.id,
-              assignmentId,
-              userId,
-              column,
-              value,
-              order: nextOrder
+          // Only create entry if there's a value
+          if (value) {
+            return fetch('/api/sipoc-entries', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                processId: currentProcess.id,
+                assignmentId,
+                userId,
+                column,
+                value,
+                order: nextOrder,
+              }),
             })
-          })
-        }
-        return null
-      }).filter(Boolean)
+          }
+          return null
+        })
+        .filter(Boolean)
 
       await Promise.all(promises)
 
@@ -109,7 +106,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
         input: '',
         process: '',
         output: '',
-        customer: ''
+        customer: '',
       })
       router.refresh()
     } catch (error) {
@@ -129,7 +126,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
       const response = await fetch(`/api/sipoc-entries/${entryId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -148,7 +145,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
       const response = await fetch(`/api/sipoc-entries/${entryId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value, userId, assignmentId })
+        body: JSON.stringify({ value, userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -167,14 +164,16 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
     INPUT: 'Inputs',
     PROCESS: 'Process',
     OUTPUT: 'Outputs',
-    CUSTOMER: 'Customers'
+    CUSTOMER: 'Customers',
   }
 
   if (processes.length === 0) {
     return (
       <Card className="border-2 border-black">
         <CardContent className="py-12 text-center">
-          <p className="text-gray-500">Please add at least one process before creating a SIPOC diagram</p>
+          <p className="text-gray-500">
+            Please add at least one process before creating a SIPOC diagram
+          </p>
         </CardContent>
       </Card>
     )
@@ -215,7 +214,10 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
               <TableHeader>
                 <TableRow className="bg-gray-100">
                   {sipocColumns.map(column => (
-                    <TableHead key={column} className="text-center font-bold border-r last:border-r-0 border-black">
+                    <TableHead
+                      key={column}
+                      className="text-center font-bold border-r last:border-r-0 border-black"
+                    >
                       {columnLabels[column]}
                     </TableHead>
                   ))}
@@ -224,7 +226,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
               <TableBody>
                 {/* Determine max rows needed */}
                 {Array.from({
-                  length: Math.max(...Object.values(groupedEntries).map(arr => arr.length), 1)
+                  length: Math.max(...Object.values(groupedEntries).map(arr => arr.length), 1),
                 }).map((_, rowIndex) => (
                   <TableRow key={rowIndex}>
                     {sipocColumns.map(column => {
@@ -240,8 +242,8 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                                 <div className="flex-1 flex gap-2">
                                   <Input
                                     defaultValue={entry.value}
-                                    onBlur={(e) => handleUpdateEntry(entry.id, e.target.value)}
-                                    onKeyDown={(e) => {
+                                    onBlur={e => handleUpdateEntry(entry.id, e.target.value)}
+                                    onKeyDown={e => {
                                       if (e.key === 'Enter') {
                                         handleUpdateEntry(entry.id, e.currentTarget.value)
                                       } else if (e.key === 'Escape') {
@@ -254,7 +256,9 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                                 </div>
                               ) : (
                                 <>
-                                  <span className="text-sm flex-1 break-words whitespace-normal">{entry.value}</span>
+                                  <span className="text-sm flex-1 break-words whitespace-normal">
+                                    {entry.value}
+                                  </span>
                                   {canEdit && (
                                     <div className="flex gap-1 flex-shrink-0">
                                       <Button
@@ -307,7 +311,8 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                   <CardHeader>
                     <CardTitle className="text-lg">Add SIPOC Row</CardTitle>
                     <CardDescription>
-                      Fill in the fields for each column. You can leave fields empty if not applicable.
+                      Fill in the fields for each column. You can leave fields empty if not
+                      applicable.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -317,7 +322,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                         <Textarea
                           placeholder="Who provides inputs?"
                           value={rowForm.supplier}
-                          onChange={(e) => setRowForm({ ...rowForm, supplier: e.target.value })}
+                          onChange={e => setRowForm({ ...rowForm, supplier: e.target.value })}
                           className="min-h-[100px]"
                         />
                       </div>
@@ -327,7 +332,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                         <Textarea
                           placeholder="What inputs are provided?"
                           value={rowForm.input}
-                          onChange={(e) => setRowForm({ ...rowForm, input: e.target.value })}
+                          onChange={e => setRowForm({ ...rowForm, input: e.target.value })}
                           className="min-h-[100px]"
                         />
                       </div>
@@ -337,7 +342,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                         <Textarea
                           placeholder="What process step?"
                           value={rowForm.process}
-                          onChange={(e) => setRowForm({ ...rowForm, process: e.target.value })}
+                          onChange={e => setRowForm({ ...rowForm, process: e.target.value })}
                           className="min-h-[100px]"
                         />
                       </div>
@@ -347,7 +352,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                         <Textarea
                           placeholder="What outputs are produced?"
                           value={rowForm.output}
-                          onChange={(e) => setRowForm({ ...rowForm, output: e.target.value })}
+                          onChange={e => setRowForm({ ...rowForm, output: e.target.value })}
                           className="min-h-[100px]"
                         />
                       </div>
@@ -357,7 +362,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                         <Textarea
                           placeholder="Who receives the outputs?"
                           value={rowForm.customer}
-                          onChange={(e) => setRowForm({ ...rowForm, customer: e.target.value })}
+                          onChange={e => setRowForm({ ...rowForm, customer: e.target.value })}
                           className="min-h-[100px]"
                         />
                       </div>
@@ -373,7 +378,7 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                             input: '',
                             process: '',
                             output: '',
-                            customer: ''
+                            customer: '',
                           })
                         }}
                         disabled={loading}
@@ -382,7 +387,14 @@ export function SIPOCSection({ assignmentId, processes, canEdit, userId }: SIPOC
                       </Button>
                       <Button
                         onClick={handleAddRow}
-                        disabled={loading || (!rowForm.supplier && !rowForm.input && !rowForm.process && !rowForm.output && !rowForm.customer)}
+                        disabled={
+                          loading ||
+                          (!rowForm.supplier &&
+                            !rowForm.input &&
+                            !rowForm.process &&
+                            !rowForm.output &&
+                            !rowForm.customer)
+                        }
                         className="bg-black text-white hover:bg-gray-800"
                       >
                         Add Row

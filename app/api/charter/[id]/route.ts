@@ -15,9 +15,9 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-  // Prevent demo users from modifying data
-  const demoCheck = checkDemoMode(user)
-  if (demoCheck) return demoCheck
+    // Prevent demo users from modifying data
+    const demoCheck = checkDemoMode(user)
+    if (demoCheck) return demoCheck
 
     const { id: assignmentId } = await params
     const body = await request.json()
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Verify assignment exists and user has access
     const assignment = await prisma.assignment.findUnique({
       where: { id: assignmentId },
-      include: { charter: true }
+      include: { charter: true },
     })
 
     if (!assignment) {
@@ -48,19 +48,21 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         assignmentId,
         ...charterData,
         scheduleItems: {
-          create: scheduleItems.map((item: { milestone: string; startDate: string; endDate: string }, index: number) => ({
-            milestone: item.milestone,
-            startDate: item.startDate,
-            endDate: item.endDate,
-            order: index + 1
-          }))
-        }
+          create: scheduleItems.map(
+            (item: { milestone: string; startDate: string; endDate: string }, index: number) => ({
+              milestone: item.milestone,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              order: index + 1,
+            })
+          ),
+        },
       },
       include: {
         scheduleItems: {
-          orderBy: { order: 'asc' }
-        }
-      }
+          orderBy: { order: 'asc' },
+        },
+      },
     })
 
     // Create audit log
@@ -73,18 +75,15 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         entityId: charter.id,
         changeDetails: {
           action: 'created_charter',
-          charterName: charterData.assignmentName
-        }
-      }
+          charterName: charterData.assignmentName,
+        },
+      },
     })
 
     return NextResponse.json(charter)
   } catch (error) {
     console.error('Charter creation error:', error)
-    return NextResponse.json(
-      { error: 'Failed to create charter' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create charter' }, { status: 500 })
   }
 }
 
@@ -102,7 +101,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     // Verify assignment exists and user has access
     const assignment = await prisma.assignment.findUnique({
       where: { id: assignmentId },
-      include: { charter: true }
+      include: { charter: true },
     })
 
     if (!assignment) {
@@ -119,10 +118,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
     // Update charter and replace schedule items atomically
-    const charter = await prisma.$transaction(async (tx) => {
+    const charter = await prisma.$transaction(async tx => {
       // Delete existing schedule items
       await tx.charterScheduleItem.deleteMany({
-        where: { charterId: assignment.charter!.id }
+        where: { charterId: assignment.charter!.id },
       })
 
       // Update charter with new schedule items
@@ -131,19 +130,21 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         data: {
           ...charterData,
           scheduleItems: {
-            create: scheduleItems.map((item: { milestone: string; startDate: string; endDate: string }, index: number) => ({
-              milestone: item.milestone,
-              startDate: item.startDate,
-              endDate: item.endDate,
-              order: index + 1
-            }))
-          }
+            create: scheduleItems.map(
+              (item: { milestone: string; startDate: string; endDate: string }, index: number) => ({
+                milestone: item.milestone,
+                startDate: item.startDate,
+                endDate: item.endDate,
+                order: index + 1,
+              })
+            ),
+          },
         },
         include: {
           scheduleItems: {
-            orderBy: { order: 'asc' }
-          }
-        }
+            orderBy: { order: 'asc' },
+          },
+        },
       })
     })
 
@@ -157,17 +158,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         entityId: charter.id,
         changeDetails: {
           action: 'updated_charter',
-          charterName: charterData.assignmentName
-        }
-      }
+          charterName: charterData.assignmentName,
+        },
+      },
     })
 
     return NextResponse.json(charter)
   } catch (error) {
     console.error('Charter update error:', error)
-    return NextResponse.json(
-      { error: 'Failed to update charter' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update charter' }, { status: 500 })
   }
 }

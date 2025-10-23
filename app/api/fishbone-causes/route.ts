@@ -17,20 +17,17 @@ export async function POST(request: NextRequest) {
 
     // Input validation
     if (!categoryId || !assignmentId || !causeDescription) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Create fishbone cause and audit log atomically
-    const cause = await prisma.$transaction(async (tx) => {
+    const cause = await prisma.$transaction(async tx => {
       const newCause = await tx.fishboneCause.create({
         data: {
           categoryId,
           causeDescription,
-          order: order || 0
-        }
+          order: order || 0,
+        },
       })
 
       await tx.auditLog.create({
@@ -42,9 +39,9 @@ export async function POST(request: NextRequest) {
           entityId: newCause.id,
           changeDetails: {
             causeDescription,
-            order: order || 0
-          }
-        }
+            order: order || 0,
+          },
+        },
       })
 
       return newCause
@@ -53,9 +50,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(cause)
   } catch (error) {
     console.error('Failed to create fishbone cause:', error)
-    return NextResponse.json(
-      { error: 'Failed to create fishbone cause' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create fishbone cause' }, { status: 500 })
   }
 }

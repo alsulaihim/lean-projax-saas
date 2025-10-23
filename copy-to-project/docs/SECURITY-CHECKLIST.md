@@ -1,4 +1,5 @@
 # Security Checklist
+
 > OWASP Top 10 & Security Best Practices - Check EVERY Feature
 
 ---
@@ -14,6 +15,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## ✅ Universal Security Requirements
 
 ### Authentication & Authorization
+
 - [ ] **Authentication implemented** - Users must prove identity
 - [ ] **Authorization checks** - Users can only access their own data
 - [ ] **JWT tokens** - Short expiration (15min for access, 7 days for refresh)
@@ -25,6 +27,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **No credentials in code** - Use environment variables
 
 ### Input Validation
+
 - [ ] **All inputs validated** - Frontend AND backend
 - [ ] **Use validation library** - class-validator (NestJS), Zod (Next.js)
 - [ ] **Whitelist approach** - Define what's allowed, reject everything else
@@ -34,6 +37,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Type checking** - Ensure correct data types
 
 ### SQL Injection Prevention
+
 - [ ] **Parameterized queries ONLY** - Never string concatenation
 - [ ] **Use ORM** - TypeORM or Prisma (they handle this)
 - [ ] **No raw queries** - Or if needed, sanitize inputs
@@ -41,6 +45,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Input validation** - Even for query parameters
 
 ### XSS (Cross-Site Scripting) Prevention
+
 - [ ] **Escape user content** - Before rendering HTML
 - [ ] **Content Security Policy** - CSP headers configured
 - [ ] **No dangerouslySetInnerHTML** - Or sanitize with DOMPurify
@@ -48,6 +53,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **HttpOnly cookies** - Prevent JavaScript access
 
 ### CSRF (Cross-Site Request Forgery) Prevention
+
 - [ ] **CSRF tokens** - For state-changing operations
 - [ ] **SameSite cookies** - Set to 'Strict' or 'Lax'
 - [ ] **Verify Origin header** - Check request origin
@@ -58,6 +64,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🔐 API Security
 
 ### Endpoint Protection
+
 - [ ] **Rate limiting** - Prevent brute force and DoS
 - [ ] **API authentication** - JWT or API keys required
 - [ ] **CORS configured** - Whitelist allowed origins
@@ -66,6 +73,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Timeout limits** - Prevent hanging requests
 
 ### Data Exposure
+
 - [ ] **Sensitive data filtered** - Never return passwords, tokens
 - [ ] **Error messages sanitized** - No stack traces in production
 - [ ] **Logging secure** - No sensitive data in logs
@@ -73,6 +81,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Pagination required** - No unlimited result sets
 
 ### API Keys & Secrets
+
 - [ ] **Secrets in env vars** - Never in code
 - [ ] **Separate keys per env** - Dev, staging, prod
 - [ ] **Key rotation plan** - Document how to rotate
@@ -84,6 +93,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🗄️ Database Security
 
 ### Access Control
+
 - [ ] **Principle of least privilege** - Minimal DB permissions
 - [ ] **Separate DB users** - Per service/environment
 - [ ] **No root/admin access** - From application
@@ -91,6 +101,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Strong DB passwords** - Long, complex, rotated
 
 ### Data Protection
+
 - [ ] **Encrypt sensitive data** - PII, payment info, etc.
 - [ ] **Soft deletes** - Keep audit trail
 - [ ] **Backup strategy** - Regular automated backups
@@ -102,6 +113,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 📱 Frontend Security
 
 ### Client-Side Protection
+
 - [ ] **No sensitive logic in frontend** - Use backend
 - [ ] **Minify & obfuscate** - Production builds
 - [ ] **No console.logs** - Remove debug statements
@@ -110,6 +122,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Subresource Integrity** - SRI for CDN resources
 
 ### Form Security
+
 - [ ] **Client validation** - User experience
 - [ ] **Server validation** - ALWAYS (never trust client)
 - [ ] **Hidden fields protected** - Can be tampered with
@@ -121,12 +134,14 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🌐 Network & Infrastructure
 
 ### HTTPS & Certificates
+
 - [ ] **HTTPS enforced** - Redirect HTTP to HTTPS
 - [ ] **Valid SSL certificate** - Not self-signed in production
 - [ ] **HSTS header** - Force HTTPS
 - [ ] **Certificate expiration monitoring** - Auto-renewal
 
 ### Headers Security
+
 ```typescript
 // Required security headers
 {
@@ -148,6 +163,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🔄 Session Management
 
 ### Session Security
+
 - [ ] **Secure session storage** - Server-side or encrypted
 - [ ] **Session expiration** - Auto-timeout after inactivity
 - [ ] **Session regeneration** - After login/privilege change
@@ -159,6 +175,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 📦 Dependencies & Supply Chain
 
 ### Third-Party Code
+
 - [ ] **Audit npm packages** - `npm audit` run regularly
 - [ ] **Update dependencies** - Patch vulnerabilities
 - [ ] **Minimize dependencies** - Less attack surface
@@ -171,6 +188,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🚨 Error Handling & Logging
 
 ### Error Management
+
 - [ ] **Graceful error handling** - Try-catch everywhere
 - [ ] **Generic error messages** - To users
 - [ ] **Detailed logs** - For developers (secure)
@@ -178,6 +196,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Error monitoring** - Sentry, LogRocket, etc.
 
 ### Logging Best Practices
+
 - [ ] **Log security events** - Logins, failures, access
 - [ ] **No sensitive data logged** - Passwords, tokens, PII
 - [ ] **Centralized logging** - Easy to monitor
@@ -189,6 +208,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 📱 Mobile Security (iOS/Android)
 
 ### App Security
+
 - [ ] **Code obfuscation** - ProGuard, R8 (Android)
 - [ ] **Root/jailbreak detection** - Warn or block
 - [ ] **Certificate pinning** - Prevent MITM attacks
@@ -201,6 +221,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🧪 Security Testing
 
 ### Pre-Deployment Testing
+
 - [ ] **Automated security scans** - SAST tools
 - [ ] **Dependency vulnerability scan** - Snyk, npm audit
 - [ ] **Penetration testing** - For critical features
@@ -213,6 +234,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🚀 Production Deployment
 
 ### Pre-Launch Checklist
+
 - [ ] **Environment variables set** - All secrets configured
 - [ ] **HTTPS configured** - Valid certificates
 - [ ] **Security headers** - All headers set
@@ -223,6 +245,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] **Security contacts** - Who to notify
 
 ### Post-Launch Monitoring
+
 - [ ] **Monitor failed logins** - Detect brute force
 - [ ] **Monitor API usage** - Detect anomalies
 - [ ] **Security log review** - Regular audits
@@ -234,6 +257,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 📋 Feature-Specific Checklists
 
 ### User Registration
+
 - [ ] Email validation
 - [ ] Password strength enforcement
 - [ ] Email verification required
@@ -242,6 +266,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] No user enumeration (same error for email exists)
 
 ### User Login
+
 - [ ] Rate limit login attempts
 - [ ] Account lockout after X failures
 - [ ] Secure password comparison (bcrypt.compare)
@@ -250,6 +275,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] 2FA option (if high security)
 
 ### Password Reset
+
 - [ ] Secure token generation (crypto.randomBytes)
 - [ ] Token expiration (15-30 minutes)
 - [ ] Rate limit reset requests
@@ -258,6 +284,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] Email confirmation of reset
 
 ### File Upload
+
 - [ ] File type validation (whitelist)
 - [ ] File size limits
 - [ ] Scan for malware (ClamAV)
@@ -266,6 +293,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 - [ ] Serve via CDN or proxy
 
 ### Payment Processing
+
 - [ ] PCI-DSS compliance (if storing cards)
 - [ ] Use payment gateway (Stripe, PayPal)
 - [ ] Never store raw card numbers
@@ -278,15 +306,18 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🔄 Regular Security Maintenance
 
 ### Weekly
+
 - [ ] Review failed login attempts
 - [ ] Check error logs for anomalies
 
 ### Monthly
+
 - [ ] Update dependencies
 - [ ] Review access logs
 - [ ] Security audit of new features
 
 ### Quarterly
+
 - [ ] Rotate API keys
 - [ ] Security training for team
 - [ ] Review and update this checklist
@@ -296,6 +327,7 @@ This checklist must be completed for EVERY feature before it's considered done. 
 ## 🆘 Incident Response
 
 ### If Security Breach Detected:
+
 1. **Contain** - Isolate affected systems
 2. **Assess** - Determine scope and impact
 3. **Notify** - Users, stakeholders, authorities (if required)

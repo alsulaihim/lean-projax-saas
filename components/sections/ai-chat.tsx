@@ -39,7 +39,7 @@ export function AIChat({ assignmentId }: AIChatProps) {
     const userMessage: Message = {
       role: 'user',
       content: input.trim(),
-      timestamp: new Date()
+      timestamp: new Date(),
     }
 
     setMessages(prev => [...prev, userMessage])
@@ -55,7 +55,7 @@ export function AIChat({ assignmentId }: AIChatProps) {
         },
         body: JSON.stringify({
           message: userMessage.content,
-          history: messages
+          history: messages,
         }),
       })
 
@@ -69,7 +69,7 @@ export function AIChat({ assignmentId }: AIChatProps) {
       const assistantMessage: Message = {
         role: 'assistant',
         content: data.message,
-        timestamp: new Date()
+        timestamp: new Date(),
       }
 
       setMessages(prev => [...prev, assistantMessage])
@@ -91,14 +91,16 @@ export function AIChat({ assignmentId }: AIChatProps) {
   return (
     <div className="flex flex-col h-full w-full max-w-full">
       {/* Messages Container */}
-      <div className={`flex-1 space-y-3 p-4 border-2 border-black rounded-lg bg-gray-50 max-w-full ${messages.length === 0 ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+      <div
+        className={`flex-1 space-y-3 p-4 border-2 border-black rounded-lg bg-gray-50 max-w-full ${messages.length === 0 ? 'overflow-hidden' : 'overflow-y-auto'}`}
+      >
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <Bot className="h-16 w-16 text-gray-400 mb-4" />
             <h3 className="text-lg font-semibold mb-2">Chat with AI Assistant</h3>
             <p className="text-sm text-gray-600 max-w-md">
-              Ask questions about your Six Sigma assignment, get insights on your data,
-              or request suggestions for improvement.
+              Ask questions about your Six Sigma assignment, get insights on your data, or request
+              suggestions for improvement.
             </p>
           </div>
         )}
@@ -122,7 +124,9 @@ export function AIChat({ assignmentId }: AIChatProps) {
               }`}
             >
               <CardContent className="p-2.5">
-                <p className="text-sm whitespace-pre-wrap leading-relaxed break-words">{message.content}</p>
+                <p className="text-sm whitespace-pre-wrap leading-relaxed break-words">
+                  {message.content}
+                </p>
                 <p
                   className={`text-xs mt-1.5 ${
                     message.role === 'user' ? 'text-gray-300' : 'text-gray-500'
@@ -130,7 +134,7 @@ export function AIChat({ assignmentId }: AIChatProps) {
                 >
                   {message.timestamp.toLocaleTimeString([], {
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
                   })}
                 </p>
               </CardContent>
@@ -173,7 +177,7 @@ export function AIChat({ assignmentId }: AIChatProps) {
         <Textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question about your assignment..."
           className="min-h-[60px] max-h-[120px] resize-none border-2 border-black flex-1"
@@ -184,17 +188,11 @@ export function AIChat({ assignmentId }: AIChatProps) {
           disabled={!input.trim() || loading}
           className="bg-black text-white hover:bg-gray-800 px-6 flex-shrink-0"
         >
-          {loading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : (
-            <Send className="h-5 w-5" />
-          )}
+          {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
         </Button>
       </div>
 
-      <p className="text-xs text-gray-500 mt-2">
-        Press Enter to send, Shift+Enter for new line
-      </p>
+      <p className="text-xs text-gray-500 mt-2">Press Enter to send, Shift+Enter for new line</p>
     </div>
   )
 }

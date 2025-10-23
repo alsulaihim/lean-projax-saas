@@ -10,9 +10,9 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: connectionString
-    }
-  }
+      url: connectionString,
+    },
+  },
 })
 
 // Calculate Pareto analysis for a process
@@ -21,8 +21,9 @@ function calculatePareto(steps) {
   const sortedSteps = steps
     .map(step => ({
       ...step,
-      totalTime: (step.processTime || step.durationMinutes || 0) +
-                 (step.waitingTime || step.waitTimeMinutes || 0)
+      totalTime:
+        (step.processTime || step.durationMinutes || 0) +
+        (step.waitingTime || step.waitTimeMinutes || 0),
     }))
     .sort((a, b) => b.totalTime - a.totalTime)
 
@@ -37,7 +38,7 @@ function calculatePareto(steps) {
       ...step,
       percentage: (step.totalTime / total) * 100,
       cumulativePercentage,
-      isVitalFew: cumulativePercentage <= 80
+      isVitalFew: cumulativePercentage <= 80,
     }
   })
 }
@@ -45,7 +46,7 @@ function calculatePareto(steps) {
 async function fixFishboneForVitalSteps() {
   try {
     console.log('🐟 Fixing Fishbone Diagrams - One per Vital Few Step')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
 
     // First, let's clear existing fishbone data to start fresh
     console.log('🧹 Clearing existing fishbone data...')
@@ -54,14 +55,14 @@ async function fixFishboneForVitalSteps() {
     const processes = await prisma.process.findMany({
       include: {
         vsmSteps: {
-          orderBy: { stepNumber: 'asc' }
+          orderBy: { stepNumber: 'asc' },
         },
         fishboneCategories: {
           include: {
-            causes: true
-          }
-        }
-      }
+            causes: true,
+          },
+        },
+      },
     })
 
     // Delete existing fishbone data
@@ -69,19 +70,19 @@ async function fixFishboneForVitalSteps() {
       for (const category of process.fishboneCategories) {
         // Delete causes first due to foreign key
         await prisma.fishboneCause.deleteMany({
-          where: { categoryId: category.id }
+          where: { categoryId: category.id },
         })
       }
       // Then delete categories
       await prisma.fishboneCategory.deleteMany({
-        where: { processId: process.id }
+        where: { processId: process.id },
       })
     }
     console.log('  ✅ Cleared existing fishbone data')
 
     // Now create fishbone for each vital few step
     console.log('\n📊 Creating Fishbone for Each Vital Few Step...')
-    console.log('-' .repeat(60))
+    console.log('-'.repeat(60))
 
     let totalFishbonesCreated = 0
     let totalCausesCreated = 0
@@ -95,38 +96,38 @@ async function fixFishboneForVitalSteps() {
           `Insufficient training for "${stepName}" procedures`,
           `Staff fatigue during "${stepName}" activities`,
           `Lack of qualified personnel for "${stepName}"`,
-          `Communication gaps in "${stepName}" handoffs`
+          `Communication gaps in "${stepName}" handoffs`,
         ],
         PROCESS: [
           `"${stepName}" lacks standardized procedures`,
           `Inefficient workflow design in "${stepName}"`,
           `No quality checkpoints in "${stepName}"`,
-          `Unclear escalation path for "${stepName}" issues`
+          `Unclear escalation path for "${stepName}" issues`,
         ],
         EQUIPMENT: [
           `Equipment failure during "${stepName}"`,
           `Outdated technology for "${stepName}"`,
           `Insufficient tools for "${stepName}" tasks`,
-          `System downtime affecting "${stepName}"`
+          `System downtime affecting "${stepName}"`,
         ],
         MATERIALS: [
           `Poor quality inputs for "${stepName}"`,
           `Material shortage impacting "${stepName}"`,
           `Incorrect specifications in "${stepName}"`,
-          `Documentation gaps for "${stepName}"`
+          `Documentation gaps for "${stepName}"`,
         ],
         ENVIRONMENT: [
           `Workspace constraints for "${stepName}"`,
           `Environmental factors affecting "${stepName}"`,
           `External dependencies delaying "${stepName}"`,
-          `Location issues impacting "${stepName}"`
+          `Location issues impacting "${stepName}"`,
         ],
         MANAGEMENT: [
           `Unclear priorities for "${stepName}"`,
           `Resource constraints in "${stepName}"`,
           `Lack of performance metrics for "${stepName}"`,
-          `Poor change management in "${stepName}"`
-        ]
+          `Poor change management in "${stepName}"`,
+        ],
       }
 
       return causeTemplates[category] || []
@@ -165,8 +166,8 @@ async function fixFishboneForVitalSteps() {
             data: {
               processId: process.id,
               category: categoryType,
-              order: baseOrder + i
-            }
+              order: baseOrder + i,
+            },
           })
 
           // Get causes specific to this step
@@ -179,8 +180,8 @@ async function fixFishboneForVitalSteps() {
               data: {
                 categoryId: category.id,
                 causeDescription: stepCauses[j],
-                order: j
-              }
+                order: j,
+              },
             })
             totalCausesCreated++
           }
@@ -192,9 +193,9 @@ async function fixFishboneForVitalSteps() {
     }
 
     // Verify the results
-    console.log('\n' + '=' .repeat(60))
+    console.log('\n' + '='.repeat(60))
     console.log('✅ FISHBONE RESTRUCTURING COMPLETE!')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
 
     // Get statistics
     const processesWithFishbone = await prisma.process.findMany({
@@ -204,15 +205,15 @@ async function fixFishboneForVitalSteps() {
           select: {
             stepName: true,
             processTime: true,
-            waitingTime: true
-          }
+            waitingTime: true,
+          },
         },
         _count: {
           select: {
-            fishboneCategories: true
-          }
-        }
-      }
+            fishboneCategories: true,
+          },
+        },
+      },
     })
 
     console.log('\n📊 Summary:')
@@ -233,7 +234,6 @@ async function fixFishboneForVitalSteps() {
 
     console.log('\n💡 Note: Each vital few step now has its own complete fishbone diagram')
     console.log('   with 6 categories and specific root causes related to that step.')
-
   } catch (error) {
     console.error('❌ Error fixing fishbone diagrams:', error)
   } finally {

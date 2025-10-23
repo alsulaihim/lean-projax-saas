@@ -1,4 +1,5 @@
 # Decision Log
+
 > Track all significant architectural and technical decisions
 
 ---
@@ -6,6 +7,7 @@
 ## 📋 HOW TO USE THIS LOG
 
 **When to Add an Entry:**
+
 - Making architectural decisions
 - Choosing between technical approaches
 - Adding/removing major dependencies
@@ -31,10 +33,12 @@
 [Why did we choose this approach?]
 
 **Alternatives Considered:**
+
 1. [Alternative 1] - Rejected because [reason]
 2. [Alternative 2] - Rejected because [reason]
 
 **Consequences:**
+
 - Positive: [Good outcomes]
 - Negative: [Trade-offs]
 - Risks: [Potential problems]
@@ -43,6 +47,7 @@
 [How this affects the codebase]
 
 **Related Decisions:**
+
 - [Links to related decisions]
 ```
 

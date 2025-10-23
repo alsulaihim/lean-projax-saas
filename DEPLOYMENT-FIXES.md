@@ -1,6 +1,7 @@
 # Deployment Workflow Fixes
 
 ## Summary
+
 Fixed critical errors and improved the GitHub Actions deployment workflow (`.github/workflows/deploy.yml`).
 
 ---
@@ -8,9 +9,11 @@ Fixed critical errors and improved the GitHub Actions deployment workflow (`.git
 ## Critical Fixes Applied
 
 ### 1. ✅ Production Database Migration Strategy
+
 **Issue**: Used `prisma db push` which is unsafe for production (can cause data loss)
 
-**Fix**: 
+**Fix**:
+
 - Changed to `prisma migrate deploy` for production migrations
 - Added fallback logic to handle projects without migration history
 - Added DATABASE_URL to Prisma generate step
@@ -34,6 +37,7 @@ run: |
 ---
 
 ### 2. ✅ Missing Environment Variable
+
 **Issue**: `OPENAI_API_KEY` not included in build environment, causing AI features to fail
 
 **Fix**: Added `OPENAI_API_KEY` to build environment variables
@@ -49,6 +53,7 @@ env:
 ---
 
 ### 3. ✅ NPM Cache Configuration for Marketing Site
+
 **Issue**: Cache path mismatch - cache set at root but `npm ci` runs in `marketing/` directory
 
 **Fix**: Added explicit cache dependency path
@@ -57,7 +62,7 @@ env:
 # Before
 cache: 'npm'
 
-# After  
+# After
 cache: 'npm'
 cache-dependency-path: 'marketing/package-lock.json'
 ```
@@ -67,9 +72,11 @@ cache-dependency-path: 'marketing/package-lock.json'
 ---
 
 ### 4. ✅ Health Check Endpoint Missing
+
 **Issue**: Workflow tried to call `/api/health` which didn't exist
 
-**Fix**: 
+**Fix**:
+
 - Created new health check endpoint at `app/api/health/route.ts`
 - Tests database connectivity
 - Returns structured JSON response
@@ -89,9 +96,11 @@ cache-dependency-path: 'marketing/package-lock.json'
 ---
 
 ### 5. ✅ Improved Health Check Logic
+
 **Issue**: Health checks used weak error handling with `continue-on-error: true`
 
-**Fix**: 
+**Fix**:
+
 - Added 30-second wait for deployment propagation
 - Improved HTTP status code checking
 - Changed to `continue-on-error: false` to fail fast
@@ -118,10 +127,12 @@ fi
 ## Remaining Warnings (Non-Critical)
 
 The linter shows warnings about:
+
 - `environment: production` - Requires GitHub repo configuration
 - Context access warnings for secrets/vars - Expected in GitHub Actions
 
 These are configuration issues, not code errors. They will resolve once:
+
 1. Production environment is configured in GitHub repo settings
 2. All required secrets are added to the repository
 
@@ -132,6 +143,7 @@ These are configuration issues, not code errors. They will resolve once:
 Ensure these secrets are configured in GitHub:
 
 ### Platform Deployment
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `NEXTAUTH_URL` - Production URL (e.g., https://app.leanprojax.com)
 - `NEXTAUTH_SECRET` - JWT signing secret (generate with `openssl rand -base64 32`)
@@ -142,6 +154,7 @@ Ensure these secrets are configured in GitHub:
 - `OPENAI_API_KEY` - OpenAI API key for AI features
 
 ### Deployment Target (Vercel OR Railway)
+
 - `VERCEL_TOKEN` - Vercel authentication token
 - `VERCEL_ORG_ID` - Vercel organization ID
 - `VERCEL_PROJECT_ID` - Platform project ID
@@ -152,10 +165,12 @@ OR
 - `RAILWAY_TOKEN` - Railway authentication token
 
 ### Health Checks
+
 - `PLATFORM_URL` - Production platform URL
 - `MARKETING_URL` - Production marketing site URL
 
 ### Repository Variables
+
 - `DEPLOY_TARGET` - Set to `vercel` or `railway`
 
 ---
@@ -163,6 +178,7 @@ OR
 ## Next Steps
 
 ### 1. Set Up Prisma Migrations (Recommended)
+
 Since the project doesn't have a migrations directory yet:
 
 ```bash
@@ -175,16 +191,19 @@ git commit -m "feat: add initial Prisma migration"
 ```
 
 ### 2. Configure GitHub Environment
+
 1. Go to Repository Settings → Environments
 2. Create "production" environment
 3. Add protection rules if needed
 
 ### 3. Add Required Secrets
+
 1. Go to Repository Settings → Secrets and variables → Actions
 2. Add all required secrets listed above
 3. Add `DEPLOY_TARGET` variable
 
 ### 4. Test Deployment
+
 ```bash
 # Push to trigger workflow
 git push origin main
@@ -198,9 +217,11 @@ gh workflow run deploy.yml
 ## File Changes Summary
 
 ### Modified Files
+
 - `.github/workflows/deploy.yml` - Fixed deployment workflow
 
 ### New Files
+
 - `app/api/health/route.ts` - Health check endpoint
 
 ---
@@ -221,8 +242,8 @@ gh workflow run deploy.yml
 ## Support
 
 If deployment fails:
+
 1. Check GitHub Actions logs for specific error
 2. Verify all secrets are configured correctly
 3. Test health endpoint locally: `curl http://localhost:3070/api/health`
 4. Ensure database is accessible from deployment platform
-

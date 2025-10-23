@@ -1,4 +1,5 @@
 # Agent Start Prompt
+
 > Copy this and send it at the start of EVERY new session
 
 ---
@@ -46,6 +47,7 @@ understand your role and summarize where we are in the project.
 ## 🎯 What This Does:
 
 This prompt ensures the agent:
+
 - ✅ Loads your project configuration
 - ✅ Understands its behavior contract
 - ✅ Knows the current project state

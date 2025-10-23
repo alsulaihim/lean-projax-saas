@@ -27,20 +27,17 @@ export async function POST(request: NextRequest) {
       body = await request.json()
     } catch (jsonError) {
       console.error('Failed to parse JSON:', jsonError)
-      return NextResponse.json(
-        { error: 'Invalid JSON in request body' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 })
     }
 
     // Validate input with Zod schema (type-safe validation)
     const validation = loginSchema.safeParse(body)
-    
+
     if (!validation.success) {
       return NextResponse.json(
-        { 
+        {
           error: 'Invalid input data',
-          details: formatZodError(validation.error)
+          details: formatZodError(validation.error),
         },
         { status: 400 }
       )
@@ -58,33 +55,28 @@ export async function POST(request: NextRequest) {
         role: true,
         passwordHash: true,
         emailVerified: true,
-        isDemo: true
-      }
+        isDemo: true,
+      },
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
     // Verify password
     const isValid = await bcrypt.compare(password, user.passwordHash)
 
     if (!isValid) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
     // Check if email is verified
     if (!user.emailVerified) {
       return NextResponse.json(
         {
-          error: 'Please verify your email address before signing in. Check your inbox for the verification link.',
-          code: 'EMAIL_NOT_VERIFIED'
+          error:
+            'Please verify your email address before signing in. Check your inbox for the verification link.',
+          code: 'EMAIL_NOT_VERIFIED',
         },
         { status: 403 } // 403 Forbidden - authenticated but not authorized
       )
@@ -96,7 +88,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: 'Demo users must sign in at the demo login page.',
-          code: 'DEMO_USER_BLOCKED'
+          code: 'DEMO_USER_BLOCKED',
         },
         { status: 403 }
       )
@@ -108,7 +100,7 @@ export async function POST(request: NextRequest) {
       email: user.email,
       name: user.name,
       role: user.role,
-      isDemo: user.isDemo || false
+      isDemo: user.isDemo || false,
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -122,8 +114,8 @@ export async function POST(request: NextRequest) {
         id: user.id,
         email: user.email,
         name: user.name,
-        role: user.role
-      }
+        role: user.role,
+      },
     })
 
     response.cookies.set('auth-token', token, {
@@ -131,15 +123,12 @@ export async function POST(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/' // Ensure cookie is available across all routes
+      path: '/', // Ensure cookie is available across all routes
     })
 
     return response
   } catch (error) {
     console.error('Login error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

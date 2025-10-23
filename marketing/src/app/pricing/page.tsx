@@ -10,7 +10,11 @@ export default function Pricing() {
       <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-3xl text-red-700" style={{ fontFamily: 'var(--font-orbitron)' }}>
+            <Link
+              href="/"
+              className="text-3xl text-red-700"
+              style={{ fontFamily: 'var(--font-orbitron)' }}
+            >
               Lean Projax
             </Link>
             <div className="hidden md:flex items-center space-x-8">
@@ -38,26 +42,48 @@ export default function Pricing() {
 
           {/* Sumi-e Style Illustration - Between heading and description */}
           <div className="my-12 max-w-6xl mx-auto opacity-30">
-            <svg viewBox="0 0 1500 300" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <svg
+              viewBox="0 0 1500 300"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-auto"
+            >
               {/* Define Phase - Person brainstorming */}
               <g transform="translate(50, 0)">
-                <text x="80" y="30" fontSize="16" fill="#4F46E5" fontWeight="bold">DEFINE</text>
+                <text x="80" y="30" fontSize="16" fill="#4F46E5" fontWeight="bold">
+                  DEFINE
+                </text>
                 {/* Person sitting, thinking */}
                 <ellipse cx="100" cy="80" rx="20" ry="25" fill="#D4A574" opacity="0.6" />
                 <path d="M 100 105 Q 85 140, 90 180" stroke="#4A4A4A" strokeWidth="3" fill="none" />
-                <path d="M 100 105 Q 115 140, 110 180" stroke="#4A4A4A" strokeWidth="3" fill="none" />
+                <path
+                  d="M 100 105 Q 115 140, 110 180"
+                  stroke="#4A4A4A"
+                  strokeWidth="3"
+                  fill="none"
+                />
                 <path d="M 90 180 L 80 220" stroke="#4A4A4A" strokeWidth="3" />
                 <path d="M 110 180 L 120 220" stroke="#4A4A4A" strokeWidth="3" />
                 {/* Thought bubbles */}
                 <circle cx="130" cy="60" r="8" fill="#93C5FD" opacity="0.5" />
                 <circle cx="145" cy="50" r="12" fill="#93C5FD" opacity="0.5" />
                 {/* Notes/clipboard */}
-                <rect x="60" y="140" width="30" height="40" fill="#FEF3C7" opacity="0.6" stroke="#92400E" strokeWidth="1" />
+                <rect
+                  x="60"
+                  y="140"
+                  width="30"
+                  height="40"
+                  fill="#FEF3C7"
+                  opacity="0.6"
+                  stroke="#92400E"
+                  strokeWidth="1"
+                />
               </g>
 
               {/* Measure Phase - Person with data/charts */}
               <g transform="translate(350, 0)">
-                <text x="80" y="30" fontSize="16" fill="#059669" fontWeight="bold">MEASURE</text>
+                <text x="80" y="30" fontSize="16" fill="#059669" fontWeight="bold">
+                  MEASURE
+                </text>
                 {/* Person standing with clipboard */}
                 <ellipse cx="100" cy="70" rx="18" ry="22" fill="#D4A574" opacity="0.6" />
                 <path d="M 100 92 L 100 150" stroke="#4A4A4A" strokeWidth="3" />
@@ -66,13 +92,29 @@ export default function Pricing() {
                 <path d="M 100 150 L 85 200" stroke="#4A4A4A" strokeWidth="3" />
                 <path d="M 100 150 L 115 200" stroke="#4A4A4A" strokeWidth="3" />
                 {/* Chart/graph */}
-                <rect x="120" y="100" width="50" height="70" fill="#DBEAFE" opacity="0.6" stroke="#1E40AF" strokeWidth="1.5" />
-                <path d="M 130 160 L 140 145 L 150 150 L 160 130" stroke="#1E40AF" strokeWidth="2" fill="none" />
+                <rect
+                  x="120"
+                  y="100"
+                  width="50"
+                  height="70"
+                  fill="#DBEAFE"
+                  opacity="0.6"
+                  stroke="#1E40AF"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M 130 160 L 140 145 L 150 150 L 160 130"
+                  stroke="#1E40AF"
+                  strokeWidth="2"
+                  fill="none"
+                />
               </g>
 
               {/* Analyze Phase - Two people discussing */}
               <g transform="translate(650, 0)">
-                <text x="80" y="30" fontSize="16" fill="#DC2626" fontWeight="bold">ANALYZE</text>
+                <text x="80" y="30" fontSize="16" fill="#DC2626" fontWeight="bold">
+                  ANALYZE
+                </text>
                 {/* Person 1 */}
                 <ellipse cx="85" cy="75" rx="18" ry="22" fill="#D4A574" opacity="0.6" />
                 <path d="M 85 97 L 85 145" stroke="#4A4A4A" strokeWidth="3" />
@@ -93,7 +135,9 @@ export default function Pricing() {
 
               {/* Improve Phase - Person implementing */}
               <g transform="translate(950, 0)">
-                <text x="75" y="30" fontSize="16" fill="#7C3AED" fontWeight="bold">IMPROVE</text>
+                <text x="75" y="30" fontSize="16" fill="#7C3AED" fontWeight="bold">
+                  IMPROVE
+                </text>
                 {/* Person working/building */}
                 <ellipse cx="95" cy="75" rx="18" ry="22" fill="#D4A574" opacity="0.6" />
                 <path d="M 95 97 L 95 145" stroke="#4A4A4A" strokeWidth="3" />
@@ -104,12 +148,19 @@ export default function Pricing() {
                 {/* Tool/wrench */}
                 <rect x="115" y="115" width="25" height="8" fill="#A78BFA" opacity="0.6" rx="2" />
                 {/* Improvement arrow */}
-                <path d="M 60 170 L 60 140 L 55 145 M 60 140 L 65 145" stroke="#7C3AED" strokeWidth="2" fill="none" />
+                <path
+                  d="M 60 170 L 60 140 L 55 145 M 60 140 L 65 145"
+                  stroke="#7C3AED"
+                  strokeWidth="2"
+                  fill="none"
+                />
               </g>
 
               {/* Control Phase - Person monitoring */}
               <g transform="translate(1250, 0)">
-                <text x="75" y="30" fontSize="16" fill="#EA580C" fontWeight="bold">CONTROL</text>
+                <text x="75" y="30" fontSize="16" fill="#EA580C" fontWeight="bold">
+                  CONTROL
+                </text>
                 {/* Person with monitoring dashboard */}
                 <ellipse cx="95" cy="75" rx="18" ry="22" fill="#D4A574" opacity="0.6" />
                 <path d="M 95 97 L 95 145" stroke="#4A4A4A" strokeWidth="3" />
@@ -118,7 +169,17 @@ export default function Pricing() {
                 <path d="M 95 145 L 85 190" stroke="#4A4A4A" strokeWidth="3" />
                 <path d="M 95 145 L 105 190" stroke="#4A4A4A" strokeWidth="3" />
                 {/* Control panel/dashboard */}
-                <rect x="45" y="120" width="35" height="50" fill="#FED7AA" opacity="0.6" stroke="#EA580C" strokeWidth="1.5" rx="3" />
+                <rect
+                  x="45"
+                  y="120"
+                  width="35"
+                  height="50"
+                  fill="#FED7AA"
+                  opacity="0.6"
+                  stroke="#EA580C"
+                  strokeWidth="1.5"
+                  rx="3"
+                />
                 <line x1="50" y1="135" x2="75" y2="135" stroke="#EA580C" strokeWidth="2" />
                 <line x1="50" y1="145" x2="75" y2="145" stroke="#EA580C" strokeWidth="2" />
                 <circle cx="58" cy="158" r="3" fill="#EA580C" />
@@ -157,7 +218,9 @@ export default function Pricing() {
               </div>
 
               <div className="mb-6">
-                <h4 className="text-indigo-600 font-semibold text-sm mb-3 uppercase tracking-wide">FEATURES</h4>
+                <h4 className="text-indigo-600 font-semibold text-sm mb-3 uppercase tracking-wide">
+                  FEATURES
+                </h4>
                 <p className="text-gray-600 mb-4">Everything to get started....</p>
 
                 <div className="grid grid-cols-1 gap-3">
@@ -239,7 +302,9 @@ export default function Pricing() {
               </div>
 
               <div className="mb-6">
-                <h4 className="text-indigo-600 font-semibold text-sm mb-3 uppercase tracking-wide">FEATURES</h4>
+                <h4 className="text-indigo-600 font-semibold text-sm mb-3 uppercase tracking-wide">
+                  FEATURES
+                </h4>
                 <p className="text-gray-600 mb-4">Everything in our free plan plus....</p>
 
                 <div className="grid grid-cols-1 gap-3">

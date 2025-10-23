@@ -1,18 +1,18 @@
 // Verify CORRECT Six Sigma calculations
 
 console.log('Correct Six Sigma Calculations')
-console.log('=' .repeat(50))
+console.log('='.repeat(50))
 console.log('\nFormula: Sigma Level = Cpk × 3')
 console.log('(No 1.5 shift added - Cpk already measures actual performance)')
 console.log('-'.repeat(50))
 
 const testCases = [
-  { cpk: 2.00, name: 'World Class' },
+  { cpk: 2.0, name: 'World Class' },
   { cpk: 1.67, name: 'Excellent' },
   { cpk: 1.33, name: 'Good' },
-  { cpk: 1.00, name: 'Acceptable' },
+  { cpk: 1.0, name: 'Acceptable' },
   { cpk: 0.99, name: 'Your Example' },
-  { cpk: 0.67, name: 'Poor' }
+  { cpk: 0.67, name: 'Poor' },
 ]
 
 testCases.forEach(test => {
@@ -20,9 +20,9 @@ testCases.forEach(test => {
   console.log(`Cpk: ${test.cpk.toFixed(3)} → Sigma Level: ${sigmaLevel.toFixed(3)}σ (${test.name})`)
 })
 
-console.log('\n' + '=' .repeat(50))
+console.log('\n' + '='.repeat(50))
 console.log('✓ For Cpk = 0.990:')
-const cpk = 0.990
+const cpk = 0.99
 const sigma = cpk * 3
 console.log(`  Calculation: ${cpk} × 3 = ${sigma.toFixed(3)}σ`)
 console.log(`  This is CORRECT! Cpk ≈ 1.0 corresponds to a 3σ process`)

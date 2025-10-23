@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -44,7 +38,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
     occurrence: '5',
     currentControls: '',
     detection: '5',
-    recommendedActions: ''
+    recommendedActions: '',
   })
 
   const [editForm, setEditForm] = useState({
@@ -55,7 +49,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
     occurrence: '5',
     currentControls: '',
     detection: '5',
-    recommendedActions: ''
+    recommendedActions: '',
   })
 
   const calculateRPN = (severity: number, occurrence: number, detection: number) => {
@@ -93,8 +87,8 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
           currentControls: entryForm.currentControls,
           detection,
           rpn,
-          recommendedActions: entryForm.recommendedActions || null
-        })
+          recommendedActions: entryForm.recommendedActions || null,
+        }),
       })
 
       if (response.ok) {
@@ -107,7 +101,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
           occurrence: '5',
           currentControls: '',
           detection: '5',
-          recommendedActions: ''
+          recommendedActions: '',
         })
         router.refresh()
       }
@@ -140,8 +134,8 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
           rpn,
           recommendedActions: editForm.recommendedActions || null,
           userId,
-          assignmentId
-        })
+          assignmentId,
+        }),
       })
 
       if (response.ok) {
@@ -165,7 +159,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
       const response = await fetch(`/api/fmea-entries/${entryId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -188,7 +182,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
       occurrence: entry.occurrence.toString(),
       currentControls: entry.currentControls,
       detection: entry.detection.toString(),
-      recommendedActions: entry.recommendedActions || ''
+      recommendedActions: entry.recommendedActions || '',
     })
   }
 
@@ -198,7 +192,8 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
         <CardHeader>
           <CardTitle className="text-2xl">FMEA (Failure Mode and Effects Analysis)</CardTitle>
           <CardDescription>
-            Identify and prioritize potential failure modes with auto-calculated Risk Priority Number (RPN)
+            Identify and prioritize potential failure modes with auto-calculated Risk Priority
+            Number (RPN)
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -226,7 +221,9 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                   <div className="text-center">
                     <p className="text-sm text-gray-500 mb-1">Average RPN</p>
                     <p className="text-2xl font-bold">
-                      {Math.round(sortedEntries.reduce((sum, e) => sum + e.rpn, 0) / sortedEntries.length)}
+                      {Math.round(
+                        sortedEntries.reduce((sum, e) => sum + e.rpn, 0) / sortedEntries.length
+                      )}
                     </p>
                   </div>
                 </CardContent>
@@ -259,7 +256,9 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                     <TableHead className="text-center w-[50px] font-bold">DET</TableHead>
                     <TableHead className="text-center w-[70px] font-bold">RPN</TableHead>
                     <TableHead className="w-[15%] font-bold">Recommended Actions</TableHead>
-                    {canEdit && <TableHead className="w-[90px] sticky right-0 bg-gray-100 font-bold shadow-[-4px_0_6px_-1px_rgba(0,0,0,0.1)]"></TableHead>}
+                    {canEdit && (
+                      <TableHead className="w-[90px] sticky right-0 bg-gray-100 font-bold shadow-[-4px_0_6px_-1px_rgba(0,0,0,0.1)]"></TableHead>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -270,14 +269,18 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                           <TableCell>
                             <Textarea
                               value={editForm.failureMode}
-                              onChange={(e) => setEditForm({ ...editForm, failureMode: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, failureMode: e.target.value })
+                              }
                               className="text-sm min-h-[60px]"
                             />
                           </TableCell>
                           <TableCell>
                             <Textarea
                               value={editForm.effectsOfFailure}
-                              onChange={(e) => setEditForm({ ...editForm, effectsOfFailure: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, effectsOfFailure: e.target.value })
+                              }
                               className="text-sm min-h-[60px]"
                             />
                           </TableCell>
@@ -287,14 +290,16 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                               min="1"
                               max="10"
                               value={editForm.severity}
-                              onChange={(e) => setEditForm({ ...editForm, severity: e.target.value })}
+                              onChange={e => setEditForm({ ...editForm, severity: e.target.value })}
                               className="text-sm text-center w-16"
                             />
                           </TableCell>
                           <TableCell>
                             <Textarea
                               value={editForm.potentialCauses}
-                              onChange={(e) => setEditForm({ ...editForm, potentialCauses: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, potentialCauses: e.target.value })
+                              }
                               className="text-sm min-h-[60px]"
                             />
                           </TableCell>
@@ -304,14 +309,18 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                               min="1"
                               max="10"
                               value={editForm.occurrence}
-                              onChange={(e) => setEditForm({ ...editForm, occurrence: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, occurrence: e.target.value })
+                              }
                               className="text-sm text-center w-16"
                             />
                           </TableCell>
                           <TableCell>
                             <Textarea
                               value={editForm.currentControls}
-                              onChange={(e) => setEditForm({ ...editForm, currentControls: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, currentControls: e.target.value })
+                              }
                               className="text-sm min-h-[60px]"
                             />
                           </TableCell>
@@ -321,19 +330,29 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                               min="1"
                               max="10"
                               value={editForm.detection}
-                              onChange={(e) => setEditForm({ ...editForm, detection: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, detection: e.target.value })
+                              }
                               className="text-sm text-center w-16"
                             />
                           </TableCell>
                           <TableCell className="text-center">
-                            <span className={`px-2 py-1 text-sm font-bold border rounded ${getRPNColor(calculateRPN(parseInt(editForm.severity), parseInt(editForm.occurrence), parseInt(editForm.detection)))}`}>
-                              {calculateRPN(parseInt(editForm.severity), parseInt(editForm.occurrence), parseInt(editForm.detection))}
+                            <span
+                              className={`px-2 py-1 text-sm font-bold border rounded ${getRPNColor(calculateRPN(parseInt(editForm.severity), parseInt(editForm.occurrence), parseInt(editForm.detection)))}`}
+                            >
+                              {calculateRPN(
+                                parseInt(editForm.severity),
+                                parseInt(editForm.occurrence),
+                                parseInt(editForm.detection)
+                              )}
                             </span>
                           </TableCell>
                           <TableCell>
                             <Textarea
                               value={editForm.recommendedActions}
-                              onChange={(e) => setEditForm({ ...editForm, recommendedActions: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, recommendedActions: e.target.value })
+                              }
                               className="text-sm min-h-[60px]"
                             />
                           </TableCell>
@@ -365,24 +384,36 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                             <div className="break-words whitespace-normal">{entry.failureMode}</div>
                           </TableCell>
                           <TableCell className="align-top">
-                            <div className="break-words whitespace-normal">{entry.effectsOfFailure}</div>
+                            <div className="break-words whitespace-normal">
+                              {entry.effectsOfFailure}
+                            </div>
                           </TableCell>
                           <TableCell className="text-center font-bold">{entry.severity}</TableCell>
                           <TableCell className="align-top">
-                            <div className="break-words whitespace-normal">{entry.potentialCauses}</div>
+                            <div className="break-words whitespace-normal">
+                              {entry.potentialCauses}
+                            </div>
                           </TableCell>
-                          <TableCell className="text-center font-bold">{entry.occurrence}</TableCell>
+                          <TableCell className="text-center font-bold">
+                            {entry.occurrence}
+                          </TableCell>
                           <TableCell className="align-top">
-                            <div className="break-words whitespace-normal">{entry.currentControls}</div>
+                            <div className="break-words whitespace-normal">
+                              {entry.currentControls}
+                            </div>
                           </TableCell>
                           <TableCell className="text-center font-bold">{entry.detection}</TableCell>
                           <TableCell className="text-center">
-                            <span className={`px-2 py-1 text-sm font-bold border rounded inline-block ${getRPNColor(entry.rpn)}`}>
+                            <span
+                              className={`px-2 py-1 text-sm font-bold border rounded inline-block ${getRPNColor(entry.rpn)}`}
+                            >
                               {entry.rpn}
                             </span>
                           </TableCell>
                           <TableCell className="align-top">
-                            <div className="break-words whitespace-normal">{entry.recommendedActions || '-'}</div>
+                            <div className="break-words whitespace-normal">
+                              {entry.recommendedActions || '-'}
+                            </div>
                           </TableCell>
                           {canEdit && (
                             <TableCell className="sticky right-0 bg-white shadow-[-4px_0_6px_-1px_rgba(0,0,0,0.1)]">
@@ -439,7 +470,8 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                   <CardHeader>
                     <CardTitle className="text-lg">Add FMEA Entry</CardTitle>
                     <CardDescription>
-                      SEV = Severity (1-10), OCC = Occurrence (1-10), DET = Detection (1-10), RPN = SEV × OCC × DET
+                      SEV = Severity (1-10), OCC = Occurrence (1-10), DET = Detection (1-10), RPN =
+                      SEV × OCC × DET
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -449,7 +481,9 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                         <Textarea
                           placeholder="How could the process fail?"
                           value={entryForm.failureMode}
-                          onChange={(e) => setEntryForm({ ...entryForm, failureMode: e.target.value })}
+                          onChange={e =>
+                            setEntryForm({ ...entryForm, failureMode: e.target.value })
+                          }
                           className="min-h-[80px]"
                         />
                       </div>
@@ -459,7 +493,9 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                         <Textarea
                           placeholder="What happens when it fails?"
                           value={entryForm.effectsOfFailure}
-                          onChange={(e) => setEntryForm({ ...entryForm, effectsOfFailure: e.target.value })}
+                          onChange={e =>
+                            setEntryForm({ ...entryForm, effectsOfFailure: e.target.value })
+                          }
                           className="min-h-[80px]"
                         />
                       </div>
@@ -472,7 +508,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                         min="1"
                         max="10"
                         value={entryForm.severity}
-                        onChange={(e) => setEntryForm({ ...entryForm, severity: e.target.value })}
+                        onChange={e => setEntryForm({ ...entryForm, severity: e.target.value })}
                       />
                       <p className="text-xs text-gray-500 mt-1">1 = Minor, 10 = Catastrophic</p>
                     </div>
@@ -483,7 +519,9 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                         <Textarea
                           placeholder="What could cause this failure?"
                           value={entryForm.potentialCauses}
-                          onChange={(e) => setEntryForm({ ...entryForm, potentialCauses: e.target.value })}
+                          onChange={e =>
+                            setEntryForm({ ...entryForm, potentialCauses: e.target.value })
+                          }
                           className="min-h-[80px]"
                         />
                       </div>
@@ -493,7 +531,9 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                         <Textarea
                           placeholder="What controls are in place?"
                           value={entryForm.currentControls}
-                          onChange={(e) => setEntryForm({ ...entryForm, currentControls: e.target.value })}
+                          onChange={e =>
+                            setEntryForm({ ...entryForm, currentControls: e.target.value })
+                          }
                           className="min-h-[80px]"
                         />
                       </div>
@@ -507,7 +547,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                           min="1"
                           max="10"
                           value={entryForm.occurrence}
-                          onChange={(e) => setEntryForm({ ...entryForm, occurrence: e.target.value })}
+                          onChange={e => setEntryForm({ ...entryForm, occurrence: e.target.value })}
                         />
                         <p className="text-xs text-gray-500 mt-1">1 = Rare, 10 = Very Frequent</p>
                       </div>
@@ -519,9 +559,11 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                           min="1"
                           max="10"
                           value={entryForm.detection}
-                          onChange={(e) => setEntryForm({ ...entryForm, detection: e.target.value })}
+                          onChange={e => setEntryForm({ ...entryForm, detection: e.target.value })}
                         />
-                        <p className="text-xs text-gray-500 mt-1">1 = Easy to Detect, 10 = Cannot Detect</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          1 = Easy to Detect, 10 = Cannot Detect
+                        </p>
                       </div>
                     </div>
 
@@ -530,17 +572,25 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                       <div>
                         <p className="text-sm font-medium">Calculated RPN</p>
                         <p className="text-3xl font-bold">
-                          {calculateRPN(parseInt(entryForm.severity) || 1, parseInt(entryForm.occurrence) || 1, parseInt(entryForm.detection) || 1)}
+                          {calculateRPN(
+                            parseInt(entryForm.severity) || 1,
+                            parseInt(entryForm.occurrence) || 1,
+                            parseInt(entryForm.detection) || 1
+                          )}
                         </p>
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Recommended Actions (optional)</label>
+                      <label className="text-sm font-medium mb-2 block">
+                        Recommended Actions (optional)
+                      </label>
                       <Textarea
                         placeholder="What should be done to reduce risk?"
                         value={entryForm.recommendedActions}
-                        onChange={(e) => setEntryForm({ ...entryForm, recommendedActions: e.target.value })}
+                        onChange={e =>
+                          setEntryForm({ ...entryForm, recommendedActions: e.target.value })
+                        }
                         className="min-h-[80px]"
                       />
                     </div>
@@ -558,7 +608,7 @@ export function FMEASection({ assignmentId, fmeaEntries, canEdit, userId }: FMEA
                             occurrence: '5',
                             currentControls: '',
                             detection: '5',
-                            recommendedActions: ''
+                            recommendedActions: '',
                           })
                         }}
                         disabled={loading}

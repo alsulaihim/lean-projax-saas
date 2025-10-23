@@ -10,9 +10,9 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: connectionString
-    }
-  }
+      url: connectionString,
+    },
+  },
 })
 
 // Calculate Pareto analysis for a process
@@ -21,8 +21,9 @@ function calculatePareto(steps) {
   const sortedSteps = steps
     .map(step => ({
       ...step,
-      totalTime: (step.processTime || step.durationMinutes || 0) +
-                 (step.waitingTime || step.waitTimeMinutes || 0)
+      totalTime:
+        (step.processTime || step.durationMinutes || 0) +
+        (step.waitingTime || step.waitTimeMinutes || 0),
     }))
     .sort((a, b) => b.totalTime - a.totalTime)
 
@@ -37,7 +38,7 @@ function calculatePareto(steps) {
       ...step,
       percentage: (step.totalTime / total) * 100,
       cumulativePercentage,
-      isVitalFew: cumulativePercentage <= 80
+      isVitalFew: cumulativePercentage <= 80,
     }
   })
 }
@@ -48,7 +49,7 @@ async function createFishboneDiagram(processId, processName, vitalFewSteps) {
 
   // Check if fishbone categories already exist
   const existingCategories = await prisma.fishboneCategory.findMany({
-    where: { processId }
+    where: { processId },
   })
 
   if (existingCategories.length > 0) {
@@ -56,47 +57,40 @@ async function createFishboneDiagram(processId, processName, vitalFewSteps) {
   }
 
   // Define category types for fishbone
-  const categories = [
-    'PEOPLE',
-    'PROCESS',
-    'EQUIPMENT',
-    'MATERIALS',
-    'ENVIRONMENT',
-    'MANAGEMENT'
-  ]
+  const categories = ['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT']
 
   // Generate root causes for each vital few step
   const causesPerCategory = {
-    PEOPLE: (stepName) => [
+    PEOPLE: stepName => [
       `Insufficient training for ${stepName}`,
       `High staff turnover affecting ${stepName}`,
-      `Lack of expertise in ${stepName} procedures`
+      `Lack of expertise in ${stepName} procedures`,
     ],
-    PROCESS: (stepName) => [
+    PROCESS: stepName => [
       `${stepName} lacks standardization`,
       `Inefficient workflow design in ${stepName}`,
-      `Missing quality checks in ${stepName}`
+      `Missing quality checks in ${stepName}`,
     ],
-    EQUIPMENT: (stepName) => [
+    EQUIPMENT: stepName => [
       `Equipment downtime during ${stepName}`,
       `Outdated machinery for ${stepName}`,
-      `Lack of maintenance affecting ${stepName}`
+      `Lack of maintenance affecting ${stepName}`,
     ],
-    MATERIALS: (stepName) => [
+    MATERIALS: stepName => [
       `Material quality issues in ${stepName}`,
       `Supply delays impacting ${stepName}`,
-      `Incorrect specifications for ${stepName}`
+      `Incorrect specifications for ${stepName}`,
     ],
-    ENVIRONMENT: (stepName) => [
+    ENVIRONMENT: stepName => [
       `Poor workspace layout for ${stepName}`,
       `Environmental conditions affecting ${stepName}`,
-      `Safety hazards in ${stepName} area`
+      `Safety hazards in ${stepName} area`,
     ],
-    MANAGEMENT: (stepName) => [
+    MANAGEMENT: stepName => [
       `Unclear priorities for ${stepName}`,
       `Resource allocation issues in ${stepName}`,
-      `Lack of performance metrics for ${stepName}`
-    ]
+      `Lack of performance metrics for ${stepName}`,
+    ],
   }
 
   let totalCausesCreated = 0
@@ -109,8 +103,8 @@ async function createFishboneDiagram(processId, processName, vitalFewSteps) {
     let category = await prisma.fishboneCategory.findFirst({
       where: {
         processId,
-        category: categoryType
-      }
+        category: categoryType,
+      },
     })
 
     // Create category if it doesn't exist
@@ -119,15 +113,15 @@ async function createFishboneDiagram(processId, processName, vitalFewSteps) {
         data: {
           processId,
           category: categoryType,
-          order: i
-        }
+          order: i,
+        },
       })
       console.log(`  ✅ Created category: ${categoryType}`)
     }
 
     // Get existing causes for this category
     const existingCauses = await prisma.fishboneCause.findMany({
-      where: { categoryId: category.id }
+      where: { categoryId: category.id },
     })
 
     // Generate causes for vital few steps
@@ -149,8 +143,8 @@ async function createFishboneDiagram(processId, processName, vitalFewSteps) {
           data: {
             categoryId: category.id,
             causeDescription: primaryCause,
-            order: orderIndex++
-          }
+            order: orderIndex++,
+          },
         })
         totalCausesCreated++
       }
@@ -164,20 +158,20 @@ async function createFishboneDiagram(processId, processName, vitalFewSteps) {
 async function createFishboneForVitalFew() {
   try {
     console.log('🚀 Creating Fishbone Diagrams for Vital Few Steps (80% Pareto)')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
 
     // Get all processes with their VSM steps
     const processes = await prisma.process.findMany({
       include: {
         vsmSteps: {
-          orderBy: { stepNumber: 'asc' }
+          orderBy: { stepNumber: 'asc' },
         },
         fishboneCategories: {
           include: {
-            causes: true
-          }
-        }
-      }
+            causes: true,
+          },
+        },
+      },
     })
 
     if (processes.length === 0) {
@@ -209,11 +203,17 @@ async function createFishboneForVitalFew() {
       if (vitalFewSteps.length > 0) {
         console.log(`   Steps requiring fishbone analysis:`)
         vitalFewSteps.forEach(step => {
-          console.log(`     - ${step.stepName} (${step.percentage.toFixed(1)}%, cumulative: ${step.cumulativePercentage.toFixed(1)}%)`)
+          console.log(
+            `     - ${step.stepName} (${step.percentage.toFixed(1)}%, cumulative: ${step.cumulativePercentage.toFixed(1)}%)`
+          )
         })
 
         // Create or update fishbone diagram
-        const causesAdded = await createFishboneDiagram(process.id, process.processName, vitalFewSteps)
+        const causesAdded = await createFishboneDiagram(
+          process.id,
+          process.processName,
+          vitalFewSteps
+        )
 
         if (causesAdded > 0) {
           totalProcessesUpdated++
@@ -222,7 +222,7 @@ async function createFishboneForVitalFew() {
       }
     }
 
-    console.log('\n' + '=' .repeat(60))
+    console.log('\n' + '='.repeat(60))
     console.log('✅ Summary:')
     console.log(`   Processes updated: ${totalProcessesUpdated}`)
     console.log(`   Total causes created: ${totalCausesCreated}`)
@@ -233,10 +233,10 @@ async function createFishboneForVitalFew() {
         processName: true,
         _count: {
           select: {
-            fishboneCategories: true
-          }
-        }
-      }
+            fishboneCategories: true,
+          },
+        },
+      },
     })
 
     console.log('\n📊 Verification:')
@@ -245,7 +245,6 @@ async function createFishboneForVitalFew() {
         console.log(`   ✓ ${p.processName}: ${p._count.fishboneCategories} fishbone categories`)
       }
     }
-
   } catch (error) {
     console.error('❌ Error creating fishbone diagrams:', error)
   } finally {

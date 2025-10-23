@@ -35,17 +35,26 @@ export async function getUser(): Promise<User | null> {
     const { payload } = await jwtVerify(token.value, JWT_SECRET)
 
     // Validate JWT payload structure and extract typed values
-    if (!payload || typeof payload !== 'object' ||
-        !('id' in payload) || !('email' in payload) ||
-        !('name' in payload) || !('role' in payload)) {
+    if (
+      !payload ||
+      typeof payload !== 'object' ||
+      !('id' in payload) ||
+      !('email' in payload) ||
+      !('name' in payload) ||
+      !('role' in payload)
+    ) {
       return null
     }
 
     // Extract and validate payload properties
     const { id, email, name, role, isDemo } = payload
 
-    if (typeof id !== 'string' || typeof email !== 'string' ||
-        typeof name !== 'string' || typeof role !== 'string') {
+    if (
+      typeof id !== 'string' ||
+      typeof email !== 'string' ||
+      typeof name !== 'string' ||
+      typeof role !== 'string'
+    ) {
       return null
     }
 
@@ -54,7 +63,7 @@ export async function getUser(): Promise<User | null> {
       email,
       name,
       role: role as UserRole,
-      isDemo: typeof isDemo === 'boolean' ? isDemo : undefined
+      isDemo: typeof isDemo === 'boolean' ? isDemo : undefined,
     }
   } catch {
     return null
@@ -83,7 +92,7 @@ export async function getFullUser(): Promise<FullUser | null> {
         subscriptionTier: true,
         subscriptionStatus: true,
         trialEndsAt: true,
-      }
+      },
     })
 
     if (!dbUser) {
@@ -92,7 +101,7 @@ export async function getFullUser(): Promise<FullUser | null> {
 
     return {
       ...dbUser,
-      isDemo: user.isDemo
+      isDemo: user.isDemo,
     }
   } catch {
     return null

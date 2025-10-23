@@ -2,18 +2,18 @@ import crypto from 'crypto'
 
 /**
  * Email Service Utility
- * 
+ *
  * Purpose: Send transactional emails (verification, password reset, etc.)
- * 
+ *
  * Supported Providers:
  * - Console (development - logs to console)
  * - Resend (production - requires RESEND_API_KEY)
  * - SendGrid (alternative - requires SENDGRID_API_KEY)
  * - Custom SMTP (requires SMTP configuration)
- * 
+ *
  * Configuration:
  * Set EMAIL_PROVIDER in .env to: 'console' | 'resend' | 'sendgrid' | 'smtp'
- * 
+ *
  * For production, add to .env.local:
  * EMAIL_PROVIDER=resend
  * RESEND_API_KEY=re_xxxxxxxxxxxx
@@ -32,7 +32,7 @@ export interface EmailOptions {
 
 /**
  * Send email using configured provider
- * 
+ *
  * @param options - Email options (to, subject, html, text)
  * @returns Promise<boolean> - true if sent successfully
  */
@@ -41,13 +41,13 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
     switch (EMAIL_PROVIDER) {
       case 'console':
         return await sendEmailConsole(options)
-      
+
       case 'resend':
         return await sendEmailResend(options)
-      
+
       case 'sendgrid':
         return await sendEmailSendGrid(options)
-      
+
       default:
         console.error(`Unknown email provider: ${EMAIL_PROVIDER}`)
         return false
@@ -60,7 +60,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
 
 /**
  * Console provider - Development only
- * 
+ *
  * Logs email to console instead of sending
  * Good for local testing without email service setup
  */
@@ -79,7 +79,7 @@ async function sendEmailConsole(options: EmailOptions): Promise<boolean> {
 
 /**
  * Resend provider - Production
- * 
+ *
  * Requires: npm install resend
  * Env var: RESEND_API_KEY
  */
@@ -88,14 +88,14 @@ async function sendEmailResend(options: EmailOptions): Promise<boolean> {
   // const { Resend } = require('resend')
   // const resend = new Resend(process.env.RESEND_API_KEY)
   // await resend.emails.send({ from: EMAIL_FROM, ...options })
-  
+
   console.warn('Resend not configured. Install package: npm install resend')
   return await sendEmailConsole(options) // Fallback to console
 }
 
 /**
  * SendGrid provider - Alternative
- * 
+ *
  * Requires: npm install @sendgrid/mail
  * Env var: SENDGRID_API_KEY
  */
@@ -104,16 +104,16 @@ async function sendEmailSendGrid(options: EmailOptions): Promise<boolean> {
   // const sgMail = require('@sendgrid/mail')
   // sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
   // await sgMail.send({ from: EMAIL_FROM, ...options })
-  
+
   console.warn('SendGrid not configured. Install package: npm install @sendgrid/mail')
   return await sendEmailConsole(options) // Fallback to console
 }
 
 /**
  * Generate secure verification token
- * 
+ *
  * Uses crypto.randomBytes for cryptographically secure random values
- * 
+ *
  * @returns 32-character hex token
  */
 export function generateVerificationToken(): string {
@@ -122,7 +122,7 @@ export function generateVerificationToken(): string {
 
 /**
  * Send email verification email
- * 
+ *
  * @param email - User's email address
  * @param name - User's name
  * @param token - Verification token
@@ -134,7 +134,7 @@ export async function sendVerificationEmail(
   token: string
 ): Promise<boolean> {
   const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`
-  
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -175,7 +175,7 @@ export async function sendVerificationEmail(
     </body>
     </html>
   `
-  
+
   const text = `
     Welcome to Lean Projax!
     
@@ -191,18 +191,18 @@ export async function sendVerificationEmail(
     
     © 2025 Lean Projax
   `
-  
+
   return await sendEmail({
     to: email,
     subject: 'Verify your email - Lean Projax',
     html,
-    text
+    text,
   })
 }
 
 /**
  * Send password reset email (placeholder for future)
- * 
+ *
  * @param email - User's email
  * @param name - User's name
  * @param token - Reset token
@@ -217,4 +217,3 @@ export async function sendPasswordResetEmail(
   console.log(`Password reset email for ${email} with token ${token}`)
   return true
 }
-

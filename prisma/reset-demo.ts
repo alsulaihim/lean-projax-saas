@@ -12,14 +12,17 @@ async function confirmAction(): Promise<boolean> {
 
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   })
 
-  return new Promise((resolve) => {
-    rl.question('⚠️  This will delete all demo assignments and related data. Continue? (yes/no): ', (answer) => {
-      rl.close()
-      resolve(answer.toLowerCase() === 'yes')
-    })
+  return new Promise(resolve => {
+    rl.question(
+      '⚠️  This will delete all demo assignments and related data. Continue? (yes/no): ',
+      answer => {
+        rl.close()
+        resolve(answer.toLowerCase() === 'yes')
+      }
+    )
   })
 }
 
@@ -55,7 +58,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error resetting demo data:', e)
     process.exit(1)
   })

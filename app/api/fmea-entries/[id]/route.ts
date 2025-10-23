@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { checkDemoMode } from '@/lib/demo-check'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -28,7 +25,7 @@ export async function PATCH(
       detection,
       rpn,
       recommendedActions,
-      assignmentId
+      assignmentId,
     } = await request.json()
 
     // Input validation
@@ -41,9 +38,9 @@ export async function PATCH(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!oldEntry) {
@@ -52,10 +49,7 @@ export async function PATCH(
 
     // Verify nested relations exist
     if (!oldEntry.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -64,7 +58,7 @@ export async function PATCH(
     }
 
     // Update FMEA entry and create audit log atomically
-    const entry = await prisma.$transaction(async (tx) => {
+    const entry = await prisma.$transaction(async tx => {
       const updatedEntry = await tx.fMEAEntry.update({
         where: { id },
         data: {
@@ -76,8 +70,8 @@ export async function PATCH(
           currentControls,
           detection,
           rpn,
-          recommendedActions
-        }
+          recommendedActions,
+        },
       })
 
       await tx.auditLog.create({
@@ -93,17 +87,17 @@ export async function PATCH(
               severity: oldEntry.severity,
               occurrence: oldEntry.occurrence,
               detection: oldEntry.detection,
-              rpn: oldEntry.rpn
+              rpn: oldEntry.rpn,
             },
             after: {
               failureMode: updatedEntry.failureMode,
               severity: updatedEntry.severity,
               occurrence: updatedEntry.occurrence,
               detection: updatedEntry.detection,
-              rpn: updatedEntry.rpn
-            }
-          }
-        }
+              rpn: updatedEntry.rpn,
+            },
+          },
+        },
       })
 
       return updatedEntry
@@ -112,10 +106,7 @@ export async function PATCH(
     return NextResponse.json(entry)
   } catch (error) {
     console.error('Failed to update FMEA entry:', error)
-    return NextResponse.json(
-      { error: 'Failed to update FMEA entry' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update FMEA entry' }, { status: 500 })
   }
 }
 
@@ -143,9 +134,9 @@ export async function DELETE(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!entry) {
@@ -154,10 +145,7 @@ export async function DELETE(
 
     // Verify nested relations exist
     if (!entry.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -166,9 +154,9 @@ export async function DELETE(
     }
 
     // Delete FMEA entry and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       await tx.fMEAEntry.delete({
-        where: { id }
+        where: { id },
       })
 
       await tx.auditLog.create({
@@ -180,18 +168,15 @@ export async function DELETE(
           entityId: id,
           changeDetails: {
             failureMode: entry.failureMode,
-            rpn: entry.rpn
-          }
-        }
+            rpn: entry.rpn,
+          },
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete FMEA entry:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete FMEA entry' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete FMEA entry' }, { status: 500 })
   }
 }

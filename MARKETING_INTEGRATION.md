@@ -13,6 +13,7 @@ The main application (port 3070) provides an API endpoint that the marketing sit
 Returns the current user's authentication and subscription status.
 
 **Response when authenticated:**
+
 ```json
 {
   "authenticated": true,
@@ -28,6 +29,7 @@ Returns the current user's authentication and subscription status.
 ```
 
 **Response when not authenticated:**
+
 ```json
 {
   "authenticated": false,
@@ -68,7 +70,7 @@ export function useAuth(): AuthStatus {
     authenticated: false,
     user: null,
     loading: true,
-    error: null
+    error: null,
   })
 
   useEffect(() => {
@@ -77,8 +79,8 @@ export function useAuth(): AuthStatus {
         const response = await fetch(`${APP_URL}/api/auth/status`, {
           credentials: 'include', // Important: Send cookies
           headers: {
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         })
 
         if (!response.ok) {
@@ -91,14 +93,14 @@ export function useAuth(): AuthStatus {
           authenticated: data.authenticated,
           user: data.user,
           loading: false,
-          error: null
+          error: null,
         })
       } catch (error) {
         setAuthStatus({
           authenticated: false,
           user: null,
           loading: false,
-          error: error instanceof Error ? error.message : 'Unknown error'
+          error: error instanceof Error ? error.message : 'Unknown error',
         })
       }
     }
@@ -274,12 +276,14 @@ export default function PricingPage() {
 ## Environment Variables
 
 ### Main App (.env.local)
+
 ```env
 NEXT_PUBLIC_MARKETING_URL="http://localhost:3071"
 NEXT_PUBLIC_APP_URL="http://localhost:3070"
 ```
 
 ### Marketing Site (.env.local)
+
 ```env
 NEXT_PUBLIC_APP_URL="http://localhost:3070"
 ```
@@ -287,6 +291,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3070"
 ## CORS Configuration
 
 The auth status API endpoint is configured to allow requests from:
+
 - `http://localhost:3071` (local marketing site)
 - The value in `NEXT_PUBLIC_MARKETING_URL`
 - The value in `NEXT_PUBLIC_APP_URL`
@@ -304,16 +309,19 @@ Requests include credentials (cookies) so the authentication token is sent with 
 ## User Flow Examples
 
 ### Not Logged In
+
 - Marketing site shows "Sign In" and "Get Started" buttons
 - Pricing page shows "Get Started" for both plans
 - Clicking either redirects to main app login/signup
 
 ### Logged In (Free User)
+
 - Marketing site shows "Welcome, [Name]" and "Go to App" button
 - Pricing page shows "Upgrade Now" on Pro plan
 - Clicking upgrade redirects to `/upgrade` page
 
 ### Logged In (Pro User)
+
 - Marketing site shows "Welcome, [Name]" with "Pro" badge and "Go to App" button
 - Pricing page shows "Current Plan" (disabled) on Pro plan
 - User can access all premium features
@@ -321,6 +329,7 @@ Requests include credentials (cookies) so the authentication token is sent with 
 ## Testing
 
 1. **Start both servers:**
+
    ```bash
    # Terminal 1 - Main app
    cd "/Users/alsulaihim/All-Day-Dev/Lean Projax 1"
@@ -348,16 +357,19 @@ Requests include credentials (cookies) so the authentication token is sent with 
 ## Troubleshooting
 
 ### "CORS error" or "Failed to fetch"
+
 - Verify both servers are running
 - Check environment variables are set correctly
 - Clear browser cookies and try again
 
 ### "Not showing user even after login"
+
 - Check that cookies are being sent (`credentials: 'include'`)
 - Verify `auth-token` cookie exists in browser dev tools
 - Check CORS headers in network tab
 
 ### "Shows wrong subscription status"
+
 - Clear browser cache
 - Check database for correct user subscription data
 - Verify auth token is up to date (may need to re-login)

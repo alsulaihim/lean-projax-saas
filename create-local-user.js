@@ -10,7 +10,7 @@ async function createUsers() {
   }
 
   const client = new Client({
-    connectionString: connectionString
+    connectionString: connectionString,
   })
 
   try {
@@ -33,7 +33,7 @@ async function createUsers() {
       ['user-1', 'analyst@example.com', 'John Analyst', 'BPI_TEAM'],
       ['user-2', 'lead@example.com', 'Sarah Lead', 'TEAM_LEAD'],
       ['user-3', 'exec@example.com', 'Mike Executive', 'EXECUTIVE'],
-      ['user-4', 'owner@example.com', 'Lisa Owner', 'PROCESS_OWNER']
+      ['user-4', 'owner@example.com', 'Lisa Owner', 'PROCESS_OWNER'],
     ]
 
     for (const [id, email, name, role] of users) {
@@ -45,7 +45,6 @@ async function createUsers() {
     console.log('You can now login with:')
     console.log('  Email: analyst@example.com')
     console.log('  Password: password123')
-
   } catch (error) {
     console.error('Error:', error)
   } finally {

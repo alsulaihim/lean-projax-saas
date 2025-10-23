@@ -19,8 +19,8 @@ export async function GET() {
         email: true,
         name: true,
         role: true,
-        passwordHash: true
-      }
+        passwordHash: true,
+      },
     })
 
     // Test bcrypt comparison with analyst user
@@ -33,7 +33,7 @@ export async function GET() {
         email: analystUser.email,
         hashExists: !!analystUser.passwordHash,
         hashLength: analystUser.passwordHash.length,
-        passwordValid: isValid
+        passwordValid: isValid,
       }
     }
 
@@ -44,17 +44,21 @@ export async function GET() {
         email: u.email,
         name: u.name,
         role: u.role,
-        hasHash: !!u.passwordHash
+        hasHash: !!u.passwordHash,
       })),
-      passwordTest
+      passwordTest,
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    const errorCode = error && typeof error === 'object' && 'code' in error ? String(error.code) : undefined
-    return NextResponse.json({
-      success: false,
-      error: errorMessage,
-      code: errorCode
-    }, { status: 500 })
+    const errorCode =
+      error && typeof error === 'object' && 'code' in error ? String(error.code) : undefined
+    return NextResponse.json(
+      {
+        success: false,
+        error: errorMessage,
+        code: errorCode,
+      },
+      { status: 500 }
+    )
   }
 }

@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,38 +46,38 @@
 :root {
   --radius: 0.5rem;
   /* Pure black and white theme */
-  --background: oklch(1 0 0);     /* #FFFFFF */
-  --foreground: oklch(0 0 0);      /* #000000 */
-  --card: oklch(1 0 0);            /* #FFFFFF */
+  --background: oklch(1 0 0); /* #FFFFFF */
+  --foreground: oklch(0 0 0); /* #000000 */
+  --card: oklch(1 0 0); /* #FFFFFF */
   --card-foreground: oklch(0 0 0); /* #000000 */
-  --popover: oklch(1 0 0);         /* #FFFFFF */
+  --popover: oklch(1 0 0); /* #FFFFFF */
   --popover-foreground: oklch(0 0 0); /* #000000 */
-  --primary: oklch(0 0 0);         /* #000000 - Black primary */
+  --primary: oklch(0 0 0); /* #000000 - Black primary */
   --primary-foreground: oklch(1 0 0); /* #FFFFFF */
-  --secondary: oklch(1 0 0);       /* #FFFFFF with border */
+  --secondary: oklch(1 0 0); /* #FFFFFF with border */
   --secondary-foreground: oklch(0 0 0); /* #000000 */
-  --muted: oklch(0.98 0 0);        /* #FAFAFA - gray-50 */
+  --muted: oklch(0.98 0 0); /* #FAFAFA - gray-50 */
   --muted-foreground: oklch(0.45 0 0); /* #737373 - gray-500 */
-  --accent: oklch(0.95 0 0);       /* #F5F5F5 - gray-100 */
+  --accent: oklch(0.95 0 0); /* #F5F5F5 - gray-100 */
   --accent-foreground: oklch(0 0 0); /* #000000 */
-  --destructive: oklch(0 0 0);     /* Black for errors (with text) */
-  --border: oklch(0.9 0 0);         /* #E5E5E5 - gray-200 */
-  --input: oklch(0.82 0 0);         /* #D4D4D4 - gray-300 */
-  --ring: oklch(0 0 0);             /* Black focus ring */
+  --destructive: oklch(0 0 0); /* Black for errors (with text) */
+  --border: oklch(0.9 0 0); /* #E5E5E5 - gray-200 */
+  --input: oklch(0.82 0 0); /* #D4D4D4 - gray-300 */
+  --ring: oklch(0 0 0); /* Black focus ring */
   /* Grayscale chart colors */
-  --chart-1: oklch(0 0 0);         /* Black */
-  --chart-2: oklch(0.25 0 0);      /* Dark gray */
-  --chart-3: oklch(0.5 0 0);       /* Medium gray */
-  --chart-4: oklch(0.75 0 0);      /* Light gray */
-  --chart-5: oklch(0.9 0 0);       /* Very light gray */
-  --sidebar: oklch(1 0 0);         /* White sidebar */
+  --chart-1: oklch(0 0 0); /* Black */
+  --chart-2: oklch(0.25 0 0); /* Dark gray */
+  --chart-3: oklch(0.5 0 0); /* Medium gray */
+  --chart-4: oklch(0.75 0 0); /* Light gray */
+  --chart-5: oklch(0.9 0 0); /* Very light gray */
+  --sidebar: oklch(1 0 0); /* White sidebar */
   --sidebar-foreground: oklch(0 0 0); /* Black text */
   --sidebar-primary: oklch(0 0 0); /* Black active */
   --sidebar-primary-foreground: oklch(1 0 0); /* White text */
   --sidebar-accent: oklch(0.95 0 0); /* Light gray hover */
   --sidebar-accent-foreground: oklch(0 0 0); /* Black text */
   --sidebar-border: oklch(0.9 0 0); /* Gray border */
-  --sidebar-ring: oklch(0 0 0);     /* Black focus */
+  --sidebar-ring: oklch(0 0 0); /* Black focus */
 }
 
 /* No dark mode - pure black and white theme only */

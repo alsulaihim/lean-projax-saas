@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       estimatedCostSavings,
       linkedFMEAIds,
       linkedFishboneCauseIds,
-      status
+      status,
     } = await request.json()
 
     // Input validation
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create recommendation and audit log atomically
-    const recommendation = await prisma.$transaction(async (tx) => {
+    const recommendation = await prisma.$transaction(async tx => {
       const newRecommendation = await tx.recommendation.create({
         data: {
           assignmentId,
@@ -46,8 +46,8 @@ export async function POST(request: NextRequest) {
           estimatedCostSavings: estimatedCostSavings || null,
           linkedFMEAIds: linkedFMEAIds || [],
           linkedFishboneCauseIds: linkedFishboneCauseIds || [],
-          status: status || 'PROPOSED'
-        }
+          status: status || 'PROPOSED',
+        },
       })
 
       await tx.auditLog.create({
@@ -60,9 +60,9 @@ export async function POST(request: NextRequest) {
           changeDetails: {
             recommendationTitle,
             implementationDifficulty,
-            status
-          }
-        }
+            status,
+          },
+        },
       })
 
       return newRecommendation
@@ -71,9 +71,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(recommendation)
   } catch (error) {
     console.error('Failed to create recommendation:', error)
-    return NextResponse.json(
-      { error: 'Failed to create recommendation' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create recommendation' }, { status: 500 })
   }
 }

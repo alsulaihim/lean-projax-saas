@@ -54,7 +54,7 @@ export function AssignmentWrapper({
   assignment,
   canEdit,
   userRole,
-  userId
+  userId,
 }: AssignmentWrapperProps) {
   const [progressPercentage, setProgressPercentage] = useState(0)
   const [key, setKey] = useState(0)

@@ -8,18 +8,18 @@ async function main() {
   // Find the demo assignment
   const demoAssignment = await prisma.assignment.findFirst({
     where: {
-      isDemo: true
+      isDemo: true,
     },
     include: {
       vocStatements: {
         include: {
-          ctqRequirements: true
+          ctqRequirements: true,
         },
         orderBy: {
-          createdAt: 'desc'
-        }
-      }
-    }
+          createdAt: 'desc',
+        },
+      },
+    },
   })
 
   if (!demoAssignment) {
@@ -54,15 +54,15 @@ async function main() {
   // Delete the VOC statement (will cascade to CTQ requirements)
   await prisma.vOCStatement.delete({
     where: {
-      id: latestVoc.id
-    }
+      id: latestVoc.id,
+    },
   })
 
   console.log('\n✅ Test VOC deleted successfully')
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error:', e)
     process.exit(1)
   })

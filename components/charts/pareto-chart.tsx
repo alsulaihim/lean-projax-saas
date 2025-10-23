@@ -11,7 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
   ReferenceLine,
-  Cell
+  Cell,
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Download } from 'lucide-react'
@@ -35,7 +35,7 @@ export function ParetoChart({
   title = 'Pareto Analysis',
   height = 400,
   showExport = true,
-  className = ''
+  className = '',
 }: ParetoChartProps) {
   // Custom tooltip
   interface TooltipPayload {
@@ -97,12 +97,7 @@ export function ParetoChart({
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{title}</CardTitle>
         {showExport && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExport}
-            className="print:hidden"
-          >
+          <Button variant="outline" size="sm" onClick={handleExport} className="print:hidden">
             <Download className="h-4 w-4 mr-1" />
             Export
           </Button>
@@ -110,10 +105,7 @@ export function ParetoChart({
       </CardHeader>
       <CardContent className="px-0 md:px-6">
         <ResponsiveContainer width="100%" height={height}>
-          <ComposedChart
-            data={data}
-            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-          >
+          <ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 
             <XAxis
@@ -134,7 +126,7 @@ export function ParetoChart({
                 value: 'Value',
                 angle: -90,
                 position: 'insideLeft',
-                style: { fontSize: 12 }
+                style: { fontSize: 12 },
               }}
             />
 
@@ -148,16 +140,13 @@ export function ParetoChart({
                 value: 'Cumulative %',
                 angle: 90,
                 position: 'insideRight',
-                style: { fontSize: 12 }
+                style: { fontSize: 12 },
               }}
             />
 
             <Tooltip content={<CustomTooltip />} />
 
-            <Legend
-              wrapperStyle={{ paddingTop: '20px' }}
-              iconType="rect"
-            />
+            <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="rect" />
 
             {/* 80% reference line */}
             <ReferenceLine
@@ -169,23 +158,14 @@ export function ParetoChart({
               label={{
                 value: '80% Threshold',
                 position: 'right',
-                style: { fill: '#ef4444', fontSize: 12 }
+                style: { fill: '#ef4444', fontSize: 12 },
               }}
             />
 
             {/* Bars for values - colored by vital few status */}
-            <Bar
-              dataKey="value"
-              yAxisId="left"
-              name="Value"
-              radius={[4, 4, 0, 0]}
-              fill="#dc2626"
-            >
+            <Bar dataKey="value" yAxisId="left" name="Value" radius={[4, 4, 0, 0]} fill="#dc2626">
               {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={entry.isVitalFew ? '#dc2626' : '#3b82f6'}
-                />
+                <Cell key={`cell-${index}`} fill={entry.isVitalFew ? '#dc2626' : '#3b82f6'} />
               ))}
             </Bar>
 
@@ -220,15 +200,20 @@ export function ParetoChart({
           <h4 className="text-sm font-medium mb-2">Key Insights:</h4>
           <ul className="text-sm text-gray-600 space-y-1">
             <li>
-              • <span className="text-red-600 font-medium">{data.filter(d => d.isVitalFew).length}</span> out of {data.length} items
-              ({Math.round((data.filter(d => d.isVitalFew).length / data.length) * 100)}%)
-              contribute to 80% of the impact
+              •{' '}
+              <span className="text-red-600 font-medium">
+                {data.filter(d => d.isVitalFew).length}
+              </span>{' '}
+              out of {data.length} items (
+              {Math.round((data.filter(d => d.isVitalFew).length / data.length) * 100)}%) contribute
+              to 80% of the impact
             </li>
             <li>
               • Top contributor: "{data[0]?.name}" with {data[0]?.value} units
             </li>
             <li>
-              • Focus improvements on the <span className="text-red-600 font-medium">vital few</span> items for maximum impact
+              • Focus improvements on the{' '}
+              <span className="text-red-600 font-medium">vital few</span> items for maximum impact
             </li>
           </ul>
         </div>

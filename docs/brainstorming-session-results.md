@@ -13,6 +13,7 @@
 **Session Goals:** Focused ideation on building a Next.js web application that automates Six Sigma assignment reporting with multi-process analysis, team collaboration, and stakeholder presentation capabilities.
 
 **Techniques Used:**
+
 - First Principles Thinking (30 min)
 - Morphological Analysis (45 min)
 - Role Playing (30 min)
@@ -20,6 +21,7 @@
 **Total Ideas Generated:** 50+ architecture decisions, feature requirements, and design insights
 
 ### Key Themes Identified:
+
 - **Automation & Efficiency**: Transform manual reporting into streamlined digital workflow
 - **Story-Driven Design**: VOC → Analysis → Recommendations as narrative flow
 - **Multi-User Collaboration**: Section-level locking with activity feed for team coordination
@@ -61,12 +63,14 @@
    - **For Stakeholders**: Better visuals, anytime access, interactive exploration, professional presentation
 
 #### Insights Discovered:
+
 - The application serves two fundamentally different needs: creation efficiency vs. presentation quality
 - Root causes and recommendations are the "so what" - all other sections build the case for these conclusions
 - Automation value comes from eliminating repetitive chart creation, not from replacing human analysis
 - Success metrics should measure time-to-completion and stakeholder engagement, not just feature count
 
 #### Notable Connections:
+
 - Connection between automation goals and the need for calculation transparency (teams must trust the math)
 - Link between "better presentation" and story-driven navigation (not just prettier charts, but clearer logic flow)
 
@@ -79,63 +83,33 @@
 #### Ideas Generated:
 
 **Parameter 1: Data Input Methods**
+
 1. Forms for structured fields (VOC/CTQ, Recommendations)
 2. Spreadsheet-like interface for tabular data (SIPOC, VSM, FMEA)
 3. Templates as starting points for all sections (especially Fishbone categories)
 4. Hybrid approach: Manual entry + CSV/Excel bulk import based on process data source
 
-**Parameter 2: Workflow Structure**
-5. Linear step-by-step wizard for initial creation
-6. Free navigation with edit capability post-creation
-7. Auto-propagation of changes to dependent sections during draft mode
-8. Two-mode system: Draft (flexible) vs. Completed (locked)
-9. "Reopen for editing" action required to modify completed assignments
+**Parameter 2: Workflow Structure** 5. Linear step-by-step wizard for initial creation 6. Free navigation with edit capability post-creation 7. Auto-propagation of changes to dependent sections during draft mode 8. Two-mode system: Draft (flexible) vs. Completed (locked) 9. "Reopen for editing" action required to modify completed assignments
 
-**Parameter 3: Visualization Approach**
-10. Auto-generated static charts from data inputs
-11. Library-based implementation (Chart.js, Recharts, shadcn)
-12. Real-time preview as data is entered
-13. Optimized for PDF export (static = simpler than interactive)
-14. Separate chart types: Pareto, Fishbone, Bell curve, Process flow diagrams
+**Parameter 3: Visualization Approach** 10. Auto-generated static charts from data inputs 11. Library-based implementation (Chart.js, Recharts, shadcn) 12. Real-time preview as data is entered 13. Optimized for PDF export (static = simpler than interactive) 14. Separate chart types: Pareto, Fishbone, Bell curve, Process flow diagrams
 
-**Parameter 4: Dashboard Layout**
-15. Story-driven navigation: VOC/CTQ → Process 1 → Process 2 → ... → FMEA → Recommendations
-16. Top navigation between major sections
-17. Process-centric tabs (not artifact-centric)
-18. Within-process sub-sections for SIPOC, Flow, VSM, Pareto, Fishbone, Capability
-19. Always visible content (no collapsing)
-20. Single PDF export of entire assignment
+**Parameter 4: Dashboard Layout** 15. Story-driven navigation: VOC/CTQ → Process 1 → Process 2 → ... → FMEA → Recommendations 16. Top navigation between major sections 17. Process-centric tabs (not artifact-centric) 18. Within-process sub-sections for SIPOC, Flow, VSM, Pareto, Fishbone, Capability 19. Always visible content (no collapsing) 20. Single PDF export of entire assignment
 
-**Parameter 5: Data Persistence & Collaboration**
-21. Database storage (not local browser storage)
-22. Portfolio view of all assignments
-23. Version history tracking
-24. Section-level locking (one editor at a time per section)
-25. Activity feed showing who changed what and when
-26. Real-time multi-user collaboration on different sections
-27. Auto-save functionality for interruption handling
+**Parameter 5: Data Persistence & Collaboration** 21. Database storage (not local browser storage) 22. Portfolio view of all assignments 23. Version history tracking 24. Section-level locking (one editor at a time per section) 25. Activity feed showing who changed what and when 26. Real-time multi-user collaboration on different sections 27. Auto-save functionality for interruption handling
 
-**Core Data Architecture Decisions:**
-28. Multi-process per assignment structure
-29. Each process has: SIPOC → Flow Diagram → VSM → Pareto → Fishbone → Capability
-30. Process Flow Diagram auto-generated from SIPOC steps (flowchart with boxes and arrows)
-31. Consolidated FMEA across all processes
-32. Consolidated Recommendations across all processes
-33. VOC/CTQ at assignment level drives process selection
+**Core Data Architecture Decisions:** 28. Multi-process per assignment structure 29. Each process has: SIPOC → Flow Diagram → VSM → Pareto → Fishbone → Capability 30. Process Flow Diagram auto-generated from SIPOC steps (flowchart with boxes and arrows) 31. Consolidated FMEA across all processes 32. Consolidated Recommendations across all processes 33. VOC/CTQ at assignment level drives process selection
 
-**Advanced Features Identified:**
-34. Process tagging: "Manual observation" vs "System-sourced data"
-35. Bulk import enabled for system-sourced processes
-36. Per-SIPOC artifacts (each process gets full analysis suite)
-37. Pareto 80/20 rule: Top 20% of steps drive Fishbone analysis focus
+**Advanced Features Identified:** 34. Process tagging: "Manual observation" vs "System-sourced data" 35. Bulk import enabled for system-sourced processes 36. Per-SIPOC artifacts (each process gets full analysis suite) 37. Pareto 80/20 rule: Top 20% of steps drive Fishbone analysis focus
 
 #### Insights Discovered:
+
 - **Two-mode system insight**: Draft mode needs flexibility; Completed mode needs stability. Silent updates during creation prevent alert fatigue; locking after completion prevents accidental data corruption.
 - **Navigation tension resolved**: Process-centric tabs beat artifact-centric because stakeholders think "How's the Customer Service process performing?" not "Show me all SIPOCs."
 - **Static vs. Interactive charts**: Since charts are presentation artifacts (not exploration tools), static visualizations simplify implementation and improve PDF export quality.
 - **Input method matches data structure**: Forms work for simple mappings, spreadsheets for tabular data, templates for structured frameworks.
 
 #### Notable Connections:
+
 - Section-level locking + Activity feed = collaboration safety net (prevents conflicts while maintaining transparency)
 - Real-time preview + Static charts = fast feedback without implementation complexity
 - Linear wizard + Free editing = guided first-time experience + power-user flexibility
@@ -149,54 +123,18 @@
 
 #### Ideas Generated:
 
-**Role 1: Sarah (BPI Team Lead)**
-39. **Primary concern**: Data accuracy and calculation correctness (credibility with stakeholders)
-40. **Team Lead Dashboard required**:
-    - Progress tracking: section completion status (complete/in-progress/not started)
-    - Real-time view: who's working on what right now
-    - Validation warnings/errors flagged by section
-    - Data completeness indicators
-41. **Calculation transparency features**:
-    - Show formulas, not just results
-    - Spot-check capability
-    - Warning indicators for unusual data (outliers, impossible values)
-42. **Review/approval workflow**: Sarah must approve before assignment moves to "Completed" state
-43. **Input validation**: Duration > 0, severity scales 1-10, required field checks
+**Role 1: Sarah (BPI Team Lead)** 39. **Primary concern**: Data accuracy and calculation correctness (credibility with stakeholders) 40. **Team Lead Dashboard required**: - Progress tracking: section completion status (complete/in-progress/not started) - Real-time view: who's working on what right now - Validation warnings/errors flagged by section - Data completeness indicators 41. **Calculation transparency features**: - Show formulas, not just results - Spot-check capability - Warning indicators for unusual data (outliers, impossible values) 42. **Review/approval workflow**: Sarah must approve before assignment moves to "Completed" state 43. **Input validation**: Duration > 0, severity scales 1-10, required field checks
 
-**Role 2: Ahmed (BPI Analyst)**
-44. **Real workflow identified**: Data capture happens offline (shadowing, interviews), then transferred to system
-45. **Two data collection modes**:
-    - Manual process steps: Require shadowing/observation → manual entry
-    - System-driven process steps: Extract from existing systems → prepare in Excel → bulk upload
-46. **Hybrid data entry**: Both manual interface and CSV/Excel import options
-47. **Auto-save critical**: Ahmed gets interrupted frequently, needs seamless resume
-48. **Transcription error risk**: Bulk import reduces manual re-typing mistakes
+**Role 2: Ahmed (BPI Analyst)** 44. **Real workflow identified**: Data capture happens offline (shadowing, interviews), then transferred to system 45. **Two data collection modes**: - Manual process steps: Require shadowing/observation → manual entry - System-driven process steps: Extract from existing systems → prepare in Excel → bulk upload 46. **Hybrid data entry**: Both manual interface and CSV/Excel import options 47. **Auto-save critical**: Ahmed gets interrupted frequently, needs seamless resume 48. **Transcription error risk**: Bulk import reduces manual re-typing mistakes
 
-**Role 3: Fatima (Executive Stakeholder)**
-49. **Decision-maker needs**: Understand the story from customer voice to recommendations
-50. **Opening view**: VOC/CTQ tab must be first (set context before diving into analysis)
-51. **Executive summary landing concept**:
-    - VOC/CTQ summary: What customer problems drove this analysis?
-    - Processes selected and why
-    - Key findings at a glance
-    - Top 3 recommendations with expected impact
-52. **Drill-down capability**: Click through logical flow to see how conclusions were reached
-53. **Traceability links**: "This recommendation addresses these root causes from Process 2 Fishbone"
-54. **Impact metrics needed**: Cost, time savings, quality improvement, implementation difficulty
+**Role 3: Fatima (Executive Stakeholder)** 49. **Decision-maker needs**: Understand the story from customer voice to recommendations 50. **Opening view**: VOC/CTQ tab must be first (set context before diving into analysis) 51. **Executive summary landing concept**: - VOC/CTQ summary: What customer problems drove this analysis? - Processes selected and why - Key findings at a glance - Top 3 recommendations with expected impact 52. **Drill-down capability**: Click through logical flow to see how conclusions were reached 53. **Traceability links**: "This recommendation addresses these root causes from Process 2 Fishbone" 54. **Impact metrics needed**: Cost, time savings, quality improvement, implementation difficulty
 
-**Role 4: Khalid (Process Owner)**
-55. **Access timing**: View completed assignments only (not during creation)
-56. **Access scope**: See only processes related to their department, not full portfolio
-57. **Same story-driven view as executives**: VOC/CTQ → Process analysis → Recommendations
-58. **Change management consideration**: Early visibility could create defensiveness; final results encourage collaborative problem-solving
+**Role 4: Khalid (Process Owner)** 55. **Access timing**: View completed assignments only (not during creation) 56. **Access scope**: See only processes related to their department, not full portfolio 57. **Same story-driven view as executives**: VOC/CTQ → Process analysis → Recommendations 58. **Change management consideration**: Early visibility could create defensiveness; final results encourage collaborative problem-solving
 
-**Access Control Model Defined:**
-59. **BPI Team**: Full creation and editing access, all assignments
-60. **Team Lead (Sarah)**: Additional approval/review permissions
-61. **Executives (Fatima)**: View all completed assignments, portfolio view
-62. **Process Owners (Khalid)**: View specific processes within relevant assignments only
+**Access Control Model Defined:** 59. **BPI Team**: Full creation and editing access, all assignments 60. **Team Lead (Sarah)**: Additional approval/review permissions 61. **Executives (Fatima)**: View all completed assignments, portfolio view 62. **Process Owners (Khalid)**: View specific processes within relevant assignments only
 
 #### Insights Discovered:
+
 - **User needs diverge significantly**: Creators need power tools; viewers need clarity and context
 - **Accuracy trumps speed for Team Leads**: Sarah would rather wait for validation than rush to completion
 - **Offline-first workflow**: Assuming "always online" data entry misses how BPI work actually happens in the field
@@ -204,6 +142,7 @@
 - **Access control = trust**: Process owners seeing final results (not draft chaos) preserves analysis integrity
 
 #### Notable Connections:
+
 - Sarah's need for calculation transparency connects to First Principles insight about trusting automation
 - Ahmed's offline workflow validates Morphological decision to support hybrid data entry
 - Fatima's story-driven navigation validates the VOC/CTQ → Processes → Recommendations architecture
@@ -214,7 +153,8 @@
 ## Idea Categorization
 
 ### Immediate Opportunities
-*Ideas ready to implement now*
+
+_Ideas ready to implement now_
 
 1. **Core CRUD Application with Next.js + shadcn**
    - Description: Build base application with database, authentication, and basic UI components
@@ -247,7 +187,8 @@
    - Priority: Test data entry UX patterns
 
 ### Future Innovations
-*Ideas requiring development/research*
+
+_Ideas requiring development/research_
 
 6. **Section-Level Locking + Activity Feed**
    - Description: Real-time collaboration with per-section locks and transparent audit trail
@@ -292,7 +233,8 @@
     - Rationale: Important for compliance and trust, but not blocking for MVP
 
 ### Moonshots
-*Ambitious, transformative concepts*
+
+_Ambitious, transformative concepts_
 
 13. **AI-Assisted Root Cause Analysis**
     - Description: LLM analyzes VSM + Pareto data and suggests potential root causes for Fishbone diagram
@@ -319,7 +261,8 @@
     - Timeline: 12+ months, requires substantial historical data
 
 ### Insights & Learnings
-*Key realizations from the session*
+
+_Key realizations from the session_
 
 - **Offline-first matters**: Assuming real-time collaboration ignores how field work happens. Hybrid approach (offline capture → online transfer) matches reality.
 - **Two modes solve tension**: Draft needs flexibility; Completed needs stability. Don't try to be both simultaneously.
@@ -337,6 +280,7 @@
 ### Top 3 Priority Ideas
 
 #### #1 Priority: MVP Foundation - Core Workflow (Draft Mode Only)
+
 - **Rationale**: Validate end-to-end workflow with single-user experience before adding collaboration complexity. Prove value of automation + modern presentation.
 - **Next steps**:
   1. Set up Next.js project with shadcn, database (PostgreSQL/Supabase), authentication
@@ -355,6 +299,7 @@
 - **Success criteria**: BPI analyst can create a single-process assignment faster than manual method
 
 #### #2 Priority: Calculation Engine + Visualization Suite
+
 - **Rationale**: Core value proposition is automation. Must prove calculations are accurate and visualizations are presentation-ready.
 - **Next steps**:
   1. Research and document Six Sigma formulas: Pareto analysis, Process Capability (Cp, Cpk), Sigma Level calculation
@@ -372,6 +317,7 @@
 - **Success criteria**: All 7 section visualizations generate correctly; SME validates calculation accuracy
 
 #### #3 Priority: Team Lead Dashboard + Validation System
+
 - **Rationale**: Sarah's data accuracy concerns must be addressed before team adoption. Quality gates prevent garbage-in-garbage-out.
 - **Next steps**:
   1. Design Team Lead Dashboard wireframes (progress view, validation alerts, approval workflow)
@@ -392,6 +338,7 @@
 ## Reflection & Follow-up
 
 ### What Worked Well
+
 - **First Principles Thinking established clarity**: Starting with "why" prevented feature creep and kept focus on core value (automation + presentation)
 - **Morphological Analysis uncovered tensions**: Exploring combinations (e.g., real-time collaboration + real-time preview) revealed design conflicts to resolve early
 - **Role Playing validated architecture**: Walking through user journeys exposed missing requirements (Team Lead Dashboard, hybrid data entry) that pure feature brainstorming would have missed
@@ -399,6 +346,7 @@
 - **Focused ideation scope**: Narrowing to "how to build" (vs. broad "what to build") kept session productive and actionable
 
 ### Areas for Further Exploration
+
 - **PDF Export Details**: Layout, page breaks, branding, executive summary page design
 - **FMEA Workflow**: How are failure modes identified? Is there a template? How does it connect to Fishbone causes?
 - **Portfolio Analytics**: What views do executives need across multiple assignments? Trend analysis? Process comparison?
@@ -407,12 +355,14 @@
 - **Change Management**: How to drive adoption beyond just building the tool? Training? Champions? Pilot program?
 
 ### Recommended Follow-up Techniques
+
 - **Five Whys**: Dig deeper into Team Lead's data accuracy concerns - what specifically causes trust issues with current manual process?
 - **Assumption Reversal**: Challenge the "7 sequential sections" assumption - could workflow be reordered? Are all sections always needed?
 - **User Journey Mapping**: Detailed step-by-step walkthrough of Ahmed's full workflow from assignment kickoff to stakeholder presentation
 - **Forced Relationships**: Explore unexpected integrations - what if this tool connected to Slack? Email? Calendar? Project management tools?
 
 ### Questions That Emerged
+
 - **How many assignments per year?** (Affects scalability requirements and database design)
 - **Average processes per assignment?** (Affects UI complexity and performance optimization priorities)
 - **Team size and roles?** (Affects collaboration feature priority - is it 2 people or 10?)
@@ -423,6 +373,7 @@
 - **Regulatory or compliance requirements?** (Affects audit trail, version history, access control priorities)
 
 ### Next Session Planning
+
 - **Suggested topics**:
   - Detailed UX design session (wireframes for each section)
   - Technical architecture deep-dive (database schema, API design, state management)
@@ -437,4 +388,4 @@
 
 ---
 
-*Session facilitated using the BMAD-METHOD™ brainstorming framework*
+_Session facilitated using the BMAD-METHOD™ brainstorming framework_

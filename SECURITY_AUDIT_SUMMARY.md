@@ -22,9 +22,11 @@
 **Status:** 1/12 files fixed
 
 **Fixed:**
+
 - ✅ `/app/api/fishbone-causes/route.ts`
 
 **Still Need Fixing (11 files):**
+
 - ❌ `/app/api/vsm-steps/[id]/route.ts`
 - ❌ `/app/api/voc-statements/[id]/route.ts`
 - ❌ `/app/api/ctq-requirements/route.ts`
@@ -38,6 +40,7 @@
 - ❌ `/app/api/sipoc-entries/route.ts`
 
 **Fix Pattern:**
+
 ```typescript
 // Remove userId from destructuring
 const { /* userId, */ ...otherFields } = await request.json()
@@ -49,6 +52,7 @@ userId: user.id
 #### 2. Hardcoded Credentials in Scripts (11 files)
 
 **Files:**
+
 - `/scripts/fix-fishbone-for-vital-steps.js`
 - `/scripts/add-more-fmea-entries.js`
 - `/scripts/create-facility-granting-assignment.js`
@@ -66,6 +70,7 @@ userId: user.id
 ### 🟠 HIGH PRIORITY (25+ items)
 
 #### Input Validation Missing
+
 - SIPOC entry fields
 - VSM step fields
 - Fishbone cause fields (partially done)
@@ -74,22 +79,26 @@ userId: user.id
 - All PATCH/POST endpoints
 
 #### Null Safety Missing
+
 - oldProcess access checks
 - oldEntry access checks
 - User object access
 - Optional chaining issues
 
 #### Race Conditions
+
 - Fishbone category creation
 - Status reset timeouts
 - Recommendation fetch-then-update
 
 #### Transaction Safety
+
 - Wrap deletions in transactions
 - Fishbone creation needs transactions
 - SIPOC operations need atomicity
 
 #### Field Name Mismatches
+
 - Audit log fields vs schema
 - Process field names
 
@@ -114,34 +123,38 @@ userId: user.id
 
 ## 📊 Completion Status
 
-| Category | Fixed | Remaining | Total |
-|----------|-------|-----------|-------|
-| Critical Security | 10 | 22 | 32 |
-| High Priority | 0 | 25+ | 25+ |
-| Medium Priority | 0 | 30+ | 30+ |
-| Low Priority | 0 | 15+ | 15+ |
-| **TOTAL** | **10** | **92+** | **102+** |
+| Category          | Fixed  | Remaining | Total    |
+| ----------------- | ------ | --------- | -------- |
+| Critical Security | 10     | 22        | 32       |
+| High Priority     | 0      | 25+       | 25+      |
+| Medium Priority   | 0      | 30+       | 30+      |
+| Low Priority      | 0      | 15+       | 15+      |
+| **TOTAL**         | **10** | **92+**   | **102+** |
 
 ## 🚀 Recommended Fix Order
 
 ### Phase 1: Critical Security (Complete Today)
+
 1. ✅ Remove hardcoded credentials
 2. ✅ Fix JWT security
 3. ⏳ Fix all userId privilege escalation (11 files)
 4. ⏳ Remove script credentials (11 files)
 
 ### Phase 2: Critical Functionality (Next)
+
 1. Add input validation to all endpoints
 2. Fix race conditions with transactions
 3. Add null safety checks
 4. Fix field name mismatches
 
 ### Phase 3: Quality & UX
+
 1. Improve error handling
 2. Type safety improvements
 3. Code cleanup
 
 ### Phase 4: Polish
+
 1. Refactoring
 2. Performance optimizations
 3. Code documentation
@@ -149,6 +162,7 @@ userId: user.id
 ## 🔧 Quick Fix Script Needed
 
 Would you like me to create an automated script to fix:
+
 1. All userId privilege escalation issues?
 2. All script file credentials?
 3. Add input validation templates?

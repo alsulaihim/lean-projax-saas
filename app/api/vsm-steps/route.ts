@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       valueMeasure,
       stakeholder,
       wasteType,
-      remarks
+      remarks,
     } = await request.json()
 
     // Input validation
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create VSM step and audit log atomically
-    const step = await prisma.$transaction(async (tx) => {
+    const step = await prisma.$transaction(async tx => {
       const newStep = await tx.vSMStep.create({
         data: {
           processId,
@@ -46,8 +46,8 @@ export async function POST(request: NextRequest) {
           valueMeasure: valueMeasure || 'NON_VALUE_ADDED',
           stakeholder,
           wasteType: wasteType || null,
-          remarks
-        }
+          remarks,
+        },
       })
 
       await tx.auditLog.create({
@@ -62,9 +62,9 @@ export async function POST(request: NextRequest) {
             stepName,
             processTime,
             waitingTime,
-            valueMeasure
-          }
-        }
+            valueMeasure,
+          },
+        },
       })
 
       return newStep
@@ -73,9 +73,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(step)
   } catch (error) {
     console.error('Failed to create VSM step:', error)
-    return NextResponse.json(
-      { error: 'Failed to create VSM step' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create VSM step' }, { status: 500 })
   }
 }

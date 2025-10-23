@@ -12,7 +12,12 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <span className="text-3xl text-red-700" style={{ fontFamily: 'var(--font-orbitron)' }}>Lean Projax</span>
+              <span
+                className="text-3xl text-red-700"
+                style={{ fontFamily: 'var(--font-orbitron)' }}
+              >
+                Lean Projax
+              </span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <Link href="#features" className="text-gray-600 hover:text-black transition">
@@ -76,7 +81,9 @@ export default function Home() {
                   Try Demo
                 </Link>
               </div>
-              <p className="text-sm text-gray-500 mt-4">14-day free trial. No credit card required.</p>
+              <p className="text-sm text-gray-500 mt-4">
+                14-day free trial. No credit card required.
+              </p>
             </div>
 
             {/* Right Column - Hero Image */}
@@ -162,7 +169,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
     </div>
   )
 }

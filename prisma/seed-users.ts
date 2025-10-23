@@ -17,8 +17,8 @@ async function main() {
         email: 'analyst@example.com',
         name: 'John Analyst',
         role: 'BPI_TEAM',
-        passwordHash: password
-      }
+        passwordHash: password,
+      },
     })
 
     const teamLead = await prisma.user.upsert({
@@ -28,8 +28,8 @@ async function main() {
         email: 'lead@example.com',
         name: 'Sarah Lead',
         role: 'TEAM_LEAD',
-        passwordHash: password
-      }
+        passwordHash: password,
+      },
     })
 
     const executive = await prisma.user.upsert({
@@ -39,8 +39,8 @@ async function main() {
         email: 'exec@example.com',
         name: 'Mike Executive',
         role: 'EXECUTIVE',
-        passwordHash: password
-      }
+        passwordHash: password,
+      },
     })
 
     const processOwner = await prisma.user.upsert({
@@ -50,8 +50,8 @@ async function main() {
         email: 'owner@example.com',
         name: 'Lisa Owner',
         role: 'PROCESS_OWNER',
-        passwordHash: password
-      }
+        passwordHash: password,
+      },
     })
 
     console.log('✅ Created/Updated users:')
@@ -68,7 +68,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Seed failed:', e)
     process.exit(1)
   })

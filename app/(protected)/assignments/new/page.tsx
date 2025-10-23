@@ -14,7 +14,7 @@ export default function NewAssignmentPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [form, setForm] = useState({
     title: '',
-    objective: ''
+    objective: '',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,7 +25,7 @@ export default function NewAssignmentPage() {
       const response = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       })
 
       if (response.ok) {
@@ -55,9 +55,7 @@ export default function NewAssignmentPage() {
       <Card className="border-2 border-black">
         <CardHeader>
           <CardTitle className="text-2xl">Create New Assignment</CardTitle>
-          <CardDescription>
-            Start a new Six Sigma improvement assignment
-          </CardDescription>
+          <CardDescription>Start a new Six Sigma improvement assignment</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -67,7 +65,7 @@ export default function NewAssignmentPage() {
                 id="title"
                 placeholder="e.g., Order Processing Optimization"
                 value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                onChange={e => setForm({ ...form, title: e.target.value })}
                 required
                 className="border-gray-300 focus:border-black"
               />
@@ -79,7 +77,7 @@ export default function NewAssignmentPage() {
                 id="objective"
                 placeholder="Describe the main objective and expected outcomes..."
                 value={form.objective}
-                onChange={(e) => setForm({ ...form, objective: e.target.value })}
+                onChange={e => setForm({ ...form, objective: e.target.value })}
                 required
                 className="border-gray-300 focus:border-black min-h-[120px]"
               />

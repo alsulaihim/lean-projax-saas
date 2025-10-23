@@ -12,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -54,9 +48,21 @@ const WASTE_TYPES = [
 ] as const
 
 const VALUE_MEASURES = [
-  { value: 'VALUE_ADDED', label: 'Value Added', color: 'bg-green-100 text-green-800 border-green-300' },
-  { value: 'ESSENTIAL_NON_VALUE', label: 'Essential Non-Value Added', color: 'bg-yellow-100 text-yellow-800 border-yellow-300' },
-  { value: 'NON_VALUE_ADDED', label: 'Non-Value Added', color: 'bg-red-100 text-red-800 border-red-300' },
+  {
+    value: 'VALUE_ADDED',
+    label: 'Value Added',
+    color: 'bg-green-100 text-green-800 border-green-300',
+  },
+  {
+    value: 'ESSENTIAL_NON_VALUE',
+    label: 'Essential Non-Value Added',
+    color: 'bg-yellow-100 text-yellow-800 border-yellow-300',
+  },
+  {
+    value: 'NON_VALUE_ADDED',
+    label: 'Non-Value Added',
+    color: 'bg-red-100 text-red-800 border-red-300',
+  },
 ] as const
 
 export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSectionProps) {
@@ -73,7 +79,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
     stakeholder: '',
     wasteType: '',
-    remarks: ''
+    remarks: '',
   })
 
   const [editForm, setEditForm] = useState({
@@ -83,53 +89,65 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     valueMeasure: 'NON_VALUE_ADDED' as 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED',
     stakeholder: '',
     wasteType: '',
-    remarks: ''
+    remarks: '',
   })
 
   const currentProcess = processes.find(p => p.id === selectedProcess)
   const vsmSteps = currentProcess?.vsmSteps.sort((a, b) => a.stepNumber - b.stepNumber) || []
 
   // Calculate totals and percentages
-  const totals = vsmSteps.reduce((acc, step) => {
-    const processTime = step.processTime || step.durationMinutes || 0
-    const waitingTime = step.waitingTime || step.waitTimeMinutes || 0
-    const cycleTime = processTime + waitingTime
+  const totals = vsmSteps.reduce(
+    (acc, step) => {
+      const processTime = step.processTime || step.durationMinutes || 0
+      const waitingTime = step.waitingTime || step.waitTimeMinutes || 0
+      const cycleTime = processTime + waitingTime
 
-    acc.processTime += processTime
-    acc.waitingTime += waitingTime
-    acc.cycleTime += cycleTime
+      acc.processTime += processTime
+      acc.waitingTime += waitingTime
+      acc.cycleTime += cycleTime
 
-    // Count by value measure
-    const measure = step.valueMeasure || (step.valueAdded ? 'VALUE_ADDED' : 'NON_VALUE_ADDED')
-    if (measure === 'VALUE_ADDED') {
-      acc.valueAddedTime += processTime
-      acc.valueAddedSteps++
-    } else if (measure === 'ESSENTIAL_NON_VALUE') {
-      acc.essentialNonValueTime += processTime
-      acc.essentialNonValueSteps++
-    } else {
-      acc.nonValueAddedTime += processTime
-      acc.nonValueAddedSteps++
+      // Count by value measure
+      const measure = step.valueMeasure || (step.valueAdded ? 'VALUE_ADDED' : 'NON_VALUE_ADDED')
+      if (measure === 'VALUE_ADDED') {
+        acc.valueAddedTime += processTime
+        acc.valueAddedSteps++
+      } else if (measure === 'ESSENTIAL_NON_VALUE') {
+        acc.essentialNonValueTime += processTime
+        acc.essentialNonValueSteps++
+      } else {
+        acc.nonValueAddedTime += processTime
+        acc.nonValueAddedSteps++
+      }
+
+      return acc
+    },
+    {
+      processTime: 0,
+      waitingTime: 0,
+      cycleTime: 0,
+      valueAddedTime: 0,
+      essentialNonValueTime: 0,
+      nonValueAddedTime: 0,
+      valueAddedSteps: 0,
+      essentialNonValueSteps: 0,
+      nonValueAddedSteps: 0,
     }
-
-    return acc
-  }, {
-    processTime: 0,
-    waitingTime: 0,
-    cycleTime: 0,
-    valueAddedTime: 0,
-    essentialNonValueTime: 0,
-    nonValueAddedTime: 0,
-    valueAddedSteps: 0,
-    essentialNonValueSteps: 0,
-    nonValueAddedSteps: 0
-  })
+  )
 
   // Calculate percentages
   const percentages = {
-    valueAdded: totals.processTime > 0 ? (totals.valueAddedTime / totals.processTime * 100).toFixed(1) : '0',
-    essentialNonValue: totals.processTime > 0 ? (totals.essentialNonValueTime / totals.processTime * 100).toFixed(1) : '0',
-    nonValueAdded: totals.processTime > 0 ? (totals.nonValueAddedTime / totals.processTime * 100).toFixed(1) : '0'
+    valueAdded:
+      totals.processTime > 0
+        ? ((totals.valueAddedTime / totals.processTime) * 100).toFixed(1)
+        : '0',
+    essentialNonValue:
+      totals.processTime > 0
+        ? ((totals.essentialNonValueTime / totals.processTime) * 100).toFixed(1)
+        : '0',
+    nonValueAdded:
+      totals.processTime > 0
+        ? ((totals.nonValueAddedTime / totals.processTime) * 100).toFixed(1)
+        : '0',
   }
 
   const handleAddStep = async () => {
@@ -155,8 +173,8 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
           // Legacy fields for compatibility
           durationMinutes: parseFloat(stepForm.processTime) || 0,
           waitTimeMinutes: parseFloat(stepForm.waitingTime) || 0,
-          valueAdded: stepForm.valueMeasure === 'VALUE_ADDED'
-        })
+          valueAdded: stepForm.valueMeasure === 'VALUE_ADDED',
+        }),
       })
 
       if (response.ok) {
@@ -168,7 +186,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
           valueMeasure: 'NON_VALUE_ADDED',
           stakeholder: '',
           wasteType: '',
-          remarks: ''
+          remarks: '',
         })
         router.refresh()
       }
@@ -198,8 +216,8 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
           waitTimeMinutes: parseFloat(editForm.waitingTime) || 0,
           valueAdded: editForm.valueMeasure === 'VALUE_ADDED',
           userId,
-          assignmentId
-        })
+          assignmentId,
+        }),
       })
 
       if (response.ok) {
@@ -223,7 +241,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
       const response = await fetch(`/api/vsm-steps/${stepId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -236,7 +254,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     }
   }
 
-  const startEditing = (step: typeof vsmSteps[0]) => {
+  const startEditing = (step: (typeof vsmSteps)[0]) => {
     setEditingStep(step.id)
     setEditForm({
       stepName: step.stepName,
@@ -245,7 +263,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
       valueMeasure: step.valueMeasure || (step.valueAdded ? 'VALUE_ADDED' : 'NON_VALUE_ADDED'),
       stakeholder: step.stakeholder || '',
       wasteType: step.wasteType || '',
-      remarks: step.remarks || step.notes || ''
+      remarks: step.remarks || step.notes || '',
     })
   }
 
@@ -260,7 +278,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
     return (
       <Card className="border-2 border-black">
         <CardContent className="py-12 text-center">
-          <p className="text-gray-500">Please add at least one process before creating a Value Stream Map</p>
+          <p className="text-gray-500">
+            Please add at least one process before creating a Value Stream Map
+          </p>
         </CardContent>
       </Card>
     )
@@ -321,7 +341,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                   <div className="text-center">
                     <Calculator className="h-5 w-5 mx-auto mb-2 text-blue-600" />
                     <p className="text-sm text-blue-700 mb-1">Total Cycle Time</p>
-                    <p className="text-2xl font-bold text-blue-800">{formatDuration(totals.cycleTime)}</p>
+                    <p className="text-2xl font-bold text-blue-800">
+                      {formatDuration(totals.cycleTime)}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -341,7 +363,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                   </div>
                   <div className="text-center">
                     <p className="text-xs text-gray-500 mb-1">Essential Non-Value</p>
-                    <p className="text-2xl font-bold text-yellow-600">{percentages.essentialNonValue}%</p>
+                    <p className="text-2xl font-bold text-yellow-600">
+                      {percentages.essentialNonValue}%
+                    </p>
                     <p className="text-xs text-gray-500">{totals.essentialNonValueSteps} steps</p>
                   </div>
                   <div className="text-center">
@@ -360,7 +384,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-100">
-                    <TableHead className="w-[40px] text-center sticky left-0 bg-gray-100 z-10 font-bold">#</TableHead>
+                    <TableHead className="w-[40px] text-center sticky left-0 bg-gray-100 z-10 font-bold">
+                      #
+                    </TableHead>
                     <TableHead className="w-[18%] font-bold">Process Step</TableHead>
                     <TableHead className="text-center w-[90px] font-bold">Process Time</TableHead>
                     <TableHead className="text-center w-[90px] font-bold">Waiting Time</TableHead>
@@ -369,7 +395,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                     <TableHead className="w-[12%] font-bold">Stakeholder</TableHead>
                     <TableHead className="w-[12%] font-bold">Waste Type</TableHead>
                     <TableHead className="w-[15%] font-bold">Remarks</TableHead>
-                    {canEdit && <TableHead className="w-[90px] sticky right-0 bg-gray-100 font-bold shadow-[-4px_0_6px_-1px_rgba(0,0,0,0.1)]"></TableHead>}
+                    {canEdit && (
+                      <TableHead className="w-[90px] sticky right-0 bg-gray-100 font-bold shadow-[-4px_0_6px_-1px_rgba(0,0,0,0.1)]"></TableHead>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -377,18 +405,23 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                     const processTime = step.processTime || step.durationMinutes || 0
                     const waitingTime = step.waitingTime || step.waitTimeMinutes || 0
                     const cycleTime = processTime + waitingTime
-                    const valueMeasure = step.valueMeasure || (step.valueAdded ? 'VALUE_ADDED' : 'NON_VALUE_ADDED')
+                    const valueMeasure =
+                      step.valueMeasure || (step.valueAdded ? 'VALUE_ADDED' : 'NON_VALUE_ADDED')
                     const measureConfig = VALUE_MEASURES.find(m => m.value === valueMeasure)
 
                     return (
                       <TableRow key={step.id}>
                         {editingStep === step.id ? (
                           <>
-                            <TableCell className="font-medium text-center">{step.stepNumber}</TableCell>
+                            <TableCell className="font-medium text-center">
+                              {step.stepNumber}
+                            </TableCell>
                             <TableCell>
                               <Input
                                 value={editForm.stepName}
-                                onChange={(e) => setEditForm({ ...editForm, stepName: e.target.value })}
+                                onChange={e =>
+                                  setEditForm({ ...editForm, stepName: e.target.value })
+                                }
                                 className="text-sm min-w-[150px]"
                               />
                             </TableCell>
@@ -397,7 +430,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                                 type="number"
                                 step="0.1"
                                 value={editForm.processTime}
-                                onChange={(e) => setEditForm({ ...editForm, processTime: e.target.value })}
+                                onChange={e =>
+                                  setEditForm({ ...editForm, processTime: e.target.value })
+                                }
                                 className="text-sm text-center w-24"
                               />
                             </TableCell>
@@ -406,15 +441,25 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                                 type="number"
                                 step="0.1"
                                 value={editForm.waitingTime}
-                                onChange={(e) => setEditForm({ ...editForm, waitingTime: e.target.value })}
+                                onChange={e =>
+                                  setEditForm({ ...editForm, waitingTime: e.target.value })
+                                }
                                 className="text-sm text-center w-24"
                               />
                             </TableCell>
                             <TableCell className="text-center">
-                              {((parseFloat(editForm.processTime) || 0) + (parseFloat(editForm.waitingTime) || 0)).toFixed(1)}
+                              {(
+                                (parseFloat(editForm.processTime) || 0) +
+                                (parseFloat(editForm.waitingTime) || 0)
+                              ).toFixed(1)}
                             </TableCell>
                             <TableCell>
-                              <Select value={editForm.valueMeasure} onValueChange={(value: 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED') => setEditForm({ ...editForm, valueMeasure: value })}>
+                              <Select
+                                value={editForm.valueMeasure}
+                                onValueChange={(
+                                  value: 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED'
+                                ) => setEditForm({ ...editForm, valueMeasure: value })}
+                              >
                                 <SelectTrigger className="text-sm">
                                   <SelectValue />
                                 </SelectTrigger>
@@ -430,13 +475,23 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                             <TableCell>
                               <Input
                                 value={editForm.stakeholder}
-                                onChange={(e) => setEditForm({ ...editForm, stakeholder: e.target.value })}
+                                onChange={e =>
+                                  setEditForm({ ...editForm, stakeholder: e.target.value })
+                                }
                                 placeholder="Stakeholder"
                                 className="text-sm min-w-[100px]"
                               />
                             </TableCell>
                             <TableCell>
-                              <Select value={editForm.wasteType || 'none'} onValueChange={(value) => setEditForm({ ...editForm, wasteType: value === 'none' ? '' : value })}>
+                              <Select
+                                value={editForm.wasteType || 'none'}
+                                onValueChange={value =>
+                                  setEditForm({
+                                    ...editForm,
+                                    wasteType: value === 'none' ? '' : value,
+                                  })
+                                }
+                              >
                                 <SelectTrigger className="text-sm">
                                   <SelectValue placeholder="None" />
                                 </SelectTrigger>
@@ -453,7 +508,9 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                             <TableCell>
                               <Input
                                 value={editForm.remarks}
-                                onChange={(e) => setEditForm({ ...editForm, remarks: e.target.value })}
+                                onChange={e =>
+                                  setEditForm({ ...editForm, remarks: e.target.value })
+                                }
                                 placeholder="Remarks"
                                 className="text-sm min-w-[100px]"
                               />
@@ -482,28 +539,40 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                           </>
                         ) : (
                           <>
-                            <TableCell className="font-medium text-center">{step.stepNumber}</TableCell>
+                            <TableCell className="font-medium text-center">
+                              {step.stepNumber}
+                            </TableCell>
                             <TableCell className="font-medium align-top">
                               <div className="break-words whitespace-normal">{step.stepName}</div>
                             </TableCell>
                             <TableCell className="text-center">{processTime.toFixed(1)}</TableCell>
                             <TableCell className="text-center">{waitingTime.toFixed(1)}</TableCell>
-                            <TableCell className="text-center font-medium">{cycleTime.toFixed(1)}</TableCell>
+                            <TableCell className="text-center font-medium">
+                              {cycleTime.toFixed(1)}
+                            </TableCell>
                             <TableCell className="text-center">
-                              <span className={`px-2 py-1 text-xs border rounded ${measureConfig?.color}`}>
+                              <span
+                                className={`px-2 py-1 text-xs border rounded ${measureConfig?.color}`}
+                              >
                                 {measureConfig?.label.split(' ')[0]}
                               </span>
                             </TableCell>
                             <TableCell className="text-sm align-top">
-                              <div className="break-words whitespace-normal">{step.stakeholder || '-'}</div>
+                              <div className="break-words whitespace-normal">
+                                {step.stakeholder || '-'}
+                              </div>
                             </TableCell>
                             <TableCell className="text-sm align-top">
                               <div className="break-words whitespace-normal">
-                                {step.wasteType ? WASTE_TYPES.find(t => t.value === step.wasteType)?.label : '-'}
+                                {step.wasteType
+                                  ? WASTE_TYPES.find(t => t.value === step.wasteType)?.label
+                                  : '-'}
                               </div>
                             </TableCell>
                             <TableCell className="text-sm text-gray-600 align-top">
-                              <div className="break-words whitespace-normal">{step.remarks || step.notes || '-'}</div>
+                              <div className="break-words whitespace-normal">
+                                {step.remarks || step.notes || '-'}
+                              </div>
                             </TableCell>
                             {canEdit && (
                               <TableCell className="sticky right-0 bg-white shadow-[-4px_0_6px_-1px_rgba(0,0,0,0.1)]">
@@ -537,12 +606,15 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                 {vsmSteps.length > 0 && (
                   <TableFooter>
                     <TableRow className="bg-gray-50 font-medium">
-                      <TableCell colSpan={2} className="text-right">Totals:</TableCell>
+                      <TableCell colSpan={2} className="text-right">
+                        Totals:
+                      </TableCell>
                       <TableCell className="text-center">{totals.processTime.toFixed(1)}</TableCell>
                       <TableCell className="text-center">{totals.waitingTime.toFixed(1)}</TableCell>
                       <TableCell className="text-center">{totals.cycleTime.toFixed(1)}</TableCell>
                       <TableCell colSpan={canEdit ? 5 : 4} className="text-center text-sm">
-                        VA: {percentages.valueAdded}% | Essential: {percentages.essentialNonValue}% | NVA: {percentages.nonValueAdded}%
+                        VA: {percentages.valueAdded}% | Essential: {percentages.essentialNonValue}%
+                        | NVA: {percentages.nonValueAdded}%
                       </TableCell>
                     </TableRow>
                   </TableFooter>
@@ -574,47 +646,59 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                   <CardHeader>
                     <CardTitle className="text-lg">Add Process Step</CardTitle>
                     <CardDescription>
-                      Fill in all fields for the new process step. Cycle time will be calculated automatically.
+                      Fill in all fields for the new process step. Cycle time will be calculated
+                      automatically.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2">
-                        <label className="text-sm font-medium mb-2 block">Process Step Name *</label>
+                        <label className="text-sm font-medium mb-2 block">
+                          Process Step Name *
+                        </label>
                         <Input
                           placeholder="e.g., Review Application"
                           value={stepForm.stepName}
-                          onChange={(e) => setStepForm({ ...stepForm, stepName: e.target.value })}
+                          onChange={e => setStepForm({ ...stepForm, stepName: e.target.value })}
                         />
                       </div>
 
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Process Time (minutes) *</label>
+                        <label className="text-sm font-medium mb-2 block">
+                          Process Time (minutes) *
+                        </label>
                         <Input
                           type="number"
                           step="0.1"
                           min="0"
                           placeholder="10.0"
                           value={stepForm.processTime}
-                          onChange={(e) => setStepForm({ ...stepForm, processTime: e.target.value })}
+                          onChange={e => setStepForm({ ...stepForm, processTime: e.target.value })}
                         />
                       </div>
 
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Waiting Time (minutes)</label>
+                        <label className="text-sm font-medium mb-2 block">
+                          Waiting Time (minutes)
+                        </label>
                         <Input
                           type="number"
                           step="0.1"
                           min="0"
                           placeholder="5.0"
                           value={stepForm.waitingTime}
-                          onChange={(e) => setStepForm({ ...stepForm, waitingTime: e.target.value })}
+                          onChange={e => setStepForm({ ...stepForm, waitingTime: e.target.value })}
                         />
                       </div>
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">Value Measure *</label>
-                        <Select value={stepForm.valueMeasure} onValueChange={(value: 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED') => setStepForm({ ...stepForm, valueMeasure: value })}>
+                        <Select
+                          value={stepForm.valueMeasure}
+                          onValueChange={(
+                            value: 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED'
+                          ) => setStepForm({ ...stepForm, valueMeasure: value })}
+                        >
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -633,13 +717,18 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                         <Input
                           placeholder="e.g., Customer Service Team"
                           value={stepForm.stakeholder}
-                          onChange={(e) => setStepForm({ ...stepForm, stakeholder: e.target.value })}
+                          onChange={e => setStepForm({ ...stepForm, stakeholder: e.target.value })}
                         />
                       </div>
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">Waste Type</label>
-                        <Select value={stepForm.wasteType || 'none'} onValueChange={(value) => setStepForm({ ...stepForm, wasteType: value === 'none' ? '' : value })}>
+                        <Select
+                          value={stepForm.wasteType || 'none'}
+                          onValueChange={value =>
+                            setStepForm({ ...stepForm, wasteType: value === 'none' ? '' : value })
+                          }
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select waste type (if any)" />
                           </SelectTrigger>
@@ -659,7 +748,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                         <Textarea
                           placeholder="Additional notes or observations..."
                           value={stepForm.remarks}
-                          onChange={(e) => setStepForm({ ...stepForm, remarks: e.target.value })}
+                          onChange={e => setStepForm({ ...stepForm, remarks: e.target.value })}
                           className="min-h-[60px]"
                         />
                       </div>
@@ -669,7 +758,11 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium">Calculated Cycle Time:</span>
                           <span className="text-lg font-bold text-blue-700">
-                            {((parseFloat(stepForm.processTime) || 0) + (parseFloat(stepForm.waitingTime) || 0)).toFixed(1)} minutes
+                            {(
+                              (parseFloat(stepForm.processTime) || 0) +
+                              (parseFloat(stepForm.waitingTime) || 0)
+                            ).toFixed(1)}{' '}
+                            minutes
                           </span>
                         </div>
                       </div>
@@ -687,7 +780,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                             valueMeasure: 'NON_VALUE_ADDED',
                             stakeholder: '',
                             wasteType: '',
-                            remarks: ''
+                            remarks: '',
                           })
                         }}
                         disabled={loading}

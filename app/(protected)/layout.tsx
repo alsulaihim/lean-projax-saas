@@ -2,11 +2,7 @@ import { redirect } from 'next/navigation'
 import { getFullUser } from '@/lib/auth-check'
 import { Header } from '@/components/layout/header'
 
-export default async function ProtectedLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const user = await getFullUser()
 
   if (!user) {

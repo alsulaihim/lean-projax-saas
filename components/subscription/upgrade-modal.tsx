@@ -20,19 +20,14 @@ interface UpgradeModalProps {
   description?: string
 }
 
-export function UpgradeModal({
-  isOpen,
-  onClose,
-  feature,
-  title,
-  description
-}: UpgradeModalProps) {
+export function UpgradeModal({ isOpen, onClose, feature, title, description }: UpgradeModalProps) {
   const router = useRouter()
 
   const featureInfo = feature ? FEATURE_DESCRIPTIONS[feature] : null
 
   const displayTitle = title || featureInfo?.title || 'Upgrade to Pro'
-  const displayDescription = description || featureInfo?.description || 'Unlock this premium feature and more'
+  const displayDescription =
+    description || featureInfo?.description || 'Unlock this premium feature and more'
 
   const handleUpgrade = () => {
     onClose()
@@ -53,9 +48,7 @@ export function UpgradeModal({
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
             <Crown className="h-6 w-6 text-yellow-600" />
-            <DialogTitle className="text-2xl font-bold">
-              {displayTitle}
-            </DialogTitle>
+            <DialogTitle className="text-2xl font-bold">{displayTitle}</DialogTitle>
           </div>
           <DialogDescription className="text-base text-gray-700">
             {displayDescription}
@@ -77,7 +70,7 @@ export function UpgradeModal({
                 'Team collaboration',
                 'AI-powered insights',
                 'Custom branding',
-                'Priority support'
+                'Priority support',
               ].map((benefit, index) => (
                 <li key={index} className="flex items-center gap-2 text-sm text-gray-800">
                   <Check className="h-4 w-4 text-green-600 flex-shrink-0" />

@@ -22,7 +22,7 @@ interface PaymentFormProps {
 function StripePaymentForm({
   subscriptionTier,
   billingPeriod,
-  onSuccess
+  onSuccess,
 }: {
   subscriptionTier: 'PRO'
   billingPeriod: 'monthly' | 'annual'
@@ -47,7 +47,7 @@ function StripePaymentForm({
     try {
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
-        redirect: 'if_required'
+        redirect: 'if_required',
       })
 
       if (error) {
@@ -65,8 +65,8 @@ function StripePaymentForm({
             provider: 'STRIPE',
             paymentIntentId: paymentIntent.id,
             subscriptionTier,
-            billingPeriod
-          })
+            billingPeriod,
+          }),
         })
 
         if (response.ok) {
@@ -130,7 +130,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
 
   const prices = {
     monthly: { amount: 49, display: '$49' },
-    annual: { amount: 490, display: '$490', savings: 'Save $98/year' }
+    annual: { amount: 490, display: '$490', savings: 'Save $98/year' },
   }
 
   const handleTabChange = async (value: string) => {
@@ -145,8 +145,8 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             subscriptionTier,
-            billingPeriod
-          })
+            billingPeriod,
+          }),
         })
 
         const data = await response.json()
@@ -175,8 +175,8 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             subscriptionTier,
-            billingPeriod: period
-          })
+            billingPeriod: period,
+          }),
         })
 
         const data = await response.json()
@@ -195,9 +195,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
     <Card className="w-full max-w-2xl mx-auto border-2 border-black">
       <CardHeader>
         <CardTitle className="text-2xl">Upgrade to Pro</CardTitle>
-        <CardDescription>
-          Choose your payment method and billing period
-        </CardDescription>
+        <CardDescription>Choose your payment method and billing period</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Billing Period Selection */}
@@ -205,7 +203,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
           <Label className="text-base font-semibold">Billing Period</Label>
           <RadioGroup
             value={billingPeriod}
-            onValueChange={(value) => handleBillingPeriodChange(value as 'monthly' | 'annual')}
+            onValueChange={value => handleBillingPeriodChange(value as 'monthly' | 'annual')}
             className="grid grid-cols-1 sm:grid-cols-2 gap-3"
           >
             <div>
@@ -264,9 +262,9 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                     theme: 'stripe',
                     variables: {
                       colorPrimary: '#000000',
-                      borderRadius: '6px'
-                    }
-                  }
+                      borderRadius: '6px',
+                    },
+                  },
                 }}
               >
                 <StripePaymentForm
@@ -276,9 +274,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                 />
               </Elements>
             ) : (
-              <div className="text-center py-12 text-gray-600">
-                Click here to load payment form
-              </div>
+              <div className="text-center py-12 text-gray-600">Click here to load payment form</div>
             )}
           </TabsContent>
 
@@ -287,7 +283,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
               options={{
                 clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
                 currency: 'USD',
-                intent: 'capture'
+                intent: 'capture',
               }}
             >
               <div className="space-y-4">
@@ -302,7 +298,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                     layout: 'vertical',
                     color: 'black',
                     shape: 'rect',
-                    label: 'paypal'
+                    label: 'paypal',
                   }}
                   createOrder={async () => {
                     try {
@@ -311,8 +307,8 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           subscriptionTier,
-                          billingPeriod
-                        })
+                          billingPeriod,
+                        }),
                       })
 
                       const data = await response.json()
@@ -326,7 +322,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                       throw error
                     }
                   }}
-                  onApprove={async (data) => {
+                  onApprove={async data => {
                     try {
                       const response = await fetch('/api/payments/confirm', {
                         method: 'POST',
@@ -335,8 +331,8 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                           provider: 'PAYPAL',
                           orderId: data.orderID,
                           subscriptionTier,
-                          billingPeriod
-                        })
+                          billingPeriod,
+                        }),
                       })
 
                       if (response.ok) {
@@ -353,7 +349,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
                       setPaypalError('An unexpected error occurred. Please try again.')
                     }
                   }}
-                  onError={(err) => {
+                  onError={err => {
                     console.error('PayPal error:', err)
                     setPaypalError('PayPal payment failed. Please try again.')
                   }}
@@ -373,7 +369,7 @@ export function PaymentForm({ onSuccess }: PaymentFormProps) {
               'Team collaboration features',
               'Priority support',
               'Export to PDF',
-              'Custom branding'
+              'Custom branding',
             ].map((feature, index) => (
               <li key={index} className="flex items-center gap-2 text-sm">
                 <CheckCircle2 className="h-4 w-4 text-green-600" />

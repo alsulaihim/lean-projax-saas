@@ -124,7 +124,7 @@ function erf(x: number): number {
   const t4 = t3 * t
   const t5 = t4 * t
 
-  const y = 1.0 - (((((a5 * t5 + a4 * t4) + a3 * t3) + a2 * t2) + a1 * t) * Math.exp(-absX * absX))
+  const y = 1.0 - (a5 * t5 + a4 * t4 + a3 * t3 + a2 * t2 + a1 * t) * Math.exp(-absX * absX)
 
   return sign * y
 }
@@ -173,12 +173,12 @@ function _dpmoToSigmaLevel(dpmo: number): number {
   // Standard Six Sigma DPMO table (WITH 1.5 sigma shift built in)
   // These DPMO values correspond to the long-term performance
   const sigmaTable = [
-    { dpmo: 691462, sigma: 1.0 },  // 1 sigma process (long-term)
-    { dpmo: 308537, sigma: 2.0 },  // 2 sigma process
-    { dpmo: 66807, sigma: 3.0 },   // 3 sigma process
-    { dpmo: 6210, sigma: 4.0 },    // 4 sigma process
-    { dpmo: 233, sigma: 5.0 },     // 5 sigma process
-    { dpmo: 3.4, sigma: 6.0 }      // 6 sigma process
+    { dpmo: 691462, sigma: 1.0 }, // 1 sigma process (long-term)
+    { dpmo: 308537, sigma: 2.0 }, // 2 sigma process
+    { dpmo: 66807, sigma: 3.0 }, // 3 sigma process
+    { dpmo: 6210, sigma: 4.0 }, // 4 sigma process
+    { dpmo: 233, sigma: 5.0 }, // 5 sigma process
+    { dpmo: 3.4, sigma: 6.0 }, // 6 sigma process
   ]
 
   // Handle edge cases
@@ -195,7 +195,7 @@ function _dpmoToSigmaLevel(dpmo: number): number {
       const y2 = sigmaTable[i + 1].sigma
       const x = Math.log(dpmo)
 
-      return y1 + (y2 - y1) * (x - x1) / (x2 - x1)
+      return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1)
     }
   }
 
@@ -278,9 +278,7 @@ export function getCapabilityColor(rating: CapabilityRating): string {
 /**
  * Perform complete process capability analysis
  */
-export function analyzeProcessCapability(
-  input: ProcessCapabilityInput
-): ProcessCapabilityResult {
+export function analyzeProcessCapability(input: ProcessCapabilityInput): ProcessCapabilityResult {
   const { lowerSpecLimit, upperSpecLimit, mean, stdDev } = input
 
   const cp = calculateCp(lowerSpecLimit, upperSpecLimit, stdDev)
@@ -300,7 +298,7 @@ export function analyzeProcessCapability(
     sigmaLevel,
     ppm,
     rating,
-    isCapable
+    isCapable,
   }
 }
 
@@ -384,6 +382,6 @@ export function getCapabilityFormulas(): Record<string, string> {
     cpu: 'Cpu = (USL - x̄) / (3 × σ)',
     cpl: 'Cpl = (x̄ - LSL) / (3 × σ)',
     sigmaLevel: 'Sigma Level ≈ 3 × Cpk',
-    ppm: 'PPM = f(Cpk) using normal distribution'
+    ppm: 'PPM = f(Cpk) using normal distribution',
   }
 }

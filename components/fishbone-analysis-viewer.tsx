@@ -28,7 +28,7 @@ interface FishboneAnalysisViewerProps {
 export function FishboneAnalysisViewer({
   categories,
   paretoSteps,
-  totalCycleTime
+  totalCycleTime,
 }: FishboneAnalysisViewerProps) {
   const categoriesPerStep = 6
   const totalCategories = categories.length
@@ -53,27 +53,33 @@ export function FishboneAnalysisViewer({
     const stepName = vitalStep ? vitalStep.name : `Step ${i + 1}`
     stepNames.push(stepName)
 
-    const stepInfo = vitalStep ?
-      `Cycle Time: ${vitalStep.value} min | Contribution: ${((vitalStep.value / totalCycleTime) * 100).toFixed(1)}% | Cumulative: ${vitalStep.cumulativePercentage?.toFixed(1) || 'N/A'}%` : ''
+    const stepInfo = vitalStep
+      ? `Cycle Time: ${vitalStep.value} min | Contribution: ${((vitalStep.value / totalCycleTime) * 100).toFixed(1)}% | Cumulative: ${vitalStep.cumulativePercentage?.toFixed(1) || 'N/A'}%`
+      : ''
 
     fishbones.push(
       <div key={`fishbone-${i}`} className={i === activeFishbone ? 'block' : 'hidden'}>
         <div className="mb-3 md:mb-4 p-3 md:p-4 bg-gradient-to-r from-blue-50 to-gray-50 rounded-lg border border-gray-200">
-          <h4 className="font-bold text-base md:text-xl text-gray-800 mb-1">
-            {stepName}
-          </h4>
+          <h4 className="font-bold text-base md:text-xl text-gray-800 mb-1">{stepName}</h4>
           <p className="text-xs md:text-sm text-gray-600">{stepInfo}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-3 md:mb-4">
           {categoriesForThisStep.slice(0, 3).map(category => {
-            const categoryDisplayName = category.category === 'PEOPLE' ? 'Manpower (People)' :
-                                        category.category === 'PROCESS' ? 'Method (Process)' :
-                                        category.category === 'EQUIPMENT' ? 'Machine (Equipment)' :
-                                        category.category
+            const categoryDisplayName =
+              category.category === 'PEOPLE'
+                ? 'Manpower (People)'
+                : category.category === 'PROCESS'
+                  ? 'Method (Process)'
+                  : category.category === 'EQUIPMENT'
+                    ? 'Machine (Equipment)'
+                    : category.category
 
             return (
-              <div key={category.id} className="border border-gray-300 rounded-lg p-3 md:p-4 bg-white shadow-sm">
+              <div
+                key={category.id}
+                className="border border-gray-300 rounded-lg p-3 md:p-4 bg-white shadow-sm"
+              >
                 <h5 className="font-bold mb-2 md:mb-3 text-xs md:text-sm text-gray-800 uppercase tracking-wider">
                   {categoryDisplayName}
                 </h5>
@@ -81,7 +87,9 @@ export function FishboneAnalysisViewer({
                   {category.causes.map(cause => (
                     <li key={cause.id} className="text-xs md:text-sm flex items-start">
                       <ChevronRight className="h-3 w-3 md:h-4 md:w-4 text-blue-500 mt-0.5 mr-1.5 md:mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 leading-relaxed">{cause.causeDescription}</span>
+                      <span className="text-gray-700 leading-relaxed">
+                        {cause.causeDescription}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -92,13 +100,20 @@ export function FishboneAnalysisViewer({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {categoriesForThisStep.slice(3, 6).map(category => {
-            const categoryDisplayName = category.category === 'MATERIALS' ? 'Materials' :
-                                        category.category === 'ENVIRONMENT' ? 'Environment' :
-                                        category.category === 'MANAGEMENT' ? 'Management' :
-                                        category.category
+            const categoryDisplayName =
+              category.category === 'MATERIALS'
+                ? 'Materials'
+                : category.category === 'ENVIRONMENT'
+                  ? 'Environment'
+                  : category.category === 'MANAGEMENT'
+                    ? 'Management'
+                    : category.category
 
             return (
-              <div key={category.id} className="border border-gray-300 rounded-lg p-3 md:p-4 bg-white shadow-sm">
+              <div
+                key={category.id}
+                className="border border-gray-300 rounded-lg p-3 md:p-4 bg-white shadow-sm"
+              >
                 <h5 className="font-bold mb-2 md:mb-3 text-xs md:text-sm text-gray-800 uppercase tracking-wider">
                   {categoryDisplayName}
                 </h5>
@@ -106,7 +121,9 @@ export function FishboneAnalysisViewer({
                   {category.causes.map(cause => (
                     <li key={cause.id} className="text-xs md:text-sm flex items-start">
                       <ChevronRight className="h-3 w-3 md:h-4 md:w-4 text-blue-500 mt-0.5 mr-1.5 md:mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 leading-relaxed">{cause.causeDescription}</span>
+                      <span className="text-gray-700 leading-relaxed">
+                        {cause.causeDescription}
+                      </span>
                     </li>
                   ))}
                 </ul>

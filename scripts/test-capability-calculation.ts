@@ -9,11 +9,11 @@ async function main() {
   // Find the demo assignment
   const demoAssignment = await prisma.assignment.findFirst({
     where: {
-      isDemo: true
+      isDemo: true,
     },
     include: {
-      processes: true
-    }
+      processes: true,
+    },
   })
 
   if (!demoAssignment) {
@@ -33,10 +33,11 @@ async function main() {
     console.log(`   - StdDev: ${process.sampleStdDev}`)
 
     // Check if all required fields are present
-    const hasAllData = process.lowerSpecLimit !== null &&
-                      process.upperSpecLimit !== null &&
-                      process.sampleMean !== null &&
-                      process.sampleStdDev !== null
+    const hasAllData =
+      process.lowerSpecLimit !== null &&
+      process.upperSpecLimit !== null &&
+      process.sampleMean !== null &&
+      process.sampleStdDev !== null
 
     console.log(`   - Has All Required Data: ${hasAllData ? '✅' : '❌'}`)
 
@@ -47,7 +48,7 @@ async function main() {
           upperSpecLimit: process.upperSpecLimit,
           targetValue: process.targetValue,
           mean: process.sampleMean,
-          stdDev: process.sampleStdDev
+          stdDev: process.sampleStdDev,
         })
 
         console.log('\n   Capability Results:')
@@ -66,7 +67,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error:', e)
     process.exit(1)
   })

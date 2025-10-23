@@ -12,15 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus, Trash2, Edit2, CheckCircle2, Circle } from 'lucide-react'
-import type { Recommendation, FMEAEntry, ImplementationDifficulty, RecommendationStatus } from '@prisma/client'
+import type {
+  Recommendation,
+  FMEAEntry,
+  ImplementationDifficulty,
+  RecommendationStatus,
+} from '@prisma/client'
 import type { Prisma } from '@prisma/client'
 
 type ProcessWithFishbone = Prisma.ProcessGetPayload<{
@@ -46,7 +45,7 @@ export function RecommendationsSection({
   fmeaEntries,
   processes,
   canEdit,
-  userId
+  userId,
 }: RecommendationsSectionProps) {
   const router = useRouter()
   const [isAdding, setIsAdding] = useState(false)
@@ -61,7 +60,7 @@ export function RecommendationsSection({
     estimatedCostSavings: '',
     linkedFMEAIds: [] as string[],
     linkedFishboneCauseIds: [] as string[],
-    status: 'PROPOSED' as RecommendationStatus
+    status: 'PROPOSED' as RecommendationStatus,
   })
 
   const [editForm, setEditForm] = useState({
@@ -70,7 +69,7 @@ export function RecommendationsSection({
     expectedImpact: '',
     implementationDifficulty: 'MEDIUM' as ImplementationDifficulty,
     estimatedCostSavings: '',
-    status: 'PROPOSED' as RecommendationStatus
+    status: 'PROPOSED' as RecommendationStatus,
   })
 
   // Collect all fishbone causes
@@ -80,7 +79,7 @@ export function RecommendationsSection({
         id: cause.id,
         description: cause.causeDescription,
         category: cat.category,
-        processName: p.processName
+        processName: p.processName,
       }))
     )
   )
@@ -96,19 +95,19 @@ export function RecommendationsSection({
   const difficultyColors = {
     LOW: 'bg-green-100 text-green-800 border-green-300',
     MEDIUM: 'bg-yellow-100 text-yellow-800 border-yellow-300',
-    HIGH: 'bg-red-100 text-red-800 border-red-300'
+    HIGH: 'bg-red-100 text-red-800 border-red-300',
   }
 
   const statusIcons = {
     PROPOSED: <Circle className="h-4 w-4 text-gray-500" />,
     APPROVED: <CheckCircle2 className="h-4 w-4 text-blue-500" />,
-    IMPLEMENTED: <CheckCircle2 className="h-4 w-4 text-green-500" />
+    IMPLEMENTED: <CheckCircle2 className="h-4 w-4 text-green-500" />,
   }
 
   const statusLabels = {
     PROPOSED: 'Proposed',
     APPROVED: 'Approved',
-    IMPLEMENTED: 'Implemented'
+    IMPLEMENTED: 'Implemented',
   }
 
   const handleAddRecommendation = async () => {
@@ -120,8 +119,8 @@ export function RecommendationsSection({
         body: JSON.stringify({
           assignmentId,
           userId,
-          ...recForm
-        })
+          ...recForm,
+        }),
       })
 
       if (response.ok) {
@@ -134,7 +133,7 @@ export function RecommendationsSection({
           estimatedCostSavings: '',
           linkedFMEAIds: [],
           linkedFishboneCauseIds: [],
-          status: 'PROPOSED'
+          status: 'PROPOSED',
         })
         router.refresh()
       }
@@ -154,8 +153,8 @@ export function RecommendationsSection({
         body: JSON.stringify({
           ...editForm,
           userId,
-          assignmentId
-        })
+          assignmentId,
+        }),
       })
 
       if (response.ok) {
@@ -179,7 +178,7 @@ export function RecommendationsSection({
       const response = await fetch(`/api/recommendations/${recId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -200,7 +199,7 @@ export function RecommendationsSection({
       expectedImpact: rec.expectedImpact,
       implementationDifficulty: rec.implementationDifficulty,
       estimatedCostSavings: rec.estimatedCostSavings || '',
-      status: rec.status
+      status: rec.status,
     })
   }
 
@@ -279,7 +278,9 @@ export function RecommendationsSection({
                           {isEditing ? (
                             <Input
                               value={editForm.recommendationTitle}
-                              onChange={(e) => setEditForm({ ...editForm, recommendationTitle: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, recommendationTitle: e.target.value })
+                              }
                               className="text-lg font-bold mb-2"
                             />
                           ) : (
@@ -290,7 +291,9 @@ export function RecommendationsSection({
                               {statusIcons[rec.status]}
                               <span className="text-sm">{statusLabels[rec.status]}</span>
                             </span>
-                            <span className={`px-2 py-1 text-xs border rounded ${difficultyColors[rec.implementationDifficulty]}`}>
+                            <span
+                              className={`px-2 py-1 text-xs border rounded ${difficultyColors[rec.implementationDifficulty]}`}
+                            >
                               {rec.implementationDifficulty} Difficulty
                             </span>
                             {rec.estimatedCostSavings && (
@@ -330,15 +333,21 @@ export function RecommendationsSection({
                             <label className="text-sm font-medium mb-2 block">Description</label>
                             <Textarea
                               value={editForm.description}
-                              onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, description: e.target.value })
+                              }
                               className="min-h-[80px]"
                             />
                           </div>
                           <div>
-                            <label className="text-sm font-medium mb-2 block">Expected Impact</label>
+                            <label className="text-sm font-medium mb-2 block">
+                              Expected Impact
+                            </label>
                             <Textarea
                               value={editForm.expectedImpact}
-                              onChange={(e) => setEditForm({ ...editForm, expectedImpact: e.target.value })}
+                              onChange={e =>
+                                setEditForm({ ...editForm, expectedImpact: e.target.value })
+                              }
                               className="min-h-[60px]"
                             />
                           </div>
@@ -380,10 +389,14 @@ export function RecommendationsSection({
                               </Select>
                             </div>
                             <div>
-                              <label className="text-sm font-medium mb-2 block">Est. Cost Savings</label>
+                              <label className="text-sm font-medium mb-2 block">
+                                Est. Cost Savings
+                              </label>
                               <Input
                                 value={editForm.estimatedCostSavings}
-                                onChange={(e) => setEditForm({ ...editForm, estimatedCostSavings: e.target.value })}
+                                onChange={e =>
+                                  setEditForm({ ...editForm, estimatedCostSavings: e.target.value })
+                                }
                                 placeholder="$10,000/year"
                               />
                             </div>
@@ -412,7 +425,9 @@ export function RecommendationsSection({
                             <p className="text-sm">{rec.description}</p>
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-gray-500 mb-1">Expected Impact</p>
+                            <p className="text-sm font-medium text-gray-500 mb-1">
+                              Expected Impact
+                            </p>
                             <p className="text-sm">{rec.expectedImpact}</p>
                           </div>
                           {(linkedFMEA.length > 0 || linkedCauses.length > 0) && (
@@ -420,20 +435,28 @@ export function RecommendationsSection({
                               <p className="text-sm font-medium mb-2">Linked to:</p>
                               {linkedFMEA.length > 0 && (
                                 <div className="mb-2">
-                                  <p className="text-xs font-medium text-gray-500 mb-1">FMEA Entries:</p>
+                                  <p className="text-xs font-medium text-gray-500 mb-1">
+                                    FMEA Entries:
+                                  </p>
                                   <ul className="list-disc list-inside text-xs space-y-1">
                                     {linkedFMEA.map(f => (
-                                      <li key={f.id}>{f.failureMode} (RPN: {f.rpn})</li>
+                                      <li key={f.id}>
+                                        {f.failureMode} (RPN: {f.rpn})
+                                      </li>
                                     ))}
                                   </ul>
                                 </div>
                               )}
                               {linkedCauses.length > 0 && (
                                 <div>
-                                  <p className="text-xs font-medium text-gray-500 mb-1">Root Causes:</p>
+                                  <p className="text-xs font-medium text-gray-500 mb-1">
+                                    Root Causes:
+                                  </p>
                                   <ul className="list-disc list-inside text-xs space-y-1">
                                     {linkedCauses.map(c => (
-                                      <li key={c.id}>{c.description} ({c.category})</li>
+                                      <li key={c.id}>
+                                        {c.description} ({c.category})
+                                      </li>
                                     ))}
                                   </ul>
                                 </div>
@@ -478,7 +501,9 @@ export function RecommendationsSection({
                       <Input
                         placeholder="Brief title for the recommendation"
                         value={recForm.recommendationTitle}
-                        onChange={(e) => setRecForm({ ...recForm, recommendationTitle: e.target.value })}
+                        onChange={e =>
+                          setRecForm({ ...recForm, recommendationTitle: e.target.value })
+                        }
                       />
                     </div>
 
@@ -487,7 +512,7 @@ export function RecommendationsSection({
                       <Textarea
                         placeholder="Detailed description of the recommendation..."
                         value={recForm.description}
-                        onChange={(e) => setRecForm({ ...recForm, description: e.target.value })}
+                        onChange={e => setRecForm({ ...recForm, description: e.target.value })}
                         className="min-h-[100px]"
                       />
                     </div>
@@ -497,14 +522,16 @@ export function RecommendationsSection({
                       <Textarea
                         placeholder="What impact will this have?"
                         value={recForm.expectedImpact}
-                        onChange={(e) => setRecForm({ ...recForm, expectedImpact: e.target.value })}
+                        onChange={e => setRecForm({ ...recForm, expectedImpact: e.target.value })}
                         className="min-h-[80px]"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Implementation Difficulty</label>
+                        <label className="text-sm font-medium mb-2 block">
+                          Implementation Difficulty
+                        </label>
                         <Select
                           value={recForm.implementationDifficulty}
                           onValueChange={(value: ImplementationDifficulty) =>
@@ -523,11 +550,15 @@ export function RecommendationsSection({
                       </div>
 
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Estimated Cost Savings (optional)</label>
+                        <label className="text-sm font-medium mb-2 block">
+                          Estimated Cost Savings (optional)
+                        </label>
                         <Input
                           placeholder="e.g., $10,000/year"
                           value={recForm.estimatedCostSavings}
-                          onChange={(e) => setRecForm({ ...recForm, estimatedCostSavings: e.target.value })}
+                          onChange={e =>
+                            setRecForm({ ...recForm, estimatedCostSavings: e.target.value })
+                          }
                         />
                       </div>
                     </div>
@@ -545,7 +576,7 @@ export function RecommendationsSection({
                             estimatedCostSavings: '',
                             linkedFMEAIds: [],
                             linkedFishboneCauseIds: [],
-                            status: 'PROPOSED'
+                            status: 'PROPOSED',
                           })
                         }}
                         disabled={loading}

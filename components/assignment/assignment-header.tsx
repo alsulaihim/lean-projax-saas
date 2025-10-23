@@ -4,10 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import {
-  Alert,
-  AlertDescription,
-} from '@/components/ui/alert'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   ChevronLeft,
   CheckCircle,
@@ -16,7 +13,7 @@ import {
   AlertCircle,
   Trash2,
   BarChart3,
-  MoreHorizontal
+  MoreHorizontal,
 } from 'lucide-react'
 import {
   AlertDialog,
@@ -27,7 +24,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import {
   DropdownMenu,
@@ -52,20 +49,20 @@ interface AssignmentHeaderProps {
 const statusColors = {
   DRAFT: 'bg-yellow-100 text-yellow-800 border-yellow-300',
   COMPLETED: 'bg-green-100 text-green-800 border-green-300',
-  REOPENED: 'bg-orange-100 text-orange-800 border-orange-300'
+  REOPENED: 'bg-orange-100 text-orange-800 border-orange-300',
 }
 
 const statusLabels = {
   DRAFT: 'Draft',
   COMPLETED: 'Completed',
-  REOPENED: 'Reopened'
+  REOPENED: 'Reopened',
 }
 
 export function AssignmentHeader({
   assignment,
   canEdit,
   userRole,
-  progressPercentage = 0
+  progressPercentage = 0,
 }: AssignmentHeaderProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -87,7 +84,7 @@ export function AssignmentHeader({
       const response = await fetch(`/api/assignments/${assignment.id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status: newStatus }),
       })
 
       if (response.ok) {
@@ -121,14 +118,14 @@ export function AssignmentHeader({
     setIsDeleting(true)
     try {
       const response = await fetch(`/api/assignments/${assignment.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       if (response.ok) {
         toast({
           variant: 'success',
           title: 'Success',
-          description: 'Assignment deleted successfully'
+          description: 'Assignment deleted successfully',
         })
         router.push('/assignments')
       } else {
@@ -137,7 +134,7 @@ export function AssignmentHeader({
         toast({
           variant: 'destructive',
           title: 'Error',
-          description: error.error || 'Failed to delete assignment'
+          description: error.error || 'Failed to delete assignment',
         })
       }
     } catch (error) {
@@ -145,14 +142,16 @@ export function AssignmentHeader({
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Failed to delete assignment'
+        description: 'Failed to delete assignment',
       })
     } finally {
       setIsDeleting(false)
     }
   }
 
-  const summaryPath = isDemo ? `/demo/assignments/${assignment.id}/summary` : `/assignments/${assignment.id}/summary`
+  const summaryPath = isDemo
+    ? `/demo/assignments/${assignment.id}/summary`
+    : `/assignments/${assignment.id}/summary`
   const assignmentsPath = isDemo ? '/demo/assignments' : '/assignments'
 
   return (
@@ -161,8 +160,8 @@ export function AssignmentHeader({
         <Alert className="mx-4 mt-4 border-orange-400 bg-orange-50">
           <AlertCircle className="h-4 w-4 text-orange-600" />
           <AlertDescription className="text-orange-800">
-            Cannot mark assignment as complete. Progress is {progressPercentage}%.
-            Please complete all required sections (100% progress) before marking as complete.
+            Cannot mark assignment as complete. Progress is {progressPercentage}%. Please complete
+            all required sections (100% progress) before marking as complete.
           </AlertDescription>
         </Alert>
       )}
@@ -206,9 +205,10 @@ export function AssignmentHeader({
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className={isDemo
-                      ? "border-red-300 text-red-300 cursor-not-allowed"
-                      : "border-red-600 text-red-600 hover:bg-red-50"
+                    className={
+                      isDemo
+                        ? 'border-red-300 text-red-300 cursor-not-allowed'
+                        : 'border-red-600 text-red-600 hover:bg-red-50'
                     }
                     disabled={isDeleting || isDemo}
                     title={isDemo ? 'Delete is not available in demo mode' : ''}
@@ -256,11 +256,16 @@ export function AssignmentHeader({
                 <Button
                   onClick={() => handleStatusChange('COMPLETED')}
                   disabled={isSaving || progressPercentage < 100}
-                  className={progressPercentage < 100
-                    ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-green-600 text-white hover:bg-green-700"
+                  className={
+                    progressPercentage < 100
+                      ? 'bg-gray-400 text-white cursor-not-allowed'
+                      : 'bg-green-600 text-white hover:bg-green-700'
                   }
-                  title={progressPercentage < 100 ? `Assignment is ${progressPercentage}% complete. Complete all required sections first.` : ''}
+                  title={
+                    progressPercentage < 100
+                      ? `Assignment is ${progressPercentage}% complete. Complete all required sections first.`
+                      : ''
+                  }
                 >
                   <CheckCircle className="h-4 w-4 mr-2" />
                   Mark as Complete
@@ -298,9 +303,10 @@ export function AssignmentHeader({
                 onClick={() => handleStatusChange('COMPLETED')}
                 disabled={isSaving || progressPercentage < 100}
                 size="sm"
-                className={progressPercentage < 100
-                  ? "bg-gray-400 text-white cursor-not-allowed flex-1 sm:flex-none"
-                  : "bg-green-600 text-white hover:bg-green-700 flex-1 sm:flex-none"
+                className={
+                  progressPercentage < 100
+                    ? 'bg-gray-400 text-white cursor-not-allowed flex-1 sm:flex-none'
+                    : 'bg-green-600 text-white hover:bg-green-700 flex-1 sm:flex-none'
                 }
               >
                 <CheckCircle className="h-4 w-4 sm:mr-2" />
@@ -332,7 +338,10 @@ export function AssignmentHeader({
                   </DropdownMenuItem>
                 )}
                 {userRole === UserRole.TEAM_LEAD && assignment.status === 'COMPLETED' && (
-                  <DropdownMenuItem onClick={() => handleStatusChange('REOPENED')} disabled={isSaving}>
+                  <DropdownMenuItem
+                    onClick={() => handleStatusChange('REOPENED')}
+                    disabled={isSaving}
+                  >
                     <RefreshCw className="mr-2 h-4 w-4" />
                     Reopen
                   </DropdownMenuItem>
@@ -358,11 +367,25 @@ export function AssignmentHeader({
               <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs md:text-sm text-gray-500">
                 <span>Created by: {assignment.createdBy.name}</span>
                 <span className="hidden sm:inline">•</span>
-                <span>Created: {new Date(assignment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
+                <span>
+                  Created:{' '}
+                  {new Date(assignment.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  })}
+                </span>
                 {assignment.completedAt && (
                   <>
                     <span className="hidden sm:inline">•</span>
-                    <span>Completed: {new Date(assignment.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
+                    <span>
+                      Completed:{' '}
+                      {new Date(assignment.completedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      })}
+                    </span>
                   </>
                 )}
               </div>

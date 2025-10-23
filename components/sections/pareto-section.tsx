@@ -1,13 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -56,22 +50,24 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
         // Support both new and legacy field names
         const processTime = step.processTime ?? step.durationMinutes ?? 0
         const waitingTime = step.waitingTime ?? step.waitTimeMinutes ?? 0
-        const isValueAdded = step.valueMeasure === 'VALUE_ADDED' ||
-                            step.valueMeasure === 'ESSENTIAL_NON_VALUE' ||
-                            step.valueAdded === true
+        const isValueAdded =
+          step.valueMeasure === 'VALUE_ADDED' ||
+          step.valueMeasure === 'ESSENTIAL_NON_VALUE' ||
+          step.valueAdded === true
 
         return {
           id: step.id,
-          name: selectedProcessId === 'all'
-            ? `${process.processName}: ${step.stepName}`
-            : step.stepName,
+          name:
+            selectedProcessId === 'all'
+              ? `${process.processName}: ${step.stepName}`
+              : step.stepName,
           value: processTime + waitingTime,
           category: isValueAdded ? 'Value-Added' : 'Non-Value-Added',
           processName: process.processName,
           stepName: step.stepName,
           durationMinutes: processTime,
           waitTimeMinutes: waitingTime,
-          valueAdded: isValueAdded
+          valueAdded: isValueAdded,
         }
       })
     )
@@ -84,7 +80,7 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
       name: item.name.split(': ')[1] || item.name, // Show just the step name in chart
       value: item.value,
       cumulative: item.cumulativePercentage,
-      isVitalFew: item.isVitalFew
+      isVitalFew: item.isVitalFew,
     }))
   }, [paretoAnalysis])
 
@@ -102,9 +98,7 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
       <Card className="border-2 border-black">
         <CardHeader>
           <CardTitle className="text-2xl">Pareto Analysis</CardTitle>
-          <CardDescription>
-            80/20 analysis of process steps by cycle time
-          </CardDescription>
+          <CardDescription>80/20 analysis of process steps by cycle time</CardDescription>
         </CardHeader>
         <CardContent className="py-12 text-center">
           <p className="text-gray-500">Please add VSM steps to generate Pareto analysis</p>
@@ -119,7 +113,9 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
         <CardHeader>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex-1">
-              <CardTitle className="text-xl md:text-2xl">Pareto Analysis - Process Step Optimization</CardTitle>
+              <CardTitle className="text-xl md:text-2xl">
+                Pareto Analysis - Process Step Optimization
+              </CardTitle>
               <CardDescription className="text-sm">
                 Identify the vital few process steps that contribute to 80% of the cycle time
               </CardDescription>
@@ -165,10 +161,13 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
             <Card className="border border-red-300 bg-red-50">
               <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-xs md:text-sm text-red-700 mb-1 font-medium">Vital Few (80%)</p>
+                  <p className="text-xs md:text-sm text-red-700 mb-1 font-medium">
+                    Vital Few (80%)
+                  </p>
                   <p className="text-lg md:text-2xl font-bold text-red-800">{vitalFewCount}</p>
                   <p className="text-xs text-red-600 mt-1">
-                    {items.length > 0 ? ((vitalFewCount / items.length) * 100).toFixed(1) : 0}% of steps
+                    {items.length > 0 ? ((vitalFewCount / items.length) * 100).toFixed(1) : 0}% of
+                    steps
                   </p>
                 </div>
               </CardContent>
@@ -176,10 +175,13 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
             <Card className="border border-blue-300 bg-blue-50">
               <CardContent className="pt-4 md:pt-6">
                 <div className="text-center">
-                  <p className="text-xs md:text-sm text-blue-700 mb-1 font-medium">Trivial Many (20%)</p>
+                  <p className="text-xs md:text-sm text-blue-700 mb-1 font-medium">
+                    Trivial Many (20%)
+                  </p>
                   <p className="text-lg md:text-2xl font-bold text-blue-800">{trivialManyCount}</p>
                   <p className="text-xs text-blue-600 mt-1">
-                    {items.length > 0 ? ((trivialManyCount / items.length) * 100).toFixed(1) : 0}% of steps
+                    {items.length > 0 ? ((trivialManyCount / items.length) * 100).toFixed(1) : 0}%
+                    of steps
                   </p>
                 </div>
               </CardContent>
@@ -218,82 +220,79 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
           {/* Detailed Table */}
           <div className="border-2 border-black rounded-lg overflow-x-auto">
             <div className="min-w-[800px]">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-100">
-                  <TableHead className="w-[60px]">Rank</TableHead>
-                  {selectedProcessId === 'all' && <TableHead>Process</TableHead>}
-                  <TableHead>Step Name</TableHead>
-                  <TableHead className="text-center">Duration</TableHead>
-                  <TableHead className="text-center">Wait Time</TableHead>
-                  <TableHead className="text-center">Total Time</TableHead>
-                  <TableHead className="text-center">% of Total</TableHead>
-                  <TableHead className="text-center">Cumulative %</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Category</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paretoAnalysis.items.map((item) => {
-                  // Extract process and step names from the formatted name string
-                  const nameParts = item.name.split(': ')
-                  const processName = nameParts.length > 1 ? nameParts[0] : ''
-                  const stepName = nameParts.length > 1 ? nameParts[1] : item.name
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-100">
+                    <TableHead className="w-[60px]">Rank</TableHead>
+                    {selectedProcessId === 'all' && <TableHead>Process</TableHead>}
+                    <TableHead>Step Name</TableHead>
+                    <TableHead className="text-center">Duration</TableHead>
+                    <TableHead className="text-center">Wait Time</TableHead>
+                    <TableHead className="text-center">Total Time</TableHead>
+                    <TableHead className="text-center">% of Total</TableHead>
+                    <TableHead className="text-center">Cumulative %</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Category</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paretoAnalysis.items.map(item => {
+                    // Extract process and step names from the formatted name string
+                    const nameParts = item.name.split(': ')
+                    const processName = nameParts.length > 1 ? nameParts[0] : ''
+                    const stepName = nameParts.length > 1 ? nameParts[1] : item.name
 
-                  // Type assertion: these properties are added in the useMemo above
-                  // but not included in ParetoItemWithAnalysis type definition
-                  const itemData = item as any
+                    // Type assertion: these properties are added in the useMemo above
+                    // but not included in ParetoItemWithAnalysis type definition
+                    const itemData = item as any
 
-                  return (
-                    <TableRow
-                      key={item.id}
-                      className={item.isVitalFew ? 'bg-red-50' : ''}
-                    >
-                      <TableCell className="font-bold text-center">{item.rank}</TableCell>
-                      {selectedProcessId === 'all' && (
-                        <TableCell className="text-sm">{processName}</TableCell>
-                      )}
-                      <TableCell className="font-medium">{stepName}</TableCell>
-                      <TableCell className="text-center">
-                        {formatDuration(itemData.durationMinutes || 0)}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {formatDuration(itemData.waitTimeMinutes || 0)}
-                      </TableCell>
-                      <TableCell className="text-center font-bold">
-                        {formatDuration(item.value)}
-                      </TableCell>
-                      <TableCell className="text-center">{item.percentage.toFixed(1)}%</TableCell>
-                      <TableCell className="text-center font-bold text-blue-600">
-                        {item.cumulativePercentage.toFixed(1)}%
-                      </TableCell>
-                      <TableCell>
-                        {itemData.valueAdded ? (
-                          <span className="px-2 py-1 text-xs bg-green-100 text-green-800 border border-green-300 rounded">
-                            Value-Added
-                          </span>
-                        ) : (
-                          <span className="px-2 py-1 text-xs bg-gray-100 text-gray-800 border border-gray-300 rounded">
-                            Non-Value
-                          </span>
+                    return (
+                      <TableRow key={item.id} className={item.isVitalFew ? 'bg-red-50' : ''}>
+                        <TableCell className="font-bold text-center">{item.rank}</TableCell>
+                        {selectedProcessId === 'all' && (
+                          <TableCell className="text-sm">{processName}</TableCell>
                         )}
-                      </TableCell>
-                      <TableCell>
-                        {item.isVitalFew ? (
-                          <span className="px-2 py-1 text-xs bg-red-100 text-red-800 border border-red-300 rounded">
-                            Vital Few
-                          </span>
-                        ) : (
-                          <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 border border-blue-300 rounded">
-                            Trivial Many
-                          </span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
+                        <TableCell className="font-medium">{stepName}</TableCell>
+                        <TableCell className="text-center">
+                          {formatDuration(itemData.durationMinutes || 0)}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {formatDuration(itemData.waitTimeMinutes || 0)}
+                        </TableCell>
+                        <TableCell className="text-center font-bold">
+                          {formatDuration(item.value)}
+                        </TableCell>
+                        <TableCell className="text-center">{item.percentage.toFixed(1)}%</TableCell>
+                        <TableCell className="text-center font-bold text-blue-600">
+                          {item.cumulativePercentage.toFixed(1)}%
+                        </TableCell>
+                        <TableCell>
+                          {itemData.valueAdded ? (
+                            <span className="px-2 py-1 text-xs bg-green-100 text-green-800 border border-green-300 rounded">
+                              Value-Added
+                            </span>
+                          ) : (
+                            <span className="px-2 py-1 text-xs bg-gray-100 text-gray-800 border border-gray-300 rounded">
+                              Non-Value
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {item.isVitalFew ? (
+                            <span className="px-2 py-1 text-xs bg-red-100 text-red-800 border border-red-300 rounded">
+                              Vital Few
+                            </span>
+                          ) : (
+                            <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 border border-blue-300 rounded">
+                              Trivial Many
+                            </span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
             </div>
           </div>
 
@@ -323,21 +322,16 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
                   <p className="font-medium mb-2">Recommended Actions:</p>
                   <ul className="space-y-1 list-disc list-inside">
                     <li>
-                      <strong>Focus on the top {vitalFewCount} step{vitalFewCount !== 1 ? 's' : ''}</strong> -
-                      these represent the "vital few" that contribute to 80% of your total cycle time
+                      <strong>
+                        Focus on the top {vitalFewCount} step{vitalFewCount !== 1 ? 's' : ''}
+                      </strong>{' '}
+                      - these represent the "vital few" that contribute to 80% of your total cycle
+                      time
                     </li>
-                    <li>
-                      Prioritize automation or process redesign for high-duration steps
-                    </li>
-                    <li>
-                      Investigate and reduce wait times in the vital few steps
-                    </li>
-                    <li>
-                      Consider parallel processing for sequential steps where possible
-                    </li>
-                    <li>
-                      Eliminate or combine non-value-added steps in the vital few category
-                    </li>
+                    <li>Prioritize automation or process redesign for high-duration steps</li>
+                    <li>Investigate and reduce wait times in the vital few steps</li>
+                    <li>Consider parallel processing for sequential steps where possible</li>
+                    <li>Eliminate or combine non-value-added steps in the vital few category</li>
                   </ul>
                 </div>
               </div>

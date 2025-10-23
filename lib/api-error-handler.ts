@@ -27,7 +27,7 @@ export function sanitizeError(error: unknown): ApiError {
   // Default error response
   const defaultError: ApiError = {
     message: 'An unexpected error occurred',
-    statusCode: 500
+    statusCode: 500,
   }
 
   // Handle known error types
@@ -36,7 +36,7 @@ export function sanitizeError(error: unknown): ApiError {
     if (error.constructor.name.includes('Prisma')) {
       return {
         message: isDevelopment ? error.message : 'Database operation failed',
-        statusCode: 500
+        statusCode: 500,
       }
     }
 
@@ -44,7 +44,7 @@ export function sanitizeError(error: unknown): ApiError {
     if (error.message.includes('required') || error.message.includes('invalid')) {
       return {
         message: error.message,
-        statusCode: 400
+        statusCode: 400,
       }
     }
 
@@ -52,7 +52,7 @@ export function sanitizeError(error: unknown): ApiError {
     if (isDevelopment) {
       return {
         message: error.message,
-        statusCode: 500
+        statusCode: 500,
       }
     }
   }
@@ -73,7 +73,7 @@ export function sanitizeLog(data: any, label?: string): void {
     console.log(`[SANITIZED${label ? ` - ${label}` : ''}]`, {
       timestamp: new Date().toISOString(),
       type: typeof data,
-      hasData: !!data
+      hasData: !!data,
     })
   }
 }

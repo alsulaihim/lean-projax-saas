@@ -26,24 +26,24 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           include: {
             sipocEntries: true,
             vsmSteps: {
-              orderBy: { stepNumber: 'asc' }
+              orderBy: { stepNumber: 'asc' },
             },
             fishboneCategories: {
               include: {
-                causes: true
-              }
+                causes: true,
+              },
             },
-            fmeaEntries: true
+            fmeaEntries: true,
           },
-          orderBy: { order: 'asc' }
+          orderBy: { order: 'asc' },
         },
         vocStatements: {
           include: {
-            ctqRequirements: true
-          }
+            ctqRequirements: true,
+          },
         },
-        recommendations: true
-      }
+        recommendations: true,
+      },
     })
 
     if (!assignment) {
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     // Initialize OpenAI
     const openai = new OpenAI({
-      apiKey: openaiApiKey
+      apiKey: openaiApiKey,
     })
 
     // Prepare assignment data for analysis
@@ -88,20 +88,32 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         sipocEntries: p.sipocEntries.length,
         vsmSteps: p.vsmSteps.length,
         vsmData: {
-          totalTime: p.vsmSteps.reduce((acc, s) => acc + (s.processTime || 0) + (s.waitingTime || 0), 0),
-          valueAddedTime: p.vsmSteps.filter(s => s.valueAdded).reduce((acc, s) => acc + (s.processTime || 0), 0),
-          nonValueAddedTime: p.vsmSteps.filter(s => !s.valueAdded).reduce((acc, s) => acc + (s.processTime || 0) + (s.waitingTime || 0), 0)
+          totalTime: p.vsmSteps.reduce(
+            (acc, s) => acc + (s.processTime || 0) + (s.waitingTime || 0),
+            0
+          ),
+          valueAddedTime: p.vsmSteps
+            .filter(s => s.valueAdded)
+            .reduce((acc, s) => acc + (s.processTime || 0), 0),
+          nonValueAddedTime: p.vsmSteps
+            .filter(s => !s.valueAdded)
+            .reduce((acc, s) => acc + (s.processTime || 0) + (s.waitingTime || 0), 0),
         },
         fmeaEntries: p.fmeaEntries.length,
         highRiskFMEAs: p.fmeaEntries.filter(f => f.rpn && f.rpn >= 100).length,
-        processCapability: p.sampleMean && p.sampleStdDev ? {
-          mean: p.sampleMean,
-          stdDev: p.sampleStdDev,
-          lsl: p.lowerSpecLimit,
-          usl: p.upperSpecLimit
-        } : null
+        processCapability:
+          p.sampleMean && p.sampleStdDev
+            ? {
+                mean: p.sampleMean,
+                stdDev: p.sampleStdDev,
+                lsl: p.lowerSpecLimit,
+                usl: p.upperSpecLimit,
+              }
+            : null,
       })),
-      highPriorityRecommendations: assignment.recommendations.filter(r => r.implementationDifficulty === 'LOW').length
+      highPriorityRecommendations: assignment.recommendations.filter(
+        r => r.implementationDifficulty === 'LOW'
+      ).length,
     }
 
     // Create AI prompt
@@ -121,7 +133,9 @@ Data Summary:
 - High Priority Recommendations: ${assignmentData.highPriorityRecommendations}
 
 Process Details:
-${assignmentData.processes.map(p => `
+${assignmentData.processes
+  .map(
+    p => `
 Process: ${p.name}
 - SIPOC Entries: ${p.sipocEntries}
 - VSM Steps: ${p.vsmSteps}
@@ -131,7 +145,9 @@ Process: ${p.name}
 - FMEA Entries: ${p.fmeaEntries}
 - High Risk FMEAs (RPN >= 100): ${p.highRiskFMEAs}
 ${p.processCapability ? `- Process Capability: Mean=${p.processCapability.mean}, StdDev=${p.processCapability.stdDev}` : ''}
-`).join('\n')}
+`
+  )
+  .join('\n')}
 
 Please provide:
 1. A comprehensive overview (2-3 sentences)
@@ -170,15 +186,16 @@ Return ONLY a valid JSON object with this exact structure:
       messages: [
         {
           role: 'system',
-          content: 'You are a Six Sigma expert providing detailed analysis of business process improvement assignments. Always return valid JSON only.'
+          content:
+            'You are a Six Sigma expert providing detailed analysis of business process improvement assignments. Always return valid JSON only.',
         },
         {
           role: 'user',
-          content: prompt
-        }
+          content: prompt,
+        },
       ],
       temperature: 0.7,
-      response_format: { type: 'json_object' }
+      response_format: { type: 'json_object' },
     })
 
     const result = completion.choices[0].message.content

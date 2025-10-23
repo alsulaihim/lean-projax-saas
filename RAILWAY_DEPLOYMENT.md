@@ -71,16 +71,19 @@ openssl rand -base64 32
 Railway auto-detects Next.js projects. Verify these settings:
 
 **Build Command:**
+
 ```bash
 npm install && npx prisma generate && npx prisma migrate deploy && npm run build
 ```
 
 **Start Command:**
+
 ```bash
 npm start
 ```
 
 **Install Command:**
+
 ```bash
 npm install
 ```
@@ -202,6 +205,7 @@ npx prisma db pull
 ### Build Failures:
 
 Check Railway logs for errors:
+
 - Missing environment variables
 - TypeScript errors
 - Prisma migration issues
@@ -209,11 +213,13 @@ Check Railway logs for errors:
 ### Common Solutions:
 
 1. **Prisma Client errors:**
+
    ```bash
    npx prisma generate
    ```
 
 2. **Migration errors:**
+
    ```bash
    npx prisma migrate reset
    npx prisma migrate deploy
@@ -240,17 +246,20 @@ Check Railway logs for errors:
 ### Scaling:
 
 Railway automatically scales based on your plan:
+
 - Free tier: Limited resources
 - Pro tier: More resources and custom domains
 
 ## Cost Optimization
 
 ### Free Tier Limits:
+
 - $5 free credits per month
 - Shared CPU and memory
 - Limited to 500 hours
 
 ### Recommended for Production:
+
 - Pro Plan: $20/month
 - Includes:
   - More resources
@@ -278,6 +287,7 @@ Railway automatically scales based on your plan:
 ### External Monitoring:
 
 Consider adding:
+
 - Sentry for error tracking
 - LogRocket for session replay
 - Uptime monitoring (UptimeRobot, Pingdom)
@@ -285,6 +295,7 @@ Consider adding:
 ## CI/CD Pipeline
 
 The GitHub Actions workflow handles:
+
 1. ✅ Code quality checks (ESLint, TypeScript)
 2. ✅ Security audit
 3. ✅ Build validation
@@ -310,6 +321,7 @@ The GitHub Actions workflow handles:
 ## Railway vs Vercel
 
 Railway is chosen for this project because:
+
 - ✅ Native PostgreSQL database support
 - ✅ Better for full-stack applications
 - ✅ Easier database management

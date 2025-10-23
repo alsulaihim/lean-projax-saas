@@ -1,4 +1,5 @@
 # Code Review Protocol
+
 > How to review code effectively and efficiently
 
 ---
@@ -6,6 +7,7 @@
 ## 🎯 Purpose
 
 Code reviews ensure quality, share knowledge, and catch issues before production. This protocol ensures reviews are:
+
 - **Thorough** - Nothing important missed
 - **Efficient** - Not wasting anyone's time
 - **Constructive** - Helping team improve
@@ -16,7 +18,9 @@ Code reviews ensure quality, share knowledge, and catch issues before production
 ## 👥 Roles & Responsibilities
 
 ### Code Author
+
 **Your responsibilities:**
+
 - Submit complete, working code
 - Pass all quality gates before requesting review
 - Provide context in PR description
@@ -24,7 +28,9 @@ Code reviews ensure quality, share knowledge, and catch issues before production
 - Update PR based on feedback
 
 ### Reviewer
+
 **Your responsibilities:**
+
 - Review within 24 hours
 - Check thoroughly but pragmatically
 - Provide constructive feedback
@@ -38,6 +44,7 @@ Code reviews ensure quality, share knowledge, and catch issues before production
 ### Author's Self-Review Checklist
 
 #### 1. Quality Gates
+
 - [ ] All quality gates passed (see QUALITY-GATES.md)
 - [ ] Build successful
 - [ ] Tests passing
@@ -45,6 +52,7 @@ Code reviews ensure quality, share knowledge, and catch issues before production
 - [ ] Type check passed
 
 #### 2. Code Review
+
 - [ ] Read your own code line-by-line
 - [ ] Remove debug code (console.logs, etc.)
 - [ ] Remove commented code
@@ -52,12 +60,14 @@ Code reviews ensure quality, share knowledge, and catch issues before production
 - [ ] Verify naming makes sense
 
 #### 3. Documentation
+
 - [ ] PR description complete (see template below)
 - [ ] Code comments added where needed
 - [ ] README updated if needed
 - [ ] SESSION-CONTEXT.md updated
 
 #### 4. Testing Evidence
+
 - [ ] Screenshots/videos for UI changes
 - [ ] API testing evidence (Postman, curl)
 - [ ] Test coverage report if relevant
@@ -68,9 +78,11 @@ Code reviews ensure quality, share knowledge, and catch issues before production
 
 ```markdown
 ## Description
+
 Brief description of what this PR does and why.
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
@@ -79,56 +91,68 @@ Brief description of what this PR does and why.
 - [ ] Performance improvement
 
 ## Related Issues
+
 Closes #123
 Relates to #456
 
 ## Changes Made
+
 - Added user authentication
 - Implemented JWT tokens
 - Updated user model
 
 ## Testing
+
 ### Manual Testing
+
 - [ ] Tested login flow
 - [ ] Tested logout
 - [ ] Tested token refresh
 - [ ] Tested error cases
 
 ### Automated Testing
+
 - [ ] Unit tests added/updated
 - [ ] Integration tests added/updated
 - [ ] All tests passing
 
 ## Screenshots/Videos
+
 (For UI changes)
 
 ## Database Changes
+
 - [ ] Migration script included
 - [ ] Rollback tested
 - [ ] Staging database updated
 
 ## Security Checklist
+
 - [ ] SECURITY-CHECKLIST.md reviewed
 - [ ] Input validation added
 - [ ] Authorization checked
 - [ ] No hardcoded secrets
 
 ## Performance Impact
+
 - [ ] No N+1 queries
 - [ ] Database indexes added if needed
 - [ ] Bundle size impact: +X KB / -Y KB
 - [ ] Performance tested
 
 ## Documentation
+
 - [ ] Code comments added
 - [ ] API docs updated
 - [ ] README updated
 - [ ] SESSION-CONTEXT updated
 
 ## Deployment Notes
+
 Any special instructions for deployment?
 
 ## Reviewer Notes
+
 Anything specific reviewers should focus on?
 ```
 
@@ -137,12 +161,14 @@ Anything specific reviewers should focus on?
 ## 🔍 Review Process
 
 ### Step 1: Context Review (2-5 minutes)
+
 - [ ] Read PR description
 - [ ] Understand the problem being solved
 - [ ] Check related issues/tickets
 - [ ] Review deployment notes
 
 ### Step 2: High-Level Review (5-10 minutes)
+
 - [ ] **Architecture** - Does approach make sense?
 - [ ] **Scope** - PR focused on one thing?
 - [ ] **Breaking changes** - Any API changes?
@@ -154,6 +180,7 @@ Anything specific reviewers should focus on?
 ### Step 3: Detailed Code Review (15-30 minutes)
 
 #### Code Quality
+
 - [ ] Follows CODING-STANDARDS.md
 - [ ] Proper naming conventions
 - [ ] Functions are small and focused
@@ -162,6 +189,7 @@ Anything specific reviewers should focus on?
 - [ ] Edge cases handled
 
 #### Security
+
 - [ ] SECURITY-CHECKLIST.md items checked
 - [ ] Input validation present
 - [ ] No SQL injection risks
@@ -170,6 +198,7 @@ Anything specific reviewers should focus on?
 - [ ] No hardcoded secrets
 
 #### Testing
+
 - [ ] Tests cover new code
 - [ ] Tests are meaningful (not just for coverage)
 - [ ] Edge cases tested
@@ -177,6 +206,7 @@ Anything specific reviewers should focus on?
 - [ ] Test names clear
 
 #### Performance
+
 - [ ] No N+1 queries
 - [ ] Proper database indexing
 - [ ] No unnecessary computations
@@ -184,6 +214,7 @@ Anything specific reviewers should focus on?
 - [ ] Caching where appropriate
 
 #### Maintainability
+
 - [ ] Code is readable
 - [ ] Comments explain "why" not "what"
 - [ ] No magic numbers
@@ -191,6 +222,7 @@ Anything specific reviewers should focus on?
 - [ ] Documentation adequate
 
 ### Step 4: Functional Review (10-20 minutes)
+
 - [ ] Pull branch locally
 - [ ] Run application
 - [ ] Test happy path
@@ -199,6 +231,7 @@ Anything specific reviewers should focus on?
 - [ ] Check UI/UX (if applicable)
 
 ### Step 5: Final Checks (5 minutes)
+
 - [ ] All review comments addressed
 - [ ] No new quality gate failures
 - [ ] Commit history clean
@@ -211,7 +244,9 @@ Anything specific reviewers should focus on?
 ### Feedback Types
 
 #### 1. **MUST FIX** (Blocking)
+
 Use when:
+
 - Security vulnerability
 - Breaking change without discussion
 - Violates coding standards
@@ -224,7 +259,9 @@ using class-validator.
 ```
 
 #### 2. **SHOULD FIX** (Strong suggestion)
+
 Use when:
+
 - Code smell
 - Performance concern
 - Better approach exists
@@ -236,7 +273,9 @@ Consider breaking it into smaller functions for readability.
 ```
 
 #### 3. **CONSIDER** (Optional improvement)
+
 Use when:
+
 - Minor optimization
 - Alternative approach
 - Future enhancement
@@ -248,7 +287,9 @@ for O(1) lookups, though it's not critical for this use case.
 ```
 
 #### 4. **QUESTION** (Need clarification)
+
 Use when:
+
 - Don't understand intent
 - Missing context
 - Unusual approach
@@ -259,7 +300,9 @@ Is there a race condition we're working around?
 ```
 
 #### 5. **PRAISE** (Positive feedback)
+
 Use when:
+
 - Elegant solution
 - Good test coverage
 - Clear documentation
@@ -273,6 +316,7 @@ This makes the function very reusable.
 ### Feedback Best Practices
 
 **DO:**
+
 - ✅ Be specific - Point to exact lines
 - ✅ Explain why - Help others learn
 - ✅ Suggest solutions - Don't just point out problems
@@ -280,6 +324,7 @@ This makes the function very reusable.
 - ✅ Praise good work - Positive reinforcement
 
 **DON'T:**
+
 - ❌ Be vague - "This doesn't look right"
 - ❌ Be personal - Attack the person, not the code
 - ❌ Nitpick excessively - Pick your battles
@@ -291,6 +336,7 @@ This makes the function very reusable.
 ## ✅ Approval Criteria
 
 ### When to APPROVE ✅
+
 - All "MUST FIX" items resolved
 - Most "SHOULD FIX" items addressed or justified
 - Quality gates passing
@@ -299,6 +345,7 @@ This makes the function very reusable.
 - Tests adequate
 
 ### When to REQUEST CHANGES 🔄
+
 - Critical security issues
 - Broken functionality
 - Quality gates failing
@@ -307,6 +354,7 @@ This makes the function very reusable.
 - Breaking changes without discussion
 
 ### When to COMMENT 💬
+
 - Minor suggestions
 - Questions for clarity
 - Educational feedback
@@ -317,6 +365,7 @@ This makes the function very reusable.
 ## ⏱️ Review Time Guidelines
 
 ### PR Size Limits
+
 - **Small:** < 100 lines → 15-30 minutes
 - **Medium:** 100-300 lines → 30-60 minutes
 - **Large:** 300-500 lines → 1-2 hours
@@ -325,6 +374,7 @@ This makes the function very reusable.
 **Rule:** If PR is > 500 lines, ask author to split it
 
 ### Response Times
+
 - **Author Response:** Within 4 hours of feedback
 - **Reviewer Response:** Within 24 hours of PR submission
 - **Urgent PRs:** Within 2 hours (mark as urgent in title)
@@ -334,23 +384,27 @@ This makes the function very reusable.
 ## 🔄 Review Workflow
 
 ### 1. PR Created
+
 ```
 Author creates PR → Fills out template → Assigns reviewers
 ```
 
 ### 2. Review In Progress
+
 ```
 Reviewer starts review → Leaves feedback →
 Marks as "Request Changes" or "Approve"
 ```
 
 ### 3. Changes Requested
+
 ```
 Author addresses feedback → Responds to comments →
 Requests re-review
 ```
 
 ### 4. Approved
+
 ```
 PR approved by reviewer(s) → Author merges →
 Updates SESSION-CONTEXT.md
@@ -361,12 +415,14 @@ Updates SESSION-CONTEXT.md
 ## 👥 Reviewer Selection
 
 ### Who Should Review?
+
 - **Required:** At least 1 reviewer
 - **Recommended:** 2 reviewers for critical code
 - **Include:** Someone familiar with the area
 - **Include:** Someone NOT familiar (fresh eyes)
 
 ### Review Assignment
+
 - **Frontend changes:** Frontend expert
 - **Backend changes:** Backend expert
 - **Full-stack changes:** One of each
@@ -378,6 +434,7 @@ Updates SESSION-CONTEXT.md
 ## 🎯 Common Review Patterns
 
 ### API Endpoint Review
+
 ```markdown
 - [ ] Request validation (DTO)
 - [ ] Response type defined
@@ -390,6 +447,7 @@ Updates SESSION-CONTEXT.md
 ```
 
 ### UI Component Review
+
 ```markdown
 - [ ] Responsive design
 - [ ] Accessibility (ARIA, keyboard nav)
@@ -402,6 +460,7 @@ Updates SESSION-CONTEXT.md
 ```
 
 ### Database Migration Review
+
 ```markdown
 - [ ] Migration script tested
 - [ ] Rollback script ready
@@ -417,6 +476,7 @@ Updates SESSION-CONTEXT.md
 ## 🚫 Common Review Mistakes
 
 ### Reviewer Mistakes
+
 - ❌ Reviewing too fast (missed issues)
 - ❌ Nitpicking minor style issues
 - ❌ Blocking on personal preferences
@@ -425,6 +485,7 @@ Updates SESSION-CONTEXT.md
 - ❌ Taking too long to review
 
 ### Author Mistakes
+
 - ❌ PR too large
 - ❌ Missing context in description
 - ❌ Quality gates not passing
@@ -437,6 +498,7 @@ Updates SESSION-CONTEXT.md
 ## 🔧 Tools & Automation
 
 ### GitHub PR Checks (Automated)
+
 - ✅ CI/CD pipeline passes
 - ✅ Test coverage maintained
 - ✅ No merge conflicts
@@ -444,6 +506,7 @@ Updates SESSION-CONTEXT.md
 - ✅ All conversations resolved
 
 ### Code Review Tools
+
 - **GitHub:** Built-in review system
 - **SonarQube:** Code quality metrics
 - **Snyk:** Security vulnerabilities
@@ -454,13 +517,15 @@ Updates SESSION-CONTEXT.md
 ## 📊 Review Metrics
 
 ### Track Monthly
-- Average PR size: ___ lines
-- Average review time: ___ hours
-- PR merge rate: ___%
-- Comments per PR: ___
-- Iteration count: ___
+
+- Average PR size: \_\_\_ lines
+- Average review time: \_\_\_ hours
+- PR merge rate: \_\_\_%
+- Comments per PR: \_\_\_
+- Iteration count: \_\_\_
 
 ### Quality Indicators
+
 - **Good:** Small PRs, quick reviews, few iterations
 - **Warning:** Large PRs, slow reviews, many iterations
 - **Problem:** PRs sitting for days, rubber-stamp approvals
@@ -470,6 +535,7 @@ Updates SESSION-CONTEXT.md
 ## 🎓 Review Culture
 
 ### Team Values
+
 1. **Respectful** - Always be kind
 2. **Educational** - Share knowledge
 3. **Thorough** - Don't rush
@@ -477,6 +543,7 @@ Updates SESSION-CONTEXT.md
 5. **Collaborative** - We're on the same team
 
 ### Growth Mindset
+
 - **Learn from reviews** - Both giving and receiving
 - **Ask questions** - There are no stupid questions
 - **Share knowledge** - Explain your reasoning

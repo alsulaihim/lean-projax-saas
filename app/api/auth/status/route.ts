@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           authenticated: false,
-          user: null
+          user: null,
         },
         { headers: corsHeaders }
       )
@@ -53,8 +53,8 @@ export async function GET(request: NextRequest) {
           email: user.email,
           subscriptionTier: user.subscriptionTier,
           subscriptionStatus: user.subscriptionStatus,
-          isDemo: user.isDemo || false
-        }
+          isDemo: user.isDemo || false,
+        },
       },
       { headers: corsHeaders }
     )
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
       {
         authenticated: false,
         user: null,
-        error: 'Failed to check authentication status'
+        error: 'Failed to check authentication status',
       },
       { status: 500, headers: corsHeaders }
     )

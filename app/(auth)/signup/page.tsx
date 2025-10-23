@@ -18,15 +18,15 @@ const orbitron = Orbitron({
 
 /**
  * Signup Page Component
- * 
+ *
  * Purpose: Allow new users to create an account for the Lean Projax platform
- * 
+ *
  * Flow:
  * 1. User fills out signup form (email, name, password, company)
  * 2. Form validates input client-side
  * 3. Submits to /api/signup endpoint
  * 4. On success, redirects to login page with success message
- * 
+ *
  * Default Settings:
  * - New users get FREE tier subscription
  * - TRIAL status with 14-day trial period
@@ -41,7 +41,7 @@ export default function SignupPage() {
     name: '',
     password: '',
     confirmPassword: '',
-    companyName: ''
+    companyName: '',
   })
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
 
@@ -52,7 +52,7 @@ export default function SignupPage() {
     hasLowercase: /[a-z]/.test(formData.password),
     hasNumber: /[0-9]/.test(formData.password),
     hasSpecial: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password),
-    passwordsMatch: formData.password.length > 0 && formData.password === formData.confirmPassword
+    passwordsMatch: formData.password.length > 0 && formData.password === formData.confirmPassword,
   }
 
   /**
@@ -61,14 +61,14 @@ export default function SignupPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }))
     setError('') // Clear error when user types
   }
 
   /**
    * Validate form data before submission
-   * 
+   *
    * Checks:
    * - All required fields filled
    * - Valid email format
@@ -114,7 +114,7 @@ export default function SignupPage() {
 
   /**
    * Handle form submission
-   * 
+   *
    * Process:
    * 1. Validate form data
    * 2. Send POST request to /api/signup
@@ -122,7 +122,7 @@ export default function SignupPage() {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Client-side validation
     const validationError = validateForm()
     if (validationError) {
@@ -143,7 +143,7 @@ export default function SignupPage() {
           email: formData.email,
           name: formData.name,
           password: formData.password,
-          companyName: formData.companyName || null
+          companyName: formData.companyName || null,
         }),
       })
 
@@ -168,8 +168,13 @@ export default function SignupPage() {
     <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
       <Card className="w-full max-w-md border-2 border-black">
         <CardHeader className="space-y-2 sm:space-y-3 text-center px-4 sm:px-6">
-          <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
-            <CardTitle className={`text-2xl sm:text-3xl font-bold text-red-700 ${orbitron.className}`}>
+          <a
+            href="http://localhost:3071"
+            className="inline-block hover:opacity-80 transition-opacity"
+          >
+            <CardTitle
+              className={`text-2xl sm:text-3xl font-bold text-red-700 ${orbitron.className}`}
+            >
               Lean Projax
             </CardTitle>
           </a>
@@ -187,7 +192,9 @@ export default function SignupPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm">Email *</Label>
+              <Label htmlFor="email" className="text-sm">
+                Email *
+              </Label>
               <Input
                 id="email"
                 name="email"
@@ -202,7 +209,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm">Full Name *</Label>
+              <Label htmlFor="name" className="text-sm">
+                Full Name *
+              </Label>
               <Input
                 id="name"
                 name="name"
@@ -217,7 +226,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="companyName" className="text-sm">Company Name (Optional)</Label>
+              <Label htmlFor="companyName" className="text-sm">
+                Company Name (Optional)
+              </Label>
               <Input
                 id="companyName"
                 name="companyName"
@@ -231,7 +242,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm">Password *</Label>
+              <Label htmlFor="password" className="text-sm">
+                Password *
+              </Label>
               <Input
                 id="password"
                 name="password"
@@ -244,17 +257,19 @@ export default function SignupPage() {
                 className="border-black h-11"
                 required
               />
-              
+
               {/* Real-time Password Strength Indicator */}
               {showPasswordRequirements && formData.password.length > 0 && (
                 <div className="mt-3 p-4 bg-gray-50 border border-gray-200 rounded-lg space-y-2">
                   <p className="text-sm font-medium text-gray-700 mb-2">Password Requirements:</p>
-                  
+
                   <div className="space-y-1.5">
                     {/* Minimum Length */}
-                    <div className={`flex items-center gap-2 text-sm transition-colors ${
-                      passwordChecks.minLength ? 'text-green-700' : 'text-gray-500'
-                    }`}>
+                    <div
+                      className={`flex items-center gap-2 text-sm transition-colors ${
+                        passwordChecks.minLength ? 'text-green-700' : 'text-gray-500'
+                      }`}
+                    >
                       {passwordChecks.minLength ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
@@ -264,9 +279,11 @@ export default function SignupPage() {
                     </div>
 
                     {/* Uppercase */}
-                    <div className={`flex items-center gap-2 text-sm transition-colors ${
-                      passwordChecks.hasUppercase ? 'text-green-700' : 'text-gray-500'
-                    }`}>
+                    <div
+                      className={`flex items-center gap-2 text-sm transition-colors ${
+                        passwordChecks.hasUppercase ? 'text-green-700' : 'text-gray-500'
+                      }`}
+                    >
                       {passwordChecks.hasUppercase ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
@@ -276,9 +293,11 @@ export default function SignupPage() {
                     </div>
 
                     {/* Lowercase */}
-                    <div className={`flex items-center gap-2 text-sm transition-colors ${
-                      passwordChecks.hasLowercase ? 'text-green-700' : 'text-gray-500'
-                    }`}>
+                    <div
+                      className={`flex items-center gap-2 text-sm transition-colors ${
+                        passwordChecks.hasLowercase ? 'text-green-700' : 'text-gray-500'
+                      }`}
+                    >
                       {passwordChecks.hasLowercase ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
@@ -288,9 +307,11 @@ export default function SignupPage() {
                     </div>
 
                     {/* Number */}
-                    <div className={`flex items-center gap-2 text-sm transition-colors ${
-                      passwordChecks.hasNumber ? 'text-green-700' : 'text-gray-500'
-                    }`}>
+                    <div
+                      className={`flex items-center gap-2 text-sm transition-colors ${
+                        passwordChecks.hasNumber ? 'text-green-700' : 'text-gray-500'
+                      }`}
+                    >
                       {passwordChecks.hasNumber ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
@@ -300,9 +321,11 @@ export default function SignupPage() {
                     </div>
 
                     {/* Special Character */}
-                    <div className={`flex items-center gap-2 text-sm transition-colors ${
-                      passwordChecks.hasSpecial ? 'text-green-700' : 'text-gray-500'
-                    }`}>
+                    <div
+                      className={`flex items-center gap-2 text-sm transition-colors ${
+                        passwordChecks.hasSpecial ? 'text-green-700' : 'text-gray-500'
+                      }`}
+                    >
                       {passwordChecks.hasSpecial ? (
                         <Check className="h-4 w-4 text-green-600" />
                       ) : (
@@ -330,7 +353,9 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-sm">Confirm Password *</Label>
+              <Label htmlFor="confirmPassword" className="text-sm">
+                Confirm Password *
+              </Label>
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -345,9 +370,11 @@ export default function SignupPage() {
 
               {/* Password Match Indicator */}
               {formData.confirmPassword.length > 0 && (
-                <div className={`flex items-center gap-2 text-sm mt-2 ${
-                  passwordChecks.passwordsMatch ? 'text-green-700' : 'text-red-600'
-                }`}>
+                <div
+                  className={`flex items-center gap-2 text-sm mt-2 ${
+                    passwordChecks.passwordsMatch ? 'text-green-700' : 'text-red-600'
+                  }`}
+                >
                   {passwordChecks.passwordsMatch ? (
                     <>
                       <Check className="h-4 w-4" />
@@ -394,4 +421,3 @@ export default function SignupPage() {
     </div>
   )
 }
-

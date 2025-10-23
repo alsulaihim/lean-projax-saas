@@ -221,7 +221,9 @@ export function AIAssessment({ assignment }: AIAssessmentProps) {
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-sm font-semibold mt-0.5">
                       {index + 1}
                     </span>
-                    <span className="text-gray-700 leading-relaxed break-words flex-1 min-w-0">{insight}</span>
+                    <span className="text-gray-700 leading-relaxed break-words flex-1 min-w-0">
+                      {insight}
+                    </span>
                   </li>
                 ))}
               </ul>

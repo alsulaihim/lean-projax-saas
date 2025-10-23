@@ -61,7 +61,7 @@ function erf(x: number): number {
   const t4 = t3 * t
   const t5 = t4 * t
 
-  const y = 1.0 - (((((a5 * t5 + a4 * t4) + a3 * t3) + a2 * t2) + a1 * t) * Math.exp(-x * x))
+  const y = 1.0 - (a5 * t5 + a4 * t4 + a3 * t3 + a2 * t2 + a1 * t) * Math.exp(-x * x)
 
   return sign * y
 }
@@ -77,7 +77,7 @@ function dpmoToSigmaLevel(dpmo: number): number {
     { dpmo: 66807, sigma: 3.0 },
     { dpmo: 6210, sigma: 4.0 },
     { dpmo: 233, sigma: 5.0 },
-    { dpmo: 3.4, sigma: 6.0 }
+    { dpmo: 3.4, sigma: 6.0 },
   ]
 
   // If DPMO is greater than the worst case, return 0
@@ -96,7 +96,7 @@ function dpmoToSigmaLevel(dpmo: number): number {
       const y2 = sigmaTable[i + 1].sigma
       const x = Math.log(dpmo)
 
-      return y1 + (y2 - y1) * (x - x1) / (x2 - x1)
+      return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1)
     }
   }
 
@@ -113,7 +113,7 @@ export function BellCurveChart({
   height = 400,
   className,
   showStatistics = true,
-  data
+  data,
 }: BellCurveChartProps) {
   const chartData = useMemo(() => {
     const points = []
@@ -126,7 +126,7 @@ export function BellCurveChart({
       points.push({
         x: parseFloat(x.toFixed(3)),
         y: normalPDF(x, mean, standardDeviation),
-        inSpec: lsl && usl ? (x >= lsl && x <= usl) : true
+        inSpec: lsl && usl ? x >= lsl && x <= usl : true,
       })
     }
 
@@ -137,7 +137,8 @@ export function BellCurveChart({
   const statistics = useMemo(() => {
     if (!lsl || !usl) return null
 
-    const withinSpecProb = normalCDF(usl, mean, standardDeviation) - normalCDF(lsl, mean, standardDeviation)
+    const withinSpecProb =
+      normalCDF(usl, mean, standardDeviation) - normalCDF(lsl, mean, standardDeviation)
     const defectRate = 1 - withinSpecProb
     const dpmo = defectRate * 1000000
 
@@ -162,8 +163,8 @@ export function BellCurveChart({
     // - 2 sigma process (308,537 DPMO) → Cpk ≈ 0.67
 
     return {
-      withinSpec: (withinSpecProb * 100),
-      defectRate: (defectRate * 100),
+      withinSpec: withinSpecProb * 100,
+      defectRate: defectRate * 100,
       dpmo: dpmo,
       sigmaLevel: sigmaLevel,
       cp: cp,
@@ -174,7 +175,7 @@ export function BellCurveChart({
       dpmoFormatted: Math.round(dpmo),
       sigmaLevelFormatted: sigmaLevel.toFixed(3),
       cpFormatted: cp.toFixed(3),
-      cpkFormatted: cpk.toFixed(3)
+      cpkFormatted: cpk.toFixed(3),
     }
   }, [mean, standardDeviation, lsl, usl])
 
@@ -219,12 +220,12 @@ export function BellCurveChart({
   }
 
   return (
-    <Card className={cn("w-full", className)}>
+    <Card className={cn('w-full', className)}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>{title}</CardTitle>
           {statistics && (
-            <Badge variant={statistics.cpk >= 1.33 ? "default" : "destructive"}>
+            <Badge variant={statistics.cpk >= 1.33 ? 'default' : 'destructive'}>
               Cpk: {statistics.cpkFormatted}
             </Badge>
           )}
@@ -248,12 +249,12 @@ export function BellCurveChart({
               dataKey="x"
               domain={['dataMin', 'dataMax']}
               type="number"
-              tickFormatter={(value) => value.toFixed(1)}
+              tickFormatter={value => value.toFixed(1)}
               label={{ value: 'Measurement Value', position: 'insideBottom', offset: -5 }}
             />
             <YAxis
               label={{ value: 'Probability Density', angle: -90, position: 'insideLeft' }}
-              tickFormatter={(value) => (value * 100).toFixed(1) + '%'}
+              tickFormatter={value => (value * 100).toFixed(1) + '%'}
             />
             <Tooltip content={<CustomTooltip />} />
 
@@ -321,11 +322,15 @@ export function BellCurveChart({
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 p-4 bg-gray-50 rounded-lg">
             <div>
               <p className="text-sm text-gray-600">Within Spec</p>
-              <p className="text-lg font-semibold text-green-600">{statistics.withinSpecFormatted}%</p>
+              <p className="text-lg font-semibold text-green-600">
+                {statistics.withinSpecFormatted}%
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Defect Rate</p>
-              <p className="text-lg font-semibold text-red-600">{statistics.defectRateFormatted}%</p>
+              <p className="text-lg font-semibold text-red-600">
+                {statistics.defectRateFormatted}%
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-600">DPMO</p>

@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { checkDemoMode } from '@/lib/demo-check'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -26,7 +23,7 @@ export async function PATCH(
       stakeholder,
       wasteType,
       remarks,
-      assignmentId
+      assignmentId,
     } = await request.json()
 
     // Input validation
@@ -41,11 +38,11 @@ export async function PATCH(
         process: {
           include: {
             assignment: {
-              select: { createdById: true }
-            }
-          }
-        }
-      }
+              select: { createdById: true },
+            },
+          },
+        },
+      },
     })
 
     if (!oldStep) {
@@ -54,10 +51,7 @@ export async function PATCH(
 
     // Verify nested relations exist
     if (!oldStep.process?.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -66,7 +60,7 @@ export async function PATCH(
     }
 
     // Update VSM step and create audit log atomically
-    const step = await prisma.$transaction(async (tx) => {
+    const step = await prisma.$transaction(async tx => {
       const updatedStep = await tx.vSMStep.update({
         where: { id },
         data: {
@@ -76,8 +70,8 @@ export async function PATCH(
           valueMeasure,
           stakeholder,
           wasteType,
-          remarks
-        }
+          remarks,
+        },
       })
 
       await tx.auditLog.create({
@@ -92,16 +86,16 @@ export async function PATCH(
               stepName: oldStep.stepName,
               processTime: oldStep.processTime,
               waitingTime: oldStep.waitingTime,
-              valueMeasure: oldStep.valueMeasure
+              valueMeasure: oldStep.valueMeasure,
             },
             after: {
               stepName,
               processTime,
               waitingTime,
-              valueMeasure
-            }
-          }
-        }
+              valueMeasure,
+            },
+          },
+        },
       })
 
       return updatedStep
@@ -110,10 +104,7 @@ export async function PATCH(
     return NextResponse.json(step)
   } catch (error) {
     console.error('Failed to update VSM step:', error)
-    return NextResponse.json(
-      { error: 'Failed to update VSM step' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update VSM step' }, { status: 500 })
   }
 }
 
@@ -143,11 +134,11 @@ export async function DELETE(
         process: {
           include: {
             assignment: {
-              select: { createdById: true }
-            }
-          }
-        }
-      }
+              select: { createdById: true },
+            },
+          },
+        },
+      },
     })
 
     if (!step) {
@@ -156,10 +147,7 @@ export async function DELETE(
 
     // Verify nested relations exist
     if (!step.process?.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -168,9 +156,9 @@ export async function DELETE(
     }
 
     // Delete VSM step and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       await tx.vSMStep.delete({
-        where: { id }
+        where: { id },
       })
 
       await tx.auditLog.create({
@@ -182,18 +170,15 @@ export async function DELETE(
           entityId: id,
           changeDetails: {
             stepName: step.stepName,
-            durationMinutes: step.durationMinutes
-          }
-        }
+            durationMinutes: step.durationMinutes,
+          },
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete VSM step:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete VSM step' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete VSM step' }, { status: 500 })
   }
 }

@@ -8,11 +8,11 @@ async function main() {
   // Find the banking assignment
   const assignment = await prisma.assignment.findFirst({
     where: {
-      title: 'Bank Facility Granting Process Improvement'
+      title: 'Bank Facility Granting Process Improvement',
     },
     include: {
-      charter: true
-    }
+      charter: true,
+    },
   })
 
   if (!assignment) {
@@ -23,10 +23,10 @@ async function main() {
   // Delete existing charter if any
   if (assignment.charter) {
     await prisma.charterScheduleItem.deleteMany({
-      where: { charterId: assignment.charter.id }
+      where: { charterId: assignment.charter.id },
     })
     await prisma.assignmentCharter.delete({
-      where: { id: assignment.charter.id }
+      where: { id: assignment.charter.id },
     })
     console.log('🧹 Deleted existing charter')
   }
@@ -381,64 +381,64 @@ Support Functions:
             milestone: 'Form project team',
             startDate: new Date('2025-01-15'),
             endDate: new Date('2025-01-30'),
-            order: 1
+            order: 1,
           },
           {
             milestone: 'Prepare project plan',
             startDate: new Date('2025-02-01'),
             endDate: new Date('2025-02-28'),
-            order: 2
+            order: 2,
           },
           {
             milestone: 'Define phase',
             startDate: new Date('2025-03-01'),
             endDate: new Date('2025-04-15'),
-            order: 3
+            order: 3,
           },
           {
             milestone: 'Measure phase',
             startDate: new Date('2025-04-16'),
             endDate: new Date('2025-05-31'),
-            order: 4
+            order: 4,
           },
           {
             milestone: 'Analysis phase',
             startDate: new Date('2025-06-01'),
             endDate: new Date('2025-07-15'),
-            order: 5
+            order: 5,
           },
           {
             milestone: 'Report preparation',
             startDate: new Date('2025-07-16'),
             endDate: new Date('2025-07-31'),
-            order: 6
+            order: 6,
           },
           {
             milestone: 'Recommendation and action plan discussion',
             startDate: new Date('2025-08-01'),
             endDate: new Date('2025-08-15'),
-            order: 7
+            order: 7,
           },
           {
             milestone: 'Improvement phase',
             startDate: new Date('2025-08-16'),
             endDate: new Date('2025-11-15'),
-            order: 8
+            order: 8,
           },
           {
             milestone: 'Control phase',
             startDate: new Date('2025-11-16'),
             endDate: new Date('2025-12-31'),
-            order: 9
-          }
-        ]
-      }
+            order: 9,
+          },
+        ],
+      },
     },
     include: {
       scheduleItems: {
-        orderBy: { order: 'asc' }
-      }
-    }
+        orderBy: { order: 'asc' },
+      },
+    },
   })
 
   console.log('✅ Created comprehensive banking charter')
@@ -449,7 +449,7 @@ Support Functions:
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Charter seed failed:', e)
     process.exit(1)
   })

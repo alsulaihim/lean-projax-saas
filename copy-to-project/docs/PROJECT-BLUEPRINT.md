@@ -1,4 +1,5 @@
 # Project Blueprint
+
 > High-level architecture and locked decisions
 
 ---
@@ -24,21 +25,25 @@
 ### Architecture Layers:
 
 **Frontend:**
+
 - Next.js App Router
 - React Server Components + Client Components
 - shadcn/ui component library
 - Tailwind CSS
 
 **Backend:**
+
 - NestJS framework
 - Business logic in services
 - Data access through repositories
 
 **Database:**
+
 - Supabase (PostgreSQL-compatible BaaS)
 - Built-in Auth, Storage, and Real-time features
 
 **Mobile:**
+
 - iOS: Swift + SwiftUI
 - Android: Kotlin + Jetpack Compose
 
@@ -72,14 +77,17 @@ project-root/
 ## 🔐 SECURITY ARCHITECTURE
 
 **Authentication:**
+
 - JWT-based with refresh tokens
 - Access tokens: 15 minutes
 - Refresh tokens: 7 days
 
 **Authorization:**
+
 - Role-Based Access Control (RBAC)
 
 **Data Protection:**
+
 - Passwords: bcrypt hashing
 - PII: Encrypted at rest
 - Communications: HTTPS only
@@ -89,21 +97,25 @@ project-root/
 ## 🐳 DEPLOYMENT ARCHITECTURE
 
 **Environments:**
+
 1. **Development:** Local Docker Compose
 2. **Staging:** Cloud (mirrors production)
 3. **Production:** Cloud ([Railway/GCP/AWS])
 
 **Deployment Platform Options:**
+
 - **Railway:** Simple, modern deployment with automatic deploys from GitHub
 - **GCP:** Enterprise-scale with full control
 - **AWS:** Enterprise-scale with full control
 
 **CI/CD Pipeline:**
+
 ```
 Code Push → Tests → Build → Deploy Staging → Manual Approval → Production
 ```
 
 **Railway Integration** (if using Railway):
+
 - Automatic deployments from GitHub
 - Preview environments for PRs
 - Database provisioning (Postgres, MySQL, Redis)
@@ -129,6 +141,7 @@ Code Push → Tests → Build → Deploy Staging → Manual Approval → Product
 ## 📝 CUSTOMIZATION INSTRUCTIONS
 
 Fill in:
+
 - [ ] Project name and purpose
 - [ ] Architecture pattern choice
 - [ ] Cloud provider choice (Railway, GCP, or AWS)

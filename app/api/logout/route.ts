@@ -9,7 +9,7 @@ export async function POST() {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     maxAge: 0, // Expire immediately
-    path: '/' // Must match the path used when setting the cookie
+    path: '/', // Must match the path used when setting the cookie
   })
 
   return response

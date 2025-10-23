@@ -3,26 +3,31 @@
 ## ✅ Completed Fixes (5/34)
 
 ### 1. Replace hardcoded localhost URL ✅
+
 **File:** `components/layout/header.tsx`
 **Fix:** Added `NEXT_PUBLIC_MARKETING_URL` environment variable
 **Commit:** `14181946`
 
 ### 2. Create API error sanitization utilities ✅
+
 **File:** `lib/api-error-handler.ts` (new)
 **Fix:** Created `sanitizeError()` and `sanitizeLog()` utilities
 **Commit:** `686d880e`
 
 ### 3. Fix health endpoint error exposure ✅
+
 **File:** `app/api/health/route.ts`
 **Fix:** Only show error details in development mode
 **Commit:** `686d880e`
 
 ### 4. Sanitize PII in signup logs ✅
+
 **File:** `app/api/signup/route.ts`
 **Fix:** Use `sanitizeLog()` for user creation logs
 **Commit:** `d04402f6`
 
 ### 5. Sanitize PII in email verification logs ✅
+
 **File:** `app/api/verify-email/route.ts`
 **Fix:** Use `sanitizeLog()` for email verification
 **Commit:** `d04402f6`
@@ -33,14 +38,17 @@
 
 ### High Priority - Security
 
-#### Remove target="_blank" from internal platform links
+#### Remove target="\_blank" from internal platform links
+
 **Files to fix:**
+
 - `marketing/src/app/page.tsx` (lines 29, 37, 71, 80)
 - `marketing/src/app/pricing/page.tsx` (lines 25, 219, 303)
 
 **Fix:** Remove `target="_blank"` and `rel="noopener noreferrer"` from Sign In, Get Started, and Try Demo links
 
 **Example:**
+
 ```tsx
 // Before
 <Link
@@ -66,7 +74,9 @@
 ### Medium Priority - Documentation
 
 #### Add language specification to code fences
+
 **Files to check:**
+
 - `docs/architecture.md`
 - `docs/prd.md`
 - `FEATURE-STATUS.md`
@@ -76,22 +86,27 @@
 **Fix:** Add language identifier to code blocks
 
 **Example:**
-```markdown
+
+````markdown
 <!-- Before -->
+
 \```
 npm install
 \```
 
 <!-- After -->
+
 \```bash
 npm install
 \```
-```
+````
 
 ---
 
 #### Replace template placeholders
+
 **Files:**
+
 - Documentation files with `[INSERT...]` or `[TODO...]` placeholders
 
 **Fix:** Either replace with actual values or remove if not applicable
@@ -101,6 +116,7 @@ npm install
 ### Low Priority - Code Quality
 
 #### Early return pattern in seed script
+
 **File:** `prisma/seed-demo.ts` or similar
 
 **Issue:** Early return prevents re-seeding of related entities
@@ -110,7 +126,9 @@ npm install
 ---
 
 #### Add confirmation prompts to destructive operations
+
 **Files:**
+
 - `prisma/reset-demo.ts`
 - `prisma/seed-demo.ts`
 - Any other scripts that delete data
@@ -118,6 +136,7 @@ npm install
 **Fix:** Add confirmation prompt or command-line flag
 
 **Example:**
+
 ```typescript
 // Add at the start of main()
 if (process.argv.includes('--force')) {
@@ -125,7 +144,7 @@ if (process.argv.includes('--force')) {
 } else {
   const readline = require('readline').createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   })
 
   const answer = await new Promise(resolve => {
@@ -144,6 +163,7 @@ if (process.argv.includes('--force')) {
 ---
 
 #### Fix key-based remount pattern
+
 **Potential files:** React components using `key` prop for remounting
 
 **Issue:** Reconsider the key-based remount pattern
@@ -153,6 +173,7 @@ if (process.argv.includes('--force')) {
 ---
 
 #### Update placeholder links
+
 **Files:** Documentation with placeholder URLs
 
 **Fix:** Replace with actual links or remove
@@ -172,7 +193,8 @@ if (process.argv.includes('--force')) {
 
 ## 🔧 Quick Fix Commands
 
-### Remove target="_blank" in marketing pages:
+### Remove target="\_blank" in marketing pages:
+
 ```bash
 # Page.tsx
 sed -i '' '29,30d' marketing/src/app/page.tsx
@@ -193,6 +215,7 @@ sed -i '' '302,303d' marketing/src/app/pricing/page.tsx
 ## 📝 Environment Variables Needed
 
 Add to `.env.local`:
+
 ```bash
 # Marketing site URL (for platform logout redirect)
 NEXT_PUBLIC_MARKETING_URL=http://localhost:3071
@@ -206,17 +229,20 @@ NEXT_PUBLIC_MARKETING_URL=http://localhost:3071
 ## ✅ Checklist for Remaining Work
 
 ### Security (High Priority)
-- [ ] Remove target="_blank" from marketing links (7 occurrences)
+
+- [ ] Remove target="\_blank" from marketing links (7 occurrences)
 - [ ] Review and sanitize remaining console.error calls in API routes
 - [ ] Add environment variable validation at startup
 
 ### Documentation (Medium Priority)
+
 - [ ] Add language specs to all markdown code blocks
 - [ ] Replace template placeholders in docs
 - [ ] Update placeholder links
 - [ ] Remove end markers from documentation
 
 ### Code Quality (Low Priority)
+
 - [ ] Review early return logic in seed scripts
 - [ ] Add confirmation prompts to destructive operations
 - [ ] Fix key-based remount patterns in React components
@@ -237,10 +263,11 @@ NEXT_PUBLIC_MARKETING_URL=http://localhost:3071
 ## 🚀 Ready for Deployment Checklist
 
 Before deploying to production:
+
 - [x] Error sanitization utility created
 - [x] PII removed from logs
 - [x] Health endpoint secured
-- [ ] All target="_blank" removed from internal links
+- [ ] All target="\_blank" removed from internal links
 - [ ] Environment variables documented
 - [ ] Confirmation prompts added to destructive scripts
 - [ ] All markdown code blocks have language specs

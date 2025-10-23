@@ -9,7 +9,7 @@ import {
   ReferenceLine,
   ResponsiveContainer,
   Area,
-  ComposedChart
+  ComposedChart,
 } from 'recharts'
 
 interface ProcessCapabilityChartProps {
@@ -29,7 +29,7 @@ export function ProcessCapabilityChart({
   mean,
   stdDev,
   height = 300,
-  showDistribution = true
+  showDistribution = true,
 }: ProcessCapabilityChartProps) {
   // Generate normal distribution curve data
   const generateNormalDistribution = () => {
@@ -41,12 +41,11 @@ export function ProcessCapabilityChart({
 
     for (let x = start; x <= end; x += step) {
       const z = (x - mean) / stdDev
-      const y = (1 / (stdDev * Math.sqrt(2 * Math.PI))) *
-                Math.exp(-0.5 * z * z) * 100 // Scale for visibility
+      const y = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * z * z) * 100 // Scale for visibility
       points.push({
         x: Number(x.toFixed(2)),
         y: Number(y.toFixed(4)),
-        inSpec: x >= lowerSpec && x <= upperSpec
+        inSpec: x >= lowerSpec && x <= upperSpec,
       })
     }
     return points
@@ -62,7 +61,7 @@ export function ProcessCapabilityChart({
     { value: mean, label: 'μ', color: '#10b981' },
     { value: mean + stdDev, label: '+1σ', color: '#3b82f6' },
     { value: mean + 2 * stdDev, label: '+2σ', color: '#f59e0b' },
-    { value: mean + 3 * stdDev, label: '+3σ', color: '#ef4444' }
+    { value: mean + 3 * stdDev, label: '+3σ', color: '#ef4444' },
   ]
 
   interface TooltipPayload {
@@ -113,7 +112,7 @@ export function ProcessCapabilityChart({
             domain={['dataMin', 'dataMax']}
             type="number"
             tick={{ fontSize: 11 }}
-            tickFormatter={(value) => value.toFixed(1)}
+            tickFormatter={value => value.toFixed(1)}
           />
 
           <YAxis
@@ -122,7 +121,7 @@ export function ProcessCapabilityChart({
               value: 'Probability Density',
               angle: -90,
               position: 'insideLeft',
-              style: { fontSize: 11 }
+              style: { fontSize: 11 },
             }}
           />
 
@@ -138,7 +137,7 @@ export function ProcessCapabilityChart({
               value: `LSL: ${lowerSpec}`,
               position: 'top',
               offset: 10,
-              style: { fill: '#ef4444', fontSize: 11 }
+              style: { fill: '#ef4444', fontSize: 11 },
             }}
           />
 
@@ -151,7 +150,7 @@ export function ProcessCapabilityChart({
               value: `USL: ${upperSpec}`,
               position: 'top',
               offset: 10,
-              style: { fill: '#ef4444', fontSize: 11 }
+              style: { fill: '#ef4444', fontSize: 11 },
             }}
           />
 
@@ -165,7 +164,7 @@ export function ProcessCapabilityChart({
                 value: `Target: ${target}`,
                 position: 'top',
                 offset: 10,
-                style: { fill: '#10b981', fontSize: 11 }
+                style: { fill: '#10b981', fontSize: 11 },
               }}
             />
           )}
@@ -179,7 +178,7 @@ export function ProcessCapabilityChart({
               value: `Mean: ${mean.toFixed(2)}`,
               position: 'insideTopRight',
               offset: 25,
-              style: { fill: '#3b82f6', fontSize: 11 }
+              style: { fill: '#3b82f6', fontSize: 11 },
             }}
           />
 
@@ -216,7 +215,7 @@ export function ProcessCapabilityChart({
           {distributionData.length > 0 && (
             <Area
               type="monotone"
-              dataKey={(item: { inSpec?: boolean; y: number }) => item.inSpec ? item.y : null}
+              dataKey={(item: { inSpec?: boolean; y: number }) => (item.inSpec ? item.y : null)}
               stroke="#10b981"
               strokeWidth={0}
               fill="#10b981"

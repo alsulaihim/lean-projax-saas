@@ -38,11 +38,13 @@
 4. Add the following secrets:
 
 ### **Database Secrets:**
+
 ```
 DATABASE_URL=postgresql://user:password@host:5432/database
 ```
 
 ### **Authentication Secrets:**
+
 ```
 NEXTAUTH_URL=https://app.yourdomain.com
 NEXTAUTH_SECRET=<generate-with: openssl rand -base64 32>
@@ -50,6 +52,7 @@ NEXT_PUBLIC_API_URL=https://yourdomain.com
 ```
 
 ### **Email Service Secrets:**
+
 ```
 EMAIL_PROVIDER=resend
 RESEND_API_KEY=re_xxxxxxxxxxxxx
@@ -59,6 +62,7 @@ EMAIL_FROM=noreply@yourdomain.com
 ### **Deployment Platform Secrets:**
 
 #### **For Vercel:**
+
 ```
 VERCEL_TOKEN=<from vercel.com/account/tokens>
 VERCEL_ORG_ID=<from vercel project settings>
@@ -67,11 +71,13 @@ VERCEL_MARKETING_PROJECT_ID=<marketing site project ID>
 ```
 
 #### **For Railway:**
+
 ```
 RAILWAY_TOKEN=<from railway.app settings>
 ```
 
 ### **Health Check URLs:**
+
 ```
 PLATFORM_URL=https://app.yourdomain.com
 MARKETING_URL=https://yourdomain.com
@@ -84,6 +90,7 @@ MARKETING_URL=https://yourdomain.com
 ### **Option 1: Vercel (Recommended for Next.js)** ⭐
 
 **Why Vercel:**
+
 - Built by Next.js creators
 - Zero-config Next.js deployment
 - Automatic HTTPS
@@ -110,7 +117,6 @@ MARKETING_URL=https://yourdomain.com
      - Build Command: `npm run build`
      - Output Directory: `.next`
      - Install Command: `npm ci && npx prisma generate`
-   
    - **Marketing:**
      - Root Directory: `marketing`
      - Build Command: `npm run build`
@@ -127,6 +133,7 @@ MARKETING_URL=https://yourdomain.com
 ### **Option 2: Railway**
 
 **Why Railway:**
+
 - Simple PostgreSQL setup
 - Good for full-stack apps
 - Built-in database
@@ -205,6 +212,7 @@ docker push your-registry.com/lean-projax-marketing
 ### **Before First Deploy:**
 
 #### **1. Environment Variables** ✅
+
 - [ ] All secrets added to GitHub
 - [ ] Production DATABASE_URL configured
 - [ ] NEXTAUTH_SECRET generated (secure)
@@ -212,18 +220,21 @@ docker push your-registry.com/lean-projax-marketing
 - [ ] URLs point to production domains
 
 #### **2. Database** ✅
+
 - [ ] Production PostgreSQL database created
 - [ ] Connection tested
 - [ ] Backups configured
 - [ ] Migration plan ready
 
 #### **3. Email Service** ✅
+
 - [ ] Resend/SendGrid account created
 - [ ] Domain verified (for production emails)
 - [ ] API key added to secrets
 - [ ] Test email delivery
 
 #### **4. Domain & DNS** ✅
+
 - [ ] Domain purchased/available
 - [ ] DNS configured:
   - `app.yourdomain.com` → Platform
@@ -231,6 +242,7 @@ docker push your-registry.com/lean-projax-marketing
 - [ ] SSL certificates (auto via Vercel/Railway)
 
 #### **5. Security** ✅
+
 - [ ] All Tier 1 security features active
 - [ ] Rate limiting configured
 - [ ] Email verification enabled
@@ -241,6 +253,7 @@ docker push your-registry.com/lean-projax-marketing
 ## 📊 **Environment-Specific Configuration**
 
 ### **Development (.env.local):**
+
 ```env
 DATABASE_URL=postgresql://leanprojax:dev_password@localhost:5435/leanprojax_dev
 NEXTAUTH_URL=http://localhost:3070
@@ -250,6 +263,7 @@ EMAIL_PROVIDER=console
 ```
 
 ### **Production (GitHub Secrets):**
+
 ```env
 DATABASE_URL=postgresql://prod_user:SECURE_PASSWORD@prod-host:5432/leanprojax_prod
 NEXTAUTH_URL=https://app.yourdomain.com
@@ -267,21 +281,25 @@ EMAIL_FROM=noreply@yourdomain.com
 ### **Deploy to Vercel (5 Minutes):**
 
 1. **Install Vercel CLI:**
+
    ```bash
    npm install -g vercel
    ```
 
 2. **Login:**
+
    ```bash
    vercel login
    ```
 
 3. **Deploy Main App:**
+
    ```bash
    vercel --prod
    ```
 
 4. **Deploy Marketing:**
+
    ```bash
    cd marketing
    vercel --prod
@@ -316,22 +334,26 @@ EMAIL_FROM=noreply@yourdomain.com
 ## 💰 **Estimated Costs**
 
 ### **Vercel (Hobby Plan - Free):**
+
 - **Main App:** Free
 - **Marketing:** Free
 - **Total:** $0/month
 - **Limits:** 100GB bandwidth, serverless functions
 
 ### **Vercel (Pro Plan):**
+
 - **Cost:** $20/month
 - **Benefits:** More bandwidth, team features, analytics
 
 ### **Railway:**
+
 - **Free tier:** $5 credit/month
 - **Database:** ~$5/month
 - **Apps:** ~$5/month each
 - **Total:** ~$15-20/month
 
 ### **Database (External):**
+
 - **Supabase:** Free tier available
 - **Railway PostgreSQL:** ~$5/month
 - **AWS RDS:** ~$15-30/month
@@ -343,17 +365,20 @@ EMAIL_FROM=noreply@yourdomain.com
 ### **If Deployment Fails:**
 
 #### **Vercel:**
+
 1. Go to Vercel dashboard
 2. Click "Deployments"
 3. Find last working deployment
 4. Click "..." → "Promote to Production"
 
 #### **Railway:**
+
 1. Go to Railway dashboard
 2. Click deployment history
 3. Rollback to previous deployment
 
 #### **Manual:**
+
 ```bash
 # Revert last commit
 git revert HEAD
@@ -380,6 +405,7 @@ git push --force origin main
 ## ✅ **You're Ready to Deploy!**
 
 Your code is production-ready with:
+
 - ✅ CI/CD pipelines configured
 - ✅ Automated testing
 - ✅ Security scanning
@@ -391,4 +417,3 @@ Your code is production-ready with:
 ---
 
 [END OF DEPLOYMENT.md]
-

@@ -11,11 +11,11 @@ async function main() {
       role: true,
       emailVerified: true,
       isDemo: true,
-      createdAt: true
+      createdAt: true,
     },
     orderBy: {
-      createdAt: 'desc'
-    }
+      createdAt: 'desc',
+    },
   })
 
   console.log('\n=== Users in Database ===\n')

@@ -28,7 +28,7 @@ function LoginContent() {
     // Show success message if redirected from signup
     if (searchParams.get('signup') === 'success') {
       setShowSignupSuccess(true)
-      
+
       // Extended timeout if verification pending
       const timeout = searchParams.get('verify') === 'pending' ? 15000 : 8000
       setTimeout(() => setShowSignupSuccess(false), timeout)
@@ -44,10 +44,10 @@ function LoginContent() {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'same-origin'
+        credentials: 'same-origin',
       })
 
       const data = await response.json()
@@ -70,7 +70,10 @@ function LoginContent() {
     <div className="min-h-screen flex items-center justify-center bg-white p-4 sm:p-6">
       <Card className="w-full max-w-md border-2 border-black">
         <CardHeader className="space-y-3 sm:space-y-4 text-center px-4 sm:px-6">
-          <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
+          <a
+            href="http://localhost:3071"
+            className="inline-block hover:opacity-80 transition-opacity"
+          >
             <CardTitle className={`text-3xl sm:text-4xl text-red-700 ${orbitron.className}`}>
               Lean Projax
             </CardTitle>
@@ -88,7 +91,10 @@ function LoginContent() {
                 <strong>Account created successfully!</strong>
                 <br />
                 {searchParams.get('verify') === 'pending' ? (
-                  <>Please check your email inbox for a verification link. You must verify your email before you can sign in.</>
+                  <>
+                    Please check your email inbox for a verification link. You must verify your
+                    email before you can sign in.
+                  </>
                 ) : searchParams.get('verified') === 'true' ? (
                   <>Your email is verified! You can now sign in.</>
                 ) : (
@@ -107,7 +113,7 @@ function LoginContent() {
                 type="email"
                 placeholder="analyst@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
                 className="border-gray-300 focus:border-black h-11"
               />
@@ -122,7 +128,7 @@ function LoginContent() {
                 type="password"
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
                 className="border-gray-300 focus:border-black h-11"
               />
@@ -156,22 +162,27 @@ function LoginContent() {
 }
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
-        <Card className="w-full max-w-md border-2 border-black">
-          <CardHeader className="space-y-3 sm:space-y-4 px-4 sm:px-6 text-center">
-            <a href="http://localhost:3071" className="inline-block hover:opacity-80 transition-opacity">
-              <CardTitle className={`text-3xl sm:text-4xl font-bold ${orbitron.className}`}>
-                <span className="text-red-700">Lean Projax</span>
-              </CardTitle>
-            </a>
-            <CardDescription className="text-gray-600 text-sm sm:text-base">
-              Loading...
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
+          <Card className="w-full max-w-md border-2 border-black">
+            <CardHeader className="space-y-3 sm:space-y-4 px-4 sm:px-6 text-center">
+              <a
+                href="http://localhost:3071"
+                className="inline-block hover:opacity-80 transition-opacity"
+              >
+                <CardTitle className={`text-3xl sm:text-4xl font-bold ${orbitron.className}`}>
+                  <span className="text-red-700">Lean Projax</span>
+                </CardTitle>
+              </a>
+              <CardDescription className="text-gray-600 text-sm sm:text-base">
+                Loading...
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      }
+    >
       <LoginContent />
     </Suspense>
   )

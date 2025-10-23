@@ -1,4 +1,5 @@
 # Coding Standards
+
 > Non-negotiable rules for code quality and consistency
 
 ---
@@ -16,43 +17,46 @@
 ## 📝 General Rules
 
 ### File Organization
+
 - One component/class per file
 - Max file length: 300 lines (break up if longer)
 - Group related files in feature folders
 - Use index files for clean exports
 
 ### Naming Conventions
+
 ```typescript
 // Files
-my-component.tsx          // Components (kebab-case)
-useMyHook.ts             // Hooks (camelCase with 'use' prefix)
-my-service.ts            // Services (kebab-case)
-MyType.ts                // Types/Interfaces (PascalCase)
+my - component.tsx // Components (kebab-case)
+useMyHook.ts // Hooks (camelCase with 'use' prefix)
+my - service.ts // Services (kebab-case)
+MyType.ts // Types/Interfaces (PascalCase)
 
 // Variables & Functions
-const userName = "...";           // camelCase
-const API_BASE_URL = "...";      // SCREAMING_SNAKE_CASE for constants
-function getUserData() {}         // camelCase
-class UserService {}             // PascalCase
+const userName = '...' // camelCase
+const API_BASE_URL = '...' // SCREAMING_SNAKE_CASE for constants
+function getUserData() {} // camelCase
+class UserService {} // PascalCase
 
 // Components
-function UserProfile() {}        // PascalCase
-const LoadingSpinner = () => {}  // PascalCase
+function UserProfile() {} // PascalCase
+const LoadingSpinner = () => {} // PascalCase
 
 // Types & Interfaces
-interface User {}                // PascalCase
-type UserRole = "...";           // PascalCase
+interface User {} // PascalCase
+type UserRole = '...' // PascalCase
 ```
 
 ### Comments
+
 ```typescript
 // ✅ GOOD - Explains WHY
 // Using debounce to prevent API spam during rapid typing
-const debouncedSearch = debounce(search, 300);
+const debouncedSearch = debounce(search, 300)
 
 // ❌ BAD - Explains WHAT (code should be self-explanatory)
 // Set the user name
-const userName = "John";
+const userName = 'John'
 
 // ✅ GOOD - JSDoc for public APIs
 /**
@@ -69,6 +73,7 @@ async function getUser(userId: string): Promise<User> {}
 ## 🎨 Frontend Standards (Next.js + React)
 
 ### Component Structure
+
 ```typescript
 // ✅ Preferred structure
 import { useState } from 'react';
@@ -96,6 +101,7 @@ export function UserCard({ user, onEdit }: UserCardProps) {
 ```
 
 ### React Best Practices
+
 ```typescript
 // ✅ GOOD - Destructure props
 function UserProfile({ name, email }: UserProfileProps) {}
@@ -124,20 +130,22 @@ useEffect(() => {
 ```
 
 ### State Management
+
 ```typescript
 // ✅ Local state for component-specific data
-const [isOpen, setIsOpen] = useState(false);
+const [isOpen, setIsOpen] = useState(false)
 
 // ✅ Context for shared UI state (theme, modals)
-const { theme, setTheme } = useTheme();
+const { theme, setTheme } = useTheme()
 
 // ✅ Server state for API data (React Query, SWR)
-const { data, isLoading } = useQuery(['users'], fetchUsers);
+const { data, isLoading } = useQuery(['users'], fetchUsers)
 
 // ❌ Avoid prop drilling beyond 2 levels - use Context
 ```
 
 ### Styling (Tailwind + shadcn/ui)
+
 ```typescript
 // ✅ GOOD - Use shadcn components
 import { Button } from '@/components/ui/button';
@@ -162,6 +170,7 @@ import { Button } from '@/components/ui/button';
 ## 🔧 Backend Standards (NestJS)
 
 ### Module Structure
+
 ```
 src/
 ├── modules/
@@ -178,6 +187,7 @@ src/
 ```
 
 ### Controller Standards
+
 ```typescript
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -188,61 +198,63 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, type: [User] })
   async findAll(@Query() query: FindUsersDto): Promise<User[]> {
-    return this.usersService.findAll(query);
+    return this.usersService.findAll(query)
   }
 
   @Post()
   @HttpCode(201)
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+    return this.usersService.create(createUserDto)
   }
 }
 ```
 
 ### Service Standards
+
 ```typescript
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly userRepository: Repository<User>
   ) {}
 
   async findOne(id: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({ where: { id } })
 
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new NotFoundException(`User with ID ${id} not found`)
     }
 
-    return user;
+    return user
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     // Hash password
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
 
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
-    });
+    })
 
-    return this.userRepository.save(user);
+    return this.userRepository.save(user)
   }
 }
 ```
 
 ### Error Handling
+
 ```typescript
 // ✅ Use NestJS exceptions
-throw new NotFoundException('User not found');
-throw new BadRequestException('Invalid input');
-throw new UnauthorizedException('Invalid credentials');
+throw new NotFoundException('User not found')
+throw new BadRequestException('Invalid input')
+throw new UnauthorizedException('Invalid credentials')
 
 // ✅ Custom exceptions for domain errors
 export class UserAlreadyExistsException extends ConflictException {
   constructor(email: string) {
-    super(`User with email ${email} already exists`);
+    super(`User with email ${email} already exists`)
   }
 }
 
@@ -261,30 +273,32 @@ export class AllExceptionsFilter implements ExceptionFilter {
 ## 📊 Database Standards
 
 ### Entity Definitions
+
 ```typescript
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column({ unique: true })
-  email: string;
+  email: string
 
   @Column()
-  password: string;
+  password: string
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 
   @DeleteDateColumn()
-  deletedAt?: Date; // Soft delete
+  deletedAt?: Date // Soft delete
 }
 ```
 
 ### Query Best Practices
+
 ```typescript
 // ✅ GOOD - Use query builder for complex queries
 const users = await this.userRepository
@@ -293,24 +307,24 @@ const users = await this.userRepository
   .andWhere('user.createdAt > :date', { date: lastMonth })
   .select(['user.id', 'user.email']) // Select only needed fields
   .take(10)
-  .getMany();
+  .getMany()
 
 // ✅ GOOD - Use transactions for related operations
-await this.dataSource.transaction(async (manager) => {
-  await manager.save(user);
-  await manager.save(profile);
-});
+await this.dataSource.transaction(async manager => {
+  await manager.save(user)
+  await manager.save(profile)
+})
 
 // ❌ BAD - N+1 queries
-const users = await this.userRepository.find();
+const users = await this.userRepository.find()
 for (const user of users) {
-  user.posts = await this.postRepository.find({ where: { userId: user.id } });
+  user.posts = await this.postRepository.find({ where: { userId: user.id } })
 }
 
 // ✅ GOOD - Use eager loading
 const users = await this.userRepository.find({
   relations: ['posts'],
-});
+})
 ```
 
 ---
@@ -318,33 +332,35 @@ const users = await this.userRepository.find({
 ## 🔒 Security Standards
 
 ### Input Validation
+
 ```typescript
 // ✅ ALWAYS validate with class-validator
 export class CreateUserDto {
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email: string
 
   @IsString()
   @MinLength(8)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
     message: 'Password must contain uppercase, lowercase, and number',
   })
-  password: string;
+  password: string
 }
 
 // ✅ Sanitize user input
-import { escape } from 'lodash';
-const sanitized = escape(userInput);
+import { escape } from 'lodash'
+const sanitized = escape(userInput)
 ```
 
 ### Authentication
+
 ```typescript
 // ✅ Hash passwords with bcrypt (10 rounds minimum)
-const hashedPassword = await bcrypt.hash(password, 10);
+const hashedPassword = await bcrypt.hash(password, 10)
 
 // ✅ Use JWT with short expiration
-const token = this.jwtService.sign(payload, { expiresIn: '15m' });
+const token = this.jwtService.sign(payload, { expiresIn: '15m' })
 
 // ✅ Store refresh tokens securely
 // ❌ Never store passwords in plain text
@@ -356,10 +372,11 @@ const token = this.jwtService.sign(payload, { expiresIn: '15m' });
 ## 🧪 Testing Standards
 
 ### Test Structure
+
 ```typescript
 describe('UserService', () => {
-  let service: UserService;
-  let repository: Repository<User>;
+  let service: UserService
+  let repository: Repository<User>
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -370,29 +387,30 @@ describe('UserService', () => {
           useValue: mockRepository,
         },
       ],
-    }).compile();
+    }).compile()
 
-    service = module.get<UserService>(UserService);
-  });
+    service = module.get<UserService>(UserService)
+  })
 
   describe('findOne', () => {
     it('should return a user when found', async () => {
-      const user = { id: '1', email: 'test@example.com' };
-      jest.spyOn(repository, 'findOne').mockResolvedValue(user);
+      const user = { id: '1', email: 'test@example.com' }
+      jest.spyOn(repository, 'findOne').mockResolvedValue(user)
 
-      expect(await service.findOne('1')).toEqual(user);
-    });
+      expect(await service.findOne('1')).toEqual(user)
+    })
 
     it('should throw NotFoundException when user not found', async () => {
-      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null)
 
-      await expect(service.findOne('1')).rejects.toThrow(NotFoundException);
-    });
-  });
-});
+      await expect(service.findOne('1')).rejects.toThrow(NotFoundException)
+    })
+  })
+})
 ```
 
 ### Test Coverage Requirements
+
 - **Unit Tests:** 80% minimum coverage
 - **Integration Tests:** Critical paths only
 - **E2E Tests:** User flows and API endpoints
@@ -402,29 +420,33 @@ describe('UserService', () => {
 ## 🚫 Common Anti-Patterns to Avoid
 
 ### General
+
 ```typescript
 // ❌ Magic numbers
-if (users.length > 50) {}
+if (users.length > 50) {
+}
 // ✅ Named constants
-const MAX_USERS_PER_PAGE = 50;
-if (users.length > MAX_USERS_PER_PAGE) {}
+const MAX_USERS_PER_PAGE = 50
+if (users.length > MAX_USERS_PER_PAGE) {
+}
 
 // ❌ God classes (classes that do everything)
 // ✅ Single Responsibility Principle
 
 // ❌ Callback hell
-getData((data) => {
-  processData(data, (result) => {
-    saveResult(result, (saved) => {});
-  });
-});
+getData(data => {
+  processData(data, result => {
+    saveResult(result, saved => {})
+  })
+})
 // ✅ async/await
-const data = await getData();
-const result = await processData(data);
-await saveResult(result);
+const data = await getData()
+const result = await processData(data)
+await saveResult(result)
 ```
 
 ### React
+
 ```typescript
 // ❌ Mutating state directly
 user.name = 'John';
@@ -452,6 +474,7 @@ useEffect(() => {
 ## 🔍 Code Review Checklist
 
 Before submitting code, verify:
+
 - [ ] Follows naming conventions
 - [ ] No console.logs or debugger statements
 - [ ] Proper error handling
@@ -468,12 +491,14 @@ Before submitting code, verify:
 ## 📚 Tools & Configuration
 
 ### Required Tools
+
 - **ESLint** - Linting
 - **Prettier** - Formatting
 - **Husky** - Git hooks
 - **lint-staged** - Pre-commit linting
 
 ### VS Code Extensions (Recommended)
+
 - ESLint
 - Prettier
 - TypeScript and JavaScript Language Features

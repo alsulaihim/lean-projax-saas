@@ -29,8 +29,8 @@ export async function DELETE(
       where: { id },
       select: {
         id: true,
-        createdById: true
-      }
+        createdById: true,
+      },
     })
 
     if (!assignment) {
@@ -44,23 +44,17 @@ export async function DELETE(
 
     // Delete assignment and all related data (cascade delete)
     await prisma.assignment.delete({
-      where: { id }
+      where: { id },
     })
 
     return NextResponse.json({ success: true, message: 'Assignment deleted successfully' })
   } catch (error) {
     console.error('Failed to delete assignment:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete assignment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete assignment' }, { status: 500 })
   }
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -89,29 +83,29 @@ export async function GET(
             vsmSteps: true,
             fishboneCategories: {
               include: {
-                causes: true
-              }
+                causes: true,
+              },
             },
-            fmeaEntries: true
-          }
+            fmeaEntries: true,
+          },
         },
         vocStatements: {
           include: {
-            ctqRequirements: true
-          }
+            ctqRequirements: true,
+          },
         },
         recommendations: true,
         auditLogs: {
           include: {
-            user: true
+            user: true,
           },
           orderBy: {
-            timestamp: 'desc'
+            timestamp: 'desc',
           },
           take: limit,
-          skip: skip
-        }
-      }
+          skip: skip,
+        },
+      },
     })
 
     if (!assignment) {
@@ -120,7 +114,7 @@ export async function GET(
 
     // Get total count of audit logs for pagination metadata
     const totalAuditLogs = await prisma.auditLog.count({
-      where: { assignmentId: id }
+      where: { assignmentId: id },
     })
 
     return NextResponse.json({
@@ -129,14 +123,11 @@ export async function GET(
         page,
         limit,
         total: totalAuditLogs,
-        totalPages: Math.ceil(totalAuditLogs / limit)
-      }
+        totalPages: Math.ceil(totalAuditLogs / limit),
+      },
     })
   } catch (error) {
     console.error('Failed to fetch assignment:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch assignment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to fetch assignment' }, { status: 500 })
   }
 }

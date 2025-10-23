@@ -1,13 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -34,7 +28,7 @@ import {
   Eye,
   Clock,
   User,
-  Filter
+  Filter,
 } from 'lucide-react'
 import type { Prisma, AuditAction } from '@prisma/client'
 
@@ -58,7 +52,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
     DELETED: <Trash2 className="h-4 w-4 text-red-600" />,
     COMPLETED: <CheckCircle className="h-4 w-4 text-green-600" />,
     REOPENED: <RotateCcw className="h-4 w-4 text-orange-600" />,
-    ACCESSED: <Eye className="h-4 w-4 text-gray-600" />
+    ACCESSED: <Eye className="h-4 w-4 text-gray-600" />,
   }
 
   const actionColors: Record<AuditAction, string> = {
@@ -67,7 +61,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
     DELETED: 'bg-red-100 text-red-800 border-red-300',
     COMPLETED: 'bg-green-100 text-green-800 border-green-300',
     REOPENED: 'bg-orange-100 text-orange-800 border-orange-300',
-    ACCESSED: 'bg-gray-100 text-gray-800 border-gray-300'
+    ACCESSED: 'bg-gray-100 text-gray-800 border-gray-300',
   }
 
   // Get unique entity types
@@ -77,7 +71,8 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
   const filteredLogs = auditLogs.filter(log => {
     const matchesAction = filterAction === 'ALL' || log.action === filterAction
     const matchesEntityType = filterEntityType === 'ALL' || log.entityType === filterEntityType
-    const matchesSearch = searchTerm === '' ||
+    const matchesSearch =
+      searchTerm === '' ||
       log.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.entityType.toLowerCase().includes(searchTerm.toLowerCase())
@@ -93,7 +88,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
     }).format(d)
   }
 
@@ -145,7 +140,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
     created: auditLogs.filter(l => l.action === 'CREATED').length,
     updated: auditLogs.filter(l => l.action === 'UPDATED').length,
     deleted: auditLogs.filter(l => l.action === 'DELETED').length,
-    uniqueUsers: new Set(auditLogs.map(l => l.userId)).size
+    uniqueUsers: new Set(auditLogs.map(l => l.userId)).size,
   }
 
   return (
@@ -156,9 +151,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
             <FileText className="h-6 w-6" />
             Audit Trail
           </CardTitle>
-          <CardDescription>
-            Complete history of all changes made to this assignment
-          </CardDescription>
+          <CardDescription>Complete history of all changes made to this assignment</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Statistics */}
@@ -255,7 +248,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
                   <Input
                     placeholder="Search user or entity..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={e => setSearchTerm(e.target.value)}
                   />
                 </div>
               </div>
@@ -292,14 +285,14 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
                         {formatTimestamp(log.timestamp)}
                       </TableCell>
                       <TableCell>
-                        <span className={`flex items-center gap-1 px-2 py-1 text-xs border rounded ${actionColors[log.action]}`}>
+                        <span
+                          className={`flex items-center gap-1 px-2 py-1 text-xs border rounded ${actionColors[log.action]}`}
+                        >
                           {actionIcons[log.action]}
                           {log.action}
                         </span>
                       </TableCell>
-                      <TableCell className="text-sm">
-                        {formatEntityType(log.entityType)}
-                      </TableCell>
+                      <TableCell className="text-sm">{formatEntityType(log.entityType)}</TableCell>
                       <TableCell>
                         <div className="text-sm">
                           <p className="font-medium">{log.user.name}</p>
@@ -311,9 +304,7 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
                           </p>
                         </div>
                       </TableCell>
-                      <TableCell className="max-w-[400px]">
-                        {renderChangeDetails(log)}
-                      </TableCell>
+                      <TableCell className="max-w-[400px]">{renderChangeDetails(log)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -337,7 +328,9 @@ export function AuditLogSection({ assignmentId: _assignmentId, auditLogs }: Audi
               <div className="text-sm text-gray-700">
                 <p className="font-medium mb-2">Audit Trail Information:</p>
                 <ul className="space-y-1 list-disc list-inside">
-                  <li>All changes are automatically logged with timestamp, user, and action details</li>
+                  <li>
+                    All changes are automatically logged with timestamp, user, and action details
+                  </li>
                   <li>Audit logs are immutable and cannot be edited or deleted</li>
                   <li>Logs are retained for compliance and traceability purposes</li>
                   <li>Use filters to narrow down specific events or time periods</li>

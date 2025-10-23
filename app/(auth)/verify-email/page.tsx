@@ -18,34 +18,37 @@ function VerifyEmailContent() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
 
-  const verifyEmail = useCallback(async (token: string) => {
-    try {
-      const response = await fetch('/api/verify-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-      })
+  const verifyEmail = useCallback(
+    async (token: string) => {
+      try {
+        const response = await fetch('/api/verify-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        })
 
-      const data = await response.json()
+        const data = await response.json()
 
-      if (response.ok) {
-        setStatus('success')
-        setMessage('Email verified successfully! You can now sign in.')
-        
-        // Redirect to login after 3 seconds
-        setTimeout(() => {
-          router.push('/login?verified=true')
-        }, 3000)
-      } else {
+        if (response.ok) {
+          setStatus('success')
+          setMessage('Email verified successfully! You can now sign in.')
+
+          // Redirect to login after 3 seconds
+          setTimeout(() => {
+            router.push('/login?verified=true')
+          }, 3000)
+        } else {
+          setStatus('error')
+          setMessage(data.error || 'Verification failed. The link may be invalid or expired.')
+        }
+      } catch (error) {
+        console.error('Verification error:', error)
         setStatus('error')
-        setMessage(data.error || 'Verification failed. The link may be invalid or expired.')
+        setMessage('Network error. Please try again.')
       }
-    } catch (error) {
-      console.error('Verification error:', error)
-      setStatus('error')
-      setMessage('Network error. Please try again.')
-    }
-  }, [router])
+    },
+    [router]
+  )
 
   useEffect(() => {
     const token = searchParams.get('token')
@@ -80,9 +83,7 @@ function VerifyEmailContent() {
           {status === 'success' && (
             <Alert className="border-green-600 bg-green-50">
               <CheckCircle2 className="h-5 w-5 text-green-600" />
-              <AlertDescription className="text-green-800">
-                {message}
-              </AlertDescription>
+              <AlertDescription className="text-green-800">{message}</AlertDescription>
             </Alert>
           )}
 
@@ -94,9 +95,7 @@ function VerifyEmailContent() {
               </Alert>
 
               <div className="text-center space-y-3">
-                <p className="text-sm text-gray-600">
-                  Need a new verification link?
-                </p>
+                <p className="text-sm text-gray-600">Need a new verification link?</p>
                 <Link href="/signup">
                   <Button variant="outline" className="border-black">
                     Sign Up Again
@@ -114,13 +113,9 @@ function VerifyEmailContent() {
 
           {status === 'success' && (
             <div className="text-center mt-4">
-              <p className="text-sm text-gray-600 mb-3">
-                Redirecting to login page...
-              </p>
+              <p className="text-sm text-gray-600 mb-3">Redirecting to login page...</p>
               <Link href="/login">
-                <Button className="bg-black text-white hover:bg-gray-800">
-                  Go to Login Now
-                </Button>
+                <Button className="bg-black text-white hover:bg-gray-800">Go to Login Now</Button>
               </Link>
             </div>
           )}
@@ -144,26 +139,25 @@ function VerifyEmailContent() {
  */
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-2 border-black">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-3xl font-bold">Email Verification</CardTitle>
-            <CardDescription className="text-gray-600">
-              Loading verification...
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <Loader2 className="h-12 w-12 animate-spin mx-auto text-blue-600 mb-4" />
-              <p className="text-gray-600">Please wait...</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center p-4">
+          <Card className="w-full max-w-md border-2 border-black">
+            <CardHeader className="space-y-1 text-center">
+              <CardTitle className="text-3xl font-bold">Email Verification</CardTitle>
+              <CardDescription className="text-gray-600">Loading verification...</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <Loader2 className="h-12 w-12 animate-spin mx-auto text-blue-600 mb-4" />
+                <p className="text-gray-600">Please wait...</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
       <VerifyEmailContent />
     </Suspense>
   )
 }
-

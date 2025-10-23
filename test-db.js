@@ -14,7 +14,6 @@ async function testConnection() {
     users.forEach(user => {
       console.log(' -', user.email, user.name)
     })
-
   } catch (error) {
     console.error('Database connection failed:', error)
   } finally {

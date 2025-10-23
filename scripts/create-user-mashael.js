@@ -11,9 +11,9 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: connectionString
-    }
-  }
+      url: connectionString,
+    },
+  },
 })
 
 async function createUser() {
@@ -22,7 +22,7 @@ async function createUser() {
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email: 'mashael@sample.com' }
+      where: { email: 'mashael@sample.com' },
     })
 
     if (existingUser) {
@@ -41,8 +41,8 @@ async function createUser() {
         email: 'mashael@sample.com',
         name: 'Mashael M',
         role: 'BPI_TEAM', // Full privileges for BPI team
-        passwordHash: hashedPassword
-      }
+        passwordHash: hashedPassword,
+      },
     })
 
     console.log('✅ User created successfully!')
@@ -52,7 +52,6 @@ async function createUser() {
     console.log('   Title: Head of BPI')
     console.log('   Default Password: Password123!')
     console.log('\n📌 Note: Please change the password after first login')
-
   } catch (error) {
     console.error('❌ Error creating user:', error)
   } finally {

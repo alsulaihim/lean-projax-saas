@@ -35,7 +35,9 @@ const MARKETING_URL = process.env.NEXT_PUBLIC_MARKETING_URL || 'http://localhost
 export function Header({ user }: HeaderProps) {
   const router = useRouter()
   const isPro = user.subscriptionTier === SubscriptionTier.PRO
-  const isTrialOrFree = user.subscriptionTier === SubscriptionTier.FREE || user.subscriptionStatus === SubscriptionStatus.TRIAL
+  const isTrialOrFree =
+    user.subscriptionTier === SubscriptionTier.FREE ||
+    user.subscriptionStatus === SubscriptionStatus.TRIAL
 
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' })
@@ -47,7 +49,9 @@ export function Header({ user }: HeaderProps) {
     <header className="border-b-2 border-black bg-white">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <span className="text-3xl text-red-700 font-[family-name:var(--font-orbitron)]">Lean Projax</span>
+          <span className="text-3xl text-red-700 font-[family-name:var(--font-orbitron)]">
+            Lean Projax
+          </span>
           <nav className="flex gap-4">
             <Button
               variant="ghost"
@@ -102,7 +106,9 @@ export function Header({ user }: HeaderProps) {
                       </>
                     ) : (
                       <span className="text-xs text-gray-600">
-                        {user.subscriptionStatus === SubscriptionStatus.TRIAL ? 'Trial Plan' : 'Free Plan'}
+                        {user.subscriptionStatus === SubscriptionStatus.TRIAL
+                          ? 'Trial Plan'
+                          : 'Free Plan'}
                       </span>
                     )}
                   </div>
@@ -121,10 +127,7 @@ export function Header({ user }: HeaderProps) {
                   <DropdownMenuSeparator className="bg-gray-300" />
                 </>
               )}
-              <DropdownMenuItem
-                onClick={handleLogout}
-                className="cursor-pointer"
-              >
+              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                 <LogOut className="mr-2 h-4 w-4" />
                 Sign Out
               </DropdownMenuItem>

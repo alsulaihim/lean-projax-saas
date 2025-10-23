@@ -17,11 +17,11 @@ Complete guide for managing development, staging, and production environments wi
 
 You'll have 3 environments:
 
-| Environment | Branch | Purpose | URL |
-|------------|--------|---------|-----|
-| **Development** | `dev` | Local development & testing | `localhost:3070` |
-| **Staging** | `staging` | Pre-production testing | `staging.yourapp.railway.app` |
-| **Production** | `main` | Live user-facing app | `app.yourdomain.com` |
+| Environment     | Branch    | Purpose                     | URL                           |
+| --------------- | --------- | --------------------------- | ----------------------------- |
+| **Development** | `dev`     | Local development & testing | `localhost:3070`              |
+| **Staging**     | `staging` | Pre-production testing      | `staging.yourapp.railway.app` |
+| **Production**  | `main`    | Live user-facing app        | `app.yourdomain.com`          |
 
 ### Why 3 Environments?
 
@@ -197,8 +197,8 @@ git pull origin staging
 
 ```javascript
 // Before Prettier (messy):
-function example(  x,y  ){
-return x+y
+function example(x, y) {
+  return x + y
 }
 
 // After Prettier (clean):
@@ -210,6 +210,7 @@ function example(x, y) {
 ### Should You Use Prettier?
 
 **✅ YES! Benefits:**
+
 - Automatic code formatting
 - Consistent style across all files
 - No debates about spacing/tabs
@@ -217,6 +218,7 @@ function example(x, y) {
 - Professional-looking code
 
 **Current Status:**
+
 - ✅ ESLint is configured (catches bugs)
 - ❌ Prettier is NOT configured (formatting)
 - ✅ TypeScript is configured (type safety)
@@ -260,6 +262,7 @@ For each Railway project:
 ### Step 3: Environment-Specific Variables
 
 **Production:**
+
 ```bash
 NEXTAUTH_URL=https://app.yourdomain.com
 STRIPE_SECRET_KEY=sk_live_...
@@ -267,6 +270,7 @@ PAYPAL_CLIENT_ID=live_...
 ```
 
 **Staging:**
+
 ```bash
 NEXTAUTH_URL=https://staging.railway.app
 STRIPE_SECRET_KEY=sk_test_...
@@ -274,6 +278,7 @@ PAYPAL_CLIENT_ID=sandbox_...
 ```
 
 **Development:**
+
 ```bash
 NEXTAUTH_URL=http://localhost:3070
 STRIPE_SECRET_KEY=sk_test_...
@@ -323,6 +328,7 @@ git push origin feature/excel-export
 ### As a Non-Developer, Follow This:
 
 **Every day:**
+
 1. Pull latest `dev` branch
 2. Create feature branch
 3. Make changes
@@ -330,12 +336,14 @@ git push origin feature/excel-export
 5. Commit and push
 
 **Every feature:**
+
 1. Create Pull Request to `dev`
 2. Wait for CodeRabbit review
 3. Fix issues if any
 4. Merge to `dev`
 
 **Every week:**
+
 1. Merge `dev` → `staging`
 2. Test on staging
 3. If good, merge `staging` → `main`
@@ -366,11 +374,11 @@ CodeRabbit automatically reviews your PRs and checks for:
 
 ### When to Create PR:
 
-| From | To | When |
-|------|-----|------|
+| From                | To                                         | When |
+| ------------------- | ------------------------------------------ | ---- |
 | `feature/*` → `dev` | ✅ After feature complete & tested locally |
-| `dev` → `staging` | ✅ When ready to test in staging |
-| `staging` → `main` | ✅ When staging is perfect |
+| `dev` → `staging`   | ✅ When ready to test in staging           |
+| `staging` → `main`  | ✅ When staging is perfect                 |
 
 ### Branch Protection Rules (Set on GitHub):
 
@@ -391,18 +399,23 @@ CodeRabbit automatically reviews your PRs and checks for:
 ## 🆘 Common Questions
 
 ### Q: Can I push directly to dev?
+
 **A:** Yes, but better to use feature branches and PRs for code review.
 
 ### Q: How often should I deploy to production?
+
 **A:** Once per week or when you have tested features ready.
 
 ### Q: What if staging breaks?
+
 **A:** Fix in `dev`, then merge to `staging` again. Never touch `main`!
 
 ### Q: Should I test on localhost?
+
 **A:** Always! Test locally → staging → production.
 
 ### Q: What if production breaks?
+
 **A:** Create hotfix branch from `main`, fix, PR directly to `main`.
 
 ---
@@ -410,14 +423,17 @@ CodeRabbit automatically reviews your PRs and checks for:
 ## 🎓 Learning Resources
 
 ### Git & GitHub:
+
 - [GitHub Flow Guide](https://guides.github.com/introduction/flow/)
 - [Pull Request Tutorial](https://docs.github.com/en/pull-requests)
 
 ### Railway:
+
 - [Railway Docs](https://docs.railway.app)
 - [Multi-Environment Setup](https://docs.railway.app/guides/environments)
 
 ### Best Practices:
+
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 

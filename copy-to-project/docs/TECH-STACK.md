@@ -1,4 +1,5 @@
 # Tech Stack Specification
+
 > Exact versions and configurations
 
 ---
@@ -6,6 +7,7 @@
 ## 🔧 CORE TECHNOLOGIES
 
 ### Frontend
+
 - **Next.js:** `^14.x.x` (App Router)
 - **React:** `^18.x.x`
 - **TypeScript:** `^5.x.x`
@@ -13,6 +15,7 @@
 - **Tailwind CSS:** `^3.x.x`
 
 ### Backend
+
 - **NestJS:** `^10.x.x`
 - **Node.js:** `^20.x.x` (LTS)
 - **TypeScript:** `^5.x.x`
@@ -20,6 +23,7 @@
 - **Supabase Client:** `@supabase/supabase-js` `^2.x.x`
 
 ### Mobile
+
 - **iOS:** Swift ^5.x, SwiftUI, iOS 15.0+
 - **Android:** Kotlin ^1.9.x, Jetpack Compose, Min SDK 24
 
@@ -41,6 +45,7 @@
 - **GitHub Actions:** Latest
 
 **Cloud Platforms:** [Choose one or combine]
+
 - **Railway:** Modern deployment platform (recommended for rapid deployment)
 - **GCP (Google Cloud Platform):** Enterprise-grade infrastructure
 - **AWS (Amazon Web Services):** Enterprise-grade infrastructure
@@ -70,6 +75,7 @@ REDIS_PORT=[DEFINE_AT_INIT]           # Example: 6379 (if using Redis)
 ```
 
 **Common Port Ranges by Project Type:**
+
 - **Development:** 3000-3999
 - **Staging:** 4000-4999
 - **Services:** 5000-5999
@@ -111,6 +117,7 @@ REDIS_PORT=[REDIS_PORT]
 ## 📝 CUSTOMIZATION INSTRUCTIONS
 
 Fill in during project initialization:
+
 - [ ] **Port allocation** - Define all ports to avoid conflicts
 - [ ] Exact version numbers when initializing
 - [ ] **Supabase project** - Create project and get URL/keys

@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { checkDemoMode } from '@/lib/demo-check'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -22,10 +19,7 @@ export async function PATCH(
 
     // Input validation
     if (!causeDescription || !assignmentId) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Check entity exists
@@ -37,28 +31,22 @@ export async function PATCH(
             process: {
               include: {
                 assignment: {
-                  select: { createdById: true }
-                }
-              }
-            }
-          }
-        }
-      }
+                  select: { createdById: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!oldCause) {
-      return NextResponse.json(
-        { error: 'Fishbone cause not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Fishbone cause not found' }, { status: 404 })
     }
 
     // Verify nested relations exist
     if (!oldCause.category?.process?.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -67,10 +55,10 @@ export async function PATCH(
     }
 
     // Update fishbone cause and create audit log atomically
-    const cause = await prisma.$transaction(async (tx) => {
+    const cause = await prisma.$transaction(async tx => {
       const updatedCause = await tx.fishboneCause.update({
         where: { id },
-        data: { causeDescription }
+        data: { causeDescription },
       })
 
       await tx.auditLog.create({
@@ -82,9 +70,9 @@ export async function PATCH(
           entityId: updatedCause.id,
           changeDetails: {
             before: { causeDescription: oldCause.causeDescription },
-            after: { causeDescription }
-          }
-        }
+            after: { causeDescription },
+          },
+        },
       })
 
       return updatedCause
@@ -93,10 +81,7 @@ export async function PATCH(
     return NextResponse.json(cause)
   } catch (error) {
     console.error('Failed to update fishbone cause:', error)
-    return NextResponse.json(
-      { error: 'Failed to update fishbone cause' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update fishbone cause' }, { status: 500 })
   }
 }
 
@@ -116,10 +101,7 @@ export async function DELETE(
 
     // Input validation
     if (!assignmentId) {
-      return NextResponse.json(
-        { error: 'Missing assignmentId' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing assignmentId' }, { status: 400 })
     }
 
     // Check entity exists before deletion
@@ -131,28 +113,22 @@ export async function DELETE(
             process: {
               include: {
                 assignment: {
-                  select: { createdById: true }
-                }
-              }
-            }
-          }
-        }
-      }
+                  select: { createdById: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!cause) {
-      return NextResponse.json(
-        { error: 'Fishbone cause not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Fishbone cause not found' }, { status: 404 })
     }
 
     // Verify nested relations exist
     if (!cause.category?.process?.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -161,9 +137,9 @@ export async function DELETE(
     }
 
     // Delete fishbone cause and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       await tx.fishboneCause.delete({
-        where: { id }
+        where: { id },
       })
 
       await tx.auditLog.create({
@@ -174,18 +150,15 @@ export async function DELETE(
           entityType: 'FishboneCause',
           entityId: id,
           changeDetails: {
-            causeDescription: cause.causeDescription
-          }
-        }
+            causeDescription: cause.causeDescription,
+          },
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete fishbone cause:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete fishbone cause' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete fishbone cause' }, { status: 500 })
   }
 }

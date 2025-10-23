@@ -4,13 +4,7 @@ import prisma from '@/lib/prisma'
 import { calculatePareto } from '@/lib/calculations/pareto'
 import { calculateVSMMetrics } from '@/lib/calculations/vsm-metrics'
 import { analyzeProcessCapability } from '@/lib/calculations/capability'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -21,9 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  TabsContent,
-} from '@/components/ui/tabs'
+import { TabsContent } from '@/components/ui/tabs'
 import {
   FileDown,
   AlertTriangle,
@@ -33,7 +25,7 @@ import {
   Target,
   ArrowLeft,
   Layers,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react'
 import Link from 'next/link'
 import { ParetoChart } from '@/components/charts/pareto-chart'
@@ -42,7 +34,7 @@ import { FishboneAnalysisViewer } from '@/components/fishbone-analysis-viewer'
 import { SummaryTabs } from '@/components/summary-tabs'
 
 export default async function DemoComprehensiveSummaryPage({
-  params
+  params,
 }: {
   params: Promise<{ id: string }>
 }) {
@@ -70,31 +62,31 @@ export default async function DemoComprehensiveSummaryPage({
       processes: {
         include: {
           vsmSteps: {
-            orderBy: { stepNumber: 'asc' }
+            orderBy: { stepNumber: 'asc' },
           },
           fmeaEntries: {
-            orderBy: { rpn: 'desc' }
+            orderBy: { rpn: 'desc' },
           },
           fishboneCategories: {
             include: {
-              causes: true
-            }
+              causes: true,
+            },
           },
           sipocEntries: {
-            orderBy: { createdAt: 'asc' }
-          }
+            orderBy: { createdAt: 'asc' },
+          },
         },
-        orderBy: { order: 'asc' }
+        orderBy: { order: 'asc' },
       },
       vocStatements: {
         include: {
-          ctqRequirements: true
-        }
+          ctqRequirements: true,
+        },
       },
       recommendations: {
-        orderBy: { createdAt: 'asc' }
-      }
-    }
+        orderBy: { createdAt: 'asc' },
+      },
+    },
   })
 
   if (!assignment) {
@@ -103,25 +95,30 @@ export default async function DemoComprehensiveSummaryPage({
 
   // Calculate key metrics
   const totalVOC = assignment.vocStatements.length
-  const totalCTQ = assignment.vocStatements.reduce((sum, voc) => sum + voc.ctqRequirements.length, 0)
+  const totalCTQ = assignment.vocStatements.reduce(
+    (sum, voc) => sum + voc.ctqRequirements.length,
+    0
+  )
 
   // Helper to convert VSM steps to the format expected by calculateVSMMetrics
-  const convertVSMSteps = (steps: Array<{
-    id: string
-    stepName: string
-    processTime?: number | null
-    durationMinutes?: number | null
-    waitingTime?: number | null
-    waitTimeMinutes?: number | null
-    valueMeasure?: string | null
-    valueAdded?: boolean | null
-  }>) => {
+  const convertVSMSteps = (
+    steps: Array<{
+      id: string
+      stepName: string
+      processTime?: number | null
+      durationMinutes?: number | null
+      waitingTime?: number | null
+      waitTimeMinutes?: number | null
+      valueMeasure?: string | null
+      valueAdded?: boolean | null
+    }>
+  ) => {
     return steps.map(step => ({
       id: step.id,
       stepName: step.stepName,
       durationMinutes: step.processTime || step.durationMinutes || 0,
       waitTimeMinutes: step.waitingTime || step.waitTimeMinutes || 0,
-      valueAdded: step.valueMeasure === 'VALUE_ADDED'
+      valueAdded: step.valueMeasure === 'VALUE_ADDED',
     }))
   }
 
@@ -144,19 +141,26 @@ export default async function DemoComprehensiveSummaryPage({
       vsmSteps.map(step => ({
         id: step.id,
         name: step.stepName,
-        value: (step.processTime || step.durationMinutes || 0) + (step.waitingTime || step.waitTimeMinutes || 0)
+        value:
+          (step.processTime || step.durationMinutes || 0) +
+          (step.waitingTime || step.waitTimeMinutes || 0),
       }))
     )
 
     // Process capability
     let capabilityData = null
-    if (process.lowerSpecLimit !== null && process.upperSpecLimit !== null && process.sampleMean !== null && process.sampleStdDev !== null) {
+    if (
+      process.lowerSpecLimit !== null &&
+      process.upperSpecLimit !== null &&
+      process.sampleMean !== null &&
+      process.sampleStdDev !== null
+    ) {
       capabilityData = analyzeProcessCapability({
         lowerSpecLimit: process.lowerSpecLimit,
         upperSpecLimit: process.upperSpecLimit,
         targetValue: process.targetValue,
         mean: process.sampleMean,
-        stdDev: process.sampleStdDev
+        stdDev: process.sampleStdDev,
       })
     }
 
@@ -187,30 +191,36 @@ export default async function DemoComprehensiveSummaryPage({
         high: processHighRisk.length,
         medium: processMediumRisk.length,
         low: process.fmeaEntries.length - processHighRisk.length - processMediumRisk.length,
-        topRisks: process.fmeaEntries.slice(0, 3)
+        topRisks: process.fmeaEntries.slice(0, 3),
       },
       sipocSteps: sipocSteps,
       fishboneStats: {
         categories: process.fishboneCategories.length,
-        totalCauses: totalCauses
-      }
+        totalCauses: totalCauses,
+      },
     }
   })
 
   // Status color helper
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'bg-green-100 text-green-800 border-green-300'
-      case 'REOPENED': return 'bg-yellow-100 text-yellow-800 border-yellow-300'
-      default: return 'bg-gray-100 text-gray-800 border-gray-300'
+      case 'COMPLETED':
+        return 'bg-green-100 text-green-800 border-green-300'
+      case 'REOPENED':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-300'
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-300'
     }
   }
 
   const getValueMeasureColor = (measure: string) => {
     switch (measure) {
-      case 'VALUE_ADDED': return 'bg-green-100 text-green-800'
-      case 'ESSENTIAL_NON_VALUE': return 'bg-yellow-100 text-yellow-800'
-      default: return 'bg-red-100 text-red-800'
+      case 'VALUE_ADDED':
+        return 'bg-green-100 text-green-800'
+      case 'ESSENTIAL_NON_VALUE':
+        return 'bg-yellow-100 text-yellow-800'
+      default:
+        return 'bg-red-100 text-red-800'
     }
   }
 
@@ -228,7 +238,9 @@ export default async function DemoComprehensiveSummaryPage({
           </Link>
           <div>
             <h1 className="text-xl md:text-3xl font-bold">{assignment.title}</h1>
-            <p className="text-sm md:text-base text-gray-600 mt-1">Comprehensive Summary Dashboard</p>
+            <p className="text-sm md:text-base text-gray-600 mt-1">
+              Comprehensive Summary Dashboard
+            </p>
           </div>
         </div>
         <Button
@@ -247,24 +259,28 @@ export default async function DemoComprehensiveSummaryPage({
           <div className="flex flex-col gap-3">
             <div className="flex items-start justify-between gap-3">
               <CardTitle className="text-lg md:text-xl">Assignment Overview</CardTitle>
-              <span className={`px-2 md:px-3 py-1 text-xs md:text-sm font-medium border rounded-full whitespace-nowrap ${getStatusColor(assignment.status)}`}>
+              <span
+                className={`px-2 md:px-3 py-1 text-xs md:text-sm font-medium border rounded-full whitespace-nowrap ${getStatusColor(assignment.status)}`}
+              >
                 {assignment.status}
               </span>
             </div>
-            <CardDescription className="text-sm">
-              {assignment.objective}
-            </CardDescription>
+            <CardDescription className="text-sm">{assignment.objective}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
             <div>
               <p className="text-xs md:text-sm text-gray-500">Created By</p>
-              <p className="text-sm md:text-base font-medium truncate">{assignment.createdBy.name}</p>
+              <p className="text-sm md:text-base font-medium truncate">
+                {assignment.createdBy.name}
+              </p>
             </div>
             <div>
               <p className="text-xs md:text-sm text-gray-500">Created Date</p>
-              <p className="text-sm md:text-base font-medium">{new Date(assignment.createdAt).toLocaleDateString()}</p>
+              <p className="text-sm md:text-base font-medium">
+                {new Date(assignment.createdAt).toLocaleDateString()}
+              </p>
             </div>
             <div>
               <p className="text-xs md:text-sm text-gray-500">Processes</p>
@@ -272,12 +288,16 @@ export default async function DemoComprehensiveSummaryPage({
             </div>
             <div>
               <p className="text-xs md:text-sm text-gray-500">VOC/CTQ</p>
-              <p className="text-sm md:text-base font-medium">{totalVOC}/{totalCTQ}</p>
+              <p className="text-sm md:text-base font-medium">
+                {totalVOC}/{totalCTQ}
+              </p>
             </div>
             <div>
               <p className="text-xs md:text-sm text-gray-500">Completion</p>
               <p className="text-sm md:text-base font-medium">
-                {assignment.completedAt ? new Date(assignment.completedAt).toLocaleDateString() : 'In Progress'}
+                {assignment.completedAt
+                  ? new Date(assignment.completedAt).toLocaleDateString()
+                  : 'In Progress'}
               </p>
             </div>
           </div>
@@ -302,7 +322,9 @@ export default async function DemoComprehensiveSummaryPage({
             <div className="text-center">
               <Activity className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-gray-600" />
               <p className="text-xs text-gray-500">Overall Efficiency</p>
-              <p className="text-xl md:text-2xl font-bold">{vsmMetrics.efficiencyRatio.toFixed(1)}%</p>
+              <p className="text-xl md:text-2xl font-bold">
+                {vsmMetrics.efficiencyRatio.toFixed(1)}%
+              </p>
               <p className="text-xs text-gray-400 mt-1">VA Ratio</p>
             </div>
           </CardContent>
@@ -324,7 +346,9 @@ export default async function DemoComprehensiveSummaryPage({
             <div className="text-center">
               <AlertCircle className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-yellow-600" />
               <p className="text-xs text-yellow-700">Medium Risk</p>
-              <p className="text-xl md:text-2xl font-bold text-yellow-800">{mediumRiskFMEA.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-yellow-800">
+                {mediumRiskFMEA.length}
+              </p>
               <p className="text-xs text-yellow-600 mt-1">RPN 100-199</p>
             </div>
           </CardContent>
@@ -335,7 +359,9 @@ export default async function DemoComprehensiveSummaryPage({
             <div className="text-center">
               <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-green-600" />
               <p className="text-xs text-green-700">Recommendations</p>
-              <p className="text-xl md:text-2xl font-bold text-green-800">{assignment.recommendations.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-green-800">
+                {assignment.recommendations.length}
+              </p>
               <p className="text-xs text-green-600 mt-1">Total</p>
             </div>
           </CardContent>
@@ -346,7 +372,9 @@ export default async function DemoComprehensiveSummaryPage({
             <div className="text-center">
               <Layers className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-blue-600" />
               <p className="text-xs text-blue-700">Processes</p>
-              <p className="text-xl md:text-2xl font-bold text-blue-800">{assignment.processes.length}</p>
+              <p className="text-xl md:text-2xl font-bold text-blue-800">
+                {assignment.processes.length}
+              </p>
               <p className="text-xs text-blue-600 mt-1">Analyzed</p>
             </div>
           </CardContent>
@@ -355,10 +383,9 @@ export default async function DemoComprehensiveSummaryPage({
 
       {/* Process-by-Process Analysis */}
       <SummaryTabs
-        defaultValue={assignment.processes[0]?.id || "overview"}
+        defaultValue={assignment.processes[0]?.id || 'overview'}
         processes={assignment.processes.map(p => ({ id: p.id, processName: p.processName }))}
       >
-
         {/* Overall Summary Tab */}
         <TabsContent value="overview" className="space-y-6">
           {/* VOC and CTQ Section */}
@@ -386,7 +413,9 @@ export default async function DemoComprehensiveSummaryPage({
                         <div className="text-center">
                           <Target className="h-5 w-5 md:h-6 md:w-6 mx-auto mb-2 text-purple-600" />
                           <p className="text-xs md:text-sm text-purple-700">Total CTQ</p>
-                          <p className="text-2xl md:text-3xl font-bold text-purple-800">{totalCTQ}</p>
+                          <p className="text-2xl md:text-3xl font-bold text-purple-800">
+                            {totalCTQ}
+                          </p>
                         </div>
                       </CardContent>
                     </Card>
@@ -406,53 +435,58 @@ export default async function DemoComprehensiveSummaryPage({
                   {/* VOC/CTQ Details Table */}
                   <div className="overflow-x-auto">
                     <div className="min-w-[600px]">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-gray-100">
-                          <TableHead className="w-[40%]">VOC Statement</TableHead>
-                          <TableHead>Customer Segment</TableHead>
-                          <TableHead className="text-center">CTQ Count</TableHead>
-                          <TableHead className="w-[30%]">CTQ Requirements</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {assignment.vocStatements.map((voc) => (
-                          <TableRow key={voc.id}>
-                            <TableCell className="font-medium">{voc.voiceStatement}</TableCell>
-                            <TableCell>
-                              <Badge variant="outline" className="border-blue-500 text-blue-700">
-                                {voc.customerSegment}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-center">
-                              <Badge variant="outline" className={
-                                voc.ctqRequirements.length > 0 ? 'border-green-500 text-green-700' : 'border-gray-300'
-                              }>
-                                {voc.ctqRequirements.length}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              {voc.ctqRequirements.length > 0 ? (
-                                <ul className="text-sm space-y-1">
-                                  {voc.ctqRequirements.map((ctq, idx) => (
-                                    <li key={ctq.id} className="text-gray-700">
-                                      {idx + 1}. {ctq.ctqDescription}
-                                      {ctq.measurementCriteria && (
-                                        <span className="text-gray-500 ml-1">
-                                          ({ctq.measurementCriteria})
-                                        </span>
-                                      )}
-                                    </li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                <span className="text-sm text-gray-400">No CTQ defined</span>
-                              )}
-                            </TableCell>
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-gray-100">
+                            <TableHead className="w-[40%]">VOC Statement</TableHead>
+                            <TableHead>Customer Segment</TableHead>
+                            <TableHead className="text-center">CTQ Count</TableHead>
+                            <TableHead className="w-[30%]">CTQ Requirements</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {assignment.vocStatements.map(voc => (
+                            <TableRow key={voc.id}>
+                              <TableCell className="font-medium">{voc.voiceStatement}</TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="border-blue-500 text-blue-700">
+                                  {voc.customerSegment}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <Badge
+                                  variant="outline"
+                                  className={
+                                    voc.ctqRequirements.length > 0
+                                      ? 'border-green-500 text-green-700'
+                                      : 'border-gray-300'
+                                  }
+                                >
+                                  {voc.ctqRequirements.length}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                {voc.ctqRequirements.length > 0 ? (
+                                  <ul className="text-sm space-y-1">
+                                    {voc.ctqRequirements.map((ctq, idx) => (
+                                      <li key={ctq.id} className="text-gray-700">
+                                        {idx + 1}. {ctq.ctqDescription}
+                                        {ctq.measurementCriteria && (
+                                          <span className="text-gray-500 ml-1">
+                                            ({ctq.measurementCriteria})
+                                          </span>
+                                        )}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <span className="text-sm text-gray-400">No CTQ defined</span>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
                     </div>
                   </div>
                 </div>
@@ -465,8 +499,12 @@ export default async function DemoComprehensiveSummaryPage({
           {/* Combined Pareto Analysis */}
           <Card className="border-2 border-black">
             <CardHeader>
-              <CardTitle className="text-lg md:text-xl">Combined Pareto Analysis - All Processes</CardTitle>
-              <CardDescription className="text-sm">80/20 analysis across all process steps</CardDescription>
+              <CardTitle className="text-lg md:text-xl">
+                Combined Pareto Analysis - All Processes
+              </CardTitle>
+              <CardDescription className="text-sm">
+                80/20 analysis across all process steps
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <ParetoChart
@@ -474,15 +512,18 @@ export default async function DemoComprehensiveSummaryPage({
                   allVSMSteps.map(step => ({
                     id: step.id,
                     name: step.stepName,
-                    value: (step.processTime || step.durationMinutes || 0) +
-                           (step.waitingTime || step.waitTimeMinutes || 0)
+                    value:
+                      (step.processTime || step.durationMinutes || 0) +
+                      (step.waitingTime || step.waitTimeMinutes || 0),
                   }))
-                ).items.slice(0, 10).map(item => ({
-                  name: item.name,
-                  value: item.value,
-                  cumulative: item.cumulativePercentage,
-                  isVitalFew: item.isVitalFew
-                }))}
+                )
+                  .items.slice(0, 10)
+                  .map(item => ({
+                    name: item.name,
+                    value: item.value,
+                    cumulative: item.cumulativePercentage,
+                    isVitalFew: item.isVitalFew,
+                  }))}
                 height={500}
                 showExport={false}
               />
@@ -493,63 +534,86 @@ export default async function DemoComprehensiveSummaryPage({
           <Card className="border-2 border-black">
             <CardHeader>
               <CardTitle className="text-lg md:text-xl">Process Performance Comparison</CardTitle>
-              <CardDescription className="text-sm">Key metrics across all processes</CardDescription>
+              <CardDescription className="text-sm">
+                Key metrics across all processes
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
                 <div className="min-w-[900px]">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-100">
-                      <TableHead>Process Name</TableHead>
-                      <TableHead className="text-center">VSM Steps</TableHead>
-                      <TableHead className="text-center">Efficiency %</TableHead>
-                      <TableHead className="text-center">Cycle Time</TableHead>
-                      <TableHead className="text-center">High Risks</TableHead>
-                      <TableHead className="text-center">SIPOC Steps</TableHead>
-                      <TableHead className="text-center">Fishbone Causes</TableHead>
-                      <TableHead className="text-center">Process Capability</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {processMetrics.map((metric) => (
-                      <TableRow key={metric.name}>
-                        <TableCell className="font-medium">{metric.name}</TableCell>
-                        <TableCell className="text-center">{metric.vsmMetrics.stepCount}</TableCell>
-                        <TableCell className="text-center">
-                          <Badge variant="outline" className={
-                            metric.vsmMetrics.efficiencyRatio >= 50 ? 'border-green-500 text-green-700' :
-                            metric.vsmMetrics.efficiencyRatio >= 30 ? 'border-yellow-500 text-yellow-700' :
-                            'border-red-500 text-red-700'
-                          }>
-                            {metric.vsmMetrics.efficiencyRatio.toFixed(1)}%
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-center">{metric.vsmMetrics.totalCycleTime} min</TableCell>
-                        <TableCell className="text-center">
-                          <Badge variant="outline" className={
-                            metric.fmeaStats.high > 0 ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-300'
-                          }>
-                            {metric.fmeaStats.high}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-center">{metric.sipocSteps}</TableCell>
-                        <TableCell className="text-center">{metric.fishboneStats.totalCauses}</TableCell>
-                        <TableCell className="text-center">
-                          {metric.capabilityData && metric.capabilityData.cpk !== null ? (
-                            <Badge variant="outline" className={
-                              metric.capabilityData.isCapable ? 'border-green-500 text-green-700' : 'border-red-500 text-red-700'
-                            }>
-                              Cpk: {metric.capabilityData.cpk.toFixed(3)}
-                            </Badge>
-                          ) : (
-                            <span className="text-gray-400">N/A</span>
-                          )}
-                        </TableCell>
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-100">
+                        <TableHead>Process Name</TableHead>
+                        <TableHead className="text-center">VSM Steps</TableHead>
+                        <TableHead className="text-center">Efficiency %</TableHead>
+                        <TableHead className="text-center">Cycle Time</TableHead>
+                        <TableHead className="text-center">High Risks</TableHead>
+                        <TableHead className="text-center">SIPOC Steps</TableHead>
+                        <TableHead className="text-center">Fishbone Causes</TableHead>
+                        <TableHead className="text-center">Process Capability</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {processMetrics.map(metric => (
+                        <TableRow key={metric.name}>
+                          <TableCell className="font-medium">{metric.name}</TableCell>
+                          <TableCell className="text-center">
+                            {metric.vsmMetrics.stepCount}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge
+                              variant="outline"
+                              className={
+                                metric.vsmMetrics.efficiencyRatio >= 50
+                                  ? 'border-green-500 text-green-700'
+                                  : metric.vsmMetrics.efficiencyRatio >= 30
+                                    ? 'border-yellow-500 text-yellow-700'
+                                    : 'border-red-500 text-red-700'
+                              }
+                            >
+                              {metric.vsmMetrics.efficiencyRatio.toFixed(1)}%
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {metric.vsmMetrics.totalCycleTime} min
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge
+                              variant="outline"
+                              className={
+                                metric.fmeaStats.high > 0
+                                  ? 'border-red-500 bg-red-50 text-red-700'
+                                  : 'border-gray-300'
+                              }
+                            >
+                              {metric.fmeaStats.high}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-center">{metric.sipocSteps}</TableCell>
+                          <TableCell className="text-center">
+                            {metric.fishboneStats.totalCauses}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {metric.capabilityData && metric.capabilityData.cpk !== null ? (
+                              <Badge
+                                variant="outline"
+                                className={
+                                  metric.capabilityData.isCapable
+                                    ? 'border-green-500 text-green-700'
+                                    : 'border-red-500 text-red-700'
+                                }
+                              >
+                                Cpk: {metric.capabilityData.cpk.toFixed(3)}
+                              </Badge>
+                            ) : (
+                              <span className="text-gray-400">N/A</span>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
             </CardContent>
@@ -558,7 +622,9 @@ export default async function DemoComprehensiveSummaryPage({
           {/* All FMEA High Risks */}
           <Card className="border-2 border-red-500">
             <CardHeader className="bg-red-50">
-              <CardTitle className="text-red-800 text-lg md:text-xl">Critical Risk Items - All Processes</CardTitle>
+              <CardTitle className="text-red-800 text-lg md:text-xl">
+                Critical Risk Items - All Processes
+              </CardTitle>
               <CardDescription className="text-red-600 text-sm">
                 Failure modes requiring immediate attention (RPN ≥ 200)
               </CardDescription>
@@ -567,41 +633,49 @@ export default async function DemoComprehensiveSummaryPage({
               {highRiskFMEA.length > 0 ? (
                 <div className="overflow-x-auto">
                   <div className="min-w-[700px]">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Process</TableHead>
-                        <TableHead>Failure Mode</TableHead>
-                        <TableHead>Effects</TableHead>
-                        <TableHead className="text-center">SEV</TableHead>
-                        <TableHead className="text-center">OCC</TableHead>
-                        <TableHead className="text-center">DET</TableHead>
-                        <TableHead className="text-center">RPN</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {highRiskFMEA.map(fmea => {
-                        const process = assignment.processes.find(p =>
-                          p.fmeaEntries.some(f => f.id === fmea.id)
-                        )
-                        return (
-                          <TableRow key={fmea.id}>
-                            <TableCell className="font-medium">{process?.processName || 'Unknown'}</TableCell>
-                            <TableCell>{fmea.failureMode}</TableCell>
-                            <TableCell className="max-w-[300px]">{fmea.effectsOfFailure}</TableCell>
-                            <TableCell className="text-center font-bold">{fmea.severity}</TableCell>
-                            <TableCell className="text-center font-bold">{fmea.occurrence}</TableCell>
-                            <TableCell className="text-center font-bold">{fmea.detection}</TableCell>
-                            <TableCell className="text-center">
-                              <Badge className="bg-red-600 text-white">
-                                {fmea.rpn}
-                              </Badge>
-                            </TableCell>
-                          </TableRow>
-                        )
-                      })}
-                    </TableBody>
-                  </Table>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Process</TableHead>
+                          <TableHead>Failure Mode</TableHead>
+                          <TableHead>Effects</TableHead>
+                          <TableHead className="text-center">SEV</TableHead>
+                          <TableHead className="text-center">OCC</TableHead>
+                          <TableHead className="text-center">DET</TableHead>
+                          <TableHead className="text-center">RPN</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {highRiskFMEA.map(fmea => {
+                          const process = assignment.processes.find(p =>
+                            p.fmeaEntries.some(f => f.id === fmea.id)
+                          )
+                          return (
+                            <TableRow key={fmea.id}>
+                              <TableCell className="font-medium">
+                                {process?.processName || 'Unknown'}
+                              </TableCell>
+                              <TableCell>{fmea.failureMode}</TableCell>
+                              <TableCell className="max-w-[300px]">
+                                {fmea.effectsOfFailure}
+                              </TableCell>
+                              <TableCell className="text-center font-bold">
+                                {fmea.severity}
+                              </TableCell>
+                              <TableCell className="text-center font-bold">
+                                {fmea.occurrence}
+                              </TableCell>
+                              <TableCell className="text-center font-bold">
+                                {fmea.detection}
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <Badge className="bg-red-600 text-white">{fmea.rpn}</Badge>
+                              </TableCell>
+                            </TableRow>
+                          )
+                        })}
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
               ) : (
@@ -631,11 +705,15 @@ export default async function DemoComprehensiveSummaryPage({
                     </div>
                     <div className="text-center">
                       <p className="text-xs md:text-sm text-gray-500">Efficiency</p>
-                      <p className="text-lg md:text-xl font-bold">{metric.vsmMetrics.efficiencyRatio.toFixed(1)}%</p>
+                      <p className="text-lg md:text-xl font-bold">
+                        {metric.vsmMetrics.efficiencyRatio.toFixed(1)}%
+                      </p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs md:text-sm text-gray-500">Cycle Time</p>
-                      <p className="text-lg md:text-xl font-bold">{metric.vsmMetrics.totalCycleTime} min</p>
+                      <p className="text-lg md:text-xl font-bold">
+                        {metric.vsmMetrics.totalCycleTime} min
+                      </p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs md:text-sm text-gray-500">FMEA Risks</p>
@@ -647,7 +725,9 @@ export default async function DemoComprehensiveSummaryPage({
                     </div>
                     <div className="text-center">
                       <p className="text-xs md:text-sm text-gray-500">Root Causes</p>
-                      <p className="text-lg md:text-xl font-bold">{metric.fishboneStats.totalCauses}</p>
+                      <p className="text-lg md:text-xl font-bold">
+                        {metric.fishboneStats.totalCauses}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -675,20 +755,42 @@ export default async function DemoComprehensiveSummaryPage({
                         {(() => {
                           // Group SIPOC entries by row (using the actual schema fields: column and value)
                           // Create maps keyed by order to handle sparse order values
-                          const supplierMap = new Map(process.sipocEntries.filter(e => e.column === 'SUPPLIER').map(e => [e.order, e.value]))
-                          const inputMap = new Map(process.sipocEntries.filter(e => e.column === 'INPUT').map(e => [e.order, e.value]))
-                          const processMap = new Map(process.sipocEntries.filter(e => e.column === 'PROCESS').map(e => [e.order, e.value]))
-                          const outputMap = new Map(process.sipocEntries.filter(e => e.column === 'OUTPUT').map(e => [e.order, e.value]))
-                          const customerMap = new Map(process.sipocEntries.filter(e => e.column === 'CUSTOMER').map(e => [e.order, e.value]))
+                          const supplierMap = new Map(
+                            process.sipocEntries
+                              .filter(e => e.column === 'SUPPLIER')
+                              .map(e => [e.order, e.value])
+                          )
+                          const inputMap = new Map(
+                            process.sipocEntries
+                              .filter(e => e.column === 'INPUT')
+                              .map(e => [e.order, e.value])
+                          )
+                          const processMap = new Map(
+                            process.sipocEntries
+                              .filter(e => e.column === 'PROCESS')
+                              .map(e => [e.order, e.value])
+                          )
+                          const outputMap = new Map(
+                            process.sipocEntries
+                              .filter(e => e.column === 'OUTPUT')
+                              .map(e => [e.order, e.value])
+                          )
+                          const customerMap = new Map(
+                            process.sipocEntries
+                              .filter(e => e.column === 'CUSTOMER')
+                              .map(e => [e.order, e.value])
+                          )
 
                           // Get all unique order values across all columns
-                          const allOrders = [...new Set([
-                            ...Array.from(supplierMap.keys()),
-                            ...Array.from(inputMap.keys()),
-                            ...Array.from(processMap.keys()),
-                            ...Array.from(outputMap.keys()),
-                            ...Array.from(customerMap.keys())
-                          ])].sort((a, b) => a - b)
+                          const allOrders = [
+                            ...new Set([
+                              ...Array.from(supplierMap.keys()),
+                              ...Array.from(inputMap.keys()),
+                              ...Array.from(processMap.keys()),
+                              ...Array.from(outputMap.keys()),
+                              ...Array.from(customerMap.keys()),
+                            ]),
+                          ].sort((a, b) => a - b)
 
                           const maxRows = Math.max(allOrders.length, 1)
 
@@ -698,19 +800,29 @@ export default async function DemoComprehensiveSummaryPage({
                             rows.push(
                               <TableRow key={i}>
                                 <TableCell className="text-sm">
-                                  {supplierMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
+                                  {supplierMap.get(orderValue) || (
+                                    <span className="text-gray-400 italic">-</span>
+                                  )}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {inputMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
+                                  {inputMap.get(orderValue) || (
+                                    <span className="text-gray-400 italic">-</span>
+                                  )}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {processMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
+                                  {processMap.get(orderValue) || (
+                                    <span className="text-gray-400 italic">-</span>
+                                  )}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {outputMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
+                                  {outputMap.get(orderValue) || (
+                                    <span className="text-gray-400 italic">-</span>
+                                  )}
                                 </TableCell>
                                 <TableCell className="text-sm">
-                                  {customerMap.get(orderValue) || <span className="text-gray-400 italic">-</span>}
+                                  {customerMap.get(orderValue) || (
+                                    <span className="text-gray-400 italic">-</span>
+                                  )}
                                 </TableCell>
                               </TableRow>
                             )
@@ -738,7 +850,9 @@ export default async function DemoComprehensiveSummaryPage({
               <Card className="border-2 border-black">
                 <CardHeader>
                   <CardTitle className="text-lg md:text-xl">Value Stream Mapping (VSM)</CardTitle>
-                  <CardDescription className="text-sm">Process flow and time analysis</CardDescription>
+                  <CardDescription className="text-sm">
+                    Process flow and time analysis
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0 md:p-6">
                   <div className="overflow-x-auto">
@@ -765,10 +879,15 @@ export default async function DemoComprehensiveSummaryPage({
                               <TableCell className="font-medium">{step.stepName}</TableCell>
                               <TableCell className="text-center">{processTime} min</TableCell>
                               <TableCell className="text-center">{waitingTime} min</TableCell>
-                              <TableCell className="text-center font-bold">{cycleTime} min</TableCell>
+                              <TableCell className="text-center font-bold">
+                                {cycleTime} min
+                              </TableCell>
                               <TableCell>
                                 {step.valueMeasure ? (
-                                  <Badge variant="outline" className={getValueMeasureColor(step.valueMeasure)}>
+                                  <Badge
+                                    variant="outline"
+                                    className={getValueMeasureColor(step.valueMeasure)}
+                                  >
                                     {step.valueMeasure.replace(/_/g, ' ')}
                                   </Badge>
                                 ) : (
@@ -786,19 +905,27 @@ export default async function DemoComprehensiveSummaryPage({
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
                       <div>
                         <p className="text-xs md:text-sm text-gray-500">Total Process Time</p>
-                        <p className="text-base md:text-lg font-bold">{metric.vsmMetrics.totalProcessTime} min</p>
+                        <p className="text-base md:text-lg font-bold">
+                          {metric.vsmMetrics.totalProcessTime} min
+                        </p>
                       </div>
                       <div>
                         <p className="text-xs md:text-sm text-gray-500">Total Wait Time</p>
-                        <p className="text-base md:text-lg font-bold">{metric.vsmMetrics.totalWaitTime} min</p>
+                        <p className="text-base md:text-lg font-bold">
+                          {metric.vsmMetrics.totalWaitTime} min
+                        </p>
                       </div>
                       <div>
                         <p className="text-xs md:text-sm text-gray-500">Value-Added Time</p>
-                        <p className="text-base md:text-lg font-bold text-green-600">{metric.vsmMetrics.valueAddedTime} min</p>
+                        <p className="text-base md:text-lg font-bold text-green-600">
+                          {metric.vsmMetrics.valueAddedTime} min
+                        </p>
                       </div>
                       <div>
                         <p className="text-xs md:text-sm text-gray-500">Non-Value-Added Time</p>
-                        <p className="text-base md:text-lg font-bold text-red-600">{metric.vsmMetrics.nonValueAddedTime} min</p>
+                        <p className="text-base md:text-lg font-bold text-red-600">
+                          {metric.vsmMetrics.nonValueAddedTime} min
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -809,7 +936,9 @@ export default async function DemoComprehensiveSummaryPage({
               <Card className="border-2 border-black">
                 <CardHeader>
                   <CardTitle className="text-lg md:text-xl">Pareto Analysis</CardTitle>
-                  <CardDescription className="text-sm">80/20 analysis of process steps by cycle time</CardDescription>
+                  <CardDescription className="text-sm">
+                    80/20 analysis of process steps by cycle time
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {metric.paretoData.items.length > 0 ? (
@@ -818,13 +947,15 @@ export default async function DemoComprehensiveSummaryPage({
                         name: item.name,
                         value: item.value,
                         cumulative: item.cumulativePercentage,
-                        isVitalFew: item.isVitalFew
+                        isVitalFew: item.isVitalFew,
                       }))}
                       height={450}
                       showExport={false}
                     />
                   ) : (
-                    <p className="text-center text-gray-500 py-8">No VSM data available for Pareto analysis</p>
+                    <p className="text-center text-gray-500 py-8">
+                      No VSM data available for Pareto analysis
+                    </p>
                   )}
                 </CardContent>
               </Card>
@@ -833,7 +964,9 @@ export default async function DemoComprehensiveSummaryPage({
               <Card className="border-2 border-black">
                 <CardHeader>
                   <CardTitle className="text-lg md:text-xl">Fishbone (Ishikawa) Analysis</CardTitle>
-                  <CardDescription className="text-sm">Root cause analysis for vital few steps (Pareto ≤80%)</CardDescription>
+                  <CardDescription className="text-sm">
+                    Root cause analysis for vital few steps (Pareto ≤80%)
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <FishboneAnalysisViewer
@@ -848,11 +981,15 @@ export default async function DemoComprehensiveSummaryPage({
               <Card className="border-2 border-black">
                 <CardHeader>
                   <CardTitle className="text-lg md:text-xl">FMEA Risk Analysis</CardTitle>
-                  <CardDescription className="text-sm">Failure modes and risk assessment</CardDescription>
+                  <CardDescription className="text-sm">
+                    Failure modes and risk assessment
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-4">
-                    <Card className={`border ${metric.fmeaStats.high > 0 ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}>
+                    <Card
+                      className={`border ${metric.fmeaStats.high > 0 ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+                    >
                       <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
                           <p className="text-xs md:text-sm text-gray-500">High Risk</p>
@@ -860,7 +997,9 @@ export default async function DemoComprehensiveSummaryPage({
                         </div>
                       </CardContent>
                     </Card>
-                    <Card className={`border ${metric.fmeaStats.medium > 0 ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300'}`}>
+                    <Card
+                      className={`border ${metric.fmeaStats.medium > 0 ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300'}`}
+                    >
                       <CardContent className="pt-3 md:pt-4">
                         <div className="text-center">
                           <p className="text-xs md:text-sm text-gray-500">Medium Risk</p>
@@ -894,11 +1033,15 @@ export default async function DemoComprehensiveSummaryPage({
                               <TableCell className="font-medium">{fmea.failureMode}</TableCell>
                               <TableCell>{fmea.effectsOfFailure}</TableCell>
                               <TableCell className="text-center">
-                                <Badge className={
-                                  fmea.rpn >= 200 ? 'bg-red-600 text-white' :
-                                  fmea.rpn >= 100 ? 'bg-yellow-600 text-white' :
-                                  'bg-green-600 text-white'
-                                }>
+                                <Badge
+                                  className={
+                                    fmea.rpn >= 200
+                                      ? 'bg-red-600 text-white'
+                                      : fmea.rpn >= 100
+                                        ? 'bg-yellow-600 text-white'
+                                        : 'bg-green-600 text-white'
+                                  }
+                                >
                                   {fmea.rpn}
                                 </Badge>
                               </TableCell>
@@ -915,8 +1058,12 @@ export default async function DemoComprehensiveSummaryPage({
               {metric.capabilityData && (
                 <Card className="border-2 border-black">
                   <CardHeader>
-                    <CardTitle className="text-lg md:text-xl">Process Capability Analysis</CardTitle>
-                    <CardDescription className="text-sm">Statistical process control metrics</CardDescription>
+                    <CardTitle className="text-lg md:text-xl">
+                      Process Capability Analysis
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Statistical process control metrics
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
@@ -934,26 +1081,36 @@ export default async function DemoComprehensiveSummaryPage({
                         <div className="grid grid-cols-2 gap-3 md:gap-4">
                           <div>
                             <p className="text-xs md:text-sm text-gray-500">Cp (Potential)</p>
-                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.cp?.toFixed(3) || '-'}</p>
+                            <p className="text-lg md:text-xl font-bold">
+                              {metric.capabilityData.cp?.toFixed(3) || '-'}
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs md:text-sm text-gray-500">Cpk (Actual)</p>
-                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.cpk?.toFixed(3) || '-'}</p>
+                            <p className="text-lg md:text-xl font-bold">
+                              {metric.capabilityData.cpk?.toFixed(3) || '-'}
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs md:text-sm text-gray-500">Sigma Level</p>
-                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.sigmaLevel?.toFixed(3) || '-'}σ</p>
+                            <p className="text-lg md:text-xl font-bold">
+                              {metric.capabilityData.sigmaLevel?.toFixed(3) || '-'}σ
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs md:text-sm text-gray-500">PPM</p>
-                            <p className="text-lg md:text-xl font-bold">{metric.capabilityData.ppm?.toFixed(0) || '-'}</p>
+                            <p className="text-lg md:text-xl font-bold">
+                              {metric.capabilityData.ppm?.toFixed(0) || '-'}
+                            </p>
                           </div>
                         </div>
                         <div className="p-3 bg-gray-50 rounded">
                           <p className="text-xs md:text-sm font-medium mb-1">Process Status</p>
-                          <Badge className={
-                            metric.capabilityData.isCapable ? 'bg-green-600' : 'bg-red-600'
-                          }>
+                          <Badge
+                            className={
+                              metric.capabilityData.isCapable ? 'bg-green-600' : 'bg-red-600'
+                            }
+                          >
                             {metric.capabilityData.isCapable ? 'CAPABLE' : 'NOT CAPABLE'}
                           </Badge>
                         </div>
@@ -979,59 +1136,83 @@ export default async function DemoComprehensiveSummaryPage({
           {assignment.recommendations.length > 0 ? (
             <div className="overflow-x-auto">
               <div className="min-w-[900px]">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-100">
-                    <TableHead className="w-[200px]">Title</TableHead>
-                    <TableHead className="w-[250px]">Description</TableHead>
-                    <TableHead className="w-[200px]">Expected Impact</TableHead>
-                    <TableHead className="w-[150px]">Implementation Difficulty</TableHead>
-                    <TableHead className="w-[120px]">Est. Savings</TableHead>
-                    <TableHead className="w-[100px]">Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {[...assignment.recommendations]
-                    .sort((a, b) => {
-                      const difficultyOrder: Record<string, number> = { LOW: 1, MEDIUM: 2, HIGH: 3 }
-                      return difficultyOrder[a.implementationDifficulty] - difficultyOrder[b.implementationDifficulty]
-                    })
-                    .map(rec => (
-                      <TableRow key={rec.id}>
-                        <TableCell className="font-medium align-top">
-                          <div className="whitespace-normal break-words">{rec.recommendationTitle}</div>
-                        </TableCell>
-                        <TableCell className="align-top">
-                          <div className="whitespace-normal break-words text-sm">{rec.description}</div>
-                        </TableCell>
-                        <TableCell className="align-top">
-                          <div className="whitespace-normal break-words text-sm">{rec.expectedImpact}</div>
-                        </TableCell>
-                        <TableCell className="align-top">
-                          <Badge className={
-                            rec.implementationDifficulty === 'HIGH' ? 'bg-red-600 text-white' :
-                            rec.implementationDifficulty === 'MEDIUM' ? 'bg-yellow-600 text-white' :
-                            'bg-green-600 text-white'
-                          }>
-                            {rec.implementationDifficulty}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="align-top">
-                          <div className="whitespace-normal break-words text-sm">{rec.estimatedCostSavings || '-'}</div>
-                        </TableCell>
-                        <TableCell className="align-top">
-                          <Badge variant="outline" className={
-                            rec.status === 'IMPLEMENTED' ? 'border-green-500 text-green-700' :
-                            rec.status === 'APPROVED' ? 'border-yellow-500 text-yellow-700' :
-                            'border-gray-500 text-gray-700'
-                          }>
-                            {rec.status}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-100">
+                      <TableHead className="w-[200px]">Title</TableHead>
+                      <TableHead className="w-[250px]">Description</TableHead>
+                      <TableHead className="w-[200px]">Expected Impact</TableHead>
+                      <TableHead className="w-[150px]">Implementation Difficulty</TableHead>
+                      <TableHead className="w-[120px]">Est. Savings</TableHead>
+                      <TableHead className="w-[100px]">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {[...assignment.recommendations]
+                      .sort((a, b) => {
+                        const difficultyOrder: Record<string, number> = {
+                          LOW: 1,
+                          MEDIUM: 2,
+                          HIGH: 3,
+                        }
+                        return (
+                          difficultyOrder[a.implementationDifficulty] -
+                          difficultyOrder[b.implementationDifficulty]
+                        )
+                      })
+                      .map(rec => (
+                        <TableRow key={rec.id}>
+                          <TableCell className="font-medium align-top">
+                            <div className="whitespace-normal break-words">
+                              {rec.recommendationTitle}
+                            </div>
+                          </TableCell>
+                          <TableCell className="align-top">
+                            <div className="whitespace-normal break-words text-sm">
+                              {rec.description}
+                            </div>
+                          </TableCell>
+                          <TableCell className="align-top">
+                            <div className="whitespace-normal break-words text-sm">
+                              {rec.expectedImpact}
+                            </div>
+                          </TableCell>
+                          <TableCell className="align-top">
+                            <Badge
+                              className={
+                                rec.implementationDifficulty === 'HIGH'
+                                  ? 'bg-red-600 text-white'
+                                  : rec.implementationDifficulty === 'MEDIUM'
+                                    ? 'bg-yellow-600 text-white'
+                                    : 'bg-green-600 text-white'
+                              }
+                            >
+                              {rec.implementationDifficulty}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="align-top">
+                            <div className="whitespace-normal break-words text-sm">
+                              {rec.estimatedCostSavings || '-'}
+                            </div>
+                          </TableCell>
+                          <TableCell className="align-top">
+                            <Badge
+                              variant="outline"
+                              className={
+                                rec.status === 'IMPLEMENTED'
+                                  ? 'border-green-500 text-green-700'
+                                  : rec.status === 'APPROVED'
+                                    ? 'border-yellow-500 text-yellow-700'
+                                    : 'border-gray-500 text-gray-700'
+                              }
+                            >
+                              {rec.status}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
               </div>
             </div>
           ) : (

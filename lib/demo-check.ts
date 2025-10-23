@@ -11,7 +11,7 @@ export function checkDemoMode(user: User | null): NextResponse | null {
     return NextResponse.json(
       {
         error: 'Demo mode is read-only. Sign up for a free account to create your own assignments.',
-        isDemo: true
+        isDemo: true,
       },
       { status: 403 }
     )

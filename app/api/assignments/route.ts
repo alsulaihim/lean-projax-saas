@@ -30,14 +30,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Create assignment, default process, and audit log atomically
-    const assignment = await prisma.$transaction(async (tx) => {
+    const assignment = await prisma.$transaction(async tx => {
       const newAssignment = await tx.assignment.create({
         data: {
           title,
           objective,
           status: 'DRAFT',
-          createdById: user.id
-        }
+          createdById: user.id,
+        },
       })
 
       // Create default process
@@ -45,8 +45,8 @@ export async function POST(request: NextRequest) {
         data: {
           assignmentId: newAssignment.id,
           processName: 'Main Process',
-          order: 1
-        }
+          order: 1,
+        },
       })
 
       // Log the action
@@ -59,9 +59,9 @@ export async function POST(request: NextRequest) {
           entityId: newAssignment.id,
           changeDetails: {
             title,
-            objective
-          }
-        }
+            objective,
+          },
+        },
       })
 
       return newAssignment
@@ -70,9 +70,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(assignment)
   } catch (error) {
     console.error('Failed to create assignment:', error)
-    return NextResponse.json(
-      { error: 'Failed to create assignment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create assignment' }, { status: 500 })
   }
 }

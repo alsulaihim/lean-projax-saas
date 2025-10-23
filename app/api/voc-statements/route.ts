@@ -22,13 +22,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Create VOC statement and audit log atomically
-    const voc = await prisma.$transaction(async (tx) => {
+    const voc = await prisma.$transaction(async tx => {
       const newVoc = await tx.vOCStatement.create({
         data: {
           assignmentId,
           customerSegment,
-          voiceStatement
-        }
+          voiceStatement,
+        },
       })
 
       // Log the action
@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
           entityId: newVoc.id,
           changeDetails: {
             customerSegment,
-            voiceStatement
-          }
-        }
+            voiceStatement,
+          },
+        },
       })
 
       return newVoc
@@ -52,9 +52,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(voc)
   } catch (error) {
     console.error('Failed to create VOC statement:', error)
-    return NextResponse.json(
-      { error: 'Failed to create VOC statement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create VOC statement' }, { status: 500 })
   }
 }

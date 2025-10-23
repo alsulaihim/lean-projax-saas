@@ -8,7 +8,7 @@ const sigmaTable = [
   { dpmo: 66807, sigma: 3.0 },
   { dpmo: 6210, sigma: 4.0 },
   { dpmo: 233, sigma: 5.0 },
-  { dpmo: 3.4, sigma: 6.0 }
+  { dpmo: 3.4, sigma: 6.0 },
 ]
 
 // Convert DPMO to Sigma Level
@@ -23,7 +23,7 @@ function dpmoToSigmaLevel(dpmo) {
       const y1 = sigmaTable[i].sigma
       const y2 = sigmaTable[i + 1].sigma
       const x = Math.log(dpmo)
-      return y1 + (y2 - y1) * (x - x1) / (x2 - x1)
+      return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1)
     }
   }
   return 3.0
@@ -31,7 +31,7 @@ function dpmoToSigmaLevel(dpmo) {
 
 // Test cases
 console.log('Six Sigma Calculation Tests:')
-console.log('=' .repeat(50))
+console.log('='.repeat(50))
 
 // Test with known Cpk values
 const testCases = [
@@ -41,7 +41,7 @@ const testCases = [
   { cpk: 1.0, expectedSigma: 3, expectedDPMO: 66807 },
   { cpk: 0.67, expectedSigma: 2, expectedDPMO: 308537 },
   { cpk: 0.33, expectedSigma: 1, expectedDPMO: 691500 },
-  { cpk: 0.99, expectedSigma: 2.97, expectedDPMO: 68000 } // Your example
+  { cpk: 0.99, expectedSigma: 2.97, expectedDPMO: 68000 }, // Your example
 ]
 
 console.log('\nCpk to Sigma Level Validation:')
@@ -56,10 +56,12 @@ testCases.forEach(test => {
   const estimatedDPMO = test.expectedDPMO
   const calculatedSigma = dpmoToSigmaLevel(estimatedDPMO)
 
-  console.log(`Cpk: ${test.cpk.toFixed(2)} → DPMO: ${estimatedDPMO} → Sigma Level: ${calculatedSigma.toFixed(2)}σ (Expected: ${test.expectedSigma}σ)`)
+  console.log(
+    `Cpk: ${test.cpk.toFixed(2)} → DPMO: ${estimatedDPMO} → Sigma Level: ${calculatedSigma.toFixed(2)}σ (Expected: ${test.expectedSigma}σ)`
+  )
 })
 
-console.log('\n' + '=' .repeat(50))
+console.log('\n' + '='.repeat(50))
 console.log('Key Relationships:')
 console.log('- Cpk ≈ (Sigma Level - 1.5) / 3 (with 1.5σ shift)')
 console.log('- Cpk = 1.0 → 3σ process (66,807 DPMO)')

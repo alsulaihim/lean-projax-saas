@@ -27,10 +27,10 @@ The BPI Assignment Platform addresses these pain points by providing a purpose-b
 
 ### Change Log
 
-| Date | Version | Description | Author |
-|------|---------|-------------|--------|
-| 2025-09-30 | 1.0 | Initial PRD created from Project Brief v1.0 | John (PM Agent) |
-| 2025-10-17 | 1.1 | Added Assignment Charter, AI Analysis, and Enhanced VSM features | John (PM Agent) |
+| Date       | Version | Description                                                      | Author          |
+| ---------- | ------- | ---------------------------------------------------------------- | --------------- |
+| 2025-09-30 | 1.0     | Initial PRD created from Project Brief v1.0                      | John (PM Agent) |
+| 2025-10-17 | 1.1     | Added Assignment Charter, AI Analysis, and Enhanced VSM features | John (PM Agent) |
 
 ---
 
@@ -175,6 +175,7 @@ Single repository containing all frontend and backend code, shared utilities, da
 **Rationale:** With one developer and tightly coupled frontend/backend (Next.js API routes), monorepo eliminates the complexity of managing multiple repositories, versioning across repos, and coordinating deployments. Feature development touches UI, API, and database simultaneously—monorepo makes this seamless.
 
 **Structure:**
+
 ```
 /app          - Next.js 14+ app router pages and layouts
 /components   - Reusable React components (shadcn/ui + custom)
@@ -196,6 +197,7 @@ Single repository containing all frontend and backend code, shared utilities, da
 **Rationale:** Monolithic architecture matches team size (1 developer) and scale requirements (30-50 assignments/year, 20 concurrent users). Microservices would add operational complexity (service discovery, inter-service communication, distributed debugging) without scalability benefits at this volume. Next.js serverless functions provide automatic scaling and zero-downtime deployments while keeping the codebase unified.
 
 **Technology Stack:**
+
 - **Frontend:** Next.js 14+, React 18+, TypeScript, shadcn/ui, Tailwind CSS
 - **Charting:** Recharts or Chart.js for Pareto, process capability curves
 - **Diagrams:** React Flow or custom SVG for Fishbone diagrams (future: Mermaid for Process Flow)
@@ -212,17 +214,20 @@ Single repository containing all frontend and backend code, shared utilities, da
 **Unit + Integration Testing** (Full Testing Pyramid deferred to Phase 2)
 
 **MVP Testing Strategy:**
+
 - **Unit Tests (High Priority):** Comprehensive coverage for all calculation functions (Pareto sorting, RPN, Cp/Cpk, Sigma Level) using Jest. 100% coverage for `/lib/calculations` module with edge case testing (zero values, missing data, outliers). This is CRITICAL for NFR2 (calculation accuracy).
 - **Integration Tests (Selective):** API route testing for state transitions (Draft → Completed), data validation, and authorization checks using Jest + Supertest or Vitest.
 - **Manual Testing (UAT):** User acceptance testing with 3-5 pilot analysts for workflow validation, UI/UX feedback, and real assignment completion.
 - **SME Validation:** Six Sigma subject matter expert validates calculation formulas and outputs against manual calculations.
 
 **Phase 2 Testing Expansion:**
+
 - E2E tests using Playwright for critical user journeys
 - Visual regression testing for PDF exports
 - Performance testing for concurrent user scenarios
 
 **Testing Utilities:**
+
 - Seed scripts for test data (sample assignments with known calculation outputs)
 - Test fixtures for common scenarios (single process, multi-process, edge cases)
 - Calculation verification spreadsheet for manual cross-checking
@@ -230,6 +235,7 @@ Single repository containing all frontend and backend code, shared utilities, da
 ### Additional Technical Assumptions and Requests
 
 **Database Design:**
+
 - Multi-tenancy not required (single organization deployment)
 - Row-level security enforcing assignment access by user role
 - Soft deletes for assignments (audit trail preservation)
@@ -237,23 +243,27 @@ Single repository containing all frontend and backend code, shared utilities, da
 - JSON fields for flexible metadata storage (Fishbone categories, recommendation tags)
 
 **State Management:**
+
 - Zustand for client-side global state (current assignment, unsaved changes indicator)
 - React Query or SWR for server state caching and optimistic updates
 - Auto-save debouncing (30-second idle timeout) with visual confirmation
 
 **Code Quality:**
+
 - TypeScript strict mode enforced
 - ESLint + Prettier for code formatting and linting
 - Husky pre-commit hooks for linting and type-checking
 - Conventional Commits for git history clarity
 
 **Development Environment:**
+
 - Node.js 18+ LTS
 - pnpm for package management (faster than npm, workspace support)
 - VS Code as recommended IDE with project-specific extensions config
 - Local PostgreSQL via Docker Compose for development consistency
 
 **Security:**
+
 - Environment variables for secrets (database URL, auth keys)
 - HTTPS enforced in production (Vercel default)
 - CSRF protection on state-mutating API routes
@@ -261,12 +271,14 @@ Single repository containing all frontend and backend code, shared utilities, da
 - SQL injection protection via Prisma parameterized queries
 
 **Performance Optimizations:**
+
 - React Server Components where appropriate (App Router default)
 - Dynamic imports for large components (Fishbone diagram builder)
 - Database query optimization (eager loading, indexing on frequently queried fields)
 - Edge caching for static assets and read-only assignment views
 
 **Deployment:**
+
 - Production branch: `main` (auto-deploy to production)
 - Staging branch: `staging` (auto-deploy to preview environment)
 - Feature branches deploy to ephemeral Vercel previews
@@ -671,7 +683,7 @@ so that **Pareto charts can be generated accurately from process data**.
 3. Logic:
    - Filter out steps with duration = 0 (edge case handling)
    - Sort steps by durationMinutes descending
-   - Calculate cumulative sum and percentage: (cumSum / totalDuration) * 100
+   - Calculate cumulative sum and percentage: (cumSum / totalDuration) \* 100
    - Assign rank (1 = longest duration)
 4. Unit tests cover:
    - Standard case: 10 steps with varying durations
@@ -773,9 +785,9 @@ so that **analysts can assess process performance against customer requirements*
    - `PUT /api/processes/[processId]/capability` - Updates spec limits and sample statistics
    - `GET /api/processes/[processId]/capability` - Returns capability data with calculated Cp, Cpk, Sigma Level
 3. Calculation logic in `/lib/calculations/capability.ts`:
-   - Cp = (USL - LSL) / (6 * σ)
-   - Cpk = min((USL - μ) / (3 * σ), (μ - LSL) / (3 * σ))
-   - Sigma Level = Cpk * 3 + 1.5 (short-term approximation)
+   - Cp = (USL - LSL) / (6 \* σ)
+   - Cpk = min((USL - μ) / (3 _ σ), (μ - LSL) / (3 _ σ))
+   - Sigma Level = Cpk \* 3 + 1.5 (short-term approximation)
 4. Validation: USL > LSL, all values must be numeric, sample std dev > 0
 5. API returns null for metrics if required inputs missing
 6. Unit tests cover:
@@ -1371,11 +1383,11 @@ The BPI Assignment Platform PRD demonstrates excellent completeness across all c
 
 | Category                         | Status  | Critical Issues                                                         |
 | -------------------------------- | ------- | ----------------------------------------------------------------------- |
-| 1. Problem Definition & Context  | PASS    | None - excellent grounding in quantified pain points                   |
-| 2. MVP Scope Definition          | PASS    | None - clear boundaries, strong rationale for in/out decisions         |
+| 1. Problem Definition & Context  | PASS    | None - excellent grounding in quantified pain points                    |
+| 2. MVP Scope Definition          | PASS    | None - clear boundaries, strong rationale for in/out decisions          |
 | 3. User Experience Requirements  | PARTIAL | User journey flows not explicitly mapped (implied via story sequencing) |
 | 4. Functional Requirements       | PASS    | None - comprehensive, testable, properly sequenced                      |
-| 5. Non-Functional Requirements   | PARTIAL | Monitoring/alerting strategy needs detail (NFR8 is high-level)         |
+| 5. Non-Functional Requirements   | PARTIAL | Monitoring/alerting strategy needs detail (NFR8 is high-level)          |
 | 6. Epic & Story Structure        | PASS    | None - excellent sequencing, appropriate sizing, strong ACs             |
 | 7. Technical Guidance            | PASS    | None - clear stack, architecture, testing strategy                      |
 | 8. Cross-Functional Requirements | PARTIAL | Integration requirements minimal (acceptable for MVP, no external APIs) |
@@ -1386,36 +1398,37 @@ The BPI Assignment Platform PRD demonstrates excellent completeness across all c
 **BLOCKERS:** None identified
 
 **HIGH:**
+
 1. **User Journey Mapping Missing:** While stories imply user flows, explicit journey maps (analyst creating first assignment, team lead reviewing, executive accessing summary) would help UX architect validate navigation and edge cases.
 2. **Monitoring Strategy Underspecified:** NFR8 mentions audit logging but doesn't detail what system health metrics to monitor (API response times, database query performance, failed PDF generations, authentication errors). Architect needs guidance for instrumentation.
 
-**MEDIUM:**
-3. **Edge Case Documentation:** Stories focus on happy paths. Document edge cases that should be handled (e.g., "What happens if user navigates away during auto-save?" addressed in Story 2.6, but others like "Can FMEA entries exist without processes?" not explicit).
-4. **Data Validation Rules:** Validation mentioned throughout but not consolidated. Consider adding appendix: "Validation Rules Reference" (e.g., "All S/O/D ratings 1-10", "USL > LSL", etc.)
+**MEDIUM:** 3. **Edge Case Documentation:** Stories focus on happy paths. Document edge cases that should be handled (e.g., "What happens if user navigates away during auto-save?" addressed in Story 2.6, but others like "Can FMEA entries exist without processes?" not explicit). 4. **Data Validation Rules:** Validation mentioned throughout but not consolidated. Consider adding appendix: "Validation Rules Reference" (e.g., "All S/O/D ratings 1-10", "USL > LSL", etc.)
 
-**LOW:**
-5. **Wireframe/Mockup References:** UI Design Goals describe paradigms well, but references to wireframes (mentioned in brief's Next Steps) would accelerate UX work.
-6. **Change Management Strategy:** Brief mentions user training and change management (section 8, Next Steps) but PRD doesn't include success criteria around adoption or training requirements.
+**LOW:** 5. **Wireframe/Mockup References:** UI Design Goals describe paradigms well, but references to wireframes (mentioned in brief's Next Steps) would accelerate UX work. 6. **Change Management Strategy:** Brief mentions user training and change management (section 8, Next Steps) but PRD doesn't include success criteria around adoption or training requirements.
 
 ### MVP Scope Assessment
 
 **Scope is Appropriately Minimal:**
+
 - ✅ Core automation value delivered (Pareto, RPN, Cp/Cpk calculations)
 - ✅ Multi-process support included (architectural decision that would be costly to retrofit)
 - ✅ Story-driven navigation MVP-ready (no section-level locking—added to Phase 2)
 - ✅ PDF export deferred until Epic 6 (allows analyst workflow validation in Epics 1-5 first)
 
 **Potential Further Cuts (if timeline pressure):**
+
 - **Process Capability (Story 4.3-4.5):** Could defer bell curve visualization to Phase 2, keeping only Cp/Cpk calculation display. Impact: Medium (capability analysis is valuable but not core to MVP success criteria).
 - **Team Lead Dashboard (Story 6.5):** Could defer to Phase 2 if team lead uses assignment list with filters. Impact: Low (nice-to-have for oversight but manual review possible).
 
 **No Missing Critical Features Identified:** MVP covers assignment creation → data capture → automated analysis → stakeholder distribution
 
 **Complexity Concerns:**
+
 - **PDF Generation (Story 6.1-6.2):** Rendering dynamic charts/tables to static PDF can be tricky. Recommend architect evaluates react-pdf vs. Puppeteer early (Epic 1-2 timeframe) to avoid late-stage surprises.
 - **Multi-Process Data Model:** Architect should validate cascade delete strategies and query performance with sample data (10 processes × 50 SIPOC entries each).
 
 **Timeline Realism:**
+
 - Original 6 epics × 4-6 stories each = ~32 stories
 - New features (Epics 7-9) add ~10 stories = ~42 total stories
 - Assuming 1 developer, 2-3 stories/week (including testing, code review) = 14-21 weeks
@@ -1425,17 +1438,20 @@ The BPI Assignment Platform PRD demonstrates excellent completeness across all c
 ### Technical Readiness
 
 **Clarity of Technical Constraints:** Excellent
+
 - Stack fully specified (Next.js 14+, Prisma, PostgreSQL, shadcn/ui, Recharts)
 - Architecture decision (monolith with serverless API routes) justified with rationale
 - Repository structure clear (monorepo with `/app`, `/components`, `/lib`, `/prisma`)
 - Testing strategy explicit (unit for calculations, selective integration, manual UAT)
 
 **Identified Technical Risks:**
+
 1. **Calculation Accuracy:** NFR2 is non-negotiable (100% accuracy). Recommend comprehensive unit test suite for `/lib/calculations` with edge case coverage before pilot (Story 3.6, 4.3, 5.1 all have calculation components).
 2. **Real-time Chart Updates:** Auto-save + real-time chart updates (Story 3.7 AC #6) requires careful state management. Architect should plan for optimistic UI updates with rollback on save failure.
 3. **PDF Generation Performance:** Large assignments (10 processes with full data) may timeout at 60 seconds (Story 6.2 AC #6). Architect should consider background job queue if generation exceeds 30 seconds.
 
 **Areas Needing Architect Investigation:**
+
 - Database schema optimization: Indexing strategy for frequently queried fields (assignmentId, processId, status)
 - State management library selection: Zustand vs. React Query vs. hybrid approach
 - PDF library trade-off: react-pdf (pure React, faster setup) vs. Puppeteer (full browser, better fidelity but heavier)
@@ -1484,20 +1500,14 @@ The BPI Assignment Platform PRD demonstrates excellent completeness across all c
 ### Next Steps
 
 **Immediate Actions:**
+
 1. Add user journey maps (1-2 hours, can be PM or UX architect)
 2. Specify monitoring strategy in Technical Assumptions (30 minutes)
 3. Review edge case handling with development team before Epic 2 (auto-save conflicts)
 
-**Before Architecture Kick-off:**
-4. Validate PDF library choice with proof-of-concept (Architect, 2-4 hours)
-5. Review database indexing strategy for multi-process queries (Architect)
-6. Confirm auto-save conflict resolution approach (PM + Architect)
+**Before Architecture Kick-off:** 4. Validate PDF library choice with proof-of-concept (Architect, 2-4 hours) 5. Review database indexing strategy for multi-process queries (Architect) 6. Confirm auto-save conflict resolution approach (PM + Architect)
 
-**During Architecture Phase:**
-7. Create detailed component hierarchy and state management plan
-8. Design database schema with Prisma models matching PRD entities
-9. Define API contract (routes, request/response schemas)
-10. Establish testing strategy (unit test frameworks, integration test approach)
+**During Architecture Phase:** 7. Create detailed component hierarchy and state management plan 8. Design database schema with Prisma models matching PRD entities 9. Define API contract (routes, request/response schemas) 10. Establish testing strategy (unit test frameworks, integration test approach)
 
 ### Final Decision
 
@@ -1545,4 +1555,4 @@ Focus on the monorepo structure with Next.js 14+ App Router, TypeScript strict m
 
 ---
 
-*Document prepared using BMAD™ Core PRD template v2.0*
+_Document prepared using BMAD™ Core PRD template v2.0_

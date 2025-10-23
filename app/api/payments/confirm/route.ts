@@ -5,12 +5,13 @@ import { prisma } from '@/lib/prisma'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-12-18.acacia',
 })
 
-const PAYPAL_API_BASE = process.env.NODE_ENV === 'production'
-  ? 'https://api-m.paypal.com'
-  : 'https://api-m.sandbox.paypal.com'
+const PAYPAL_API_BASE =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api-m.paypal.com'
+    : 'https://api-m.sandbox.paypal.com'
 
 async function getPayPalAccessToken() {
   const auth = Buffer.from(
@@ -21,9 +22,9 @@ async function getPayPalAccessToken() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${auth}`
+      Authorization: `Basic ${auth}`,
     },
-    body: 'grant_type=client_credentials'
+    body: 'grant_type=client_credentials',
   })
 
   const data = await response.json()
@@ -41,14 +42,12 @@ export async function POST(request: NextRequest) {
   if (demoCheck) return demoCheck
 
   try {
-    const { provider, paymentIntentId, orderId, subscriptionTier, billingPeriod } = await request.json()
+    const { provider, paymentIntentId, orderId, subscriptionTier, billingPeriod } =
+      await request.json()
 
     // Validate input
     if (!provider || !subscriptionTier || !billingPeriod) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     let amount = 0
@@ -76,10 +75,7 @@ export async function POST(request: NextRequest) {
     // Handle PayPal payment confirmation
     if (provider === 'PAYPAL') {
       if (!orderId) {
-        return NextResponse.json(
-          { error: 'Missing orderId for PayPal payment' },
-          { status: 400 }
-        )
+        return NextResponse.json({ error: 'Missing orderId for PayPal payment' }, { status: 400 })
       }
 
       const accessToken = await getPayPalAccessToken()
@@ -91,8 +87,8 @@ export async function POST(request: NextRequest) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
       )
 
@@ -106,7 +102,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create payment record in database
-    const payment = await prisma.$transaction(async (tx) => {
+    const payment = await prisma.$transaction(async tx => {
       const newPayment = await tx.payment.create({
         data: {
           userId: user.id,
@@ -119,8 +115,8 @@ export async function POST(request: NextRequest) {
           subscriptionTier,
           billingPeriod,
           description: `Lean Projax ${subscriptionTier} - ${billingPeriod}`,
-          paidAt: paymentStatus === 'SUCCEEDED' ? new Date() : null
-        }
+          paidAt: paymentStatus === 'SUCCEEDED' ? new Date() : null,
+        },
       })
 
       // Update user subscription if payment succeeded
@@ -137,8 +133,8 @@ export async function POST(request: NextRequest) {
           data: {
             subscriptionTier,
             subscriptionStatus: 'ACTIVE',
-            trialEndsAt
-          }
+            trialEndsAt,
+          },
         })
       }
 
@@ -150,14 +146,11 @@ export async function POST(request: NextRequest) {
       payment: {
         id: payment.id,
         status: payment.status,
-        amount: payment.amount
-      }
+        amount: payment.amount,
+      },
     })
   } catch (error) {
     console.error('Failed to confirm payment:', error)
-    return NextResponse.json(
-      { error: 'Failed to confirm payment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to confirm payment' }, { status: 500 })
   }
 }

@@ -18,7 +18,7 @@ function erf(x) {
   const t4 = t3 * t
   const t5 = t4 * t
 
-  const y = 1.0 - (((((a5 * t5 + a4 * t4) + a3 * t3) + a2 * t2) + a1 * t) * Math.exp(-absX * absX))
+  const y = 1.0 - (a5 * t5 + a4 * t4 + a3 * t3 + a2 * t2 + a1 * t) * Math.exp(-absX * absX)
 
   return sign * y
 }
@@ -53,7 +53,7 @@ const sigmaTable = [
   { dpmo: 66807, sigma: 3.0 },
   { dpmo: 6210, sigma: 4.0 },
   { dpmo: 233, sigma: 5.0 },
-  { dpmo: 3.4, sigma: 6.0 }
+  { dpmo: 3.4, sigma: 6.0 },
 ]
 
 // Convert DPMO to Sigma Level using standard table
@@ -72,7 +72,7 @@ function dpmoToSigmaLevel(dpmo) {
       const y2 = sigmaTable[i + 1].sigma
       const x = Math.log(dpmo)
 
-      return y1 + (y2 - y1) * (x - x1) / (x2 - x1)
+      return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1)
     }
   }
 
@@ -87,7 +87,7 @@ function zScoreToSigmaLevel(zScore) {
 }
 
 console.log('Six Sigma Calculation Verification')
-console.log('=' .repeat(50))
+console.log('='.repeat(50))
 
 // Test cases
 const testCases = [
@@ -96,8 +96,8 @@ const testCases = [
   { cpk: 1.33, name: 'Capable' },
   { cpk: 1.0, name: 'Marginal' },
   { cpk: 0.99, name: 'Your Example' },
-  { cpk: 0.990, name: 'Exact Value' },
-  { cpk: 0.67, name: 'Poor' }
+  { cpk: 0.99, name: 'Exact Value' },
+  { cpk: 0.67, name: 'Poor' },
 ]
 
 console.log('\nCpk → DPMO → Sigma Level Conversion:')
@@ -117,11 +117,11 @@ testCases.forEach(test => {
 })
 
 // Specific test for the reported issue
-console.log('=' .repeat(50))
+console.log('='.repeat(50))
 console.log('Specific Issue Check:')
 console.log('User reports: Cpk = 0.990, DPMO = 2012')
 
-const cpk = 0.990
+const cpk = 0.99
 const calculatedDPMO = cpkToDPMO(cpk)
 const calculatedSigmaLevel = dpmoToSigmaLevel(calculatedDPMO)
 

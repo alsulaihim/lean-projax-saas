@@ -27,19 +27,19 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9)
     const newToast = { ...toast, id }
-    setToasts((prev) => [...prev, newToast])
+    setToasts(prev => [...prev, newToast])
 
     // Auto-dismiss after duration (default 5 seconds)
     const duration = toast.duration ?? 5000
     if (duration > 0) {
       setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== id))
+        setToasts(prev => prev.filter(t => t.id !== id))
       }, duration)
     }
   }, [])
 
   const removeToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id))
+    setToasts(prev => prev.filter(t => t.id !== id))
   }, [])
 
   const getIcon = (variant: Toast['variant']) => {
@@ -59,10 +59,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-md">
-        {toasts.map((toast) => (
+        {toasts.map(toast => (
           <Alert
             key={toast.id}
-            variant={toast.variant === 'success' || toast.variant === 'info' ? 'default' : toast.variant}
+            variant={
+              toast.variant === 'success' || toast.variant === 'info' ? 'default' : toast.variant
+            }
             className={cn(
               'transition-all duration-300 shadow-lg',
               toast.variant === 'success' && 'border-green-500 bg-green-50 text-green-900',

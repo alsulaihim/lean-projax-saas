@@ -2,11 +2,7 @@ import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import { Header } from '@/components/layout/header'
 
-export default async function DemoLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function DemoLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser()
 
   // Redirect to demo login if not authenticated

@@ -1,13 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth-check'
 import prisma from '@/lib/prisma'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -25,7 +19,7 @@ import {
   FileText,
   TrendingUp,
   Eye,
-  XCircle
+  XCircle,
 } from 'lucide-react'
 import Link from 'next/link'
 import type { Prisma } from '@prisma/client'
@@ -70,7 +64,7 @@ function calculateCompletionPercentage(assignment: AssignmentWithRelations): num
     assignment.processes.some(p => p.vsmSteps.length > 0),
     assignment.processes.some(p => p.fishboneCategories.length > 0),
     assignment.processes.some(p => p.fmeaEntries.length > 0),
-    assignment.recommendations.length > 0
+    assignment.recommendations.length > 0,
   ]
 
   const completed = sections.filter(Boolean).length
@@ -93,9 +87,7 @@ function getValidationIssues(assignment: AssignmentWithRelations): string[] {
     issues.push('No processes defined')
   }
 
-  const hasHighRisk = assignment.processes.some(p =>
-    p.fmeaEntries.some(f => f.rpn >= 200)
-  )
+  const hasHighRisk = assignment.processes.some(p => p.fmeaEntries.some(f => f.rpn >= 200))
   if (hasHighRisk && assignment.recommendations.length === 0) {
     issues.push('High risk items without recommendations')
   }
@@ -121,8 +113,8 @@ export default async function TeamLeadDashboard() {
       createdBy: true,
       vocStatements: {
         include: {
-          ctqRequirements: true
-        }
+          ctqRequirements: true,
+        },
       },
       processes: {
         include: {
@@ -130,22 +122,22 @@ export default async function TeamLeadDashboard() {
           vsmSteps: true,
           fishboneCategories: {
             include: {
-              causes: true
-            }
+              causes: true,
+            },
           },
-          fmeaEntries: true
-        }
+          fmeaEntries: true,
+        },
       },
       recommendations: true,
       _count: {
         select: {
-          auditLogs: true
-        }
-      }
+          auditLogs: true,
+        },
+      },
     },
     orderBy: {
-      createdAt: 'desc'
-    }
+      createdAt: 'desc',
+    },
   })
 
   // Calculate statistics
@@ -164,7 +156,9 @@ export default async function TeamLeadDashboard() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Team Lead Dashboard</h1>
-        <p className="text-gray-600 mt-2">Monitor assignment progress and quality across your team</p>
+        <p className="text-gray-600 mt-2">
+          Monitor assignment progress and quality across your team
+        </p>
       </div>
 
       {/* Summary Cards */}
@@ -234,7 +228,9 @@ export default async function TeamLeadDashboard() {
       <Card className="border-2 border-black mb-8">
         <CardHeader>
           <CardTitle>All Assignments</CardTitle>
-          <CardDescription>Click on any assignment to view details or provide feedback</CardDescription>
+          <CardDescription>
+            Click on any assignment to view details or provide feedback
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -281,8 +277,8 @@ export default async function TeamLeadDashboard() {
                           assignment.status === 'COMPLETED'
                             ? 'bg-green-100 text-green-800'
                             : assignment.status === 'REOPENED'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-800'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-gray-100 text-gray-800'
                         }
                       >
                         {assignment.status}
@@ -297,10 +293,10 @@ export default async function TeamLeadDashboard() {
                               completion === 100
                                 ? 'bg-green-500'
                                 : completion >= 75
-                                ? 'bg-blue-500'
-                                : completion >= 50
-                                ? 'bg-yellow-500'
-                                : 'bg-red-500'
+                                  ? 'bg-blue-500'
+                                  : completion >= 50
+                                    ? 'bg-yellow-500'
+                                    : 'bg-red-500'
                             }`}
                             style={{ width: `${completion}%` } as React.CSSProperties}
                           />
@@ -359,21 +355,29 @@ export default async function TeamLeadDashboard() {
               <AlertTriangle className="h-5 w-5 text-yellow-600" />
               Assignments Requiring Attention
             </CardTitle>
-            <CardDescription>These assignments have validation issues that should be addressed</CardDescription>
+            <CardDescription>
+              These assignments have validation issues that should be addressed
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {assignmentsNeedingReview.map(assignment => {
                 const issues = getValidationIssues(assignment)
                 return (
-                  <div key={assignment.id} className="border border-yellow-300 rounded-lg p-4 bg-white">
+                  <div
+                    key={assignment.id}
+                    className="border border-yellow-300 rounded-lg p-4 bg-white"
+                  >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <h4 className="font-medium">{assignment.title}</h4>
                         <p className="text-sm text-gray-600 mt-1">By {assignment.createdBy.name}</p>
                         <ul className="mt-2 space-y-1">
                           {issues.map((issue, idx) => (
-                            <li key={idx} className="text-sm text-yellow-700 flex items-center gap-1">
+                            <li
+                              key={idx}
+                              className="text-sm text-yellow-700 flex items-center gap-1"
+                            >
                               <span className="text-yellow-600">•</span> {issue}
                             </li>
                           ))}

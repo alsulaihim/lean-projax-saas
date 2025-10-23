@@ -15,43 +15,43 @@ const requiredEnvVars: EnvConfig[] = [
   {
     name: 'DATABASE_URL',
     required: true,
-    description: 'PostgreSQL database connection string'
+    description: 'PostgreSQL database connection string',
   },
   {
     name: 'NEXTAUTH_SECRET',
     required: true,
-    description: 'Secret key for JWT token signing'
+    description: 'Secret key for JWT token signing',
   },
   {
     name: 'NEXTAUTH_URL',
     required: true,
-    description: 'Base URL of the application'
+    description: 'Base URL of the application',
   },
   {
     name: 'NEXT_PUBLIC_MARKETING_URL',
     required: false,
-    description: 'Marketing site URL (defaults to localhost:3071)'
+    description: 'Marketing site URL (defaults to localhost:3071)',
   },
   {
     name: 'EMAIL_PROVIDER',
     required: false,
-    description: 'Email provider (resend or console)'
+    description: 'Email provider (resend or console)',
   },
   {
     name: 'RESEND_API_KEY',
     required: false,
-    description: 'Resend API key for sending emails'
+    description: 'Resend API key for sending emails',
   },
   {
     name: 'EMAIL_FROM',
     required: false,
-    description: 'From email address'
+    description: 'From email address',
   },
   {
     name: 'OPENAI_API_KEY',
     required: false,
-    description: 'OpenAI API key for AI features'
-  }
+    description: 'OpenAI API key for AI features',
+  },
 ]
 
 /**

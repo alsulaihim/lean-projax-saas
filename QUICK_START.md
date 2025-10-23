@@ -212,21 +212,25 @@ Before deploying to production, check:
 ## 🎯 Your Typical Week
 
 **Monday:**
+
 - Start new feature
 - Create branch: `git checkout -b feature/week-feature`
 - Code and test locally
 
 **Tuesday-Thursday:**
+
 - Continue coding
 - Commit changes daily
 - Test frequently
 
 **Friday:**
+
 - Create PR to `dev`
 - Merge to `dev` after review
 - Test in staging over weekend
 
 **Next Monday:**
+
 - If staging looks good, deploy to production
 - Start next feature!
 

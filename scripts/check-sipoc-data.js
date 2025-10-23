@@ -10,9 +10,9 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: connectionString
-    }
-  }
+      url: connectionString,
+    },
+  },
 })
 
 async function checkSIPOCData() {
@@ -20,8 +20,8 @@ async function checkSIPOCData() {
     // Get all processes with SIPOC entries
     const processes = await prisma.process.findMany({
       include: {
-        sipocEntries: true
-      }
+        sipocEntries: true,
+      },
     })
 
     console.log('\n=== SIPOC Data Check ===\n')
@@ -44,7 +44,9 @@ async function checkSIPOCData() {
         // Show sample entries
         console.log('\n  Sample entries:')
         process.sipocEntries.slice(0, 3).forEach(entry => {
-          console.log(`    [${entry.category}] ${entry.item}: ${entry.description || 'No description'}`)
+          console.log(
+            `    [${entry.category}] ${entry.item}: ${entry.description || 'No description'}`
+          )
         })
       }
       console.log('---')
@@ -53,7 +55,6 @@ async function checkSIPOCData() {
     // Check if there are any SIPOC entries at all
     const totalEntries = await prisma.sipocEntry.count()
     console.log(`\nTotal SIPOC entries in database: ${totalEntries}`)
-
   } catch (error) {
     console.error('Error checking SIPOC data:', error)
   } finally {

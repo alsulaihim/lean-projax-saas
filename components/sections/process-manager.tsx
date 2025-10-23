@@ -2,13 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -20,7 +14,17 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Edit2, Trash2, Package, BarChart3, GitBranch, Fish, AlertTriangle, FileText } from 'lucide-react'
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Package,
+  BarChart3,
+  GitBranch,
+  Fish,
+  AlertTriangle,
+  FileText,
+} from 'lucide-react'
 import type { Prisma } from '@prisma/client'
 import { useToast } from '@/lib/hooks/useToast'
 
@@ -44,17 +48,21 @@ interface ProcessManagerProps {
   userId: string
 }
 
-export function ProcessManager({ assignmentId, processes = [], canEdit, userId }: ProcessManagerProps) {
+export function ProcessManager({
+  assignmentId,
+  processes = [],
+  canEdit,
+  userId,
+}: ProcessManagerProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isAddingProcess, setIsAddingProcess] = useState(false)
   const [editingProcess, setEditingProcess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-
   const [processForm, setProcessForm] = useState({
     processName: '',
-    processOwner: ''
+    processOwner: '',
   })
 
   const handleAddProcess = async () => {
@@ -62,7 +70,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
       toast({
         variant: 'destructive',
         title: 'Validation Error',
-        description: 'Please enter a process name'
+        description: 'Please enter a process name',
       })
       return
     }
@@ -77,15 +85,15 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
           processName: processForm.processName,
           processOwner: processForm.processOwner,
           order: processes.length + 1,
-          userId
-        })
+          userId,
+        }),
       })
 
       if (response.ok) {
         toast({
           variant: 'success',
           title: 'Success',
-          description: 'Process created successfully'
+          description: 'Process created successfully',
         })
         setIsAddingProcess(false)
         setProcessForm({ processName: '', processOwner: '' })
@@ -96,7 +104,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
         toast({
           variant: 'destructive',
           title: 'Error',
-          description: `Failed to create process: ${errorData?.error || response.statusText}`
+          description: `Failed to create process: ${errorData?.error || response.statusText}`,
         })
       }
     } catch (error) {
@@ -104,7 +112,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Failed to create process. Please try again.'
+        description: 'Failed to create process. Please try again.',
       })
     } finally {
       setLoading(false)
@@ -112,7 +120,11 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
   }
 
   const handleDeleteProcess = async (processId: string) => {
-    if (!confirm('Are you sure you want to delete this process? This will delete all associated SIPOC, VSM, Fishbone, FMEA, and Process Capability data.')) {
+    if (
+      !confirm(
+        'Are you sure you want to delete this process? This will delete all associated SIPOC, VSM, Fishbone, FMEA, and Process Capability data.'
+      )
+    ) {
       return
     }
 
@@ -121,7 +133,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
       const response = await fetch(`/api/processes/${processId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -134,13 +146,16 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
     }
   }
 
-  const handleUpdateProcess = async (processId: string, data: { processName?: string; processOwner?: string }) => {
+  const handleUpdateProcess = async (
+    processId: string,
+    data: { processName?: string; processOwner?: string }
+  ) => {
     setLoading(true)
     try {
       const response = await fetch(`/api/processes/${processId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, userId, assignmentId })
+        body: JSON.stringify({ ...data, userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -160,7 +175,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
       vsm: process.vsmSteps.length,
       fishbone: process.fishboneCategories.reduce((acc, cat) => acc + cat.causes.length, 0),
       fmea: process.fmeaEntries.length,
-      capability: process.lowerSpecLimit && process.upperSpecLimit ? 1 : 0
+      capability: process.lowerSpecLimit && process.upperSpecLimit ? 1 : 0,
     }
   }
 
@@ -171,7 +186,8 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
           <div>
             <CardTitle className="text-2xl">Process Management</CardTitle>
             <CardDescription>
-              Manage multiple processes - Each process has its own SIPOC, VSM, Fishbone, FMEA, and Process Capability
+              Manage multiple processes - Each process has its own SIPOC, VSM, Fishbone, FMEA, and
+              Process Capability
             </CardDescription>
           </div>
           {canEdit ? (
@@ -194,7 +210,8 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
             <CardHeader>
               <CardTitle>Add New Process</CardTitle>
               <CardDescription>
-                Each process will have its own SIPOC, VSM, Fishbone, FMEA, and Process Capability analysis
+                Each process will have its own SIPOC, VSM, Fishbone, FMEA, and Process Capability
+                analysis
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -204,7 +221,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
                   <Input
                     placeholder="e.g., Order Fulfillment Process"
                     value={processForm.processName}
-                    onChange={(e) => setProcessForm({ ...processForm, processName: e.target.value })}
+                    onChange={e => setProcessForm({ ...processForm, processName: e.target.value })}
                     className="mt-1"
                   />
                 </div>
@@ -213,7 +230,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
                   <Input
                     placeholder="e.g., John Smith"
                     value={processForm.processOwner}
-                    onChange={(e) => setProcessForm({ ...processForm, processOwner: e.target.value })}
+                    onChange={e => setProcessForm({ ...processForm, processOwner: e.target.value })}
                     className="mt-1"
                   />
                 </div>
@@ -244,10 +261,7 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
             <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
             <p className="text-gray-600 mb-4">No processes defined yet</p>
             {canEdit && (
-              <Button
-                onClick={() => setIsAddingProcess(true)}
-                variant="outline"
-              >
+              <Button onClick={() => setIsAddingProcess(true)} variant="outline">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Your First Process
               </Button>
@@ -277,10 +291,14 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
                         {isEditing ? (
                           <Input
                             defaultValue={process.processName}
-                            onBlur={(e) => handleUpdateProcess(process.id, { processName: e.target.value })}
-                            onKeyDown={(e) => {
+                            onBlur={e =>
+                              handleUpdateProcess(process.id, { processName: e.target.value })
+                            }
+                            onKeyDown={e => {
                               if (e.key === 'Enter') {
-                                handleUpdateProcess(process.id, { processName: e.currentTarget.value })
+                                handleUpdateProcess(process.id, {
+                                  processName: e.currentTarget.value,
+                                })
                               } else if (e.key === 'Escape') {
                                 setEditingProcess(null)
                               }
@@ -295,7 +313,9 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
                         {isEditing ? (
                           <Input
                             defaultValue={process.processOwner || ''}
-                            onBlur={(e) => handleUpdateProcess(process.id, { processOwner: e.target.value })}
+                            onBlur={e =>
+                              handleUpdateProcess(process.id, { processOwner: e.target.value })
+                            }
                             className="text-sm"
                           />
                         ) : (
@@ -306,23 +326,38 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-2 justify-center">
-                          <Badge variant={stats.sipoc > 0 ? "default" : "outline"} className="text-xs">
+                          <Badge
+                            variant={stats.sipoc > 0 ? 'default' : 'outline'}
+                            className="text-xs"
+                          >
                             <Package className="h-3 w-3 mr-1" />
                             SIPOC ({stats.sipoc})
                           </Badge>
-                          <Badge variant={stats.vsm > 0 ? "default" : "outline"} className="text-xs">
+                          <Badge
+                            variant={stats.vsm > 0 ? 'default' : 'outline'}
+                            className="text-xs"
+                          >
                             <GitBranch className="h-3 w-3 mr-1" />
                             VSM ({stats.vsm})
                           </Badge>
-                          <Badge variant={stats.fishbone > 0 ? "default" : "outline"} className="text-xs">
+                          <Badge
+                            variant={stats.fishbone > 0 ? 'default' : 'outline'}
+                            className="text-xs"
+                          >
                             <Fish className="h-3 w-3 mr-1" />
                             Fishbone ({stats.fishbone})
                           </Badge>
-                          <Badge variant={stats.fmea > 0 ? "default" : "outline"} className="text-xs">
+                          <Badge
+                            variant={stats.fmea > 0 ? 'default' : 'outline'}
+                            className="text-xs"
+                          >
                             <AlertTriangle className="h-3 w-3 mr-1" />
                             FMEA ({stats.fmea})
                           </Badge>
-                          <Badge variant={stats.capability > 0 ? "default" : "outline"} className="text-xs">
+                          <Badge
+                            variant={stats.capability > 0 ? 'default' : 'outline'}
+                            className="text-xs"
+                          >
                             <BarChart3 className="h-3 w-3 mr-1" />
                             Capability
                           </Badge>
@@ -367,9 +402,14 @@ export function ProcessManager({ assignmentId, processes = [], canEdit, userId }
                 <p className="font-medium text-blue-900 mb-1">How to use multiple processes:</p>
                 <ol className="list-decimal list-inside space-y-1 text-blue-800">
                   <li>Add a new process using the "Add New Process" button above</li>
-                  <li>Each process will appear in the dropdowns of SIPOC, VSM, Fishbone, and other sections</li>
+                  <li>
+                    Each process will appear in the dropdowns of SIPOC, VSM, Fishbone, and other
+                    sections
+                  </li>
                   <li>Select the process you want to work on from the dropdown in each section</li>
-                  <li>Pareto analysis will automatically analyze data from the selected process's VSM</li>
+                  <li>
+                    Pareto analysis will automatically analyze data from the selected process's VSM
+                  </li>
                 </ol>
               </div>
             </div>

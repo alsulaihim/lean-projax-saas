@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 /**
  * Authentication Validation Schemas
- * 
+ *
  * Purpose: Type-safe validation for auth endpoints using Zod
- * 
+ *
  * Benefits:
  * - Single source of truth for validation rules
  * - Automatic TypeScript type inference
@@ -15,14 +15,14 @@ import { z } from 'zod'
 
 /**
  * Password validation schema
- * 
+ *
  * Requirements:
  * - Minimum 10 characters
  * - At least one uppercase letter (A-Z)
  * - At least one lowercase letter (a-z)
  * - At least one number (0-9)
  * - At least one special character
- * 
+ *
  * Security: Enforces strong passwords to prevent brute force attacks
  */
 const passwordSchema = z
@@ -38,9 +38,9 @@ const passwordSchema = z
 
 /**
  * Signup Request Schema
- * 
+ *
  * Validates user registration data
- * 
+ *
  * Fields:
  * - email: Valid email format, converted to lowercase
  * - name: 2-100 characters, trimmed
@@ -54,59 +54,53 @@ export const signupSchema = z.object({
     .email('Please enter a valid email address')
     .toLowerCase()
     .trim(),
-  
+
   name: z
     .string()
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name must not exceed 100 characters')
     .trim(),
-  
+
   password: passwordSchema,
-  
+
   companyName: z
     .string()
     .max(200, 'Company name must not exceed 200 characters')
     .trim()
     .optional()
-    .nullable()
+    .nullable(),
 })
 
 /**
  * Login Request Schema
- * 
+ *
  * Validates user login data
- * 
+ *
  * Fields:
  * - email: Valid email format
  * - password: Any string (will be checked against hash)
  */
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address')
-    .trim(),
-  
-  password: z
-    .string()
-    .min(1, 'Password is required')
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email address').trim(),
+
+  password: z.string().min(1, 'Password is required'),
 })
 
 /**
  * Email Verification Schema
- * 
+ *
  * Validates email verification token
  */
 export const verifyEmailSchema = z.object({
   token: z
     .string()
     .min(1, 'Verification token is required')
-    .length(64, 'Invalid verification token format') // 32 bytes = 64 hex characters
+    .length(64, 'Invalid verification token format'), // 32 bytes = 64 hex characters
 })
 
 /**
  * Type exports for TypeScript
- * 
+ *
  * Usage:
  * const data: SignupInput = { email: '...', name: '...', ... }
  */
@@ -130,7 +124,7 @@ export function formatZodError(error: z.ZodError) {
 
   const formatted: Record<string, string[]> = {}
 
-  error.issues.forEach((err) => {
+  error.issues.forEach(err => {
     const field = err.path.join('.') || '_error'
     if (!formatted[field]) {
       formatted[field] = []
@@ -140,4 +134,3 @@ export function formatZodError(error: z.ZodError) {
 
   return formatted
 }
-

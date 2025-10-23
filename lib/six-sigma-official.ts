@@ -37,9 +37,18 @@ function normalCDF(z: number): number {
  */
 function inverseNormalCDF(p: number): number {
   // Coefficients for Hastings approximation
-  const a = [2.506628277459239, -30.66479806614716, 138.3577518672690, -275.9285104469687, 220.9460984245205, -39.69683028665376]
-  const b = [-13.28068155288572, 66.80131188771972, -155.6989798598866, 161.5858368580409, -54.47609879822406]
-  const c = [2.938163982698783, 4.374664141464968, -2.549732539343734, -2.400758277161838, -0.3223964580411365, -0.007784894002430293]
+  const a = [
+    2.506628277459239, -30.66479806614716, 138.357751867269, -275.9285104469687, 220.9460984245205,
+    -39.69683028665376,
+  ]
+  const b = [
+    -13.28068155288572, 66.80131188771972, -155.6989798598866, 161.5858368580409,
+    -54.47609879822406,
+  ]
+  const c = [
+    2.938163982698783, 4.374664141464968, -2.549732539343734, -2.400758277161838,
+    -0.3223964580411365, -0.007784894002430293,
+  ]
   const d = [1, 3.754408661907416]
 
   const q = p < 0.5 ? p : 1 - p
@@ -48,12 +57,14 @@ function inverseNormalCDF(p: number): number {
   let z: number
   if (r < 2.5) {
     const t = r - 1.6
-    z = (((((a[5] * t + a[4]) * t + a[3]) * t + a[2]) * t + a[1]) * t + a[0]) /
-        (((((b[4] * t + b[3]) * t + b[2]) * t + b[1]) * t + b[0]) * t + 1)
+    z =
+      (((((a[5] * t + a[4]) * t + a[3]) * t + a[2]) * t + a[1]) * t + a[0]) /
+      (((((b[4] * t + b[3]) * t + b[2]) * t + b[1]) * t + b[0]) * t + 1)
   } else {
     const t = r - 2.5
-    z = (((((c[5] * t + c[4]) * t + c[3]) * t + c[2]) * t + c[1]) * t + c[0]) /
-        ((d[1] * t + d[0]) * t + 1)
+    z =
+      (((((c[5] * t + c[4]) * t + c[3]) * t + c[2]) * t + c[1]) * t + c[0]) /
+      ((d[1] * t + d[0]) * t + 1)
   }
 
   return p < 0.5 ? -z : z
@@ -116,7 +127,7 @@ export function dpmoToSigmaLevelTable(dpmo: number): number {
     { minDPMO: 1350, sigmaLevel: 4.5 },
     { minDPMO: 233, sigmaLevel: 5.0 },
     { minDPMO: 32, sigmaLevel: 5.5 },
-    { minDPMO: 3.4, sigmaLevel: 6.0 }
+    { minDPMO: 3.4, sigmaLevel: 6.0 },
   ]
 
   // Find the appropriate sigma level
@@ -180,6 +191,6 @@ export function validateCalculations(cpk: number) {
     dpmo: Math.round(dpmo),
     sigmaDirectCalc: sigmaMethod1,
     sigmaFromDPMO: sigmaMethod2,
-    sigmaFromTable: sigmaMethod3
+    sigmaFromTable: sigmaMethod3,
   }
 }

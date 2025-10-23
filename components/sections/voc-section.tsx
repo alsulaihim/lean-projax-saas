@@ -12,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -53,7 +47,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
     statement: '',
     type: 'CUSTOMER_NEED' as 'CUSTOMER_NEED' | 'PAIN_POINT' | 'EXPECTATION',
     source: '',
-    priority: 3
+    priority: 3,
   })
 
   const [ctqForm, setCTQForm] = useState({
@@ -61,7 +55,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
     unit: '',
     lowerSpec: '',
     targetSpec: '',
-    upperSpec: ''
+    upperSpec: '',
   })
 
   const handleAddVOC = async () => {
@@ -73,8 +67,8 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
           customerSegment: vocForm.source || 'General', // Map source to customerSegment
           voiceStatement: vocForm.statement, // Map statement to voiceStatement
           assignmentId,
-          userId
-        })
+          userId,
+        }),
       })
 
       if (response.ok) {
@@ -83,7 +77,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
           statement: '',
           type: 'CUSTOMER_NEED',
           source: '',
-          priority: 3
+          priority: 3,
         })
         router.refresh()
       }
@@ -93,7 +87,9 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
   }
 
   const handleDeleteVOC = async (vocId: string) => {
-    if (!confirm('Are you sure you want to delete this VOC statement and all its CTQ requirements?')) {
+    if (
+      !confirm('Are you sure you want to delete this VOC statement and all its CTQ requirements?')
+    ) {
       return
     }
 
@@ -101,7 +97,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
       const response = await fetch(`/api/voc-statements/${vocId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -124,8 +120,8 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
           targetSpec: ctqForm.targetSpec ? parseFloat(ctqForm.targetSpec) : null,
           upperSpec: ctqForm.upperSpec ? parseFloat(ctqForm.upperSpec) : null,
           userId,
-          assignmentId
-        })
+          assignmentId,
+        }),
       })
 
       if (response.ok) {
@@ -135,7 +131,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
           unit: '',
           lowerSpec: '',
           targetSpec: '',
-          upperSpec: ''
+          upperSpec: '',
         })
         router.refresh()
       }
@@ -153,7 +149,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
       const response = await fetch(`/api/ctq-requirements/${ctqId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -179,20 +175,22 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
     2: 'bg-orange-100 text-orange-800 border-orange-300',
     3: 'bg-yellow-100 text-yellow-800 border-yellow-300',
     4: 'bg-blue-100 text-blue-800 border-blue-300',
-    5: 'bg-gray-100 text-gray-800 border-gray-300'
+    5: 'bg-gray-100 text-gray-800 border-gray-300',
   }
 
   const _typeLabels = {
     CUSTOMER_NEED: 'Customer Need',
     PAIN_POINT: 'Pain Point',
-    EXPECTATION: 'Expectation'
+    EXPECTATION: 'Expectation',
   }
 
   return (
     <div className="space-y-6">
       <Card className="border-2 border-black">
         <CardHeader>
-          <CardTitle className="text-2xl">Voice of Customer (VOC) & Critical to Quality (CTQ)</CardTitle>
+          <CardTitle className="text-2xl">
+            Voice of Customer (VOC) & Critical to Quality (CTQ)
+          </CardTitle>
           <CardDescription>
             Capture customer requirements and translate them into measurable specifications
           </CardDescription>
@@ -200,7 +198,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
         <CardContent>
           {/* VOC List */}
           <div className="space-y-4">
-            {vocStatements.map((voc) => (
+            {vocStatements.map(voc => (
               <Card key={voc.id} className="border border-gray-300">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
@@ -213,11 +211,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                       <p className="font-medium">{voc.voiceStatement}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleVOCExpansion(voc.id)}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => toggleVOCExpansion(voc.id)}>
                         {expandedVOCs.has(voc.id) ? (
                           <ChevronUp className="h-4 w-4" />
                         ) : (
@@ -265,31 +259,39 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                               <Input
                                 placeholder="CTQ Requirement"
                                 value={ctqForm.requirement}
-                                onChange={(e) => setCTQForm({ ...ctqForm, requirement: e.target.value })}
+                                onChange={e =>
+                                  setCTQForm({ ...ctqForm, requirement: e.target.value })
+                                }
                               />
                               <div className="grid grid-cols-4 gap-2">
                                 <Input
                                   placeholder="Unit"
                                   value={ctqForm.unit}
-                                  onChange={(e) => setCTQForm({ ...ctqForm, unit: e.target.value })}
+                                  onChange={e => setCTQForm({ ...ctqForm, unit: e.target.value })}
                                 />
                                 <Input
                                   type="number"
                                   placeholder="Lower Spec"
                                   value={ctqForm.lowerSpec}
-                                  onChange={(e) => setCTQForm({ ...ctqForm, lowerSpec: e.target.value })}
+                                  onChange={e =>
+                                    setCTQForm({ ...ctqForm, lowerSpec: e.target.value })
+                                  }
                                 />
                                 <Input
                                   type="number"
                                   placeholder="Target"
                                   value={ctqForm.targetSpec}
-                                  onChange={(e) => setCTQForm({ ...ctqForm, targetSpec: e.target.value })}
+                                  onChange={e =>
+                                    setCTQForm({ ...ctqForm, targetSpec: e.target.value })
+                                  }
                                 />
                                 <Input
                                   type="number"
                                   placeholder="Upper Spec"
                                   value={ctqForm.upperSpec}
-                                  onChange={(e) => setCTQForm({ ...ctqForm, upperSpec: e.target.value })}
+                                  onChange={e =>
+                                    setCTQForm({ ...ctqForm, upperSpec: e.target.value })
+                                  }
                                 />
                               </div>
                               <div className="flex justify-end gap-2">
@@ -326,7 +328,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {voc.ctqRequirements.map((ctq) => {
+                            {voc.ctqRequirements.map(ctq => {
                               // Parse measurement criteria to extract values
                               // Format: "LSL: 10, Target: 15, USL: 20 minutes"
                               const criteria = ctq.measurementCriteria || ''
@@ -335,18 +337,22 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                               const uslMatch = criteria.match(/USL:\s*([\d.]+)/)
                               // Extract unit (everything after the numbers)
                               const unitMatch = criteria.match(/\d\s+(.+)$/)
-                              
+
                               const lowerSpec = lslMatch ? lslMatch[1] : '-'
                               const target = targetMatch ? targetMatch[1] : '-'
                               const upperSpec = uslMatch ? uslMatch[1] : '-'
                               const unit = unitMatch ? unitMatch[1] : '-'
-                              
+
                               return (
                                 <TableRow key={ctq.id}>
-                                  <TableCell className="font-medium">{ctq.ctqDescription}</TableCell>
+                                  <TableCell className="font-medium">
+                                    {ctq.ctqDescription}
+                                  </TableCell>
                                   <TableCell>{unit}</TableCell>
                                   <TableCell className="text-center">{lowerSpec}</TableCell>
-                                  <TableCell className="text-center font-medium">{target}</TableCell>
+                                  <TableCell className="text-center font-medium">
+                                    {target}
+                                  </TableCell>
                                   <TableCell className="text-center">{upperSpec}</TableCell>
                                   {canEdit && (
                                     <TableCell>
@@ -394,7 +400,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                       <Textarea
                         placeholder="Voice of Customer statement..."
                         value={vocForm.statement}
-                        onChange={(e) => setVOCForm({ ...vocForm, statement: e.target.value })}
+                        onChange={e => setVOCForm({ ...vocForm, statement: e.target.value })}
                         className="min-h-[100px]"
                       />
 
@@ -403,7 +409,9 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                           <label className="text-sm font-medium mb-2 block">Type</label>
                           <Select
                             value={vocForm.type}
-                            onValueChange={(value) => setVOCForm({ ...vocForm, type: value as typeof vocForm.type })}
+                            onValueChange={value =>
+                              setVOCForm({ ...vocForm, type: value as typeof vocForm.type })
+                            }
                           >
                             <SelectTrigger>
                               <SelectValue />
@@ -421,7 +429,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                           <Input
                             placeholder="e.g., Survey, Interview"
                             value={vocForm.source}
-                            onChange={(e) => setVOCForm({ ...vocForm, source: e.target.value })}
+                            onChange={e => setVOCForm({ ...vocForm, source: e.target.value })}
                           />
                         </div>
 
@@ -429,7 +437,9 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                           <label className="text-sm font-medium mb-2 block">Priority</label>
                           <Select
                             value={vocForm.priority.toString()}
-                            onValueChange={(value) => setVOCForm({ ...vocForm, priority: parseInt(value) })}
+                            onValueChange={value =>
+                              setVOCForm({ ...vocForm, priority: parseInt(value) })
+                            }
                           >
                             <SelectTrigger>
                               <SelectValue />
@@ -454,7 +464,7 @@ export function VOCSection({ assignmentId, vocStatements, canEdit, userId }: VOC
                               statement: '',
                               type: 'CUSTOMER_NEED',
                               source: '',
-                              priority: 3
+                              priority: 3,
                             })
                           }}
                         >

@@ -27,16 +27,17 @@ Lean Projax 1/
 
 ## 🚀 Live Applications
 
-| Application | URL | Purpose |
-|-------------|-----|---------|
-| **Marketing Site** | http://localhost:3071 | Customer-facing landing page |
-| **Main Platform** | http://localhost:3070 | Six Sigma workflow application |
+| Application        | URL                   | Purpose                        |
+| ------------------ | --------------------- | ------------------------------ |
+| **Marketing Site** | http://localhost:3071 | Customer-facing landing page   |
+| **Main Platform**  | http://localhost:3070 | Six Sigma workflow application |
 
 ---
 
 ## 🔄 User Journey
 
 ### New User Flow:
+
 1. **Visit Marketing Site** → http://localhost:3071
 2. **Click "Get Started Free"** → Opens http://localhost:3070/signup in new tab
 3. **Fill Signup Form** → Account created with FREE tier + 14-day trial
@@ -45,6 +46,7 @@ Lean Projax 1/
 6. **Click Logout** → Returns to marketing site (http://localhost:3071)
 
 ### Existing User Flow:
+
 1. **Visit Marketing Site** → http://localhost:3071
 2. **Click "Sign In"** → Opens http://localhost:3070/login in new tab
 3. **Login** → Access platform
@@ -54,6 +56,7 @@ Lean Projax 1/
 ## 📝 Features Implemented
 
 ### Marketing Site (3071)
+
 - ✅ Homepage with hero section
 - ✅ Features showcase (VOC/CTQ, SIPOC, VSM, Fishbone, FMEA, PDF Export)
 - ✅ Pricing page with Free and Pro tiers
@@ -61,6 +64,7 @@ Lean Projax 1/
 - ✅ Professional Lean Projax branding
 
 ### Platform Signup (3070)
+
 - ✅ New `/signup` page with validation
 - ✅ Form fields: Email, Name, Password, Company (optional)
 - ✅ Client-side and server-side validation
@@ -69,16 +73,18 @@ Lean Projax 1/
 - ✅ Professional UI matching platform theme
 
 ### Authentication Updates
+
 - ✅ Login page updated with "Sign up for free" link
 - ✅ Success message on signup completion
 - ✅ Logout redirects to marketing site
 - ✅ Updated branding to "Lean Projax"
 
 ### Database Schema
+
 ```prisma
 model User {
   // ... existing fields ...
-  
+
   // NEW SUBSCRIPTION FIELDS
   subscriptionTier   SubscriptionTier    @default(FREE)
   subscriptionStatus SubscriptionStatus  @default(TRIAL)
@@ -104,6 +110,7 @@ enum SubscriptionStatus {
 ## 🗄️ Database Configuration
 
 **Connection Details:**
+
 - Host: `localhost:5435`
 - Database: `leanprojax_dev`
 - User: `leanprojax`
@@ -117,6 +124,7 @@ Both applications connect to the same PostgreSQL database for seamless user mana
 ## 🔐 Default User Settings
 
 When a new user signs up:
+
 - **Role:** `BPI_TEAM` (can create and edit assignments)
 - **Subscription Tier:** `FREE`
 - **Subscription Status:** `TRIAL`
@@ -128,12 +136,14 @@ When a new user signs up:
 ## 🧪 Testing Checklist
 
 ### Marketing Site Tests:
+
 - [ ] Homepage loads at http://localhost:3071
 - [ ] Pricing page accessible
 - [ ] "Get Started" opens platform signup in new tab
 - [ ] "Sign In" opens platform login in new tab
 
 ### Signup Flow Tests:
+
 - [ ] Signup form validation works (email format, password length)
 - [ ] Password mismatch detected
 - [ ] Duplicate email prevented
@@ -142,6 +152,7 @@ When a new user signs up:
 - [ ] Can login with new credentials
 
 ### Logout Test:
+
 - [ ] Logout button visible in platform header
 - [ ] Clicking logout redirects to marketing site
 
@@ -150,18 +161,21 @@ When a new user signs up:
 ## 🔮 Future Enhancements (Not Yet Implemented)
 
 ### Phase 2: Payment Integration
+
 - [ ] Stripe integration for Pro tier
 - [ ] Subscription management UI
 - [ ] Upgrade/downgrade flows
 - [ ] Invoice generation
 
 ### Phase 3: Trial Management
+
 - [ ] Trial expiration enforcement
 - [ ] Email notifications for trial ending
 - [ ] Automatic downgrade to free tier
 - [ ] Usage tracking
 
 ### Phase 4: Feature Limits
+
 - [ ] Free tier: Max 3 assignments
 - [ ] Free tier: Max 2 team members
 - [ ] Pro tier: Unlimited assignments
@@ -169,6 +183,7 @@ When a new user signs up:
 - [ ] Feature gating middleware
 
 ### Phase 5: Analytics
+
 - [ ] Signup conversion tracking
 - [ ] User engagement metrics
 - [ ] Trial-to-paid conversion rate
@@ -216,6 +231,7 @@ When a new user signs up:
 ## 🌐 Environment Variables
 
 ### Main Platform (.env.local)
+
 ```env
 DATABASE_URL="postgresql://leanprojax:dev_password_local_only@localhost:5435/leanprojax_dev"
 NEXTAUTH_URL="http://localhost:3070"
@@ -224,6 +240,7 @@ NEXT_PUBLIC_API_URL="http://localhost:3071"
 ```
 
 ### Marketing Site
+
 No environment variables needed - pure frontend marketing site.
 
 ---
@@ -233,6 +250,7 @@ No environment variables needed - pure frontend marketing site.
 ### Start Both Apps Simultaneously:
 
 **Terminal 1 (Main Platform):**
+
 ```bash
 cd /Users/alsulaihim/All-Day-Dev/Lean\ Projax\ 1
 npm run dev
@@ -240,6 +258,7 @@ npm run dev
 ```
 
 **Terminal 2 (Marketing Site):**
+
 ```bash
 cd /Users/alsulaihim/All-Day-Dev/Lean\ Projax\ 1/marketing
 npm run dev
@@ -254,6 +273,7 @@ npm run dev
 - **dev** - Active development branch (all new features)
 
 ### Commits on dev:
+
 ```
 73cc2027 - feat: improve navigation between marketing and platform
 d6de08ee - feat: enhance signup flow and update login page
@@ -267,6 +287,7 @@ a16e2807 - feat: add marketing site and signup functionality
 ## 🔒 Security Considerations
 
 ### Implemented:
+
 - ✅ Password hashing with bcrypt (10 rounds)
 - ✅ Email uniqueness enforced by database
 - ✅ **Multi-tenant data isolation** - Users only see their own assignments
@@ -277,6 +298,7 @@ a16e2807 - feat: add marketing site and signup functionality
 - ✅ User-specific queries prevent data leakage
 
 ### To Implement:
+
 - ⚠️ Rate limiting on signup endpoint
 - ⚠️ CAPTCHA for bot prevention
 - ⚠️ Email verification
@@ -288,6 +310,7 @@ a16e2807 - feat: add marketing site and signup functionality
 ## 📊 Test Credentials
 
 **Existing test users** (from seed):
+
 - Email: `analyst@example.com` | Password: `password123` | Role: BPI_TEAM
 - Email: `lead@example.com` | Password: `password123` | Role: TEAM_LEAD
 - Email: `exec@example.com` | Password: `password123` | Role: EXECUTIVE
@@ -325,4 +348,3 @@ a16e2807 - feat: add marketing site and signup functionality
 **Last Updated:** October 21, 2025
 **Branch:** dev
 **Status:** ✅ Ready for testing
-

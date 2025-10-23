@@ -16,10 +16,7 @@ interface UseAutoSaveReturn {
   error: Error | null
 }
 
-export function useAutoSave<T>(
-  data: T,
-  options: UseAutoSaveOptions<T>
-): UseAutoSaveReturn {
+export function useAutoSave<T>(data: T, options: UseAutoSaveOptions<T>): UseAutoSaveReturn {
   const { onSave, delay = 30000, enabled = true } = options // Default 30 seconds
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
@@ -86,8 +83,7 @@ export function useAutoSave<T>(
   // Warn on page unload if there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (saveStatus === 'saving' ||
-          (JSON.stringify(data) !== JSON.stringify(lastDataRef.current))) {
+      if (saveStatus === 'saving' || JSON.stringify(data) !== JSON.stringify(lastDataRef.current)) {
         const message = 'You have unsaved changes. Are you sure you want to leave?'
         e.preventDefault()
         e.returnValue = message
@@ -103,6 +99,6 @@ export function useAutoSave<T>(
     saveStatus,
     lastSaved,
     triggerSave,
-    error
+    error,
   }
 }

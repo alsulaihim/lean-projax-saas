@@ -4,12 +4,7 @@ import { useState } from 'react'
 import { Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface SummaryTabsProps {
   defaultValue: string
@@ -26,7 +21,7 @@ export function SummaryTabs({ defaultValue, processes, children }: SummaryTabsPr
 
   const tabs = [
     { value: 'overview', label: 'Overall Summary' },
-    ...processes.map(p => ({ value: p.id, label: p.processName }))
+    ...processes.map(p => ({ value: p.id, label: p.processName })),
   ]
 
   const currentTabLabel = tabs.find(t => t.value === activeTab)?.label || 'Overview'
@@ -52,7 +47,7 @@ export function SummaryTabs({ defaultValue, processes, children }: SummaryTabsPr
               <SheetTitle>Summary Sections</SheetTitle>
             </SheetHeader>
             <div className="mt-6 space-y-2">
-              {tabs.map((tab) => (
+              {tabs.map(tab => (
                 <button
                   key={tab.value}
                   onClick={() => handleTabChange(tab.value)}
@@ -75,7 +70,10 @@ export function SummaryTabs({ defaultValue, processes, children }: SummaryTabsPr
       {/* Desktop tabs */}
       <div className="hidden md:block">
         <TabsList className="w-full justify-start bg-white border-2 border-black h-auto flex-wrap">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-black data-[state=active]:text-white">
+          <TabsTrigger
+            value="overview"
+            className="data-[state=active]:bg-black data-[state=active]:text-white"
+          >
             Overall Summary
           </TabsTrigger>
           {processes.map(process => (

@@ -44,18 +44,18 @@ export default async function DemoAssignmentsPage() {
           vsmSteps: true,
           fishboneCategories: {
             include: {
-              causes: true
-            }
+              causes: true,
+            },
           },
-          fmeaEntries: true
-        }
+          fmeaEntries: true,
+        },
       },
       vocStatements: {
         include: {
-          ctqRequirements: true
-        }
+          ctqRequirements: true,
+        },
       },
-      recommendations: true
+      recommendations: true,
     },
     orderBy: {
       updatedAt: 'desc',

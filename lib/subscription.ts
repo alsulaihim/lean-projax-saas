@@ -15,8 +15,9 @@ export interface SubscriptionInfo {
  * Check if user has Pro subscription
  */
 export function isPro(subscription: SubscriptionInfo): boolean {
-  return subscription.tier === SubscriptionTier.PRO &&
-         subscription.status === SubscriptionStatus.ACTIVE
+  return (
+    subscription.tier === SubscriptionTier.PRO && subscription.status === SubscriptionStatus.ACTIVE
+  )
 }
 
 /**
@@ -84,52 +85,53 @@ export enum PremiumFeature {
 /**
  * Feature descriptions for upgrade prompts
  */
-export const FEATURE_DESCRIPTIONS: Record<PremiumFeature, { title: string; description: string }> = {
-  [PremiumFeature.EXPORT_PDF]: {
-    title: 'PDF Export',
-    description: 'Export your assignments and reports to professional PDF documents'
-  },
-  [PremiumFeature.EXPORT_EXCEL]: {
-    title: 'Excel Export',
-    description: 'Export data tables and analytics to Excel spreadsheets'
-  },
-  [PremiumFeature.ADVANCED_ANALYTICS]: {
-    title: 'Advanced Analytics',
-    description: 'Access detailed analytics, trends, and performance metrics'
-  },
-  [PremiumFeature.CUSTOM_REPORTS]: {
-    title: 'Custom Reports',
-    description: 'Create and customize reports with your own templates'
-  },
-  [PremiumFeature.TEAM_COLLABORATION]: {
-    title: 'Team Collaboration',
-    description: 'Collaborate with team members in real-time'
-  },
-  [PremiumFeature.SHARED_ASSIGNMENTS]: {
-    title: 'Shared Assignments',
-    description: 'Share assignments with team members and stakeholders'
-  },
-  [PremiumFeature.AI_RECOMMENDATIONS]: {
-    title: 'AI Recommendations',
-    description: 'Get intelligent recommendations powered by AI'
-  },
-  [PremiumFeature.AI_INSIGHTS]: {
-    title: 'AI Insights',
-    description: 'Unlock AI-powered insights and analysis'
-  },
-  [PremiumFeature.CUSTOM_BRANDING]: {
-    title: 'Custom Branding',
-    description: 'Add your company logo and branding to reports'
-  },
-  [PremiumFeature.CUSTOM_TEMPLATES]: {
-    title: 'Custom Templates',
-    description: 'Create and save custom templates for your processes'
-  },
-  [PremiumFeature.UNLIMITED_ASSIGNMENTS]: {
-    title: 'Unlimited Assignments',
-    description: 'Create unlimited assignments without restrictions'
-  },
-}
+export const FEATURE_DESCRIPTIONS: Record<PremiumFeature, { title: string; description: string }> =
+  {
+    [PremiumFeature.EXPORT_PDF]: {
+      title: 'PDF Export',
+      description: 'Export your assignments and reports to professional PDF documents',
+    },
+    [PremiumFeature.EXPORT_EXCEL]: {
+      title: 'Excel Export',
+      description: 'Export data tables and analytics to Excel spreadsheets',
+    },
+    [PremiumFeature.ADVANCED_ANALYTICS]: {
+      title: 'Advanced Analytics',
+      description: 'Access detailed analytics, trends, and performance metrics',
+    },
+    [PremiumFeature.CUSTOM_REPORTS]: {
+      title: 'Custom Reports',
+      description: 'Create and customize reports with your own templates',
+    },
+    [PremiumFeature.TEAM_COLLABORATION]: {
+      title: 'Team Collaboration',
+      description: 'Collaborate with team members in real-time',
+    },
+    [PremiumFeature.SHARED_ASSIGNMENTS]: {
+      title: 'Shared Assignments',
+      description: 'Share assignments with team members and stakeholders',
+    },
+    [PremiumFeature.AI_RECOMMENDATIONS]: {
+      title: 'AI Recommendations',
+      description: 'Get intelligent recommendations powered by AI',
+    },
+    [PremiumFeature.AI_INSIGHTS]: {
+      title: 'AI Insights',
+      description: 'Unlock AI-powered insights and analysis',
+    },
+    [PremiumFeature.CUSTOM_BRANDING]: {
+      title: 'Custom Branding',
+      description: 'Add your company logo and branding to reports',
+    },
+    [PremiumFeature.CUSTOM_TEMPLATES]: {
+      title: 'Custom Templates',
+      description: 'Create and save custom templates for your processes',
+    },
+    [PremiumFeature.UNLIMITED_ASSIGNMENTS]: {
+      title: 'Unlimited Assignments',
+      description: 'Create unlimited assignments without restrictions',
+    },
+  }
 
 /**
  * Free tier limits
@@ -143,10 +145,7 @@ export const FREE_TIER_LIMITS = {
 /**
  * Check if user has access to a premium feature
  */
-export function hasFeatureAccess(
-  subscription: SubscriptionInfo,
-  feature: PremiumFeature
-): boolean {
+export function hasFeatureAccess(subscription: SubscriptionInfo, feature: PremiumFeature): boolean {
   // Pro users have access to all features
   if (isPro(subscription)) {
     return true

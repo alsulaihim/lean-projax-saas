@@ -30,16 +30,13 @@ export interface ParetoItemWithAnalysis extends ParetoItem {
  * @param targetPercentage Target cumulative percentage (default 80%)
  * @returns Sorted items with Pareto analysis metrics
  */
-export function calculatePareto(
-  items: ParetoItem[],
-  targetPercentage: number = 80
-): ParetoResult {
+export function calculatePareto(items: ParetoItem[], targetPercentage: number = 80): ParetoResult {
   if (!items || items.length === 0) {
     return {
       items: [],
       totalValue: 0,
       vitalFewCount: 0,
-      vitalFewPercentage: 0
+      vitalFewPercentage: 0,
     }
   }
 
@@ -53,11 +50,11 @@ export function calculatePareto(
         percentage: 0,
         cumulativePercentage: 0,
         rank: index + 1,
-        isVitalFew: false
+        isVitalFew: false,
       })),
       totalValue: 0,
       vitalFewCount: 0,
-      vitalFewPercentage: 0
+      vitalFewPercentage: 0,
     }
   }
 
@@ -81,7 +78,7 @@ export function calculatePareto(
       percentage: Math.round(percentage * 100) / 100, // Round to 2 decimal places
       cumulativePercentage: Math.round(cumulativePercentage * 100) / 100,
       rank: index + 1,
-      isVitalFew
+      isVitalFew,
     }
   })
 
@@ -89,7 +86,7 @@ export function calculatePareto(
     items: analyzedItems,
     totalValue,
     vitalFewCount,
-    vitalFewPercentage: (vitalFewCount / items.length) * 100
+    vitalFewPercentage: (vitalFewCount / items.length) * 100,
   }
 }
 
@@ -104,7 +101,7 @@ export function formatParetoChartData(result: ParetoResult) {
     value: item.value,
     percentage: item.percentage,
     cumulative: item.cumulativePercentage,
-    isVitalFew: item.isVitalFew
+    isVitalFew: item.isVitalFew,
   }))
 }
 
@@ -136,7 +133,7 @@ export function getParetoInsights(result: ParetoResult): string[] {
   // Add primary insight
   insights.push(
     `${result.vitalFewCount} out of ${result.items.length} items (${efficiency}%) ` +
-    `contribute to 80% of the total impact`
+      `contribute to 80% of the total impact`
   )
 
   // Add efficiency interpretation
@@ -145,15 +142,15 @@ export function getParetoInsights(result: ParetoResult): string[] {
   } else if (efficiency <= 40) {
     insights.push('Moderately concentrated - Good opportunity for targeted improvements')
   } else {
-    insights.push('Widely distributed - Consider systemic improvements rather than item-specific fixes')
+    insights.push(
+      'Widely distributed - Consider systemic improvements rather than item-specific fixes'
+    )
   }
 
   // Add top contributor insight
   if (result.items.length > 0) {
     const topItem = result.items[0]
-    insights.push(
-      `Top contributor: "${topItem.name}" accounts for ${topItem.percentage}% of total`
-    )
+    insights.push(`Top contributor: "${topItem.name}" accounts for ${topItem.percentage}% of total`)
   }
 
   return insights

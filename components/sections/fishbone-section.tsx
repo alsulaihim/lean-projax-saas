@@ -12,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus, Trash2, Edit2, Eye, EyeOff } from 'lucide-react'
 import { FishboneDiagram } from '@/components/charts/fishbone-diagram'
 import type { Prisma } from '@prisma/client'
@@ -40,7 +34,12 @@ interface FishboneSectionProps {
 
 type CategoryType = 'PEOPLE' | 'PROCESS' | 'EQUIPMENT' | 'MATERIALS' | 'ENVIRONMENT' | 'MANAGEMENT'
 
-export function FishboneSection({ assignmentId, processes, canEdit, userId }: FishboneSectionProps) {
+export function FishboneSection({
+  assignmentId,
+  processes,
+  canEdit,
+  userId,
+}: FishboneSectionProps) {
   const router = useRouter()
   const [selectedProcess, setSelectedProcess] = useState<string>(processes[0]?.id || '')
   const [isAddingCause, setIsAddingCause] = useState(false)
@@ -50,16 +49,23 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
 
   const [causeForm, setCauseForm] = useState({
     category: 'PEOPLE' as CategoryType,
-    causeDescription: ''
+    causeDescription: '',
   })
 
   const [editForm, setEditForm] = useState({
-    causeDescription: ''
+    causeDescription: '',
   })
 
   const currentProcess = processes.find(p => p.id === selectedProcess)
 
-  const categories: CategoryType[] = ['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT']
+  const categories: CategoryType[] = [
+    'PEOPLE',
+    'PROCESS',
+    'EQUIPMENT',
+    'MATERIALS',
+    'ENVIRONMENT',
+    'MANAGEMENT',
+  ]
 
   const categoryLabels: Record<CategoryType, string> = {
     PEOPLE: 'People (Manpower)',
@@ -67,7 +73,7 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
     EQUIPMENT: 'Equipment (Machine)',
     MATERIALS: 'Materials',
     ENVIRONMENT: 'Environment',
-    MANAGEMENT: 'Management (Measurement)'
+    MANAGEMENT: 'Management (Measurement)',
   }
 
   const categoryIcons: Record<CategoryType, string> = {
@@ -76,7 +82,7 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
     EQUIPMENT: '🔧',
     MATERIALS: '📦',
     ENVIRONMENT: '🌍',
-    MANAGEMENT: '📊'
+    MANAGEMENT: '📊',
   }
 
   // Get or create category for each type
@@ -102,8 +108,8 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
             assignmentId,
             userId,
             category: causeForm.category,
-            order: categories.indexOf(causeForm.category) + 1
-          })
+            order: categories.indexOf(causeForm.category) + 1,
+          }),
         })
 
         if (!categoryResponse.ok) {
@@ -122,15 +128,15 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
           assignmentId,
           userId,
           causeDescription: causeForm.causeDescription,
-          order: (category?.causes?.length || 0) + 1
-        })
+          order: (category?.causes?.length || 0) + 1,
+        }),
       })
 
       if (response.ok) {
         setIsAddingCause(false)
         setCauseForm({
           category: 'PEOPLE',
-          causeDescription: ''
+          causeDescription: '',
         })
         router.refresh()
       }
@@ -150,8 +156,8 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
         body: JSON.stringify({
           causeDescription: editForm.causeDescription,
           userId,
-          assignmentId
-        })
+          assignmentId,
+        }),
       })
 
       if (response.ok) {
@@ -175,7 +181,7 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
       const response = await fetch(`/api/fishbone-causes/${causeId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -192,7 +198,9 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
     return (
       <Card className="border-2 border-black">
         <CardContent className="py-12 text-center">
-          <p className="text-gray-500">Please add at least one process before creating a Fishbone diagram</p>
+          <p className="text-gray-500">
+            Please add at least one process before creating a Fishbone diagram
+          </p>
         </CardContent>
       </Card>
     )
@@ -258,8 +266,8 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
                 causes: cat.causes.map(cause => ({
                   id: cause.id,
                   causeName: cause.causeDescription,
-                  description: null
-                }))
+                  description: null,
+                })),
               }))}
               height={600}
               className="mb-6"
@@ -292,8 +300,8 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
                               <div className="flex-1 flex gap-2">
                                 <Input
                                   value={editForm.causeDescription}
-                                  onChange={(e) => setEditForm({ causeDescription: e.target.value })}
-                                  onKeyDown={(e) => {
+                                  onChange={e => setEditForm({ causeDescription: e.target.value })}
+                                  onKeyDown={e => {
                                     if (e.key === 'Enter') {
                                       handleUpdateCause(cause.id)
                                     } else if (e.key === 'Escape') {
@@ -353,9 +361,7 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-500 text-center py-4">
-                        No causes identified
-                      </p>
+                      <p className="text-sm text-gray-500 text-center py-4">No causes identified</p>
                     )}
                   </CardContent>
                 </Card>
@@ -385,7 +391,9 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
                       <label className="text-sm font-medium mb-2 block">Category</label>
                       <Select
                         value={causeForm.category}
-                        onValueChange={(value: CategoryType) => setCauseForm({ ...causeForm, category: value })}
+                        onValueChange={(value: CategoryType) =>
+                          setCauseForm({ ...causeForm, category: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -405,7 +413,9 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
                       <Textarea
                         placeholder="Describe the potential root cause..."
                         value={causeForm.causeDescription}
-                        onChange={(e) => setCauseForm({ ...causeForm, causeDescription: e.target.value })}
+                        onChange={e =>
+                          setCauseForm({ ...causeForm, causeDescription: e.target.value })
+                        }
                         className="min-h-[80px]"
                       />
                     </div>
@@ -417,7 +427,7 @@ export function FishboneSection({ assignmentId, processes, canEdit, userId }: Fi
                           setIsAddingCause(false)
                           setCauseForm({
                             category: 'PEOPLE',
-                            causeDescription: ''
+                            causeDescription: '',
                           })
                         }}
                         disabled={loading}

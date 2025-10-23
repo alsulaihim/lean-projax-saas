@@ -3,7 +3,9 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 // Calculate vital few steps for a process
-function calculateVitalFew(steps: Array<{ stepName: string, processTime: number, waitingTime: number }>) {
+function calculateVitalFew(
+  steps: Array<{ stepName: string; processTime: number; waitingTime: number }>
+) {
   const sorted = steps
     .map(s => ({ ...s, totalTime: s.processTime + s.waitingTime }))
     .sort((a, b) => b.totalTime - a.totalTime)
@@ -29,7 +31,7 @@ async function main() {
   console.log('🔧 Fixing Fishbone-Pareto alignment...')
 
   const assignment = await prisma.assignment.findFirst({
-    where: { title: 'Bank Facility Granting Process Improvement' }
+    where: { title: 'Bank Facility Granting Process Improvement' },
   })
 
   if (!assignment) {
@@ -39,7 +41,7 @@ async function main() {
   const processes = await prisma.process.findMany({
     where: { assignment: { id: assignment.id } },
     include: { vsmSteps: true, fishboneCategories: { include: { causes: true } } },
-    orderBy: { order: 'asc' }
+    orderBy: { order: 'asc' },
   })
 
   console.log('✅ Found', processes.length, 'processes\n')
@@ -48,10 +50,10 @@ async function main() {
   console.log('🧹 Cleaning existing fishbone data...')
   for (const process of processes) {
     await prisma.fishboneCause.deleteMany({
-      where: { category: { processId: process.id } }
+      where: { category: { processId: process.id } },
     })
     await prisma.fishboneCategory.deleteMany({
-      where: { processId: process.id }
+      where: { processId: process.id },
     })
   }
   console.log('✅ Cleaned up existing fishbone data\n')
@@ -80,8 +82,8 @@ async function main() {
         data: {
           processId: process.id,
           category: 'PEOPLE',
-          order: categoryOrder++
-        }
+          order: categoryOrder++,
+        },
       })
       categories.push(peopleCategory)
 
@@ -90,8 +92,8 @@ async function main() {
         data: {
           processId: process.id,
           category: 'PROCESS',
-          order: categoryOrder++
-        }
+          order: categoryOrder++,
+        },
       })
       categories.push(processCategory)
 
@@ -100,8 +102,8 @@ async function main() {
         data: {
           processId: process.id,
           category: 'EQUIPMENT',
-          order: categoryOrder++
-        }
+          order: categoryOrder++,
+        },
       })
       categories.push(equipmentCategory)
 
@@ -110,8 +112,8 @@ async function main() {
         data: {
           processId: process.id,
           category: 'MATERIALS',
-          order: categoryOrder++
-        }
+          order: categoryOrder++,
+        },
       })
       categories.push(materialsCategory)
 
@@ -120,8 +122,8 @@ async function main() {
         data: {
           processId: process.id,
           category: 'ENVIRONMENT',
-          order: categoryOrder++
-        }
+          order: categoryOrder++,
+        },
       })
       categories.push(environmentCategory)
 
@@ -130,8 +132,8 @@ async function main() {
         data: {
           processId: process.id,
           category: 'MANAGEMENT',
-          order: categoryOrder++
-        }
+          order: categoryOrder++,
+        },
       })
       categories.push(managementCategory)
 
@@ -160,21 +162,44 @@ function generateCausesForStep(stepName: string, categories: any[]): any[] {
 
   // Check step type and generate relevant causes
   const isWaiting = stepName.toLowerCase().includes('wait')
-  const isManual = stepName.toLowerCase().includes('manual') || stepName.toLowerCase().includes('entry')
-  const isApproval = stepName.toLowerCase().includes('approval') || stepName.toLowerCase().includes('review')
-  const isDocument = stepName.toLowerCase().includes('document') || stepName.toLowerCase().includes('paper')
+  const isManual =
+    stepName.toLowerCase().includes('manual') || stepName.toLowerCase().includes('entry')
+  const isApproval =
+    stepName.toLowerCase().includes('approval') || stepName.toLowerCase().includes('review')
+  const isDocument =
+    stepName.toLowerCase().includes('document') || stepName.toLowerCase().includes('paper')
 
   if (isWaiting) {
     // Waiting time causes
     causes.push(
-      { categoryId: people.id, causeDescription: `Insufficient staff capacity for ${stepName}`, order: 1 },
-      { categoryId: people.id, causeDescription: 'Staff unavailability or conflicting priorities', order: 2 },
-      { categoryId: process.id, causeDescription: 'No prioritization or queue management', order: 1 },
-      { categoryId: process.id, causeDescription: 'Sequential workflow instead of parallel', order: 2 },
+      {
+        categoryId: people.id,
+        causeDescription: `Insufficient staff capacity for ${stepName}`,
+        order: 1,
+      },
+      {
+        categoryId: people.id,
+        causeDescription: 'Staff unavailability or conflicting priorities',
+        order: 2,
+      },
+      {
+        categoryId: process.id,
+        causeDescription: 'No prioritization or queue management',
+        order: 1,
+      },
+      {
+        categoryId: process.id,
+        causeDescription: 'Sequential workflow instead of parallel',
+        order: 2,
+      },
       { categoryId: process.id, causeDescription: 'Batch processing delays', order: 3 },
       { categoryId: equipment.id, causeDescription: 'Lack of automation for this step', order: 1 },
       { categoryId: equipment.id, causeDescription: 'No workflow management system', order: 2 },
-      { categoryId: materials.id, causeDescription: 'Missing information or incomplete inputs', order: 1 },
+      {
+        categoryId: materials.id,
+        causeDescription: 'Missing information or incomplete inputs',
+        order: 1,
+      },
       { categoryId: environment.id, causeDescription: 'High workload volume', order: 1 },
       { categoryId: management.id, causeDescription: 'No SLA or time targets defined', order: 1 },
       { categoryId: management.id, causeDescription: 'Inadequate resource allocation', order: 2 }
@@ -183,14 +208,26 @@ function generateCausesForStep(stepName: string, categories: any[]): any[] {
     // Manual process causes
     causes.push(
       { categoryId: people.id, causeDescription: 'Human error in manual entry', order: 1 },
-      { categoryId: people.id, causeDescription: 'Lack of training on efficient methods', order: 2 },
+      {
+        categoryId: people.id,
+        causeDescription: 'Lack of training on efficient methods',
+        order: 2,
+      },
       { categoryId: people.id, causeDescription: 'Fatigue from repetitive tasks', order: 3 },
       { categoryId: process.id, causeDescription: 'No standardized procedure', order: 1 },
-      { categoryId: process.id, causeDescription: 'Multiple data sources requiring manual consolidation', order: 2 },
+      {
+        categoryId: process.id,
+        causeDescription: 'Multiple data sources requiring manual consolidation',
+        order: 2,
+      },
       { categoryId: equipment.id, causeDescription: 'No automation tools available', order: 1 },
       { categoryId: equipment.id, causeDescription: 'Legacy systems not integrated', order: 2 },
       { categoryId: materials.id, causeDescription: 'Data in incompatible formats', order: 1 },
-      { categoryId: environment.id, causeDescription: 'Pressure for speed leading to errors', order: 1 },
+      {
+        categoryId: environment.id,
+        causeDescription: 'Pressure for speed leading to errors',
+        order: 1,
+      },
       { categoryId: management.id, causeDescription: 'No investment in automation', order: 1 },
       { categoryId: management.id, causeDescription: 'No quality control checks', order: 2 }
     )
@@ -199,14 +236,30 @@ function generateCausesForStep(stepName: string, categories: any[]): any[] {
     causes.push(
       { categoryId: people.id, causeDescription: 'Approver unavailability', order: 1 },
       { categoryId: people.id, causeDescription: 'Lack of clear authority levels', order: 2 },
-      { categoryId: people.id, causeDescription: 'Insufficient expertise to make quick decisions', order: 3 },
+      {
+        categoryId: people.id,
+        causeDescription: 'Insufficient expertise to make quick decisions',
+        order: 3,
+      },
       { categoryId: process.id, causeDescription: 'Overly complex approval workflow', order: 1 },
-      { categoryId: process.id, causeDescription: 'Multiple sequential approvals required', order: 2 },
+      {
+        categoryId: process.id,
+        causeDescription: 'Multiple sequential approvals required',
+        order: 2,
+      },
       { categoryId: process.id, causeDescription: 'No clear decision criteria', order: 3 },
       { categoryId: equipment.id, causeDescription: 'No digital approval workflow', order: 1 },
       { categoryId: equipment.id, causeDescription: 'Paper-based process', order: 2 },
-      { categoryId: materials.id, causeDescription: 'Incomplete supporting documentation', order: 1 },
-      { categoryId: environment.id, causeDescription: 'High volume requiring detailed review', order: 1 },
+      {
+        categoryId: materials.id,
+        causeDescription: 'Incomplete supporting documentation',
+        order: 1,
+      },
+      {
+        categoryId: environment.id,
+        causeDescription: 'High volume requiring detailed review',
+        order: 1,
+      },
       { categoryId: management.id, causeDescription: 'Centralized approval bottleneck', order: 1 },
       { categoryId: management.id, causeDescription: 'No delegation framework', order: 2 }
     )
@@ -215,7 +268,11 @@ function generateCausesForStep(stepName: string, categories: any[]): any[] {
     causes.push(
       { categoryId: people.id, causeDescription: 'Limited documentation staff', order: 1 },
       { categoryId: people.id, causeDescription: 'Lack of document preparation skills', order: 2 },
-      { categoryId: process.id, causeDescription: 'Manual document creation from scratch', order: 1 },
+      {
+        categoryId: process.id,
+        causeDescription: 'Manual document creation from scratch',
+        order: 1,
+      },
       { categoryId: process.id, causeDescription: 'Multiple review rounds', order: 2 },
       { categoryId: process.id, causeDescription: 'Customer delays in providing info', order: 3 },
       { categoryId: equipment.id, causeDescription: 'No document automation system', order: 1 },
@@ -229,7 +286,11 @@ function generateCausesForStep(stepName: string, categories: any[]): any[] {
   } else {
     // Generic causes for other steps
     causes.push(
-      { categoryId: people.id, causeDescription: `Insufficient skill level for ${stepName}`, order: 1 },
+      {
+        categoryId: people.id,
+        causeDescription: `Insufficient skill level for ${stepName}`,
+        order: 1,
+      },
       { categoryId: people.id, causeDescription: 'Inadequate training', order: 2 },
       { categoryId: people.id, causeDescription: 'High workload per person', order: 3 },
       { categoryId: process.id, causeDescription: 'Inefficient process design', order: 1 },
@@ -250,7 +311,7 @@ function generateCausesForStep(stepName: string, categories: any[]): any[] {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Error:', e)
     process.exit(1)
   })

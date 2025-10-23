@@ -8,7 +8,7 @@ async function createComprehensiveSample() {
 
     // First, ensure we have a user
     let user = await prisma.user.findFirst({
-      where: { email: 'analyst@example.com' }
+      where: { email: 'analyst@example.com' },
     })
 
     if (!user) {
@@ -18,8 +18,8 @@ async function createComprehensiveSample() {
           email: 'analyst@example.com',
           name: 'John Analyst',
           password: 'hashed_password',
-          role: 'BPI_TEAM'
-        }
+          role: 'BPI_TEAM',
+        },
       })
       console.log('✅ Created user')
     }
@@ -30,11 +30,12 @@ async function createComprehensiveSample() {
       data: {
         id: assignmentId,
         title: 'Manufacturing Excellence Initiative - Multi-Process Optimization',
-        objective: 'Reduce overall manufacturing defect rate by 50%, improve cycle time by 30%, and increase customer satisfaction to 95%',
+        objective:
+          'Reduce overall manufacturing defect rate by 50%, improve cycle time by 30%, and increase customer satisfaction to 95%',
         status: 'COMPLETED',
         createdById: user.id,
-        completedAt: new Date()
-      }
+        completedAt: new Date(),
+      },
     })
     console.log('✅ Created assignment:', assignment.title)
 
@@ -47,14 +48,14 @@ async function createComprehensiveSample() {
           {
             ctqDescription: 'On-time delivery rate >= 98%',
             measurementCriteria: 'Percentage of orders delivered on promised date',
-            targetValue: '98%'
+            targetValue: '98%',
           },
           {
             ctqDescription: 'Zero critical defects in delivered products',
             measurementCriteria: 'Number of critical defects per 1000 units',
-            targetValue: '0 defects/1000 units'
-          }
-        ]
+            targetValue: '0 defects/1000 units',
+          },
+        ],
       },
       {
         voiceStatement: 'Need faster response times for customer inquiries and complaints',
@@ -63,14 +64,14 @@ async function createComprehensiveSample() {
           {
             ctqDescription: 'Initial response within 2 hours',
             measurementCriteria: 'Average first response time',
-            targetValue: '2 hours'
+            targetValue: '2 hours',
           },
           {
             ctqDescription: 'Complete resolution within 24 hours',
             measurementCriteria: 'Average resolution time',
-            targetValue: '24 hours'
-          }
-        ]
+            targetValue: '24 hours',
+          },
+        ],
       },
       {
         voiceStatement: 'Products should be competitively priced without compromising quality',
@@ -79,15 +80,15 @@ async function createComprehensiveSample() {
           {
             ctqDescription: 'Production cost reduction of 15%',
             measurementCriteria: 'Cost per unit manufactured',
-            targetValue: '85% of baseline'
+            targetValue: '85% of baseline',
           },
           {
             ctqDescription: 'Maintain quality score above 4.5/5',
             measurementCriteria: 'Customer quality rating',
-            targetValue: '4.5/5.0'
-          }
-        ]
-      }
+            targetValue: '4.5/5.0',
+          },
+        ],
+      },
     ]
 
     for (const voc of vocData) {
@@ -95,8 +96,8 @@ async function createComprehensiveSample() {
         data: {
           assignmentId,
           voiceStatement: voc.voiceStatement,
-          customerSegment: voc.customerSegment
-        }
+          customerSegment: voc.customerSegment,
+        },
       })
 
       for (const ctq of voc.ctqs) {
@@ -106,8 +107,8 @@ async function createComprehensiveSample() {
             vocStatementId: vocStatement.id,
             ctqDescription: ctq.ctqDescription,
             measurementCriteria: ctq.measurementCriteria,
-            targetValue: ctq.targetValue
-          }
+            targetValue: ctq.targetValue,
+          },
         })
       }
     }
@@ -118,18 +119,18 @@ async function createComprehensiveSample() {
       {
         name: 'Order Fulfillment Process',
         owner: 'Operations Manager',
-        description: 'End-to-end process from order receipt to delivery'
+        description: 'End-to-end process from order receipt to delivery',
       },
       {
         name: 'Manufacturing Assembly Line',
         owner: 'Production Manager',
-        description: 'Core manufacturing and assembly operations'
+        description: 'Core manufacturing and assembly operations',
       },
       {
         name: 'Quality Control Process',
         owner: 'Quality Manager',
-        description: 'Quality inspection and testing procedures'
-      }
+        description: 'Quality inspection and testing procedures',
+      },
     ]
 
     for (let i = 0; i < processesData.length; i++) {
@@ -139,8 +140,8 @@ async function createComprehensiveSample() {
           assignmentId,
           processName: processData.name,
           processOwner: processData.owner,
-          order: i + 1
-        }
+          order: i + 1,
+        },
       })
 
       // Create SIPOC entries for each process (creating complete rows)
@@ -150,36 +151,36 @@ async function createComprehensiveSample() {
           input: 'Raw materials, Components',
           process: 'Material Reception & Inspection',
           output: 'Verified Materials',
-          customer: 'Production Team'
+          customer: 'Production Team',
         },
         {
           supplier: 'Sales Team',
           input: 'Customer Orders',
           process: 'Order Processing',
           output: 'Work Orders',
-          customer: 'Manufacturing Team'
+          customer: 'Manufacturing Team',
         },
         {
           supplier: 'Manufacturing Team',
           input: 'Work Orders, Materials',
           process: 'Production & Assembly',
           output: 'Finished Products',
-          customer: 'Quality Control'
+          customer: 'Quality Control',
         },
         {
           supplier: 'Quality Control',
           input: 'Finished Products',
           process: 'Quality Testing',
           output: 'Approved Products',
-          customer: 'Shipping Department'
+          customer: 'Shipping Department',
         },
         {
           supplier: 'Shipping Department',
           input: 'Approved Products, Shipping Info',
           process: 'Packaging & Shipping',
           output: 'Delivered Products',
-          customer: 'End Customers'
-        }
+          customer: 'End Customers',
+        },
       ]
 
       for (let j = 0; j < sipocRows.length; j++) {
@@ -190,40 +191,40 @@ async function createComprehensiveSample() {
             processId: process.id,
             column: 'SUPPLIER',
             order: j + 1,
-            value: row.supplier
-          }
+            value: row.supplier,
+          },
         })
         await prisma.sIPOCEntry.create({
           data: {
             processId: process.id,
             column: 'INPUT',
             order: j + 1,
-            value: row.input
-          }
+            value: row.input,
+          },
         })
         await prisma.sIPOCEntry.create({
           data: {
             processId: process.id,
             column: 'PROCESS',
             order: j + 1,
-            value: row.process
-          }
+            value: row.process,
+          },
         })
         await prisma.sIPOCEntry.create({
           data: {
             processId: process.id,
             column: 'OUTPUT',
             order: j + 1,
-            value: row.output
-          }
+            value: row.output,
+          },
         })
         await prisma.sIPOCEntry.create({
           data: {
             processId: process.id,
             column: 'CUSTOMER',
             order: j + 1,
-            value: row.customer
-          }
+            value: row.customer,
+          },
         })
       }
 
@@ -236,7 +237,7 @@ async function createComprehensiveSample() {
           valueMeasure: 'NON_VALUE_ADDED',
           stakeholder: 'Sales Team',
           wasteType: 'WAITING',
-          remarks: 'Manual order entry causes delays'
+          remarks: 'Manual order entry causes delays',
         },
         {
           stepName: 'Order Validation',
@@ -245,7 +246,7 @@ async function createComprehensiveSample() {
           valueMeasure: 'ESSENTIAL_NON_VALUE',
           stakeholder: 'Order Processing',
           wasteType: 'OVER_PROCESSING',
-          remarks: 'Multiple validation steps'
+          remarks: 'Multiple validation steps',
         },
         {
           stepName: 'Material Preparation',
@@ -254,7 +255,7 @@ async function createComprehensiveSample() {
           valueMeasure: 'NON_VALUE_ADDED',
           stakeholder: 'Warehouse',
           wasteType: 'MOTION',
-          remarks: 'Inefficient warehouse layout'
+          remarks: 'Inefficient warehouse layout',
         },
         {
           stepName: 'Manufacturing',
@@ -263,7 +264,7 @@ async function createComprehensiveSample() {
           valueMeasure: 'VALUE_ADDED',
           stakeholder: 'Production',
           wasteType: null,
-          remarks: 'Core value-adding activity'
+          remarks: 'Core value-adding activity',
         },
         {
           stepName: 'Quality Inspection',
@@ -272,7 +273,7 @@ async function createComprehensiveSample() {
           valueMeasure: 'ESSENTIAL_NON_VALUE',
           stakeholder: 'QC Team',
           wasteType: 'WAITING',
-          remarks: 'Batch inspection causes queues'
+          remarks: 'Batch inspection causes queues',
         },
         {
           stepName: 'Packaging',
@@ -281,7 +282,7 @@ async function createComprehensiveSample() {
           valueMeasure: 'VALUE_ADDED',
           stakeholder: 'Packaging Team',
           wasteType: null,
-          remarks: 'Customer requirement'
+          remarks: 'Customer requirement',
         },
         {
           stepName: 'Shipping',
@@ -290,8 +291,8 @@ async function createComprehensiveSample() {
           valueMeasure: 'NON_VALUE_ADDED',
           stakeholder: 'Logistics',
           wasteType: 'TRANSPORT',
-          remarks: 'Consolidation delays'
-        }
+          remarks: 'Consolidation delays',
+        },
       ]
 
       for (let j = 0; j < vsmSteps.length; j++) {
@@ -299,8 +300,8 @@ async function createComprehensiveSample() {
           data: {
             ...vsmSteps[j],
             processId: process.id,
-            stepNumber: j + 1
-          }
+            stepNumber: j + 1,
+          },
         })
       }
 
@@ -309,51 +310,66 @@ async function createComprehensiveSample() {
         {
           category: 'PEOPLE',
           causes: [
-            { cause: 'Insufficient training on new procedures', rootCause: 'No structured training program' },
+            {
+              cause: 'Insufficient training on new procedures',
+              rootCause: 'No structured training program',
+            },
             { cause: 'High employee turnover rate', rootCause: 'Poor work conditions' },
-            { cause: 'Lack of skilled operators', rootCause: 'No skill development programs' }
-          ]
+            { cause: 'Lack of skilled operators', rootCause: 'No skill development programs' },
+          ],
         },
         {
           category: 'PROCESS',
           causes: [
-            { cause: 'Outdated standard operating procedures', rootCause: 'No regular review process' },
+            {
+              cause: 'Outdated standard operating procedures',
+              rootCause: 'No regular review process',
+            },
             { cause: 'Inconsistent work methods across shifts', rootCause: 'Poor standardization' },
-            { cause: 'No documented best practices', rootCause: 'Knowledge not captured' }
-          ]
+            { cause: 'No documented best practices', rootCause: 'Knowledge not captured' },
+          ],
         },
         {
           category: 'EQUIPMENT',
           causes: [
-            { cause: 'Frequent equipment breakdowns', rootCause: 'Inadequate preventive maintenance' },
+            {
+              cause: 'Frequent equipment breakdowns',
+              rootCause: 'Inadequate preventive maintenance',
+            },
             { cause: 'Old machinery with poor precision', rootCause: 'No equipment upgrade plan' },
-            { cause: 'Lack of backup equipment', rootCause: 'Budget constraints' }
-          ]
+            { cause: 'Lack of backup equipment', rootCause: 'Budget constraints' },
+          ],
         },
         {
           category: 'MATERIALS',
           causes: [
-            { cause: 'Variable raw material quality', rootCause: 'Multiple suppliers without standards' },
+            {
+              cause: 'Variable raw material quality',
+              rootCause: 'Multiple suppliers without standards',
+            },
             { cause: 'Material shortages causing delays', rootCause: 'Poor inventory management' },
-            { cause: 'Wrong material specifications', rootCause: 'Communication gaps with suppliers' }
-          ]
+            {
+              cause: 'Wrong material specifications',
+              rootCause: 'Communication gaps with suppliers',
+            },
+          ],
         },
         {
           category: 'MANAGEMENT',
           causes: [
             { cause: 'Unclear quality standards', rootCause: 'No documented quality policy' },
             { cause: 'Poor resource allocation', rootCause: 'Lack of capacity planning' },
-            { cause: 'Insufficient budget for improvements', rootCause: 'Cost-cutting measures' }
-          ]
+            { cause: 'Insufficient budget for improvements', rootCause: 'Cost-cutting measures' },
+          ],
         },
         {
           category: 'ENVIRONMENT',
           causes: [
             { cause: 'Temperature variations affecting quality', rootCause: 'No climate control' },
             { cause: 'Dust contamination in production area', rootCause: 'Poor air filtration' },
-            { cause: 'Poor lighting causing errors', rootCause: 'Inadequate facility maintenance' }
-          ]
-        }
+            { cause: 'Poor lighting causing errors', rootCause: 'Inadequate facility maintenance' },
+          ],
+        },
       ]
 
       for (let k = 0; k < fishboneCategories.length; k++) {
@@ -362,8 +378,8 @@ async function createComprehensiveSample() {
           data: {
             processId: process.id,
             category: categoryData.category,
-            order: k + 1
-          }
+            order: k + 1,
+          },
         })
 
         for (let l = 0; l < categoryData.causes.length; l++) {
@@ -372,8 +388,8 @@ async function createComprehensiveSample() {
             data: {
               categoryId: category.id,
               causeDescription: `${causeData.cause} - ${causeData.rootCause}`,
-              order: l + 1
-            }
+              order: l + 1,
+            },
           })
         }
       }
@@ -389,7 +405,7 @@ async function createComprehensiveSample() {
           occurrence: 4,
           currentControls: 'Visual inspection',
           detection: 6,
-          recommendedActions: 'Implement barcode scanning system'
+          recommendedActions: 'Implement barcode scanning system',
         },
         {
           processStep: 'Manufacturing Assembly',
@@ -400,7 +416,7 @@ async function createComprehensiveSample() {
           occurrence: 5,
           currentControls: 'Operator visual check',
           detection: 7,
-          recommendedActions: 'Install automated alignment verification'
+          recommendedActions: 'Install automated alignment verification',
         },
         {
           processStep: 'Quality Testing',
@@ -411,7 +427,7 @@ async function createComprehensiveSample() {
           occurrence: 3,
           currentControls: 'Sample testing',
           detection: 8,
-          recommendedActions: '100% automated optical inspection'
+          recommendedActions: '100% automated optical inspection',
         },
         {
           processStep: 'Packaging',
@@ -422,7 +438,7 @@ async function createComprehensiveSample() {
           occurrence: 4,
           currentControls: 'Random checks',
           detection: 5,
-          recommendedActions: 'Automated label printing and verification'
+          recommendedActions: 'Automated label printing and verification',
         },
         {
           processStep: 'Order Processing',
@@ -433,8 +449,8 @@ async function createComprehensiveSample() {
           occurrence: 6,
           currentControls: 'Double-check by another operator',
           detection: 4,
-          recommendedActions: 'Implement OCR and automated validation'
-        }
+          recommendedActions: 'Implement OCR and automated validation',
+        },
       ]
 
       for (const fmea of fmeaData) {
@@ -450,8 +466,8 @@ async function createComprehensiveSample() {
             currentControls: fmea.currentControls,
             detection: fmea.detection,
             rpn: fmea.severity * fmea.occurrence * fmea.detection,
-            recommendedActions: fmea.recommendedActions
-          }
+            recommendedActions: fmea.recommendedActions,
+          },
         })
       }
     }
@@ -462,39 +478,40 @@ async function createComprehensiveSample() {
     const recommendations = [
       {
         recommendationTitle: 'Implement Automated Quality Inspection System',
-        description: 'Deploy computer vision-based inspection system to achieve 100% quality checking',
+        description:
+          'Deploy computer vision-based inspection system to achieve 100% quality checking',
         expectedImpact: 'Reduce defect rate by 80%, eliminate manual inspection labor',
         implementationDifficulty: 'MEDIUM',
-        estimatedCostSavings: '$250,000 annually'
+        estimatedCostSavings: '$250,000 annually',
       },
       {
         recommendationTitle: 'Upgrade Manufacturing Equipment',
         description: 'Replace aging machinery with modern CNC equipment for better precision',
         expectedImpact: 'Improve precision by 50%, reduce cycle time by 30%',
         implementationDifficulty: 'HIGH',
-        estimatedCostSavings: '$500,000 annually'
+        estimatedCostSavings: '$500,000 annually',
       },
       {
         recommendationTitle: 'Implement Enterprise Resource Planning (ERP) System',
         description: 'Centralized system for order management, inventory, and production planning',
         expectedImpact: 'Streamline operations, reduce order processing time by 60%',
         implementationDifficulty: 'HIGH',
-        estimatedCostSavings: '$350,000 annually'
+        estimatedCostSavings: '$350,000 annually',
       },
       {
         recommendationTitle: 'Establish Supplier Quality Program',
         description: 'Implement supplier certification and regular quality audits',
         expectedImpact: 'Reduce material defects by 70%, improve supply reliability',
         implementationDifficulty: 'LOW',
-        estimatedCostSavings: '$150,000 annually'
+        estimatedCostSavings: '$150,000 annually',
       },
       {
         recommendationTitle: 'Create Comprehensive Training Program',
         description: 'Develop structured training for all operators with certification',
         expectedImpact: 'Reduce human errors by 60%, improve productivity by 25%',
         implementationDifficulty: 'MEDIUM',
-        estimatedCostSavings: '$100,000 annually'
-      }
+        estimatedCostSavings: '$100,000 annually',
+      },
     ]
 
     for (const rec of recommendations) {
@@ -503,8 +520,8 @@ async function createComprehensiveSample() {
           ...rec,
           assignmentId,
           linkedFMEAIds: [],
-          linkedFishboneCauseIds: []
-        }
+          linkedFishboneCauseIds: [],
+        },
       })
     }
 
@@ -519,8 +536,8 @@ async function createComprehensiveSample() {
         entityType: 'Assignment',
         entityId: assignmentId,
         changeDetails: { status: 'Assignment created with comprehensive data' },
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     })
 
     console.log('✅ Created audit log')
@@ -540,7 +557,6 @@ async function createComprehensiveSample() {
     console.log('- 5 improvement recommendations')
     console.log('\n📊 Visit http://localhost:3020/assignments to view the assignment')
     console.log('='.repeat(60))
-
   } catch (error) {
     console.error('❌ Error creating sample assignment:', error)
   } finally {

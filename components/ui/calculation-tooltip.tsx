@@ -1,10 +1,5 @@
 import * as React from 'react'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Info, Calculator, HelpCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -25,12 +20,12 @@ export function CalculationTooltip({
   children,
   icon = 'info',
   className,
-  side = 'top'
+  side = 'top',
 }: CalculationTooltipProps) {
   const Icon = {
     info: Info,
     calculator: Calculator,
-    help: HelpCircle
+    help: HelpCircle,
   }[icon]
 
   // Format the formula with actual values substituted
@@ -40,13 +35,11 @@ export function CalculationTooltip({
     let formattedFormula = formula
     Object.entries(values).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
-        const formattedValue = typeof value === 'number'
-          ? value.toLocaleString(undefined, { maximumFractionDigits: 3 })
-          : String(value)
-        formattedFormula = formattedFormula.replace(
-          new RegExp(key, 'g'),
-          formattedValue
-        )
+        const formattedValue =
+          typeof value === 'number'
+            ? value.toLocaleString(undefined, { maximumFractionDigits: 3 })
+            : String(value)
+        formattedFormula = formattedFormula.replace(new RegExp(key, 'g'), formattedValue)
       }
     })
     return formattedFormula
@@ -56,10 +49,7 @@ export function CalculationTooltip({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <span className={cn(
-            "inline-flex items-center gap-1 cursor-help",
-            className
-          )}>
+          <span className={cn('inline-flex items-center gap-1 cursor-help', className)}>
             {children}
             <Icon className="h-3 w-3 text-gray-400 hover:text-gray-600" />
           </span>
@@ -76,9 +66,7 @@ export function CalculationTooltip({
             </div>
 
             {/* Original formula */}
-            <div className="bg-gray-50 px-2 py-1 rounded font-mono text-xs">
-              {formula}
-            </div>
+            <div className="bg-gray-50 px-2 py-1 rounded font-mono text-xs">{formula}</div>
 
             {/* Substituted values */}
             {values && Object.keys(values).length > 0 && (
@@ -114,7 +102,7 @@ export function RPNTooltip({
   occurrence,
   detection,
   rpn,
-  className
+  className,
 }: {
   severity: number
   occurrence: number
@@ -128,7 +116,7 @@ export function RPNTooltip({
       values={{
         S: severity,
         O: occurrence,
-        D: detection
+        D: detection,
       }}
       result={rpn}
       icon="calculator"
@@ -144,7 +132,7 @@ export function CpTooltip({
   usl,
   stdDev,
   cp,
-  className
+  className,
 }: {
   lsl: number | null
   usl: number | null
@@ -162,7 +150,7 @@ export function CpTooltip({
       values={{
         USL: usl,
         LSL: lsl,
-        σ: stdDev
+        σ: stdDev,
       }}
       result={cp}
       icon="calculator"
@@ -179,7 +167,7 @@ export function CpkTooltip({
   mean,
   stdDev,
   cpk,
-  className
+  className,
 }: {
   lsl: number | null
   usl: number | null
@@ -196,10 +184,10 @@ export function CpkTooltip({
     <CalculationTooltip
       formula="Cpk = min[(x̄ - LSL)/(3×σ), (USL - x̄)/(3×σ)]"
       values={{
-        'x̄': mean,
+        x̄: mean,
         USL: usl,
         LSL: lsl,
-        σ: stdDev
+        σ: stdDev,
       }}
       result={cpk}
       icon="calculator"
@@ -214,7 +202,7 @@ export function EfficiencyRatioTooltip({
   valueAddedTime,
   totalCycleTime,
   ratio,
-  className
+  className,
 }: {
   valueAddedTime: number
   totalCycleTime: number
@@ -226,7 +214,7 @@ export function EfficiencyRatioTooltip({
       formula="Efficiency = (Value-Added Time / Total Cycle Time) × 100"
       values={{
         'Value-Added Time': valueAddedTime,
-        'Total Cycle Time': totalCycleTime
+        'Total Cycle Time': totalCycleTime,
       }}
       result={`${ratio.toFixed(1)}%`}
       icon="calculator"
@@ -242,7 +230,7 @@ export function CumulativePercentageTooltip({
   totalValue,
   percentage,
   cumulative,
-  className
+  className,
 }: {
   currentValue: number
   totalValue: number
@@ -255,8 +243,8 @@ export function CumulativePercentageTooltip({
       formula="Cumulative % = Σ(item values up to current) / Total × 100"
       values={{
         'Current Item': currentValue,
-        'Total': totalValue,
-        'Item %': percentage
+        Total: totalValue,
+        'Item %': percentage,
       }}
       result={`${cumulative.toFixed(1)}%`}
       icon="info"

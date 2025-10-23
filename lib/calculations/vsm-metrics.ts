@@ -45,7 +45,7 @@ export function calculateVSMMetrics(steps: VSMStep[]): VSMMetrics {
       processEfficiency: 0,
       stepCount: 0,
       valueAddedSteps: 0,
-      nonValueAddedSteps: 0
+      nonValueAddedSteps: 0,
     }
   }
 
@@ -72,13 +72,11 @@ export function calculateVSMMetrics(steps: VSMStep[]): VSMMetrics {
   const nonValueAddedSteps = steps.length - valueAddedSteps
 
   // Calculate efficiency ratios (avoid division by zero)
-  const efficiencyRatio = totalCycleTime > 0
-    ? Math.round((valueAddedTime / totalCycleTime) * 10000) / 100
-    : 0
+  const efficiencyRatio =
+    totalCycleTime > 0 ? Math.round((valueAddedTime / totalCycleTime) * 10000) / 100 : 0
 
-  const processEfficiency = totalProcessTime > 0
-    ? Math.round((valueAddedTime / totalProcessTime) * 10000) / 100
-    : 0
+  const processEfficiency =
+    totalProcessTime > 0 ? Math.round((valueAddedTime / totalProcessTime) * 10000) / 100 : 0
 
   return {
     totalCycleTime,
@@ -90,7 +88,7 @@ export function calculateVSMMetrics(steps: VSMStep[]): VSMMetrics {
     processEfficiency,
     stepCount: steps.length,
     valueAddedSteps,
-    nonValueAddedSteps
+    nonValueAddedSteps,
   }
 }
 
@@ -105,7 +103,7 @@ export function analyzeVSMSteps(steps: VSMStep[]): VSMStepAnalysis[] {
       ...step,
       cumulativeTime: 0,
       percentageOfTotal: 0,
-      waitTimeRatio: 0
+      waitTimeRatio: 0,
     }))
   }
 
@@ -118,15 +116,13 @@ export function analyzeVSMSteps(steps: VSMStep[]): VSMStepAnalysis[] {
     cumulativeTime += stepTotalTime
 
     const percentageOfTotal = (stepTotalTime / metrics.totalCycleTime) * 100
-    const waitTimeRatio = stepTotalTime > 0
-      ? (stepWaitTime / stepTotalTime) * 100
-      : 0
+    const waitTimeRatio = stepTotalTime > 0 ? (stepWaitTime / stepTotalTime) * 100 : 0
 
     return {
       ...step,
       cumulativeTime,
       percentageOfTotal: Math.round(percentageOfTotal * 100) / 100,
-      waitTimeRatio: Math.round(waitTimeRatio * 100) / 100
+      waitTimeRatio: Math.round(waitTimeRatio * 100) / 100,
     }
   })
 }
@@ -168,34 +164,34 @@ export function getEfficiencyRating(ratio: number): {
     return {
       label: 'Excellent',
       color: 'text-green-600 bg-green-100',
-      recommendation: 'Process is highly efficient - maintain current performance'
+      recommendation: 'Process is highly efficient - maintain current performance',
     }
   }
   if (ratio >= 30) {
     return {
       label: 'Good',
       color: 'text-blue-600 bg-blue-100',
-      recommendation: 'Good efficiency - look for minor improvements'
+      recommendation: 'Good efficiency - look for minor improvements',
     }
   }
   if (ratio >= 15) {
     return {
       label: 'Fair',
       color: 'text-yellow-600 bg-yellow-100',
-      recommendation: 'Significant improvement opportunity exists'
+      recommendation: 'Significant improvement opportunity exists',
     }
   }
   if (ratio >= 5) {
     return {
       label: 'Poor',
       color: 'text-orange-600 bg-orange-100',
-      recommendation: 'Major process redesign recommended'
+      recommendation: 'Major process redesign recommended',
     }
   }
   return {
     label: 'Critical',
     color: 'text-red-600 bg-red-100',
-    recommendation: 'Urgent process transformation required'
+    recommendation: 'Urgent process transformation required',
   }
 }
 
@@ -208,9 +204,7 @@ export function identifyBottlenecks(steps: VSMStepAnalysis[]): string[] {
   if (steps.length === 0) return insights
 
   // Find steps with highest duration
-  const sortedByDuration = [...steps].sort((a, b) =>
-    b.durationMinutes - a.durationMinutes
-  )
+  const sortedByDuration = [...steps].sort((a, b) => b.durationMinutes - a.durationMinutes)
 
   const longestStep = sortedByDuration[0]
   if (longestStep.percentageOfTotal > 30) {
@@ -222,8 +216,8 @@ export function identifyBottlenecks(steps: VSMStepAnalysis[]): string[] {
   // Find steps with highest wait time
   const stepsWithWait = steps.filter(s => s.waitTimeMinutes && s.waitTimeMinutes > 0)
   if (stepsWithWait.length > 0) {
-    const sortedByWait = [...stepsWithWait].sort((a, b) =>
-      (b.waitTimeMinutes || 0) - (a.waitTimeMinutes || 0)
+    const sortedByWait = [...stepsWithWait].sort(
+      (a, b) => (b.waitTimeMinutes || 0) - (a.waitTimeMinutes || 0)
     )
     const highestWait = sortedByWait[0]
 
@@ -278,7 +272,8 @@ export function getVSMRecommendations(metrics: VSMMetrics): string[] {
   }
 
   // Cycle time recommendations
-  if (metrics.totalCycleTime > 1440) { // More than 24 hours
+  if (metrics.totalCycleTime > 1440) {
+    // More than 24 hours
     const days = Math.floor(metrics.totalCycleTime / 1440)
     recommendations.push(`Process takes ${days}+ days - consider parallel processing or automation`)
   }
@@ -295,6 +290,6 @@ export function getVSMFormulas(): Record<string, string> {
     efficiencyRatio: 'Efficiency = (Value-Added Time ÷ Total Cycle Time) × 100',
     processEfficiency: 'Process Efficiency = (Value-Added Time ÷ Total Process Time) × 100',
     valueAddedTime: 'Sum of durations for all value-added steps',
-    nonValueAddedTime: 'Total Cycle Time - Value-Added Time'
+    nonValueAddedTime: 'Total Cycle Time - Value-Added Time',
   }
 }

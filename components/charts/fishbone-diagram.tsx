@@ -98,9 +98,7 @@ const CauseNode = ({ data }: { data: CauseNodeData }) => {
     <div className="bg-gray-50 border border-gray-300 rounded-md p-2 max-w-[180px]">
       <Handle type="target" position={Position.Left} className="opacity-0" />
       <div className="text-xs font-medium">{data.label}</div>
-      {data.description && (
-        <div className="text-xs text-gray-600 mt-1">{data.description}</div>
-      )}
+      {data.description && <div className="text-xs text-gray-600 mt-1">{data.description}</div>}
     </div>
   )
 }
@@ -128,7 +126,7 @@ export function FishboneDiagram({
   problemStatement,
   categories,
   height = 600,
-  className
+  className,
 }: FishboneDiagramProps) {
   // Generate nodes and edges for the fishbone diagram
   const { nodes: initialNodes, edges: initialEdges } = useMemo(() => {
@@ -149,7 +147,7 @@ export function FishboneDiagram({
       type: 'default',
       position: { x: 50, y: 300 },
       data: { label: '' },
-      style: { opacity: 0, width: 1, height: 1 }
+      style: { opacity: 0, width: 1, height: 1 },
     })
 
     edges.push({
@@ -173,7 +171,7 @@ export function FishboneDiagram({
 
     // Add top categories
     topCategories.forEach((category, index) => {
-      const categoryX = 150 + (index * 200)
+      const categoryX = 150 + index * 200
       const categoryY = 100
 
       // Add category node
@@ -184,7 +182,7 @@ export function FishboneDiagram({
         data: {
           label: category.categoryName,
           categoryType: category.categoryName,
-          causesCount: category.causes.length
+          causesCount: category.causes.length,
         },
       })
 
@@ -194,7 +192,7 @@ export function FishboneDiagram({
         type: 'default',
         position: { x: categoryX + 70, y: 300 },
         data: { label: '' },
-        style: { opacity: 0, width: 1, height: 1 }
+        style: { opacity: 0, width: 1, height: 1 },
       })
 
       // Connect category to spine
@@ -209,7 +207,7 @@ export function FishboneDiagram({
       // Add causes for this category
       category.causes.forEach((cause, causeIndex) => {
         const causeX = categoryX - 50
-        const causeY = categoryY - 60 - (causeIndex * 50)
+        const causeY = categoryY - 60 - causeIndex * 50
 
         nodes.push({
           id: `cause-${cause.id}`,
@@ -217,7 +215,7 @@ export function FishboneDiagram({
           position: { x: causeX, y: causeY },
           data: {
             label: cause.causeName,
-            description: cause.description
+            description: cause.description,
           },
         })
 
@@ -233,7 +231,7 @@ export function FishboneDiagram({
 
     // Add bottom categories
     bottomCategories.forEach((category, index) => {
-      const categoryX = 150 + (index * 200)
+      const categoryX = 150 + index * 200
       const categoryY = 500
 
       // Add category node
@@ -244,7 +242,7 @@ export function FishboneDiagram({
         data: {
           label: category.categoryName,
           categoryType: category.categoryName,
-          causesCount: category.causes.length
+          causesCount: category.causes.length,
         },
       })
 
@@ -254,7 +252,7 @@ export function FishboneDiagram({
         type: 'default',
         position: { x: categoryX + 70, y: 300 },
         data: { label: '' },
-        style: { opacity: 0, width: 1, height: 1 }
+        style: { opacity: 0, width: 1, height: 1 },
       })
 
       // Connect category to spine
@@ -269,7 +267,7 @@ export function FishboneDiagram({
       // Add causes for this category
       category.causes.forEach((cause, causeIndex) => {
         const causeX = categoryX - 50
-        const causeY = categoryY + 60 + (causeIndex * 50)
+        const causeY = categoryY + 60 + causeIndex * 50
 
         nodes.push({
           id: `cause-${cause.id}`,
@@ -277,7 +275,7 @@ export function FishboneDiagram({
           position: { x: causeX, y: causeY },
           data: {
             label: cause.causeName,
-            description: cause.description
+            description: cause.description,
           },
         })
 
@@ -298,7 +296,7 @@ export function FishboneDiagram({
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const onConnect = useCallback(
-    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Edge | Connection) => setEdges(eds => addEdge(params, eds)),
     [setEdges]
   )
 
@@ -323,7 +321,7 @@ export function FishboneDiagram({
             <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
             <Controls />
             <MiniMap
-              nodeColor={(node) => {
+              nodeColor={node => {
                 if (node.type === 'problem') return '#ef4444'
                 if (node.type === 'category') return '#374151'
                 return '#9ca3af'

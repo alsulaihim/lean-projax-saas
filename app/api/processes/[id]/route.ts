@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { checkDemoMode } from '@/lib/demo-check'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -28,16 +25,16 @@ export async function PATCH(
       sampleMean,
       sampleStdDev,
       userId,
-      assignmentId
+      assignmentId,
     } = body
 
     const oldProcess = await prisma.process.findUnique({
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!oldProcess) {
@@ -68,10 +65,10 @@ export async function PATCH(
     if (sampleStdDev !== undefined) updateData.sampleStdDev = sampleStdDev
 
     // Update process and create audit log atomically
-    const process = await prisma.$transaction(async (tx) => {
+    const process = await prisma.$transaction(async tx => {
       const updatedProcess = await tx.process.update({
         where: { id },
-        data: updateData
+        data: updateData,
       })
 
       // Log the action
@@ -94,8 +91,8 @@ export async function PATCH(
             action: 'UPDATED',
             entityType: 'Process',
             entityId: updatedProcess.id,
-            changeDetails: { changes: changes.join(', ') }
-          }
+            changeDetails: { changes: changes.join(', ') },
+          },
         })
       }
 
@@ -105,10 +102,7 @@ export async function PATCH(
     return NextResponse.json(process)
   } catch (error) {
     console.error('Failed to update process:', error)
-    return NextResponse.json(
-      { error: 'Failed to update process' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update process' }, { status: 500 })
   }
 }
 
@@ -132,9 +126,9 @@ export async function DELETE(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!process) {
@@ -147,10 +141,10 @@ export async function DELETE(
     }
 
     // Delete process and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       // Delete the process (cascade will handle related records)
       await tx.process.delete({
-        where: { id }
+        where: { id },
       })
 
       // Log the action
@@ -162,8 +156,8 @@ export async function DELETE(
             action: 'DELETED',
             entityType: 'Process',
             entityId: id,
-            changeDetails: { message: `Deleted process: ${process.processName}` }
-          }
+            changeDetails: { message: `Deleted process: ${process.processName}` },
+          },
         })
       }
     })
@@ -171,9 +165,6 @@ export async function DELETE(
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete process:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete process' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete process' }, { status: 500 })
   }
 }

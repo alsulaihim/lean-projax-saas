@@ -100,14 +100,14 @@ export function AssignmentList({
     setIsDeleting(true)
     try {
       const response = await fetch(`/api/assignments/${assignmentToDelete.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       if (response.ok) {
         toast({
           variant: 'success',
           title: 'Success',
-          description: 'Assignment deleted successfully'
+          description: 'Assignment deleted successfully',
         })
         router.refresh()
         setDeleteDialogOpen(false)
@@ -116,7 +116,7 @@ export function AssignmentList({
         toast({
           variant: 'destructive',
           title: 'Error',
-          description: error.error || 'Failed to delete assignment'
+          description: error.error || 'Failed to delete assignment',
         })
       }
     } catch (error) {
@@ -124,7 +124,7 @@ export function AssignmentList({
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Failed to delete assignment'
+        description: 'Failed to delete assignment',
       })
     } finally {
       setIsDeleting(false)
@@ -158,7 +158,10 @@ export function AssignmentList({
           Showing {assignments.length} assignment{assignments.length !== 1 ? 's' : ''}
         </div>
         {canCreateAssignment && (
-          <Button onClick={handleCreateNew} className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto">
+          <Button
+            onClick={handleCreateNew}
+            className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto"
+          >
             <Plus className="mr-2 h-4 w-4" />
             New Assignment
           </Button>
@@ -167,37 +170,43 @@ export function AssignmentList({
 
       {/* Mobile Card View */}
       <div className="block md:hidden space-y-3">
-        {assignments.map((assignment) => {
+        {assignments.map(assignment => {
           // Calculate progress
           const counts = {
             voc: assignment.vocStatements.length,
             ctq: assignment.vocStatements.reduce((acc, voc) => acc + voc.ctqRequirements.length, 0),
             sipoc: assignment.processes.reduce((acc, p) => acc + p.sipocEntries.length, 0),
             vsm: assignment.processes.reduce((acc, p) => acc + p.vsmSteps.length, 0),
-            fishbone: assignment.processes.reduce((acc, p) =>
-              acc + p.fishboneCategories.reduce((sum, cat) => sum + cat.causes.length, 0), 0
+            fishbone: assignment.processes.reduce(
+              (acc, p) =>
+                acc + p.fishboneCategories.reduce((sum, cat) => sum + cat.causes.length, 0),
+              0
             ),
             fmea: assignment.processes.reduce((acc, p) => acc + p.fmeaEntries.length, 0),
-            recommendations: assignment.recommendations.length
+            recommendations: assignment.recommendations.length,
           }
 
           const sectionStatus = {
             voc: counts.voc >= 3 && counts.ctq >= counts.voc * 2,
-            sipoc: counts.sipoc >= 5 && assignment.processes.length > 0 &&
-                   assignment.processes.every(p => p.sipocEntries.length >= 5),
+            sipoc:
+              counts.sipoc >= 5 &&
+              assignment.processes.length > 0 &&
+              assignment.processes.every(p => p.sipocEntries.length >= 5),
             vsm: counts.vsm >= 5 && assignment.processes.every(p => p.vsmSteps.length >= 5),
-            fishbone: assignment.processes.length > 0 &&
-                     assignment.processes.every(p =>
-                       p.fishboneCategories.length >= 6 &&
-                       p.fishboneCategories.every(cat => cat.causes.length >= 3)
-                     ),
+            fishbone:
+              assignment.processes.length > 0 &&
+              assignment.processes.every(
+                p =>
+                  p.fishboneCategories.length >= 6 &&
+                  p.fishboneCategories.every(cat => cat.causes.length >= 3)
+              ),
             fmea: counts.fmea >= 5 && assignment.processes.every(p => p.fmeaEntries.length >= 5),
-            recommendations: counts.recommendations >= 5
+            recommendations: counts.recommendations >= 5,
           }
 
           const requiredSections = ['voc', 'sipoc', 'vsm', 'fishbone', 'fmea', 'recommendations']
-          const completedCount = requiredSections.filter(section =>
-            sectionStatus[section as keyof typeof sectionStatus]
+          const completedCount = requiredSections.filter(
+            section => sectionStatus[section as keyof typeof sectionStatus]
           ).length
           const progress = Math.round((completedCount / requiredSections.length) * 100)
 
@@ -220,7 +229,7 @@ export function AssignmentList({
                     {assignment.status}
                   </Badge>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenuTrigger asChild onClick={e => e.stopPropagation()}>
                       <Button
                         variant="outline"
                         size="sm"
@@ -287,37 +296,54 @@ export function AssignmentList({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {assignments.map((assignment) => {
+            {assignments.map(assignment => {
               // Calculate progress using the same logic as assignment-tabs.tsx
               const counts = {
                 voc: assignment.vocStatements.length,
-                ctq: assignment.vocStatements.reduce((acc, voc) => acc + voc.ctqRequirements.length, 0),
+                ctq: assignment.vocStatements.reduce(
+                  (acc, voc) => acc + voc.ctqRequirements.length,
+                  0
+                ),
                 sipoc: assignment.processes.reduce((acc, p) => acc + p.sipocEntries.length, 0),
                 vsm: assignment.processes.reduce((acc, p) => acc + p.vsmSteps.length, 0),
-                fishbone: assignment.processes.reduce((acc, p) =>
-                  acc + p.fishboneCategories.reduce((sum, cat) => sum + cat.causes.length, 0), 0
+                fishbone: assignment.processes.reduce(
+                  (acc, p) =>
+                    acc + p.fishboneCategories.reduce((sum, cat) => sum + cat.causes.length, 0),
+                  0
                 ),
                 fmea: assignment.processes.reduce((acc, p) => acc + p.fmeaEntries.length, 0),
-                recommendations: assignment.recommendations.length
+                recommendations: assignment.recommendations.length,
               }
 
               const sectionStatus = {
                 voc: counts.voc >= 3 && counts.ctq >= counts.voc * 2,
-                sipoc: counts.sipoc >= 5 && assignment.processes.length > 0 &&
-                       assignment.processes.every(p => p.sipocEntries.length >= 5),
+                sipoc:
+                  counts.sipoc >= 5 &&
+                  assignment.processes.length > 0 &&
+                  assignment.processes.every(p => p.sipocEntries.length >= 5),
                 vsm: counts.vsm >= 5 && assignment.processes.every(p => p.vsmSteps.length >= 5),
-                fishbone: assignment.processes.length > 0 &&
-                         assignment.processes.every(p =>
-                           p.fishboneCategories.length >= 6 &&
-                           p.fishboneCategories.every(cat => cat.causes.length >= 3)
-                         ),
-                fmea: counts.fmea >= 5 && assignment.processes.every(p => p.fmeaEntries.length >= 5),
-                recommendations: counts.recommendations >= 5
+                fishbone:
+                  assignment.processes.length > 0 &&
+                  assignment.processes.every(
+                    p =>
+                      p.fishboneCategories.length >= 6 &&
+                      p.fishboneCategories.every(cat => cat.causes.length >= 3)
+                  ),
+                fmea:
+                  counts.fmea >= 5 && assignment.processes.every(p => p.fmeaEntries.length >= 5),
+                recommendations: counts.recommendations >= 5,
               }
 
-              const requiredSections = ['voc', 'sipoc', 'vsm', 'fishbone', 'fmea', 'recommendations']
-              const completedCount = requiredSections.filter(section =>
-                sectionStatus[section as keyof typeof sectionStatus]
+              const requiredSections = [
+                'voc',
+                'sipoc',
+                'vsm',
+                'fishbone',
+                'fmea',
+                'recommendations',
+              ]
+              const completedCount = requiredSections.filter(
+                section => sectionStatus[section as keyof typeof sectionStatus]
               ).length
               const progress = Math.round((completedCount / requiredSections.length) * 100)
 
@@ -352,7 +378,7 @@ export function AssignmentList({
                     {formatDistanceToNow(new Date(assignment.updatedAt))}
                   </TableCell>
                   <TableCell className="text-sm">{assignment.createdBy.name}</TableCell>
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell onClick={e => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -364,9 +390,7 @@ export function AssignmentList({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => handleOpenAssignment(assignment.id)}
-                        >
+                        <DropdownMenuItem onClick={() => handleOpenAssignment(assignment.id)}>
                           <Eye className="mr-2 h-4 w-4" />
                           Open Assignment
                         </DropdownMenuItem>
@@ -400,8 +424,8 @@ export function AssignmentList({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the assignment
-              "{assignmentToDelete?.title}" and all associated data.
+              This action cannot be undone. This will permanently delete the assignment "
+              {assignmentToDelete?.title}" and all associated data.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

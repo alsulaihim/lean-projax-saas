@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -9,19 +9,19 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  
+
   /**
    * Security Headers
-   * 
+   *
    * Purpose: Protect against common web vulnerabilities
-   * 
+   *
    * Headers Implemented:
    * - X-Frame-Options: Prevents clickjacking attacks
    * - X-Content-Type-Options: Prevents MIME type sniffing
    * - Referrer-Policy: Controls referrer information
    * - X-XSS-Protection: Legacy XSS protection (for older browsers)
    * - Permissions-Policy: Restricts browser features
-   * 
+   *
    * Note: CSP not included yet - requires careful configuration with inline styles
    */
   async headers() {
@@ -51,8 +51,8 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-    ];
+    ]
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

@@ -10,24 +10,24 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: connectionString
-    }
-  }
+      url: connectionString,
+    },
+  },
 })
 
 async function createFacilityGrantingAssignment() {
   try {
     console.log('🏭 Creating comprehensive Facility Granting Assignment...')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
 
     // Get the creator (check for coco first, fall back to mashael)
     let creator = await prisma.user.findUnique({
-      where: { email: 'coco@sample.com' }
+      where: { email: 'coco@sample.com' },
     })
 
     if (!creator) {
       creator = await prisma.user.findUnique({
-        where: { email: 'mashael@sample.com' }
+        where: { email: 'mashael@sample.com' },
       })
     }
 
@@ -42,11 +42,12 @@ async function createFacilityGrantingAssignment() {
     const assignment = await prisma.assignment.create({
       data: {
         title: 'Facility Granting Process Optimization',
-        objective: 'Optimize the end-to-end facility granting process to reduce cycle time by 40%, improve approval accuracy to 98%, and enhance customer satisfaction scores to 4.5/5.0 through Six Sigma DMAIC methodology.',
+        objective:
+          'Optimize the end-to-end facility granting process to reduce cycle time by 40%, improve approval accuracy to 98%, and enhance customer satisfaction scores to 4.5/5.0 through Six Sigma DMAIC methodology.',
         status: 'COMPLETED',
         createdById: creator.id,
-        completedAt: new Date()
-      }
+        completedAt: new Date(),
+      },
     })
 
     console.log('✅ Assignment created:', assignment.title)
@@ -56,38 +57,66 @@ async function createFacilityGrantingAssignment() {
       {
         name: 'Application Submission',
         owner: 'Customer Service Team',
-        lsl: 10, usl: 30, target: 20, mean: 19.5, stdDev: 3.2
+        lsl: 10,
+        usl: 30,
+        target: 20,
+        mean: 19.5,
+        stdDev: 3.2,
       },
       {
         name: 'Document Verification',
         owner: 'Document Processing Unit',
-        lsl: 15, usl: 45, target: 30, mean: 31.2, stdDev: 4.8
+        lsl: 15,
+        usl: 45,
+        target: 30,
+        mean: 31.2,
+        stdDev: 4.8,
       },
       {
         name: 'Technical Review',
         owner: 'Engineering Department',
-        lsl: 30, usl: 90, target: 60, mean: 58.5, stdDev: 9.5
+        lsl: 30,
+        usl: 90,
+        target: 60,
+        mean: 58.5,
+        stdDev: 9.5,
       },
       {
         name: 'Compliance Check',
         owner: 'Legal & Compliance Team',
-        lsl: 20, usl: 60, target: 40, mean: 42.3, stdDev: 6.2
+        lsl: 20,
+        usl: 60,
+        target: 40,
+        mean: 42.3,
+        stdDev: 6.2,
       },
       {
         name: 'Risk Assessment',
         owner: 'Risk Management Unit',
-        lsl: 25, usl: 75, target: 50, mean: 48.7, stdDev: 7.8
+        lsl: 25,
+        usl: 75,
+        target: 50,
+        mean: 48.7,
+        stdDev: 7.8,
       },
       {
         name: 'Management Approval',
         owner: 'Executive Committee',
-        lsl: 5, usl: 15, target: 10, mean: 10.8, stdDev: 1.6
+        lsl: 5,
+        usl: 15,
+        target: 10,
+        mean: 10.8,
+        stdDev: 1.6,
       },
       {
         name: 'Facility Activation',
         owner: 'Operations Team',
-        lsl: 10, usl: 20, target: 15, mean: 14.5, stdDev: 1.8
-      }
+        lsl: 10,
+        usl: 20,
+        target: 15,
+        mean: 14.5,
+        stdDev: 1.8,
+      },
     ]
 
     const processes = []
@@ -103,8 +132,8 @@ async function createFacilityGrantingAssignment() {
           upperSpecLimit: processData.usl,
           targetValue: processData.target,
           sampleMean: processData.mean,
-          sampleStdDev: processData.stdDev
-        }
+          sampleStdDev: processData.stdDev,
+        },
       })
       processes.push(process)
       console.log(`  📋 Process ${i + 1}: ${process.processName}`)
@@ -118,26 +147,51 @@ async function createFacilityGrantingAssignment() {
         segment: 'Small Business Owners',
         statement: 'We need faster approval times for facility permits to start operations quickly',
         ctqs: [
-          { description: 'Application processing time', criteria: 'Time from submission to approval', target: '< 10 business days' },
-          { description: 'First-time approval rate', criteria: 'Percentage approved without rework', target: '> 85%' }
-        ]
+          {
+            description: 'Application processing time',
+            criteria: 'Time from submission to approval',
+            target: '< 10 business days',
+          },
+          {
+            description: 'First-time approval rate',
+            criteria: 'Percentage approved without rework',
+            target: '> 85%',
+          },
+        ],
       },
       {
         segment: 'Large Corporations',
-        statement: 'We require transparent tracking and predictable timelines for multiple facility applications',
+        statement:
+          'We require transparent tracking and predictable timelines for multiple facility applications',
         ctqs: [
-          { description: 'Real-time application status', criteria: 'Updates available within system', target: '100% visibility' },
-          { description: 'Process consistency', criteria: 'Standard deviation of processing times', target: '< 2 days' }
-        ]
+          {
+            description: 'Real-time application status',
+            criteria: 'Updates available within system',
+            target: '100% visibility',
+          },
+          {
+            description: 'Process consistency',
+            criteria: 'Standard deviation of processing times',
+            target: '< 2 days',
+          },
+        ],
       },
       {
         segment: 'Government Regulators',
         statement: 'All facility grants must comply with safety and environmental regulations',
         ctqs: [
-          { description: 'Regulatory compliance rate', criteria: 'Percentage meeting all requirements', target: '100%' },
-          { description: 'Audit trail completeness', criteria: 'Documentation available for review', target: '100%' }
-        ]
-      }
+          {
+            description: 'Regulatory compliance rate',
+            criteria: 'Percentage meeting all requirements',
+            target: '100%',
+          },
+          {
+            description: 'Audit trail completeness',
+            criteria: 'Documentation available for review',
+            target: '100%',
+          },
+        ],
+      },
     ]
 
     for (const voc of vocData) {
@@ -145,8 +199,8 @@ async function createFacilityGrantingAssignment() {
         data: {
           assignmentId: assignment.id,
           customerSegment: voc.segment,
-          voiceStatement: voc.statement
-        }
+          voiceStatement: voc.statement,
+        },
       })
 
       for (const ctq of voc.ctqs) {
@@ -156,8 +210,8 @@ async function createFacilityGrantingAssignment() {
             vocStatementId: vocStatement.id,
             ctqDescription: ctq.description,
             measurementCriteria: ctq.criteria,
-            targetValue: ctq.target
-          }
+            targetValue: ctq.target,
+          },
         })
       }
     }
@@ -170,52 +224,142 @@ async function createFacilityGrantingAssignment() {
       'Application Submission': [
         { name: 'Customer Inquiry', processTime: 5, waitingTime: 10, value: 'NON_VALUE_ADDED' },
         { name: 'Application Form Filling', processTime: 30, waitingTime: 0, value: 'VALUE_ADDED' },
-        { name: 'Document Collection', processTime: 45, waitingTime: 120, value: 'ESSENTIAL_NON_VALUE' },
+        {
+          name: 'Document Collection',
+          processTime: 45,
+          waitingTime: 120,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
         { name: 'Initial Submission', processTime: 10, waitingTime: 5, value: 'VALUE_ADDED' },
-        { name: 'Receipt Confirmation', processTime: 2, waitingTime: 3, value: 'ESSENTIAL_NON_VALUE' }
+        {
+          name: 'Receipt Confirmation',
+          processTime: 2,
+          waitingTime: 3,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
       ],
       'Document Verification': [
         { name: 'Document Reception', processTime: 5, waitingTime: 30, value: 'NON_VALUE_ADDED' },
         { name: 'Completeness Check', processTime: 15, waitingTime: 10, value: 'VALUE_ADDED' },
-        { name: 'Authentication Verification', processTime: 25, waitingTime: 20, value: 'VALUE_ADDED' },
-        { name: 'Missing Document Request', processTime: 10, waitingTime: 240, value: 'NON_VALUE_ADDED' },
-        { name: 'Final Documentation Review', processTime: 20, waitingTime: 15, value: 'VALUE_ADDED' }
+        {
+          name: 'Authentication Verification',
+          processTime: 25,
+          waitingTime: 20,
+          value: 'VALUE_ADDED',
+        },
+        {
+          name: 'Missing Document Request',
+          processTime: 10,
+          waitingTime: 240,
+          value: 'NON_VALUE_ADDED',
+        },
+        {
+          name: 'Final Documentation Review',
+          processTime: 20,
+          waitingTime: 15,
+          value: 'VALUE_ADDED',
+        },
       ],
       'Technical Review': [
-        { name: 'Technical Assignment', processTime: 10, waitingTime: 60, value: 'NON_VALUE_ADDED' },
+        {
+          name: 'Technical Assignment',
+          processTime: 10,
+          waitingTime: 60,
+          value: 'NON_VALUE_ADDED',
+        },
         { name: 'Site Plan Analysis', processTime: 45, waitingTime: 30, value: 'VALUE_ADDED' },
-        { name: 'Infrastructure Assessment', processTime: 60, waitingTime: 20, value: 'VALUE_ADDED' },
-        { name: 'Environmental Impact Review', processTime: 40, waitingTime: 15, value: 'VALUE_ADDED' },
-        { name: 'Technical Report Generation', processTime: 30, waitingTime: 10, value: 'ESSENTIAL_NON_VALUE' }
+        {
+          name: 'Infrastructure Assessment',
+          processTime: 60,
+          waitingTime: 20,
+          value: 'VALUE_ADDED',
+        },
+        {
+          name: 'Environmental Impact Review',
+          processTime: 40,
+          waitingTime: 15,
+          value: 'VALUE_ADDED',
+        },
+        {
+          name: 'Technical Report Generation',
+          processTime: 30,
+          waitingTime: 10,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
       ],
       'Compliance Check': [
-        { name: 'Regulatory Mapping', processTime: 15, waitingTime: 10, value: 'ESSENTIAL_NON_VALUE' },
+        {
+          name: 'Regulatory Mapping',
+          processTime: 15,
+          waitingTime: 10,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
         { name: 'Zoning Compliance', processTime: 25, waitingTime: 20, value: 'VALUE_ADDED' },
         { name: 'Safety Standards Review', processTime: 30, waitingTime: 15, value: 'VALUE_ADDED' },
-        { name: 'Legal Documentation Check', processTime: 20, waitingTime: 10, value: 'VALUE_ADDED' },
-        { name: 'Compliance Certificate', processTime: 10, waitingTime: 5, value: 'ESSENTIAL_NON_VALUE' }
+        {
+          name: 'Legal Documentation Check',
+          processTime: 20,
+          waitingTime: 10,
+          value: 'VALUE_ADDED',
+        },
+        {
+          name: 'Compliance Certificate',
+          processTime: 10,
+          waitingTime: 5,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
       ],
       'Risk Assessment': [
         { name: 'Risk Profile Creation', processTime: 20, waitingTime: 15, value: 'VALUE_ADDED' },
         { name: 'Financial Risk Analysis', processTime: 35, waitingTime: 20, value: 'VALUE_ADDED' },
         { name: 'Operational Risk Review', processTime: 30, waitingTime: 15, value: 'VALUE_ADDED' },
         { name: 'Mitigation Strategy', processTime: 25, waitingTime: 10, value: 'VALUE_ADDED' },
-        { name: 'Risk Score Calculation', processTime: 15, waitingTime: 5, value: 'ESSENTIAL_NON_VALUE' }
+        {
+          name: 'Risk Score Calculation',
+          processTime: 15,
+          waitingTime: 5,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
       ],
       'Management Approval': [
-        { name: 'Executive Summary Prep', processTime: 15, waitingTime: 10, value: 'ESSENTIAL_NON_VALUE' },
-        { name: 'Committee Scheduling', processTime: 5, waitingTime: 480, value: 'NON_VALUE_ADDED' },
+        {
+          name: 'Executive Summary Prep',
+          processTime: 15,
+          waitingTime: 10,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
+        {
+          name: 'Committee Scheduling',
+          processTime: 5,
+          waitingTime: 480,
+          value: 'NON_VALUE_ADDED',
+        },
         { name: 'Presentation', processTime: 30, waitingTime: 0, value: 'VALUE_ADDED' },
         { name: 'Deliberation', processTime: 20, waitingTime: 0, value: 'VALUE_ADDED' },
-        { name: 'Decision Documentation', processTime: 10, waitingTime: 5, value: 'ESSENTIAL_NON_VALUE' }
+        {
+          name: 'Decision Documentation',
+          processTime: 10,
+          waitingTime: 5,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
       ],
       'Facility Activation': [
         { name: 'System Registration', processTime: 10, waitingTime: 5, value: 'VALUE_ADDED' },
         { name: 'Permit Generation', processTime: 5, waitingTime: 2, value: 'VALUE_ADDED' },
-        { name: 'Stakeholder Notification', processTime: 15, waitingTime: 10, value: 'ESSENTIAL_NON_VALUE' },
+        {
+          name: 'Stakeholder Notification',
+          processTime: 15,
+          waitingTime: 10,
+          value: 'ESSENTIAL_NON_VALUE',
+        },
         { name: 'Account Setup', processTime: 20, waitingTime: 10, value: 'VALUE_ADDED' },
-        { name: 'Welcome Package Delivery', processTime: 10, waitingTime: 30, value: 'NON_VALUE_ADDED' }
-      ]
+        {
+          name: 'Welcome Package Delivery',
+          processTime: 10,
+          waitingTime: 30,
+          value: 'NON_VALUE_ADDED',
+        },
+      ],
     }
 
     let totalVsmSteps = 0
@@ -233,8 +377,8 @@ async function createFacilityGrantingAssignment() {
             valueMeasure: step.value,
             stakeholder: process.processOwner,
             wasteType: step.value === 'NON_VALUE_ADDED' ? 'WAITING' : null,
-            remarks: `Step ${i + 1} of ${process.processName} process`
-          }
+            remarks: `Step ${i + 1} of ${process.processName} process`,
+          },
         })
         totalVsmSteps++
       }
@@ -246,40 +390,166 @@ async function createFacilityGrantingAssignment() {
 
     const sipocData = {
       'Application Submission': [
-        { s: 'Applicants', i: 'Application Forms', p: 'Form Processing', o: 'Completed Applications', c: 'Document Verification Team' },
-        { s: 'IT Systems', i: 'Online Portal', p: 'Digital Submission', o: 'Electronic Records', c: 'Database System' },
-        { s: 'Help Desk', i: 'Customer Queries', p: 'Guidance Provision', o: 'Support Tickets', c: 'Quality Assurance' }
+        {
+          s: 'Applicants',
+          i: 'Application Forms',
+          p: 'Form Processing',
+          o: 'Completed Applications',
+          c: 'Document Verification Team',
+        },
+        {
+          s: 'IT Systems',
+          i: 'Online Portal',
+          p: 'Digital Submission',
+          o: 'Electronic Records',
+          c: 'Database System',
+        },
+        {
+          s: 'Help Desk',
+          i: 'Customer Queries',
+          p: 'Guidance Provision',
+          o: 'Support Tickets',
+          c: 'Quality Assurance',
+        },
       ],
       'Document Verification': [
-        { s: 'Application Team', i: 'Submitted Documents', p: 'Verification Process', o: 'Verified Documents', c: 'Technical Review Team' },
-        { s: 'External Databases', i: 'Reference Data', p: 'Cross-Validation', o: 'Validation Reports', c: 'Compliance Team' },
-        { s: 'Document Standards', i: 'Requirement Checklists', p: 'Completeness Check', o: 'Gap Analysis', c: 'Applicants' }
+        {
+          s: 'Application Team',
+          i: 'Submitted Documents',
+          p: 'Verification Process',
+          o: 'Verified Documents',
+          c: 'Technical Review Team',
+        },
+        {
+          s: 'External Databases',
+          i: 'Reference Data',
+          p: 'Cross-Validation',
+          o: 'Validation Reports',
+          c: 'Compliance Team',
+        },
+        {
+          s: 'Document Standards',
+          i: 'Requirement Checklists',
+          p: 'Completeness Check',
+          o: 'Gap Analysis',
+          c: 'Applicants',
+        },
       ],
       'Technical Review': [
-        { s: 'Engineering Team', i: 'Technical Specifications', p: 'Technical Analysis', o: 'Technical Reports', c: 'Risk Assessment Team' },
-        { s: 'Site Inspectors', i: 'Site Survey Data', p: 'Field Assessment', o: 'Inspection Reports', c: 'Management Committee' },
-        { s: 'Industry Standards', i: 'Best Practices', p: 'Benchmark Comparison', o: 'Compliance Matrix', c: 'Compliance Team' }
+        {
+          s: 'Engineering Team',
+          i: 'Technical Specifications',
+          p: 'Technical Analysis',
+          o: 'Technical Reports',
+          c: 'Risk Assessment Team',
+        },
+        {
+          s: 'Site Inspectors',
+          i: 'Site Survey Data',
+          p: 'Field Assessment',
+          o: 'Inspection Reports',
+          c: 'Management Committee',
+        },
+        {
+          s: 'Industry Standards',
+          i: 'Best Practices',
+          p: 'Benchmark Comparison',
+          o: 'Compliance Matrix',
+          c: 'Compliance Team',
+        },
       ],
       'Compliance Check': [
-        { s: 'Legal Department', i: 'Regulations', p: 'Legal Review', o: 'Compliance Report', c: 'Risk Management' },
-        { s: 'Government Bodies', i: 'Policy Guidelines', p: 'Policy Alignment', o: 'Approval Checklist', c: 'Management' },
-        { s: 'Industry Regulators', i: 'Standards', p: 'Standard Verification', o: 'Certification', c: 'Facility Activation Team' }
+        {
+          s: 'Legal Department',
+          i: 'Regulations',
+          p: 'Legal Review',
+          o: 'Compliance Report',
+          c: 'Risk Management',
+        },
+        {
+          s: 'Government Bodies',
+          i: 'Policy Guidelines',
+          p: 'Policy Alignment',
+          o: 'Approval Checklist',
+          c: 'Management',
+        },
+        {
+          s: 'Industry Regulators',
+          i: 'Standards',
+          p: 'Standard Verification',
+          o: 'Certification',
+          c: 'Facility Activation Team',
+        },
       ],
       'Risk Assessment': [
-        { s: 'Risk Analysts', i: 'Risk Parameters', p: 'Risk Evaluation', o: 'Risk Score', c: 'Executive Committee' },
-        { s: 'Historical Data', i: 'Past Incidents', p: 'Trend Analysis', o: 'Risk Profile', c: 'Insurance Partners' },
-        { s: 'Market Intelligence', i: 'Industry Risks', p: 'Comparative Analysis', o: 'Mitigation Plan', c: 'Operations Team' }
+        {
+          s: 'Risk Analysts',
+          i: 'Risk Parameters',
+          p: 'Risk Evaluation',
+          o: 'Risk Score',
+          c: 'Executive Committee',
+        },
+        {
+          s: 'Historical Data',
+          i: 'Past Incidents',
+          p: 'Trend Analysis',
+          o: 'Risk Profile',
+          c: 'Insurance Partners',
+        },
+        {
+          s: 'Market Intelligence',
+          i: 'Industry Risks',
+          p: 'Comparative Analysis',
+          o: 'Mitigation Plan',
+          c: 'Operations Team',
+        },
       ],
       'Management Approval': [
-        { s: 'Department Heads', i: 'Recommendations', p: 'Review Meeting', o: 'Approval Decision', c: 'Facility Activation' },
-        { s: 'Financial Team', i: 'Cost Analysis', p: 'Budget Review', o: 'Financial Approval', c: 'Accounting Department' },
-        { s: 'Strategy Team', i: 'Strategic Alignment', p: 'Strategic Assessment', o: 'Strategic Fit Report', c: 'Board of Directors' }
+        {
+          s: 'Department Heads',
+          i: 'Recommendations',
+          p: 'Review Meeting',
+          o: 'Approval Decision',
+          c: 'Facility Activation',
+        },
+        {
+          s: 'Financial Team',
+          i: 'Cost Analysis',
+          p: 'Budget Review',
+          o: 'Financial Approval',
+          c: 'Accounting Department',
+        },
+        {
+          s: 'Strategy Team',
+          i: 'Strategic Alignment',
+          p: 'Strategic Assessment',
+          o: 'Strategic Fit Report',
+          c: 'Board of Directors',
+        },
       ],
       'Facility Activation': [
-        { s: 'IT Department', i: 'System Requirements', p: 'System Setup', o: 'Active Accounts', c: 'Facility Operators' },
-        { s: 'Operations Team', i: 'Activation Checklist', p: 'Facility Onboarding', o: 'Operational Facility', c: 'End Customers' },
-        { s: 'Support Team', i: 'Training Materials', p: 'User Training', o: 'Trained Users', c: 'Facility Management' }
-      ]
+        {
+          s: 'IT Department',
+          i: 'System Requirements',
+          p: 'System Setup',
+          o: 'Active Accounts',
+          c: 'Facility Operators',
+        },
+        {
+          s: 'Operations Team',
+          i: 'Activation Checklist',
+          p: 'Facility Onboarding',
+          o: 'Operational Facility',
+          c: 'End Customers',
+        },
+        {
+          s: 'Support Team',
+          i: 'Training Materials',
+          p: 'User Training',
+          o: 'Trained Users',
+          c: 'Facility Management',
+        },
+      ],
     }
 
     let totalSipocEntries = 0
@@ -289,19 +559,19 @@ async function createFacilityGrantingAssignment() {
         const row = sipocRows[i]
 
         await prisma.sIPOCEntry.create({
-          data: { processId: process.id, column: 'SUPPLIER', value: row.s, order: i }
+          data: { processId: process.id, column: 'SUPPLIER', value: row.s, order: i },
         })
         await prisma.sIPOCEntry.create({
-          data: { processId: process.id, column: 'INPUT', value: row.i, order: i }
+          data: { processId: process.id, column: 'INPUT', value: row.i, order: i },
         })
         await prisma.sIPOCEntry.create({
-          data: { processId: process.id, column: 'PROCESS', value: row.p, order: i }
+          data: { processId: process.id, column: 'PROCESS', value: row.p, order: i },
         })
         await prisma.sIPOCEntry.create({
-          data: { processId: process.id, column: 'OUTPUT', value: row.o, order: i }
+          data: { processId: process.id, column: 'OUTPUT', value: row.o, order: i },
         })
         await prisma.sIPOCEntry.create({
-          data: { processId: process.id, column: 'CUSTOMER', value: row.c, order: i }
+          data: { processId: process.id, column: 'CUSTOMER', value: row.c, order: i },
         })
 
         totalSipocEntries += 5
@@ -323,7 +593,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 5,
         controls: 'Manual review, spot checks',
         detection: 7,
-        actions: 'Implement AI-based document verification system'
+        actions: 'Implement AI-based document verification system',
       },
       {
         process: 'Technical Review',
@@ -334,7 +604,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 4,
         controls: 'Peer review process',
         detection: 6,
-        actions: 'Mandatory dual-review for high-risk facilities'
+        actions: 'Mandatory dual-review for high-risk facilities',
       },
       {
         process: 'Compliance Check',
@@ -345,7 +615,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 4,
         controls: 'Quarterly regulation updates',
         detection: 7,
-        actions: 'Real-time regulatory compliance system integration'
+        actions: 'Real-time regulatory compliance system integration',
       },
       // Medium Risk (100 < RPN < 200)
       {
@@ -357,7 +627,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 6,
         controls: 'Automated form validation',
         detection: 4,
-        actions: 'Enhanced front-end validation rules'
+        actions: 'Enhanced front-end validation rules',
       },
       {
         process: 'Risk Assessment',
@@ -368,7 +638,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 3,
         controls: 'Monthly audit of calculations',
         detection: 5,
-        actions: 'Automated risk scoring with validation checks'
+        actions: 'Automated risk scoring with validation checks',
       },
       {
         process: 'Management Approval',
@@ -379,7 +649,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 5,
         controls: 'Weekly committee meetings',
         detection: 3,
-        actions: 'Implement delegation matrix for routine approvals'
+        actions: 'Implement delegation matrix for routine approvals',
       },
       // Low Risk (RPN < 100)
       {
@@ -391,7 +661,7 @@ async function createFacilityGrantingAssignment() {
         occurrence: 4,
         controls: 'Verification checklist',
         detection: 3,
-        actions: 'Automated provisioning system'
+        actions: 'Automated provisioning system',
       },
       {
         process: 'Application Submission',
@@ -402,8 +672,8 @@ async function createFacilityGrantingAssignment() {
         occurrence: 2,
         controls: 'Redundant systems, scheduled maintenance',
         detection: 2,
-        actions: 'Cloud-based infrastructure upgrade'
-      }
+        actions: 'Cloud-based infrastructure upgrade',
+      },
     ]
 
     let fmeaCount = 0
@@ -423,8 +693,8 @@ async function createFacilityGrantingAssignment() {
             currentControls: fmea.controls,
             detection: fmea.detection,
             rpn: rpn,
-            recommendedActions: fmea.actions
-          }
+            recommendedActions: fmea.actions,
+          },
         })
         fmeaCount++
       }
@@ -434,45 +704,52 @@ async function createFacilityGrantingAssignment() {
     // Create Fishbone diagrams
     console.log('\n🐟 Adding Fishbone (Ishikawa) analysis...')
 
-    const fishboneCategories = ['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT']
+    const fishboneCategories = [
+      'PEOPLE',
+      'PROCESS',
+      'EQUIPMENT',
+      'MATERIALS',
+      'ENVIRONMENT',
+      'MANAGEMENT',
+    ]
 
     const fishboneCauses = {
       PEOPLE: [
         'Insufficient training on new procedures',
         'High employee turnover rate',
         'Language barriers with international applicants',
-        'Lack of technical expertise'
+        'Lack of technical expertise',
       ],
       PROCESS: [
         'Unclear process documentation',
         'Redundant approval steps',
         'Lack of standardization across departments',
-        'Missing escalation procedures'
+        'Missing escalation procedures',
       ],
       EQUIPMENT: [
         'Outdated IT systems',
         'Inadequate document scanning equipment',
         'System integration issues',
-        'Frequent server downtime'
+        'Frequent server downtime',
       ],
       MATERIALS: [
         'Incomplete application templates',
         'Outdated regulatory guidelines',
         'Missing reference materials',
-        'Poor quality control documents'
+        'Poor quality control documents',
       ],
       ENVIRONMENT: [
         'Remote work coordination challenges',
         'Multiple office locations',
         'Time zone differences',
-        'Regulatory environment changes'
+        'Regulatory environment changes',
       ],
       MANAGEMENT: [
         'Unclear performance metrics',
         'Insufficient resource allocation',
         'Lack of strategic direction',
-        'Poor change management'
-      ]
+        'Poor change management',
+      ],
     }
 
     let fishboneCount = 0
@@ -484,19 +761,20 @@ async function createFacilityGrantingAssignment() {
           data: {
             processId: process.id,
             category: fishboneCategories[i],
-            order: i
-          }
+            order: i,
+          },
         })
 
         const causes = fishboneCauses[fishboneCategories[i]]
-        for (let j = 0; j < 2; j++) { // Add 2 causes per category
+        for (let j = 0; j < 2; j++) {
+          // Add 2 causes per category
           if (causes[j]) {
             await prisma.fishboneCause.create({
               data: {
                 categoryId: category.id,
                 causeDescription: causes[j] + ` (${process.processName})`,
-                order: j
-              }
+                order: j,
+              },
             })
             fishboneCount++
           }
@@ -511,44 +789,50 @@ async function createFacilityGrantingAssignment() {
     const recommendations = [
       {
         title: 'Implement Digital Transformation Initiative',
-        description: 'Deploy end-to-end digital platform with AI-powered document verification, automated workflow management, and real-time tracking. This includes mobile app development, blockchain for document authentication, and RPA for routine tasks.',
-        impact: 'Reduce processing time by 60%, improve accuracy to 99%, enhance customer experience',
+        description:
+          'Deploy end-to-end digital platform with AI-powered document verification, automated workflow management, and real-time tracking. This includes mobile app development, blockchain for document authentication, and RPA for routine tasks.',
+        impact:
+          'Reduce processing time by 60%, improve accuracy to 99%, enhance customer experience',
         difficulty: 'HIGH',
         savings: '$2.5M annually',
-        status: 'APPROVED'
+        status: 'APPROVED',
       },
       {
         title: 'Establish Dedicated Fast-Track Lane',
-        description: 'Create expedited processing path for low-risk, high-volume applications using risk-based segmentation and automated approval for qualifying criteria.',
+        description:
+          'Create expedited processing path for low-risk, high-volume applications using risk-based segmentation and automated approval for qualifying criteria.',
         impact: 'Process 40% of applications in 24 hours, improve customer satisfaction by 30%',
         difficulty: 'MEDIUM',
         savings: '$800K annually',
-        status: 'IMPLEMENTED'
+        status: 'IMPLEMENTED',
       },
       {
         title: 'Implement Continuous Training Program',
-        description: 'Develop comprehensive training curriculum with certification program, monthly workshops, and e-learning modules for all process participants.',
+        description:
+          'Develop comprehensive training curriculum with certification program, monthly workshops, and e-learning modules for all process participants.',
         impact: 'Reduce errors by 45%, improve employee competency scores to 95%',
         difficulty: 'LOW',
         savings: '$400K annually',
-        status: 'IMPLEMENTED'
+        status: 'IMPLEMENTED',
       },
       {
         title: 'Deploy Predictive Analytics System',
-        description: 'Use machine learning to predict processing times, identify bottlenecks proactively, and optimize resource allocation based on demand patterns.',
+        description:
+          'Use machine learning to predict processing times, identify bottlenecks proactively, and optimize resource allocation based on demand patterns.',
         impact: 'Improve capacity utilization by 35%, reduce overtime costs by 50%',
         difficulty: 'HIGH',
         savings: '$1.2M annually',
-        status: 'PROPOSED'
+        status: 'PROPOSED',
       },
       {
         title: 'Standardize Cross-Department Procedures',
-        description: 'Create unified SOPs, implement ISO 9001 standards, and establish cross-functional teams for process harmonization.',
+        description:
+          'Create unified SOPs, implement ISO 9001 standards, and establish cross-functional teams for process harmonization.',
         impact: 'Reduce process variation by 70%, improve interdepartmental handoffs',
         difficulty: 'MEDIUM',
         savings: '$600K annually',
-        status: 'APPROVED'
-      }
+        status: 'APPROVED',
+      },
     ]
 
     for (const rec of recommendations) {
@@ -562,8 +846,8 @@ async function createFacilityGrantingAssignment() {
           estimatedCostSavings: rec.savings,
           status: rec.status,
           linkedFMEAIds: [],
-          linkedFishboneCauseIds: []
-        }
+          linkedFishboneCauseIds: [],
+        },
       })
     }
     console.log(`  ✅ Added ${recommendations.length} improvement recommendations`)
@@ -577,7 +861,11 @@ async function createFacilityGrantingAssignment() {
       { action: 'UPDATED', entityType: 'VOC', changeDetails: { added: '3 statements' } },
       { action: 'UPDATED', entityType: 'VSM', changeDetails: { added: '35 steps' } },
       { action: 'UPDATED', entityType: 'FMEA', changeDetails: { added: '8 entries' } },
-      { action: 'COMPLETED', entityType: 'Assignment', changeDetails: { status: 'COMPLETED', completionDate: new Date() } }
+      {
+        action: 'COMPLETED',
+        entityType: 'Assignment',
+        changeDetails: { status: 'COMPLETED', completionDate: new Date() },
+      },
     ]
 
     for (const event of auditEvents) {
@@ -587,15 +875,15 @@ async function createFacilityGrantingAssignment() {
           userId: creator.id,
           action: event.action,
           entityType: event.entityType,
-          changeDetails: event.changeDetails
-        }
+          changeDetails: event.changeDetails,
+        },
       })
     }
     console.log(`  ✅ Added ${auditEvents.length} audit log entries`)
 
-    console.log('\n' + '=' .repeat(60))
+    console.log('\n' + '='.repeat(60))
     console.log('✅ FACILITY GRANTING ASSIGNMENT CREATED SUCCESSFULLY!')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
     console.log('\n📊 Summary:')
     console.log(`  Assignment ID: ${assignment.id}`)
     console.log(`  Title: ${assignment.title}`)
@@ -610,7 +898,6 @@ async function createFacilityGrantingAssignment() {
     console.log(`  Fishbone Causes: ${fishboneCount}`)
     console.log(`  Recommendations: ${recommendations.length}`)
     console.log('\n🔗 Access URL: http://localhost:3070/assignments/' + assignment.id)
-
   } catch (error) {
     console.error('❌ Error creating assignment:', error)
   } finally {

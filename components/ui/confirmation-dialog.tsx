@@ -36,7 +36,7 @@ export function ConfirmationDialog({
   confirmText = 'Continue',
   cancelText = 'Cancel',
   onConfirm,
-  loading = false
+  loading = false,
 }: ConfirmationDialogProps) {
   const [isConfirming, setIsConfirming] = React.useState(false)
 
@@ -84,16 +84,12 @@ export function ConfirmationDialog({
             {getIcon()}
             <div className="flex-1">
               <AlertDialogTitle>{title}</AlertDialogTitle>
-              <AlertDialogDescription className="mt-2">
-                {description}
-              </AlertDialogDescription>
+              <AlertDialogDescription className="mt-2">{description}</AlertDialogDescription>
             </div>
           </div>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isConfirming || loading}>
-            {cancelText}
-          </AlertDialogCancel>
+          <AlertDialogCancel disabled={isConfirming || loading}>{cancelText}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={isConfirming || loading}
@@ -113,7 +109,7 @@ export function StatusChangeDialog({
   onOpenChange,
   currentStatus,
   newStatus,
-  onConfirm
+  onConfirm,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -125,24 +121,26 @@ export function StatusChangeDialog({
     if (newStatus === 'COMPLETED') {
       return {
         title: 'Mark Assignment as Complete?',
-        description: 'This will mark the assignment as completed. Make sure all required sections have been filled out and reviewed. You can reopen the assignment later if needed.',
+        description:
+          'This will mark the assignment as completed. Make sure all required sections have been filled out and reviewed. You can reopen the assignment later if needed.',
         type: 'success' as DialogType,
-        confirmText: 'Mark as Complete'
+        confirmText: 'Mark as Complete',
       }
     }
     if (newStatus === 'REOPENED') {
       return {
         title: 'Reopen Assignment?',
-        description: 'This will reopen the assignment for further editing. The completion date will be cleared and the assignment will return to draft status.',
+        description:
+          'This will reopen the assignment for further editing. The completion date will be cleared and the assignment will return to draft status.',
         type: 'warning' as DialogType,
-        confirmText: 'Reopen Assignment'
+        confirmText: 'Reopen Assignment',
       }
     }
     return {
       title: 'Change Assignment Status?',
       description: `Are you sure you want to change the status from ${currentStatus} to ${newStatus}?`,
       type: 'info' as DialogType,
-      confirmText: 'Change Status'
+      confirmText: 'Change Status',
     }
   }
 
@@ -166,7 +164,7 @@ export function DeleteConfirmationDialog({
   onOpenChange,
   itemType,
   itemName,
-  onConfirm
+  onConfirm,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -196,7 +194,7 @@ export function ValidationWarningDialog({
   open,
   onOpenChange,
   warnings,
-  onConfirm
+  onConfirm,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -213,7 +211,9 @@ export function ValidationWarningDialog({
           <p>The following sections appear to be incomplete:</p>
           <ul className="mt-2 list-disc list-inside space-y-1">
             {warnings.map((warning, index) => (
-              <li key={index} className="text-sm">{warning}</li>
+              <li key={index} className="text-sm">
+                {warning}
+              </li>
             ))}
           </ul>
           <p className="mt-3">Do you want to continue anyway?</p>

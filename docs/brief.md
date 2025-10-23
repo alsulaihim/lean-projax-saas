@@ -15,6 +15,7 @@
 **Target Market:** Internal BPI (Business Process Improvement) teams performing Six Sigma analysis, their team leads requiring quality oversight, executives making investment decisions, and process owners implementing recommendations.
 
 **Key Value Proposition:**
+
 - **For BPI Teams:** Reduce report creation time by 60-70% through automated calculations and chart generation
 - **For Stakeholders:** Improve decision quality with professional, interactive presentations that trace recommendations back to root causes
 - **For Organizations:** Accelerate improvement cycle time from analysis to implementation
@@ -28,21 +29,25 @@
 BPI teams currently perform Six Sigma process improvement analysis using a **manual, document-based workflow** that creates significant friction:
 
 **Time Drain on Report Creation:**
+
 - Analysts spend 40-50% of assignment time on report formatting, chart creation, and document assembly rather than actual analysis
 - Each Pareto chart, Fishbone diagram, Process Capability curve, and VSM visualization requires manual creation in separate tools (Excel, Visio, PowerPoint)
 - Formatting consistency across assignments requires constant vigilance and rework
 
 **Data Integrity & Accuracy Risks:**
+
 - Manual calculation of Six Sigma metrics (Cp, Cpk, Sigma Level, RPN scores) introduces transcription errors
 - No systematic validation of data completeness or outlier detection
 - Team leads cannot easily spot-check calculations, creating trust issues with stakeholders
 
 **Collaboration Bottlenecks:**
+
 - Sequential workflow forces analysts to wait for sections to be "handed off"
 - Version control via shared drives leads to conflicting edits and lost work
 - No visibility into who's working on what, causing duplicate effort
 
 **Stakeholder Presentation Gaps:**
+
 - Static PDF reports don't allow executives to drill into details or explore "what if" scenarios
 - Process owners receive complete reports when targeted, process-specific views would be more actionable
 - Delayed distribution (waiting for final PDF) slows decision-making cycles
@@ -64,6 +69,7 @@ BPI teams currently perform Six Sigma process improvement analysis using a **man
 ### Urgency & Importance
 
 **Now is the time because:**
+
 - BPI team capacity is constrained—automation unlocks bandwidth for more assignments without hiring
 - Executive demand for data-driven decision support is increasing—better presentations improve adoption of recommendations
 - Remote/hybrid work makes collaboration challenges more acute—real-time digital workflow enables distributed teams
@@ -80,26 +86,31 @@ BPI Assignment Platform is a **purpose-built web application** that guides BPI a
 ### Key Differentiators
 
 **1. Story-Driven Architecture**
+
 - Navigation follows analytical narrative: VOC/CTQ → Process Analysis → FMEA → Recommendations
 - Stakeholders see the logical flow from customer voice to root causes to solutions
 - Process-centric tabs (not artifact-centric) match how users think about the work
 
 **2. Automation That Preserves Expertise**
+
 - System handles calculations (Pareto, Cp/Cpk, Sigma Level, RPN) with full transparency ("show your work")
 - Human insight drives qualitative analysis (root causes, recommendations, CTQ identification)
 - Eliminates chart creation drudgery while maintaining analyst control over interpretation
 
 **3. Dual-Mode Workflow**
+
 - **Draft Mode:** Flexible, collaborative editing with auto-propagation of changes across dependent sections
 - **Completed Mode:** Locked, stable reports with professional presentation and stakeholder access
 - Prevents chaos during creation while ensuring polished delivery
 
 **4. Built-in Collaboration Safety**
+
 - Section-level locking (one editor at a time per section) prevents conflicts
 - Activity feed shows who changed what and when for full transparency
 - Team Lead dashboard provides progress tracking and validation oversight
 
 **5. Hybrid Data Entry**
+
 - Manual forms for qualitative inputs (VOC/CTQ, recommendations)
 - Spreadsheet-like grids for tabular data (SIPOC, VSM, FMEA)
 - CSV/Excel bulk import for system-sourced process data
@@ -123,12 +134,14 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Primary User Segment: BPI Analysts
 
 **Profile:**
+
 - Business process improvement specialists trained in Six Sigma methodology
 - Perform 8-15 assignments per year analyzing internal processes
 - Work involves field observation, data collection, statistical analysis, and recommendation development
 - Tech-savvy but not software developers; comfortable with Excel, PowerPoint, basic web apps
 
 **Current Behaviors & Workflows:**
+
 - Conduct analysis offline (shadowing employees, reviewing system data extracts, interviewing stakeholders)
 - Transfer findings into manual report templates
 - Create visualizations in separate tools (Excel charts, Visio diagrams)
@@ -136,6 +149,7 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 - Present findings to executives in meetings using PDF reports
 
 **Specific Needs & Pain Points:**
+
 - **Speed:** Need to complete assignments faster without sacrificing quality
 - **Accuracy:** Must trust that automated calculations are correct (credibility is critical)
 - **Flexibility:** Get interrupted frequently; need auto-save and easy resume capability
@@ -143,6 +157,7 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 - **Guidance:** Appreciate templates and structure that ensure methodology compliance
 
 **Goals:**
+
 - Complete assignment reports in 50% less time
 - Reduce manual errors in calculations and transcription
 - Focus more time on analysis and less on document production
@@ -151,23 +166,27 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Secondary User Segment: Team Leads (Quality Oversight)
 
 **Profile:**
+
 - Senior BPI professionals managing 3-5 analysts
 - Responsible for final approval of assignment quality before stakeholder presentation
 - Balance speed (team productivity) with accuracy (organizational credibility)
 
 **Current Behaviors & Workflows:**
+
 - Review draft reports section by section
 - Spot-check calculations manually in Excel
 - Provide feedback via email or document comments
 - Gate-keep final approval before distribution
 
 **Specific Needs & Pain Points:**
+
 - **Visibility:** Need real-time view of assignment progress and team activity
 - **Validation:** Must quickly identify incomplete sections or suspicious data
 - **Control:** Require approval workflow to prevent premature release of unvetted work
 - **Trust:** Need transparency into how calculations are performed
 
 **Goals:**
+
 - Ensure 100% accuracy of calculations and data integrity
 - Track team progress without micromanaging
 - Reduce time spent spot-checking (trust but verify)
@@ -176,23 +195,27 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Tertiary User Segment: Executive Stakeholders
 
 **Profile:**
+
 - C-suite and senior leadership making investment decisions based on BPI recommendations
 - Limited time, need concise insights
 - Care about "why this recommendation" not detailed methodology
 
 **Current Behaviors & Workflows:**
+
 - Receive PDF reports via email
 - Skim executive summary and recommendations
 - Ask clarifying questions in meetings
 - Approve or defer implementation based on expected ROI
 
 **Specific Needs & Pain Points:**
+
 - **Clarity:** Need story-driven presentation (problem → analysis → solution)
 - **Traceability:** Want to understand how recommendations connect to root causes
 - **Access:** Prefer on-demand access over waiting for PDF distribution
 - **Impact:** Need quantified benefits (time savings, cost reduction, quality improvement)
 
 **Goals:**
+
 - Quickly understand key findings and recommendations
 - Make confident decisions with clear supporting evidence
 - Drill into details only when necessary
@@ -201,23 +224,27 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Quaternary User Segment: Process Owners
 
 **Profile:**
+
 - Department managers responsible for implementing approved recommendations
 - Defensive about their processes but want to improve outcomes
 - Need focused information relevant to their area only
 
 **Current Behaviors & Workflows:**
+
 - Receive completed assignment reports affecting their departments
 - Review findings and recommendations
 - Plan implementation with teams
 - Report back on results
 
 **Specific Needs & Pain Points:**
+
 - **Relevance:** Only need information about their specific processes, not entire portfolio
 - **Timing:** Prefer seeing final results (not draft analysis in progress)
 - **Actionability:** Need clear, implementable recommendations with expected impact
 - **Collaboration:** Want to engage constructively, not defensively
 
 **Goals:**
+
 - Understand root causes affecting their processes
 - Receive actionable recommendations with implementation guidance
 - Track results of implemented changes
@@ -260,43 +287,43 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Core Features (Must Have)
 
 - **Two-Mode Workflow (Draft/Completed):** State machine with flexible editing during creation and locked stability post-completion; "Reopen for Editing" action for approved changes
-  - *Rationale:* Foundational architectural decision affecting all features; prevents rework if added later
+  - _Rationale:_ Foundational architectural decision affecting all features; prevents rework if added later
 
 - **Story-Driven Navigation:** VOC/CTQ → Process Tabs → FMEA → Recommendations with clear sequential flow
-  - *Rationale:* Core UX pattern that matches user mental models; must be in place before building content sections
+  - _Rationale:_ Core UX pattern that matches user mental models; must be in place before building content sections
 
 - **VOC/CTQ Form Input:** Structured form capturing Voice of Customer and Critical to Quality requirements as assignment foundation
-  - *Rationale:* First section in workflow; validates end-to-end flow early with real users
+  - _Rationale:_ First section in workflow; validates end-to-end flow early with real users
 
 - **SIPOC Spreadsheet Interface:** Grid-based editor for Suppliers, Inputs, Process, Outputs, Customers with validation
-  - *Rationale:* Core Six Sigma tool demonstrating multi-input capability and data entry UX patterns
+  - _Rationale:_ Core Six Sigma tool demonstrating multi-input capability and data entry UX patterns
 
 - **VSM Data Entry:** Capture process steps, durations, value-added vs. non-value-added time for Value Stream Mapping
-  - *Rationale:* Required for Pareto analysis and process capability calculations
+  - _Rationale:_ Required for Pareto analysis and process capability calculations
 
 - **Automated Pareto Chart Generation:** Bar chart with cumulative line showing 80/20 rule, generated from VSM step durations
-  - *Rationale:* First proof of automation value; demonstrates calculation correctness and visualization quality
+  - _Rationale:_ First proof of automation value; demonstrates calculation correctness and visualization quality
 
 - **Fishbone Diagram Builder:** Template-driven interface for 6 categories (People, Process, Equipment, Materials, Environment, Management) with free-text root causes
-  - *Rationale:* Central analytical artifact connecting Pareto findings to recommendations
+  - _Rationale:_ Central analytical artifact connecting Pareto findings to recommendations
 
 - **FMEA Table (Consolidated):** Failure Mode and Effects Analysis with Severity, Occurrence, Detection ratings and auto-calculated RPN scores
-  - *Rationale:* Risk prioritization framework informing recommendation development
+  - _Rationale:_ Risk prioritization framework informing recommendation development
 
 - **Recommendations Form:** Structured input for actionable recommendations with expected impact, implementation difficulty, and traceability to root causes
-  - *Rationale:* Final deliverable section; must connect back to Fishbone/FMEA for stakeholder story
+  - _Rationale:_ Final deliverable section; must connect back to Fishbone/FMEA for stakeholder story
 
 - **Multi-Process Support:** Ability to analyze multiple processes per assignment, each with full SIPOC → VSM → Pareto → Fishbone → Capability workflow
-  - *Rationale:* Real assignments analyze multiple related processes; single-process MVP would require major refactor
+  - _Rationale:_ Real assignments analyze multiple related processes; single-process MVP would require major refactor
 
 - **Basic PDF Export:** Single-document export of entire assignment for traditional distribution
-  - *Rationale:* Critical for stakeholder sharing and archival; validates layout and print formatting
+  - _Rationale:_ Critical for stakeholder sharing and archival; validates layout and print formatting
 
 - **User Authentication & Authorization:** Role-based access (BPI Team, Team Lead, Executive, Process Owner) with appropriate permissions
-  - *Rationale:* Security requirement and foundation for collaboration features
+  - _Rationale:_ Security requirement and foundation for collaboration features
 
 - **Auto-Save Functionality:** Periodic background saves to handle frequent interruptions during data entry
-  - *Rationale:* Ahmed persona highlighted getting interrupted frequently; prevents data loss
+  - _Rationale:_ Ahmed persona highlighted getting interrupted frequently; prevents data loss
 
 ### Out of Scope for MVP
 
@@ -317,6 +344,7 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### MVP Success Criteria
 
 **MVP is successful if:**
+
 1. A single BPI analyst can complete a 2-process assignment from scratch to PDF export in <10 hours (vs. 20+ hours manually)
 2. All automated calculations (Pareto rankings, RPN scores) are validated as 100% accurate by Team Lead
 3. Generated Pareto chart and Fishbone diagram are rated "professional quality, suitable for executive presentation" by 3+ analysts
@@ -331,6 +359,7 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Phase 2 Features
 
 **Team Collaboration & Oversight (3-4 weeks development)**
+
 - Section-level locking with presence indicators
 - Activity feed showing edit history and user actions
 - Team Lead dashboard with progress tracking and validation alerts
@@ -338,6 +367,7 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 - Validation rules and data completeness indicators
 
 **Enhanced Data Entry & Automation (4-5 weeks development)**
+
 - CSV/Excel bulk import with column mapping and validation
 - Process Flow Diagram auto-generation from SIPOC steps
 - Process Capability calculations (Cp, Cpk, Sigma Level) with bell curve visualization
@@ -345,6 +375,7 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 - Outlier detection and warning indicators
 
 **Stakeholder Experience Improvements (2-3 weeks development)**
+
 - Executive summary landing page with key findings at-a-glance
 - Traceability links (recommendations → root causes → process data)
 - Process-specific views for Process Owners
@@ -353,17 +384,20 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Long-Term Vision (12-18 months)
 
 **Portfolio Intelligence**
+
 - Cross-assignment pattern recognition identifying recurring root causes
 - Organizational trend analysis (which processes need most attention)
 - Recommendation tracking and implementation monitoring
 - Strategic insights dashboard for senior leadership
 
 **Advanced Analytics**
+
 - Predictive process capability modeling (forecast improvements from recommendations)
 - ROI calculator connecting recommendations to quantified business impact
 - Benchmark library comparing similar processes across departments
 
 **Collaboration Evolution**
+
 - Interactive stakeholder workshop mode with scenario modeling
 - Real-time presentation capabilities with live data manipulation
 - Comment threads and discussion forums per section
@@ -464,28 +498,28 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Key Assumptions
 
 - **Assumption 1:** BPI analysts have consistent internet access during data entry (not offline-first architecture)
-  - *Validation needed:* Confirm with team about field work scenarios requiring offline capability
+  - _Validation needed:_ Confirm with team about field work scenarios requiring offline capability
 
 - **Assumption 2:** Six Sigma methodology is standardized across all analysts (same SIPOC/FMEA/Fishbone frameworks)
-  - *Validation needed:* Review current templates and confirm no departmental variations
+  - _Validation needed:_ Review current templates and confirm no departmental variations
 
 - **Assumption 3:** Assignment volume is 30-50 per year (scalability requirements modest)
-  - *Validation needed:* Get actual historical data on assignment count and growth projections
+  - _Validation needed:_ Get actual historical data on assignment count and growth projections
 
 - **Assumption 4:** Manual workflow currently takes 15-25 hours per assignment
-  - *Validation needed:* Time study with 3-5 analysts tracking actual hours on next assignments
+  - _Validation needed:_ Time study with 3-5 analysts tracking actual hours on next assignments
 
 - **Assumption 5:** Stakeholders prefer web access over PDF-only distribution
-  - *Validation needed:* Survey executives and process owners on preferred delivery format
+  - _Validation needed:_ Survey executives and process owners on preferred delivery format
 
 - **Assumption 6:** Team size is 5-10 analysts (collaboration features sized accordingly)
-  - *Validation needed:* Confirm current team size and 2-year growth plans
+  - _Validation needed:_ Confirm current team size and 2-year growth plans
 
 - **Assumption 7:** Calculation accuracy concerns are perception-based, not evidence of frequent actual errors
-  - *Validation needed:* Audit sample of past assignments for calculation errors
+  - _Validation needed:_ Audit sample of past assignments for calculation errors
 
 - **Assumption 8:** Process data is collected offline (shadowing, interviews) then manually entered
-  - *Validation needed:* Confirm % of processes using system-sourced data vs. manual observation
+  - _Validation needed:_ Confirm % of processes using system-sourced data vs. manual observation
 
 ---
 
@@ -494,28 +528,28 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 ### Key Risks
 
 - **Calculation Trust Risk:** If automated calculations have even one significant error in pilot, could undermine entire platform adoption
-  - *Impact:* High (could kill project)
-  - *Mitigation:* Comprehensive unit testing, SME validation, "show your work" transparency features, parallel manual calculation checks during pilot
+  - _Impact:_ High (could kill project)
+  - _Mitigation:_ Comprehensive unit testing, SME validation, "show your work" transparency features, parallel manual calculation checks during pilot
 
 - **Adoption Resistance Risk:** Analysts comfortable with manual workflow may resist change despite efficiency gains
-  - *Impact:* Medium (slow adoption delays ROI)
-  - *Mitigation:* Involve analysts early in design, pilot with enthusiastic early adopters, demonstrate time savings with real metrics
+  - _Impact:_ Medium (slow adoption delays ROI)
+  - _Mitigation:_ Involve analysts early in design, pilot with enthusiastic early adopters, demonstrate time savings with real metrics
 
 - **Scope Creep Risk:** Team Lead and stakeholder feature requests could balloon MVP beyond 8-week timeline
-  - *Impact:* Medium (delayed launch)
-  - *Mitigation:* Strict MVP definition, Phase 2 parking lot for good ideas, regular prioritization reviews
+  - _Impact:_ Medium (delayed launch)
+  - _Mitigation:_ Strict MVP definition, Phase 2 parking lot for good ideas, regular prioritization reviews
 
 - **Data Migration Risk:** Existing in-flight assignments may need to be completed in old workflow (no migration path)
-  - *Impact:* Low (accept hybrid period)
-  - *Mitigation:* Clear cutover date, optional manual data entry for critical historical assignments
+  - _Impact:_ Low (accept hybrid period)
+  - _Mitigation:_ Clear cutover date, optional manual data entry for critical historical assignments
 
 - **Performance Risk:** Complex assignments with 10+ processes and hundreds of data points could cause slow load times
-  - *Impact:* Medium (UX degradation)
-  - *Mitigation:* Performance testing with realistic data volumes, lazy loading strategies, pagination if needed
+  - _Impact:_ Medium (UX degradation)
+  - _Mitigation:_ Performance testing with realistic data volumes, lazy loading strategies, pagination if needed
 
 - **Stakeholder Access Risk:** Executives may not adopt web dashboard, defaulting to PDF requests
-  - *Impact:* Low (PDF export covers fallback)
-  - *Mitigation:* Champion identification, executive demo sessions, mobile-responsive design (future)
+  - _Impact:_ Low (PDF export covers fallback)
+  - _Mitigation:_ Champion identification, executive demo sessions, mobile-responsive design (future)
 
 ### Open Questions
 
@@ -549,23 +583,27 @@ A comprehensive digital workspace where BPI teams spend 70%+ of their time analy
 This Project Brief is based on a comprehensive brainstorming session conducted on 2025-09-30 using the BMAD-METHOD™ framework. The session employed three analytical techniques:
 
 **1. First Principles Thinking (30 minutes)**
+
 - Identified fundamental purpose: automate manual reporting + modernize stakeholder presentation
 - Distinguished human insight inputs (VOC, root causes, recommendations) from system calculations (VSM metrics, Pareto, capability)
 - Recognized two distinct user types with different value propositions (creators vs. viewers)
 - Key insight: Automation value comes from eliminating repetitive chart creation, not replacing human analysis
 
 **2. Morphological Analysis (45 minutes)**
+
 - Systematically explored architectural options for data input, workflow structure, visualization, dashboard layout, and collaboration
 - Generated 50+ architecture decisions and feature requirements
 - Resolved navigation tension (process-centric beats artifact-centric)
 - Key insight: Two-mode system (Draft flexible, Completed locked) solves creation vs. presentation tension
 
 **3. Role Playing (30 minutes)**
+
 - Validated architecture from perspectives of: Team Lead (Sarah), Analyst (Ahmed), Executive (Fatima), Process Owner (Khalid)
 - Uncovered missing requirements: Team Lead dashboard, hybrid data entry, calculation transparency, access control model
 - Key insight: Accuracy trumps speed for Team Leads; story matters more than data for Executives
 
 **Key Themes from Brainstorming:**
+
 - Automation & Efficiency (transform manual reporting into streamlined workflow)
 - Story-Driven Design (VOC → Analysis → Recommendations as narrative flow)
 - Multi-User Collaboration (section-level locking with activity feed)
@@ -574,6 +612,7 @@ This Project Brief is based on a comprehensive brainstorming session conducted o
 - Hybrid Data Entry (manual observation + bulk CSV import based on process type)
 
 **Top 3 Priority Recommendations from Session:**
+
 1. **MVP Foundation** - Core workflow with Draft mode, story-driven navigation, basic forms/grids, Pareto chart, PDF export (6-8 weeks)
 2. **Calculation Engine + Visualization Suite** - Six Sigma formulas with transparency, complete chart library (4-5 weeks parallel)
 3. **Team Lead Dashboard + Validation System** - Quality gates, approval workflow, validation rules (3 weeks post-MVP)
@@ -581,20 +620,24 @@ This Project Brief is based on a comprehensive brainstorming session conducted o
 ### B. Stakeholder Input
 
 **BPI Analyst Personas (from brainstorming Role Playing):**
+
 - **Ahmed:** Field-focused analyst who collects data offline, needs hybrid manual/bulk entry, gets interrupted frequently (auto-save critical)
 - Emphasized transcription error risk from manual re-typing, validated need for CSV import
 
 **Team Lead Persona:**
+
 - **Sarah:** Quality-focused leader prioritizing accuracy over speed, needs calculation transparency and validation tools
 - Highlighted data integrity as #1 concern, credibility with stakeholders depends on zero errors
 - Required progress tracking dashboard and approval workflow
 
 **Executive Persona:**
+
 - **Fatima:** Time-constrained decision-maker who needs story-driven presentation (problem → analysis → solution)
 - Wants traceability from recommendations back to root causes
 - Prefers executive summary landing view with drill-down capability
 
 **Process Owner Persona:**
+
 - **Khalid:** Department manager who needs process-specific views (not full portfolio), prefers final results over draft visibility
 - Validated access control model: view completed assignments only, scoped to relevant processes
 
@@ -665,6 +708,7 @@ This Project Brief is based on a comprehensive brainstorming session conducted o
 This Project Brief provides the full context for **BPI Assignment Platform**. The next step is to create a comprehensive Product Requirements Document (PRD) that translates this strategic vision into detailed functional specifications.
 
 **Recommended Approach:**
+
 - Use the PRD template (`prd-tmpl.yaml`) to systematically elaborate each section
 - Focus on user stories, acceptance criteria, and technical specifications
 - Prioritize MVP scope strictly to maintain 6-8 week timeline
@@ -672,6 +716,7 @@ This Project Brief provides the full context for **BPI Assignment Platform**. Th
 - Reference brainstorming session insights for UX decisions and architectural rationale
 
 **Key Considerations for PRD:**
+
 1. **Data Model:** Multi-process structure with SIPOC → Artifacts workflow per process
 2. **Calculation Transparency:** "Show your work" UI for all Six Sigma formulas (builds trust)
 3. **Two-Mode Workflow:** State transitions and editing rules must be explicit
@@ -683,4 +728,4 @@ The Business Analyst is ready to collaborate on PRD development or provide addit
 
 ---
 
-*Document prepared using BMAD™ Core project brief template v2.0*
+_Document prepared using BMAD™ Core project brief template v2.0_

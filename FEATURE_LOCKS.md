@@ -5,6 +5,7 @@ This guide explains how to implement feature locks for premium features in Lean 
 ## Overview
 
 The application now includes a comprehensive subscription/feature lock system that:
+
 - Shows "Upgrade to Pro" prompts for locked features
 - Displays subscription status in header
 - Limits free users to 3 assignments
@@ -24,14 +25,11 @@ import { isPro, hasFeatureAccess, PremiumFeature } from '@/lib/subscription'
 const userIsPro = isPro({
   tier: user.subscriptionTier,
   status: user.subscriptionStatus,
-  trialEndsAt: user.trialEndsAt
+  trialEndsAt: user.trialEndsAt,
 })
 
 // Check if user has access to a feature
-const canExportPDF = hasFeatureAccess(
-  { tier, status, trialEndsAt },
-  PremiumFeature.EXPORT_PDF
-)
+const canExportPDF = hasFeatureAccess({ tier, status, trialEndsAt }, PremiumFeature.EXPORT_PDF)
 ```
 
 ### 2. Feature Lock Components
@@ -41,28 +39,23 @@ const canExportPDF = hasFeatureAccess(
 Wraps premium features with three lock modes:
 
 **Mode: "disable"** (default) - Shows content but disabled with lock badge
+
 ```tsx
-<FeatureLock
-  isLocked={!isPro}
-  feature={PremiumFeature.EXPORT_PDF}
-  mode="disable"
->
+<FeatureLock isLocked={!isPro} feature={PremiumFeature.EXPORT_PDF} mode="disable">
   <ExportButton />
 </FeatureLock>
 ```
 
 **Mode: "blur"** - Shows blurred content with lock overlay
+
 ```tsx
-<FeatureLock
-  isLocked={!isPro}
-  feature={PremiumFeature.ADVANCED_ANALYTICS}
-  mode="blur"
->
+<FeatureLock isLocked={!isPro} feature={PremiumFeature.ADVANCED_ANALYTICS} mode="blur">
   <AdvancedChart />
 </FeatureLock>
 ```
 
 **Mode: "hide"** - Hides content and shows upgrade CTA
+
 ```tsx
 <FeatureLock
   isLocked={!isPro}
@@ -75,14 +68,11 @@ Wraps premium features with three lock modes:
 ```
 
 #### `<LockedButton>` - For action buttons
+
 ```tsx
 import { LockedButton } from '@/components/subscription/feature-lock'
 
-<LockedButton
-  isLocked={!isPro}
-  feature={PremiumFeature.EXPORT_PDF}
-  onClick={() => handleExport()}
->
+;<LockedButton isLocked={!isPro} feature={PremiumFeature.EXPORT_PDF} onClick={() => handleExport()}>
   Export to PDF
 </LockedButton>
 ```
@@ -90,6 +80,7 @@ import { LockedButton } from '@/components/subscription/feature-lock'
 ### 3. Upgrade Modal ([components/subscription/upgrade-modal.tsx](components/subscription/upgrade-modal.tsx))
 
 Automatically shown when users interact with locked features. Shows:
+
 - Feature-specific title and description
 - All Pro benefits
 - Pricing (monthly $49, annual $490)
@@ -112,7 +103,7 @@ export default async function AssignmentPage({ params }: { params: { id: string 
   const userIsPro = isPro({
     tier: user.subscriptionTier,
     status: user.subscriptionStatus,
-    trialEndsAt: user.trialEndsAt
+    trialEndsAt: user.trialEndsAt,
   })
 
   return (
@@ -155,11 +146,7 @@ export function AnalyticsDashboard({ isPro }: AnalyticsDashboardProps) {
       <BasicCharts />
 
       {/* Advanced analytics - locked for free users */}
-      <FeatureLock
-        isLocked={!isPro}
-        feature={PremiumFeature.ADVANCED_ANALYTICS}
-        mode="blur"
-      >
+      <FeatureLock isLocked={!isPro} feature={PremiumFeature.ADVANCED_ANALYTICS} mode="blur">
         <AdvancedAnalytics />
       </FeatureLock>
     </div>
@@ -180,14 +167,14 @@ export default async function AssignmentsPage() {
   if (!user) redirect('/login')
 
   const assignments = await prisma.assignment.findMany({
-    where: { createdById: user.id }
+    where: { createdById: user.id },
   })
 
   const canCreate = canCreateAssignment(
     {
       tier: user.subscriptionTier,
       status: user.subscriptionStatus,
-      trialEndsAt: user.trialEndsAt
+      trialEndsAt: user.trialEndsAt,
     },
     assignments.length
   )
@@ -209,9 +196,7 @@ export default async function AssignmentsPage() {
             Create New Assignment
           </LockedButton>
         ) : (
-          <Button onClick={() => router.push('/assignments/new')}>
-            Create New Assignment
-          </Button>
+          <Button onClick={() => router.push('/assignments/new')}>Create New Assignment</Button>
         )}
       </div>
 
@@ -220,7 +205,10 @@ export default async function AssignmentsPage() {
         <Alert>
           <AlertDescription>
             You've used {assignments.length} of {FREE_TIER_LIMITS.MAX_ASSIGNMENTS} free assignments.
-            <Link href="/upgrade" className="ml-2 underline">Upgrade to Pro</Link> for unlimited assignments.
+            <Link href="/upgrade" className="ml-2 underline">
+              Upgrade to Pro
+            </Link>{' '}
+            for unlimited assignments.
           </AlertDescription>
         </Alert>
       )}
@@ -249,19 +237,12 @@ export function AIAssessment({ isPro }: AIAssessmentProps) {
 
   return (
     <div>
-      <Button
-        onClick={() => setShowAIInsights(true)}
-        className="mb-4"
-      >
+      <Button onClick={() => setShowAIInsights(true)} className="mb-4">
         View AI Insights
       </Button>
 
       {showAIInsights && (
-        <FeatureLock
-          isLocked={!isPro}
-          feature={PremiumFeature.AI_INSIGHTS}
-          mode="hide"
-        >
+        <FeatureLock isLocked={!isPro} feature={PremiumFeature.AI_INSIGHTS} mode="hide">
           <AIInsightsPanel />
         </FeatureLock>
       )}
@@ -274,25 +255,26 @@ export function AIAssessment({ isPro }: AIAssessmentProps) {
 
 Available premium features (defined in `lib/subscription.ts`):
 
-| Feature | Description | Where to Use |
-|---------|-------------|--------------|
-| `EXPORT_PDF` | PDF export | Assignment detail, reports |
-| `EXPORT_EXCEL` | Excel export | Data tables, analytics |
-| `ADVANCED_ANALYTICS` | Advanced analytics | Dashboard, reports |
-| `CUSTOM_REPORTS` | Custom reports | Reporting section |
-| `TEAM_COLLABORATION` | Team collaboration | Throughout app |
-| `SHARED_ASSIGNMENTS` | Shared assignments | Assignment sharing |
-| `AI_RECOMMENDATIONS` | AI recommendations | Process recommendations |
-| `AI_INSIGHTS` | AI insights | AI assessment |
-| `CUSTOM_BRANDING` | Custom branding | Reports, exports |
-| `CUSTOM_TEMPLATES` | Custom templates | Assignment creation |
-| `UNLIMITED_ASSIGNMENTS` | No assignment limit | Assignment creation |
+| Feature                 | Description         | Where to Use               |
+| ----------------------- | ------------------- | -------------------------- |
+| `EXPORT_PDF`            | PDF export          | Assignment detail, reports |
+| `EXPORT_EXCEL`          | Excel export        | Data tables, analytics     |
+| `ADVANCED_ANALYTICS`    | Advanced analytics  | Dashboard, reports         |
+| `CUSTOM_REPORTS`        | Custom reports      | Reporting section          |
+| `TEAM_COLLABORATION`    | Team collaboration  | Throughout app             |
+| `SHARED_ASSIGNMENTS`    | Shared assignments  | Assignment sharing         |
+| `AI_RECOMMENDATIONS`    | AI recommendations  | Process recommendations    |
+| `AI_INSIGHTS`           | AI insights         | AI assessment              |
+| `CUSTOM_BRANDING`       | Custom branding     | Reports, exports           |
+| `CUSTOM_TEMPLATES`      | Custom templates    | Assignment creation        |
+| `UNLIMITED_ASSIGNMENTS` | No assignment limit | Assignment creation        |
 
 ## Best Practices
 
 ### 1. Server-Side vs Client-Side Checks
 
 **Server-side** (for security):
+
 ```tsx
 // Server component
 export default async function Page() {
@@ -305,6 +287,7 @@ export default async function Page() {
 ```
 
 **Client-side** (for UX):
+
 ```tsx
 // Client component
 'use client'
@@ -322,6 +305,7 @@ export function Component({ isPro }: { isPro: boolean }) {
 ### 3. Provide Clear Upgrade Paths
 
 Always make it obvious how to upgrade:
+
 - Use `<LockedButton>` for actions
 - Show pricing in modals
 - Add "Upgrade to Pro" in header (already implemented)
@@ -329,6 +313,7 @@ Always make it obvious how to upgrade:
 ### 4. Test Both States
 
 Test your feature locks with both Pro and Free users:
+
 ```typescript
 // In your component
 if (process.env.NODE_ENV === 'development') {
@@ -359,7 +344,7 @@ import { getSubscriptionStatusMessage } from '@/lib/subscription'
 const message = getSubscriptionStatusMessage({
   tier: user.subscriptionTier,
   status: user.subscriptionStatus,
-  trialEndsAt: user.trialEndsAt
+  trialEndsAt: user.trialEndsAt,
 })
 
 // Returns:

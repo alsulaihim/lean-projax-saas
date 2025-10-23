@@ -12,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus, Trash2, Edit2, Eye, EyeOff, ChevronRight, AlertCircle } from 'lucide-react'
 import { FishboneDiagram } from '@/components/charts/fishbone-diagram'
 import type { Prisma } from '@prisma/client'
@@ -42,18 +36,21 @@ interface FishboneSectionEnhancedProps {
 type CategoryType = 'PEOPLE' | 'PROCESS' | 'EQUIPMENT' | 'MATERIALS' | 'ENVIRONMENT' | 'MANAGEMENT'
 
 // Calculate Pareto analysis for a process
-function calculatePareto<T extends {
-  processTime?: number | null
-  durationMinutes?: number | null
-  waitingTime?: number | null
-  waitTimeMinutes?: number | null
-}>(steps: T[]) {
+function calculatePareto<
+  T extends {
+    processTime?: number | null
+    durationMinutes?: number | null
+    waitingTime?: number | null
+    waitTimeMinutes?: number | null
+  },
+>(steps: T[]) {
   // Sort steps by total time (process + waiting) in descending order
   const sortedSteps = steps
     .map(step => ({
       ...step,
-      totalTime: (step.processTime || step.durationMinutes || 0) +
-                 (step.waitingTime || step.waitTimeMinutes || 0)
+      totalTime:
+        (step.processTime || step.durationMinutes || 0) +
+        (step.waitingTime || step.waitTimeMinutes || 0),
     }))
     .sort((a, b) => b.totalTime - a.totalTime)
 
@@ -68,12 +65,17 @@ function calculatePareto<T extends {
       ...step,
       percentage: (step.totalTime / total) * 100,
       cumulativePercentage,
-      isVitalFew: cumulativePercentage <= 80
+      isVitalFew: cumulativePercentage <= 80,
     }
   })
 }
 
-export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, userId }: FishboneSectionEnhancedProps) {
+export function FishboneSectionEnhanced({
+  assignmentId,
+  processes,
+  canEdit,
+  userId,
+}: FishboneSectionEnhancedProps) {
   const router = useRouter()
   const [selectedProcess, setSelectedProcess] = useState<string>(processes[0]?.id || '')
   const [activeFishbone, setActiveFishbone] = useState(0)
@@ -84,16 +86,23 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
 
   const [causeForm, setCauseForm] = useState({
     category: 'PEOPLE' as CategoryType,
-    causeDescription: ''
+    causeDescription: '',
   })
 
   const [editForm, setEditForm] = useState({
-    causeDescription: ''
+    causeDescription: '',
   })
 
   const currentProcess = processes.find(p => p.id === selectedProcess)
 
-  const categories: CategoryType[] = ['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT']
+  const categories: CategoryType[] = [
+    'PEOPLE',
+    'PROCESS',
+    'EQUIPMENT',
+    'MATERIALS',
+    'ENVIRONMENT',
+    'MANAGEMENT',
+  ]
 
   const categoryLabels: Record<CategoryType, string> = {
     PEOPLE: 'Manpower (People)',
@@ -101,7 +110,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
     EQUIPMENT: 'Machine (Equipment)',
     MATERIALS: 'Materials',
     ENVIRONMENT: 'Environment',
-    MANAGEMENT: 'Management'
+    MANAGEMENT: 'Management',
   }
 
   const categoryIcons: Record<CategoryType, string> = {
@@ -110,7 +119,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
     EQUIPMENT: '🔧',
     MATERIALS: '📦',
     ENVIRONMENT: '🌍',
-    MANAGEMENT: '📊'
+    MANAGEMENT: '📊',
   }
 
   // Calculate Pareto analysis and vital few steps
@@ -126,7 +135,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
     return {
       vitalSteps,
       totalCycleTime,
-      paretoAnalysis
+      paretoAnalysis,
     }
   }, [currentProcess])
 
@@ -142,7 +151,10 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
     for (let i = 0; i < paretoData.vitalSteps.length; i++) {
       const step = paretoData.vitalSteps[i]
       const startIdx = i * categoriesPerStep
-      const endIdx = Math.min(startIdx + categoriesPerStep, currentProcess.fishboneCategories.length)
+      const endIdx = Math.min(
+        startIdx + categoriesPerStep,
+        currentProcess.fishboneCategories.length
+      )
 
       // Get categories for this step
       const stepCategories = currentProcess.fishboneCategories
@@ -151,7 +163,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
 
       fishbones.push({
         step,
-        categories: stepCategories
+        categories: stepCategories,
       })
     }
 
@@ -181,8 +193,8 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
             assignmentId,
             userId,
             category: causeForm.category,
-            order: baseOrder + categories.indexOf(causeForm.category)
-          })
+            order: baseOrder + categories.indexOf(causeForm.category),
+          }),
         })
 
         if (!categoryResponse.ok) {
@@ -201,15 +213,15 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
           assignmentId,
           userId,
           causeDescription: causeForm.causeDescription,
-          order: (category?.causes?.length || 0) + 1
-        })
+          order: (category?.causes?.length || 0) + 1,
+        }),
       })
 
       if (response.ok) {
         setIsAddingCause(false)
         setCauseForm({
           category: 'PEOPLE',
-          causeDescription: ''
+          causeDescription: '',
         })
         router.refresh()
       }
@@ -229,8 +241,8 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
         body: JSON.stringify({
           causeDescription: editForm.causeDescription,
           userId,
-          assignmentId
-        })
+          assignmentId,
+        }),
       })
 
       if (response.ok) {
@@ -254,7 +266,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
       const response = await fetch(`/api/fishbone-causes/${causeId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, assignmentId })
+        body: JSON.stringify({ userId, assignmentId }),
       })
 
       if (response.ok) {
@@ -271,7 +283,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
     return (
       <Card className="border-2 border-black">
         <CardContent className="py-12 text-center">
-          <p className="text-gray-500">Please add at least one process before creating a Fishbone diagram</p>
+          <p className="text-gray-500">
+            Please add at least one process before creating a Fishbone diagram
+          </p>
         </CardContent>
       </Card>
     )
@@ -287,7 +301,8 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
             <div>
               <CardTitle className="text-2xl">Fishbone Diagram (Ishikawa)</CardTitle>
               <CardDescription className="mt-1">
-                Root cause analysis for vital few steps (Pareto ≤80%) - One fishbone per critical step
+                Root cause analysis for vital few steps (Pareto ≤80%) - One fishbone per critical
+                step
               </CardDescription>
             </div>
             <Button
@@ -314,10 +329,13 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
           {processes.length > 1 && (
             <div className="flex items-center gap-4">
               <label className="text-sm font-medium">Select Process:</label>
-              <Select value={selectedProcess} onValueChange={(value) => {
-                setSelectedProcess(value)
-                setActiveFishbone(0)
-              }}>
+              <Select
+                value={selectedProcess}
+                onValueChange={value => {
+                  setSelectedProcess(value)
+                  setActiveFishbone(0)
+                }}
+              >
                 <SelectTrigger className="w-[300px]">
                   <SelectValue />
                 </SelectTrigger>
@@ -339,10 +357,12 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                 <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-blue-900">
-                    {paretoData.vitalSteps.length} Vital Few Steps Identified (≤80% Cumulative Impact)
+                    {paretoData.vitalSteps.length} Vital Few Steps Identified (≤80% Cumulative
+                    Impact)
                   </h4>
                   <p className="text-sm text-blue-700 mt-1">
-                    Each vital step has its own fishbone diagram analyzing root causes specific to that step
+                    Each vital step has its own fishbone diagram analyzing root causes specific to
+                    that step
                   </p>
                 </div>
               </div>
@@ -391,7 +411,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                   </span>
                   <Button
                     variant="outline"
-                    onClick={() => setActiveFishbone(Math.min(fishbonesByStep.length - 1, activeFishbone + 1))}
+                    onClick={() =>
+                      setActiveFishbone(Math.min(fishbonesByStep.length - 1, activeFishbone + 1))
+                    }
                     disabled={activeFishbone === fishbonesByStep.length - 1}
                   >
                     Next Step →
@@ -406,9 +428,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                     {currentFishboneData.step.stepName}
                   </h4>
                   <p className="text-sm text-gray-600">
-                    Cycle Time: {currentFishboneData.step.totalTime.toFixed(1)} min |
-                    Contribution: {currentFishboneData.step.percentage.toFixed(1)}% |
-                    Cumulative: {currentFishboneData.step.cumulativePercentage.toFixed(1)}%
+                    Cycle Time: {currentFishboneData.step.totalTime.toFixed(1)} min | Contribution:{' '}
+                    {currentFishboneData.step.percentage.toFixed(1)}% | Cumulative:{' '}
+                    {currentFishboneData.step.cumulativePercentage.toFixed(1)}%
                   </p>
                 </div>
               )}
@@ -423,8 +445,8 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                     causes: cat.causes.map(cause => ({
                       id: cause.id,
                       causeName: cause.causeDescription,
-                      description: null
-                    }))
+                      description: null,
+                    })),
                   }))}
                   height={600}
                   className="mb-6"
@@ -435,7 +457,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
               {currentFishboneData && (
                 <div className="grid grid-cols-2 gap-4">
                   {categories.map(categoryType => {
-                    const category = currentFishboneData.categories.find(c => c.category === categoryType)
+                    const category = currentFishboneData.categories.find(
+                      c => c.category === categoryType
+                    )
                     const causes = category?.causes.sort((a, b) => a.order - b.order) || []
 
                     return (
@@ -458,8 +482,10 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                                     <div className="flex-1 flex gap-2">
                                       <Input
                                         value={editForm.causeDescription}
-                                        onChange={(e) => setEditForm({ causeDescription: e.target.value })}
-                                        onKeyDown={(e) => {
+                                        onChange={e =>
+                                          setEditForm({ causeDescription: e.target.value })
+                                        }
+                                        onKeyDown={e => {
                                           if (e.key === 'Enter') {
                                             handleUpdateCause(cause.id)
                                           } else if (e.key === 'Escape') {
@@ -500,7 +526,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                                             size="sm"
                                             onClick={() => {
                                               setEditingCause(cause.id)
-                                              setEditForm({ causeDescription: cause.causeDescription })
+                                              setEditForm({
+                                                causeDescription: cause.causeDescription,
+                                              })
                                             }}
                                             className="h-6 w-6 p-0"
                                           >
@@ -540,7 +568,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
             <div className="text-center py-8">
               <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-3" />
               <p className="text-gray-600">No vital few steps identified for this process.</p>
-              <p className="text-sm text-gray-500 mt-1">Add VSM steps with cycle times to enable Pareto analysis.</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Add VSM steps with cycle times to enable Pareto analysis.
+              </p>
             </div>
           )}
 
@@ -568,7 +598,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                       <label className="text-sm font-medium mb-2 block">Category</label>
                       <Select
                         value={causeForm.category}
-                        onValueChange={(value: CategoryType) => setCauseForm({ ...causeForm, category: value })}
+                        onValueChange={(value: CategoryType) =>
+                          setCauseForm({ ...causeForm, category: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -588,7 +620,9 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                       <Textarea
                         placeholder={`Describe the potential root cause for "${currentFishboneData.step.stepName}"...`}
                         value={causeForm.causeDescription}
-                        onChange={(e) => setCauseForm({ ...causeForm, causeDescription: e.target.value })}
+                        onChange={e =>
+                          setCauseForm({ ...causeForm, causeDescription: e.target.value })
+                        }
                         className="min-h-[80px]"
                       />
                     </div>
@@ -600,7 +634,7 @@ export function FishboneSectionEnhanced({ assignmentId, processes, canEdit, user
                           setIsAddingCause(false)
                           setCauseForm({
                             category: 'PEOPLE',
-                            causeDescription: ''
+                            causeDescription: '',
                           })
                         }}
                         disabled={loading}

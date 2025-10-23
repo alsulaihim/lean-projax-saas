@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { checkDemoMode } from '@/lib/demo-check'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -22,10 +19,7 @@ export async function PATCH(
 
     // Input validation
     if (!value || !assignmentId) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     const oldEntry = await prisma.sIPOCEntry.findUnique({
@@ -34,26 +28,20 @@ export async function PATCH(
         process: {
           include: {
             assignment: {
-              select: { createdById: true }
-            }
-          }
-        }
-      }
+              select: { createdById: true },
+            },
+          },
+        },
+      },
     })
 
     if (!oldEntry) {
-      return NextResponse.json(
-        { error: 'SIPOC entry not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'SIPOC entry not found' }, { status: 404 })
     }
 
     // Verify nested relations exist
     if (!oldEntry.process?.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -62,10 +50,10 @@ export async function PATCH(
     }
 
     // Update SIPOC entry and create audit log atomically
-    const entry = await prisma.$transaction(async (tx) => {
+    const entry = await prisma.$transaction(async tx => {
       const updatedEntry = await tx.sIPOCEntry.update({
         where: { id },
-        data: { value }
+        data: { value },
       })
 
       await tx.auditLog.create({
@@ -77,9 +65,9 @@ export async function PATCH(
           entityId: updatedEntry.id,
           changeDetails: {
             before: { value: oldEntry.value },
-            after: { value }
-          }
-        }
+            after: { value },
+          },
+        },
       })
 
       return updatedEntry
@@ -88,10 +76,7 @@ export async function PATCH(
     return NextResponse.json(entry)
   } catch (error) {
     console.error('Failed to update SIPOC entry:', error)
-    return NextResponse.json(
-      { error: 'Failed to update SIPOC entry' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update SIPOC entry' }, { status: 500 })
   }
 }
 
@@ -111,10 +96,7 @@ export async function DELETE(
 
     // Input validation
     if (!assignmentId) {
-      return NextResponse.json(
-        { error: 'Missing assignmentId' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing assignmentId' }, { status: 400 })
     }
 
     const entry = await prisma.sIPOCEntry.findUnique({
@@ -123,26 +105,20 @@ export async function DELETE(
         process: {
           include: {
             assignment: {
-              select: { createdById: true }
-            }
-          }
-        }
-      }
+              select: { createdById: true },
+            },
+          },
+        },
+      },
     })
 
     if (!entry) {
-      return NextResponse.json(
-        { error: 'SIPOC entry not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'SIPOC entry not found' }, { status: 404 })
     }
 
     // Verify nested relations exist
     if (!entry.process?.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -151,9 +127,9 @@ export async function DELETE(
     }
 
     // Delete SIPOC entry and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       await tx.sIPOCEntry.delete({
-        where: { id }
+        where: { id },
       })
 
       await tx.auditLog.create({
@@ -165,18 +141,15 @@ export async function DELETE(
           entityId: id,
           changeDetails: {
             column: entry.column,
-            value: entry.value
-          }
-        }
+            value: entry.value,
+          },
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete SIPOC entry:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete SIPOC entry' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete SIPOC entry' }, { status: 500 })
   }
 }

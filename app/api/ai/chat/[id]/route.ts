@@ -37,24 +37,24 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           include: {
             sipocEntries: true,
             vsmSteps: {
-              orderBy: { stepNumber: 'asc' }
+              orderBy: { stepNumber: 'asc' },
             },
             fishboneCategories: {
               include: {
-                causes: true
-              }
+                causes: true,
+              },
             },
-            fmeaEntries: true
+            fmeaEntries: true,
           },
-          orderBy: { order: 'asc' }
+          orderBy: { order: 'asc' },
         },
         vocStatements: {
           include: {
-            ctqRequirements: true
-          }
+            ctqRequirements: true,
+          },
         },
-        recommendations: true
-      }
+        recommendations: true,
+      },
     })
 
     if (!assignment) {
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     // Initialize OpenAI
     const openai = new OpenAI({
-      apiKey: openaiApiKey
+      apiKey: openaiApiKey,
     })
 
     // Prepare context about the assignment
@@ -99,12 +99,19 @@ ${assignment.processes.map(p => `  * ${p.processName}: ${p.sipocEntries.length} 
 - Recommendations: ${assignment.recommendations.length}
 
 Process Metrics:
-${assignment.processes.map(p => {
-  const totalTime = p.vsmSteps.reduce((acc, s) => acc + (s.processTime || 0) + (s.waitingTime || 0), 0)
-  const valueAddedTime = p.vsmSteps.filter(s => s.valueAdded).reduce((acc, s) => acc + (s.processTime || 0), 0)
-  const efficiency = totalTime > 0 ? Math.round((valueAddedTime / totalTime) * 100) : 0
-  return `  * ${p.processName}: ${efficiency}% efficiency, ${p.fmeaEntries.filter(f => f.rpn && f.rpn >= 100).length} high-risk issues`
-}).join('\n')}
+${assignment.processes
+  .map(p => {
+    const totalTime = p.vsmSteps.reduce(
+      (acc, s) => acc + (s.processTime || 0) + (s.waitingTime || 0),
+      0
+    )
+    const valueAddedTime = p.vsmSteps
+      .filter(s => s.valueAdded)
+      .reduce((acc, s) => acc + (s.processTime || 0), 0)
+    const efficiency = totalTime > 0 ? Math.round((valueAddedTime / totalTime) * 100) : 0
+    return `  * ${p.processName}: ${efficiency}% efficiency, ${p.fmeaEntries.filter(f => f.rpn && f.rpn >= 100).length} high-risk issues`
+  })
+  .join('\n')}
 
 You can answer questions about:
 - Customer requirements (VOC/CTQ)
@@ -120,8 +127,8 @@ Be specific, reference the actual data, and provide actionable insights.`
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
         role: 'system',
-        content: assignmentContext
-      }
+        content: assignmentContext,
+      },
     ]
 
     // Add conversation history (limit to last 10 messages to manage token usage)
@@ -130,7 +137,7 @@ Be specific, reference the actual data, and provide actionable insights.`
       recentHistory.forEach((msg: Message) => {
         messages.push({
           role: msg.role,
-          content: msg.content
+          content: msg.content,
         })
       })
     }
@@ -138,7 +145,7 @@ Be specific, reference the actual data, and provide actionable insights.`
     // Add current user message
     messages.push({
       role: 'user',
-      content: message
+      content: message,
     })
 
     // Call OpenAI API
@@ -146,7 +153,7 @@ Be specific, reference the actual data, and provide actionable insights.`
       model: 'gpt-4o',
       messages,
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 1000,
     })
 
     const responseMessage = completion.choices[0].message.content

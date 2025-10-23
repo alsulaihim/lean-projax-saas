@@ -17,21 +17,18 @@ export async function POST(request: NextRequest) {
 
     // Input validation
     if (!processId || !assignmentId || !column || !value) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Create SIPOC entry and audit log atomically
-    const entry = await prisma.$transaction(async (tx) => {
+    const entry = await prisma.$transaction(async tx => {
       const newEntry = await tx.sIPOCEntry.create({
         data: {
           processId,
           column,
           value,
-          order: order || 0
-        }
+          order: order || 0,
+        },
       })
 
       await tx.auditLog.create({
@@ -44,9 +41,9 @@ export async function POST(request: NextRequest) {
           changeDetails: {
             column,
             value,
-            order: order || 0
-          }
-        }
+            order: order || 0,
+          },
+        },
       })
 
       return newEntry
@@ -55,9 +52,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(entry)
   } catch (error) {
     console.error('Failed to create SIPOC entry:', error)
-    return NextResponse.json(
-      { error: 'Failed to create SIPOC entry' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create SIPOC entry' }, { status: 500 })
   }
 }

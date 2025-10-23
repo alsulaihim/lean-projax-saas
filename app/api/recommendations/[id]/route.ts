@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/auth-check'
 import { checkDemoMode } from '@/lib/demo-check'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -25,7 +22,7 @@ export async function PATCH(
       implementationDifficulty,
       estimatedCostSavings,
       status,
-      assignmentId
+      assignmentId,
     } = await request.json()
 
     // Input validation
@@ -38,9 +35,9 @@ export async function PATCH(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!oldRec) {
@@ -49,10 +46,7 @@ export async function PATCH(
 
     // Verify nested relations exist
     if (!oldRec.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -61,7 +55,7 @@ export async function PATCH(
     }
 
     // Update recommendation and create audit log atomically
-    const recommendation = await prisma.$transaction(async (tx) => {
+    const recommendation = await prisma.$transaction(async tx => {
       const updatedRecommendation = await tx.recommendation.update({
         where: { id },
         data: {
@@ -70,8 +64,8 @@ export async function PATCH(
           expectedImpact,
           implementationDifficulty,
           estimatedCostSavings: estimatedCostSavings || null,
-          status
-        }
+          status,
+        },
       })
 
       await tx.auditLog.create({
@@ -85,15 +79,15 @@ export async function PATCH(
             before: {
               recommendationTitle: oldRec.recommendationTitle,
               implementationDifficulty: oldRec.implementationDifficulty,
-              status: oldRec.status
+              status: oldRec.status,
             },
             after: {
               recommendationTitle,
               implementationDifficulty,
-              status
-            }
-          }
-        }
+              status,
+            },
+          },
+        },
       })
 
       return updatedRecommendation
@@ -102,10 +96,7 @@ export async function PATCH(
     return NextResponse.json(recommendation)
   } catch (error) {
     console.error('Failed to update recommendation:', error)
-    return NextResponse.json(
-      { error: 'Failed to update recommendation' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update recommendation' }, { status: 500 })
   }
 }
 
@@ -133,9 +124,9 @@ export async function DELETE(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!recommendation) {
@@ -144,10 +135,7 @@ export async function DELETE(
 
     // Verify nested relations exist
     if (!recommendation.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -156,9 +144,9 @@ export async function DELETE(
     }
 
     // Delete recommendation and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       await tx.recommendation.delete({
-        where: { id }
+        where: { id },
       })
 
       await tx.auditLog.create({
@@ -169,18 +157,15 @@ export async function DELETE(
           entityType: 'Recommendation',
           entityId: id,
           changeDetails: {
-            recommendationTitle: recommendation.recommendationTitle
-          }
-        }
+            recommendationTitle: recommendation.recommendationTitle,
+          },
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete recommendation:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete recommendation' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete recommendation' }, { status: 500 })
   }
 }

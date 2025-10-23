@@ -30,8 +30,8 @@ async function main() {
       email: 'analyst@example.com',
       name: 'John Analyst',
       role: 'BPI_TEAM',
-      passwordHash: password
-    }
+      passwordHash: password,
+    },
   })
 
   const teamLead = await prisma.user.create({
@@ -39,8 +39,8 @@ async function main() {
       email: 'lead@example.com',
       name: 'Sarah Lead',
       role: 'TEAM_LEAD',
-      passwordHash: password
-    }
+      passwordHash: password,
+    },
   })
 
   const executive = await prisma.user.create({
@@ -48,8 +48,8 @@ async function main() {
       email: 'exec@example.com',
       name: 'Mike Executive',
       role: 'EXECUTIVE',
-      passwordHash: password
-    }
+      passwordHash: password,
+    },
   })
 
   const processOwner = await prisma.user.create({
@@ -57,8 +57,8 @@ async function main() {
       email: 'owner@example.com',
       name: 'Lisa Owner',
       role: 'PROCESS_OWNER',
-      passwordHash: password
-    }
+      passwordHash: password,
+    },
   })
 
   console.log('👤 Created users:', { bpiUser, teamLead, executive, processOwner })
@@ -76,13 +76,13 @@ async function main() {
         create: [
           {
             customerSegment: 'Online Shoppers',
-            voiceStatement: 'Orders take too long to arrive and sometimes contain wrong items'
+            voiceStatement: 'Orders take too long to arrive and sometimes contain wrong items',
           },
           {
             customerSegment: 'B2B Clients',
-            voiceStatement: 'Need better visibility into order status and tracking'
-          }
-        ]
+            voiceStatement: 'Need better visibility into order status and tracking',
+          },
+        ],
       },
 
       // Add CTQ requirements
@@ -91,16 +91,16 @@ async function main() {
           {
             ctqDescription: 'Order cycle time',
             measurementCriteria: 'Time from order placement to delivery',
-            targetValue: '< 3 days'
+            targetValue: '< 3 days',
           },
           {
             ctqDescription: 'Order accuracy',
             measurementCriteria: 'Percentage of orders with correct items',
-            targetValue: '> 99.5%'
-          }
-        ]
-      }
-    }
+            targetValue: '> 99.5%',
+          },
+        ],
+      },
+    },
   })
 
   // Create a process for the assignment
@@ -114,8 +114,8 @@ async function main() {
       upperSpecLimit: 72,
       targetValue: 48,
       sampleMean: 52,
-      sampleStdDev: 8
-    }
+      sampleStdDev: 8,
+    },
   })
 
   // Add SIPOC entries using batch insert for better performance
@@ -130,14 +130,14 @@ async function main() {
     { column: 'OUTPUT' as const, value: 'Shipped Package', order: 1 },
     { column: 'OUTPUT' as const, value: 'Tracking Number', order: 2 },
     { column: 'CUSTOMER' as const, value: 'End Customers', order: 1 },
-    { column: 'CUSTOMER' as const, value: 'Customer Service', order: 2 }
+    { column: 'CUSTOMER' as const, value: 'Customer Service', order: 2 },
   ]
 
   await prisma.sIPOCEntry.createMany({
     data: sipocData.map(entry => ({
       processId: process.id,
-      ...entry
-    }))
+      ...entry,
+    })),
   })
 
   // Add VSM steps with new schema
@@ -150,7 +150,7 @@ async function main() {
       valueMeasure: 'NON_VALUE_ADDED' as const,
       stakeholder: 'Customer Service',
       wasteType: null,
-      remarks: 'Initial order entry'
+      remarks: 'Initial order entry',
     },
     {
       stepNumber: 2,
@@ -160,7 +160,7 @@ async function main() {
       valueMeasure: 'ESSENTIAL_NON_VALUE' as const,
       stakeholder: 'IT Systems',
       wasteType: 'WAITING' as const,
-      remarks: 'System verification'
+      remarks: 'System verification',
     },
     {
       stepNumber: 3,
@@ -170,7 +170,7 @@ async function main() {
       valueMeasure: 'VALUE_ADDED' as const,
       stakeholder: 'Warehouse Staff',
       wasteType: 'WAITING' as const,
-      remarks: 'Core value add'
+      remarks: 'Core value add',
     },
     {
       stepNumber: 4,
@@ -180,7 +180,7 @@ async function main() {
       valueMeasure: 'VALUE_ADDED' as const,
       stakeholder: 'QA Team',
       wasteType: 'WAITING' as const,
-      remarks: 'Essential quality control'
+      remarks: 'Essential quality control',
     },
     {
       stepNumber: 5,
@@ -190,7 +190,7 @@ async function main() {
       valueMeasure: 'VALUE_ADDED' as const,
       stakeholder: 'Packing Team',
       wasteType: null,
-      remarks: 'Final packaging'
+      remarks: 'Final packaging',
     },
     {
       stepNumber: 6,
@@ -200,7 +200,7 @@ async function main() {
       valueMeasure: 'NON_VALUE_ADDED' as const,
       stakeholder: 'IT Systems',
       wasteType: 'OVER_PROCESSING' as const,
-      remarks: 'Could be automated'
+      remarks: 'Could be automated',
     },
     {
       stepNumber: 7,
@@ -210,15 +210,15 @@ async function main() {
       valueMeasure: 'NON_VALUE_ADDED' as const,
       stakeholder: 'Shipping Carrier',
       wasteType: 'WAITING' as const,
-      remarks: 'Carrier pickup wait'
-    }
+      remarks: 'Carrier pickup wait',
+    },
   ]
 
   await prisma.vSMStep.createMany({
     data: vsmSteps.map(step => ({
       processId: process.id,
-      ...step
-    }))
+      ...step,
+    })),
   })
 
   // Create Fishbone categories and causes using batch operations
@@ -231,8 +231,8 @@ async function main() {
       data: {
         processId: process.id,
         category: categories[i] as any,
-        order: i + 1
-      }
+        order: i + 1,
+      },
     })
     createdCategories[categories[i]] = category.id
   }
@@ -242,22 +242,22 @@ async function main() {
     {
       categoryId: createdCategories['PEOPLE'],
       causeDescription: 'Insufficient training on new system',
-      order: 1
+      order: 1,
     },
     {
       categoryId: createdCategories['PEOPLE'],
       causeDescription: 'High staff turnover',
-      order: 2
+      order: 2,
     },
     {
       categoryId: createdCategories['PROCESS'],
       causeDescription: 'Manual order entry prone to errors',
-      order: 1
-    }
+      order: 1,
+    },
   ]
 
   await prisma.fishboneCause.createMany({
-    data: causesData
+    data: causesData,
   })
 
   // Add FMEA entries
@@ -273,8 +273,8 @@ async function main() {
       currentControls: 'Random quality checks',
       detection: 3,
       rpn: 144,
-      recommendedActions: 'Implement barcode scanning at pick stage'
-    }
+      recommendedActions: 'Implement barcode scanning at pick stage',
+    },
   })
 
   await prisma.fMEAEntry.create({
@@ -288,8 +288,8 @@ async function main() {
       occurrence: 5,
       currentControls: 'Daily shipping reports',
       detection: 4,
-      rpn: 140
-    }
+      rpn: 140,
+    },
   })
 
   // Add recommendations
@@ -303,8 +303,8 @@ async function main() {
       estimatedCostSavings: '$50,000/year',
       linkedFMEAIds: [],
       linkedFishboneCauseIds: [],
-      status: 'PROPOSED'
-    }
+      status: 'PROPOSED',
+    },
   })
 
   // Create another draft assignment
@@ -313,8 +313,8 @@ async function main() {
       title: 'Shipping Process Improvement',
       objective: 'Optimize shipping routes and reduce costs by 20%',
       status: 'DRAFT',
-      createdById: bpiUser.id
-    }
+      createdById: bpiUser.id,
+    },
   })
 
   console.log('📊 Created assignments:', { draftAssignment, secondDraftAssignment })
@@ -322,7 +322,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Seed failed:', e)
     process.exit(1)
   })

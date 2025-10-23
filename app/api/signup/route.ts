@@ -8,15 +8,15 @@ import { sanitizeLog } from '@/lib/api-error-handler'
 
 /**
  * User Signup API Route
- * 
+ *
  * Purpose: Handle new user registration
- * 
+ *
  * Request Body:
  * - email: string (required, unique)
  * - name: string (required)
  * - password: string (required, min 8 chars)
  * - companyName: string (optional)
- * 
+ *
  * Process:
  * 1. Validate input data
  * 2. Check if email already exists
@@ -27,12 +27,12 @@ import { sanitizeLog } from '@/lib/api-error-handler'
  *    - Status: TRIAL
  *    - Trial: 14 days from now
  * 5. Return success or error
- * 
+ *
  * Security:
  * - Password hashed with bcrypt (10 rounds)
  * - Email uniqueness enforced by database
  * - Input validation on server side
- * 
+ *
  * Error Codes:
  * - 400: Invalid input
  * - 409: Email already exists
@@ -50,15 +50,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    
+
     // Validate input with Zod schema (type-safe validation)
     const validation = signupSchema.safeParse(body)
-    
+
     if (!validation.success) {
       return NextResponse.json(
-        { 
+        {
           error: 'Invalid input data',
-          details: formatZodError(validation.error)
+          details: formatZodError(validation.error),
         },
         { status: 400 }
       )
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     // Check if user already exists (email already lowercased and trimmed by Zod)
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     })
 
     if (existingUser) {
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         trialEndsAt,
         emailVerified: false, // Must verify email before login
         verificationToken,
-        verificationExpiry
+        verificationExpiry,
       },
       select: {
         id: true,
@@ -114,22 +114,25 @@ export async function POST(request: NextRequest) {
         subscriptionStatus: true,
         trialEndsAt: true,
         createdAt: true,
-        emailVerified: true
-      }
+        emailVerified: true,
+      },
     })
 
     // Log user creation without exposing PII
-    sanitizeLog({
-      id: user.id,
-      email: user.email,
-      tier: user.subscriptionTier,
-      trialEnds: user.trialEndsAt,
-      emailVerified: user.emailVerified
-    }, 'New user created')
+    sanitizeLog(
+      {
+        id: user.id,
+        email: user.email,
+        tier: user.subscriptionTier,
+        trialEnds: user.trialEndsAt,
+        emailVerified: user.emailVerified,
+      },
+      'New user created'
+    )
 
     // Send verification email
     const emailSent = await sendVerificationEmail(user.email, user.name, verificationToken)
-    
+
     if (!emailSent) {
       console.warn('⚠️  Failed to send verification email, but user was created')
     }
@@ -140,14 +143,14 @@ export async function POST(request: NextRequest) {
         user: {
           id: user.id,
           email: user.email,
-          name: user.name
-        }
+          name: user.name,
+        },
       },
       { status: 201 }
     )
   } catch (error) {
     console.error('Signup error:', error)
-    
+
     // Handle Prisma unique constraint violation (shouldn't happen due to check above)
     if (error instanceof Error && error.message.includes('Unique constraint')) {
       return NextResponse.json(
@@ -162,4 +165,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

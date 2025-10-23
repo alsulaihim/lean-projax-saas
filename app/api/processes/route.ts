@@ -9,9 +9,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-  // Prevent demo users from modifying data
-  const demoCheck = checkDemoMode(user)
-  if (demoCheck) return demoCheck
+    // Prevent demo users from modifying data
+    const demoCheck = checkDemoMode(user)
+    if (demoCheck) return demoCheck
 
     const body = await request.json()
     const { assignmentId, processName, processOwner, order } = body
@@ -25,14 +25,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the new process and audit log atomically
-    const process = await prisma.$transaction(async (tx) => {
+    const process = await prisma.$transaction(async tx => {
       const newProcess = await tx.process.create({
         data: {
           assignmentId,
           processName,
           processOwner: processOwner || null,
           order: order || 1,
-        }
+        },
       })
 
       await tx.auditLog.create({
@@ -41,8 +41,8 @@ export async function POST(request: NextRequest) {
           userId: user.id, // Use authenticated user's ID
           action: 'CREATED',
           entityType: 'Process',
-          entityId: newProcess.id
-        }
+          entityId: newProcess.id,
+        },
       })
 
       return newProcess
@@ -51,9 +51,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(process, { status: 201 })
   } catch (error) {
     console.error('Error creating process:', error)
-    return NextResponse.json(
-      { error: 'Failed to create process' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create process' }, { status: 500 })
   }
 }

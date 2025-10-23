@@ -26,52 +26,57 @@ This document defines the complete user experience and interface design for the 
 
 ```css
 /* Primary Colors */
---background: #FFFFFF;      /* White - Main background */
---foreground: #000000;      /* Black - Primary text */
+--background: #ffffff; /* White - Main background */
+--foreground: #000000; /* Black - Primary text */
 
 /* Grayscale */
---gray-50: #FAFAFA;        /* Subtle backgrounds */
---gray-100: #F5F5F5;       /* Table stripes, hover states */
---gray-200: #E5E5E5;       /* Borders */
---gray-300: #D4D4D4;       /* Disabled borders */
---gray-400: #A3A3A3;       /* Placeholder text */
---gray-500: #737373;       /* Secondary text */
---gray-600: #525252;       /* Icons */
---gray-700: #404040;       /* Emphasized text */
---gray-800: #262626;       /* Headers */
---gray-900: #171717;       /* Maximum contrast */
+--gray-50: #fafafa; /* Subtle backgrounds */
+--gray-100: #f5f5f5; /* Table stripes, hover states */
+--gray-200: #e5e5e5; /* Borders */
+--gray-300: #d4d4d4; /* Disabled borders */
+--gray-400: #a3a3a3; /* Placeholder text */
+--gray-500: #737373; /* Secondary text */
+--gray-600: #525252; /* Icons */
+--gray-700: #404040; /* Emphasized text */
+--gray-800: #262626; /* Headers */
+--gray-900: #171717; /* Maximum contrast */
 
 /* Semantic Colors (minimal use) */
---success: #000000;        /* Black checkmark icon */
---warning: #737373;        /* Gray warning icon */
---error: #000000;          /* Black error icon with text */
---info: #525252;           /* Gray info icon */
+--success: #000000; /* Black checkmark icon */
+--warning: #737373; /* Gray warning icon */
+--error: #000000; /* Black error icon with text */
+--info: #525252; /* Gray info icon */
 ```
 
 ### Typography
 
 ```css
 /* Font Stack */
-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+font-family:
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  sans-serif;
 
 /* Type Scale */
---text-xs: 0.75rem;     /* 12px - Captions, labels */
---text-sm: 0.875rem;    /* 14px - Secondary text */
---text-base: 1rem;      /* 16px - Body text */
---text-lg: 1.125rem;    /* 18px - Emphasized body */
---text-xl: 1.25rem;     /* 20px - Section headers */
---text-2xl: 1.5rem;     /* 24px - Page titles */
---text-3xl: 1.875rem;   /* 30px - Dashboard headers */
+--text-xs: 0.75rem; /* 12px - Captions, labels */
+--text-sm: 0.875rem; /* 14px - Secondary text */
+--text-base: 1rem; /* 16px - Body text */
+--text-lg: 1.125rem; /* 18px - Emphasized body */
+--text-xl: 1.25rem; /* 20px - Section headers */
+--text-2xl: 1.5rem; /* 24px - Page titles */
+--text-3xl: 1.875rem; /* 30px - Dashboard headers */
 
 /* Font Weights */
---font-normal: 400;     /* Body text */
---font-medium: 500;     /* Labels, buttons */
---font-semibold: 600;   /* Headers */
---font-bold: 700;       /* Page titles */
+--font-normal: 400; /* Body text */
+--font-medium: 500; /* Labels, buttons */
+--font-semibold: 600; /* Headers */
+--font-bold: 700; /* Page titles */
 
 /* Line Heights */
---leading-tight: 1.25;   /* Headers */
---leading-normal: 1.5;   /* Body text */
+--leading-tight: 1.25; /* Headers */
+--leading-normal: 1.5; /* Body text */
 --leading-relaxed: 1.75; /* Long-form content */
 ```
 
@@ -80,16 +85,16 @@ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 ```css
 /* 8px base unit */
 --space-0: 0;
---space-1: 0.25rem;  /* 4px */
---space-2: 0.5rem;   /* 8px */
---space-3: 0.75rem;  /* 12px */
---space-4: 1rem;     /* 16px */
---space-5: 1.25rem;  /* 20px */
---space-6: 1.5rem;   /* 24px */
---space-8: 2rem;     /* 32px */
---space-10: 2.5rem;  /* 40px */
---space-12: 3rem;    /* 48px */
---space-16: 4rem;    /* 64px */
+--space-1: 0.25rem; /* 4px */
+--space-2: 0.5rem; /* 8px */
+--space-3: 0.75rem; /* 12px */
+--space-4: 1rem; /* 16px */
+--space-5: 1.25rem; /* 20px */
+--space-6: 1.5rem; /* 24px */
+--space-8: 2rem; /* 32px */
+--space-10: 2.5rem; /* 40px */
+--space-12: 3rem; /* 48px */
+--space-16: 4rem; /* 64px */
 ```
 
 ### Component Styling
@@ -152,6 +157,7 @@ journey
 ```
 
 **Key Touchpoints:**
+
 1. **First Time Experience**: Guided tooltips on first assignment creation
 2. **Progressive Disclosure**: Tabs unlock as sections are completed
 3. **Auto-save Indicators**: Constant feedback on save status
@@ -288,6 +294,7 @@ Root
 ```
 
 **Components:**
+
 - Card container: White background, thin black border
 - Input fields: White background, gray border, black text
 - Button: Black background, white text
@@ -399,6 +406,7 @@ Root
 ```
 
 **Visual Mode (using react-flow):**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ SIPOC Process Flow                                         │
@@ -487,6 +495,7 @@ Root
 ```
 
 **Visual Mode (react-flow):**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     High Order Cycle Time                  │
@@ -742,6 +751,7 @@ xl: 1280px  /* Large desktop */
 ### Desktop Priority (1024px+)
 
 Primary layout with full features:
+
 - Multi-column tables
 - Side-by-side panels
 - Full navigation visible
@@ -750,6 +760,7 @@ Primary layout with full features:
 ### Tablet Adaptation (768px-1023px)
 
 Simplified but functional:
+
 - Single column layout
 - Collapsible navigation
 - Touch-optimized buttons (44px targets)
@@ -758,6 +769,7 @@ Simplified but functional:
 ### Mobile (Future - Phase 2)
 
 Basic read-only access:
+
 - Stack all content vertically
 - Hamburger menu navigation
 - View-only for completed assignments
@@ -770,11 +782,13 @@ Basic read-only access:
 ### WCAG AA Compliance
 
 #### Color Contrast
+
 - Normal text: 7:1 ratio (Black on white = 21:1 ✓)
 - Large text: 4.5:1 ratio (Exceeded ✓)
 - UI components: 3:1 ratio (Black borders ✓)
 
 #### Keyboard Navigation
+
 ```
 Tab order follows visual hierarchy
 Enter/Space activates buttons
@@ -784,24 +798,27 @@ Focus visible with black outline
 ```
 
 #### Screen Reader Support
+
 ```html
 <!-- Semantic HTML -->
 <main role="main">
-<nav role="navigation">
-<button aria-label="Add new VOC statement">
-<table role="table" aria-label="FMEA entries sorted by RPN">
+  <nav role="navigation">
+    <button aria-label="Add new VOC statement">
+      <table role="table" aria-label="FMEA entries sorted by RPN">
+        <!-- Live regions for updates -->
+        <div aria-live="polite" aria-atomic="true">All changes saved</div>
 
-<!-- Live regions for updates -->
-<div aria-live="polite" aria-atomic="true">
-  All changes saved
-</div>
-
-<!-- Form associations -->
-<label for="voc-statement">Voice Statement</label>
-<input id="voc-statement" aria-required="true">
+        <!-- Form associations -->
+        <label for="voc-statement">Voice Statement</label>
+        <input id="voc-statement" aria-required="true" />
+      </table>
+    </button>
+  </nav>
+</main>
 ```
 
 #### Focus Management
+
 - Focus trapped in modals
 - Focus returns to trigger after modal close
 - Skip links to main content
@@ -814,12 +831,14 @@ Focus visible with black outline
 ### Component Development Order
 
 **Phase 1: Foundation**
+
 1. Theme configuration (colors, typography)
 2. Base shadcn/ui components
 3. Layout components (Header, Navigation)
 4. Authentication flow
 
 **Phase 2: Core Workflow**
+
 1. Assignment dashboard
 2. VOC/CTQ forms
 3. SIPOC grid
@@ -827,12 +846,14 @@ Focus visible with black outline
 5. Pareto chart (Recharts)
 
 **Phase 3: Advanced Features**
+
 1. Fishbone builder (react-flow)
 2. FMEA table with calculations
 3. Process capability dashboard
 4. Recommendations with traceability
 
 **Phase 4: Polish**
+
 1. Executive summary
 2. PDF export
 3. Audit log
@@ -902,8 +923,12 @@ transition-timing-function: ease-in-out;
 
 /* Loading states */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* No decorative animations */
@@ -930,5 +955,5 @@ The minimalist approach ensures that analytical content remains the focus, while
 
 ---
 
-*Document prepared by Sally (UX Expert) 🎨*
-*Version 1.0 - 2025-09-30*
+_Document prepared by Sally (UX Expert) 🎨_
+_Version 1.0 - 2025-09-30_

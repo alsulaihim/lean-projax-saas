@@ -32,7 +32,8 @@ export function DemoWelcomeModal() {
         <DialogHeader>
           <DialogTitle className="text-2xl">Welcome to Lean Projax Demo!</DialogTitle>
           <DialogDescription>
-            You&apos;re viewing a completed Six Sigma assignment that showcases all platform features.
+            You&apos;re viewing a completed Six Sigma assignment that showcases all platform
+            features.
           </DialogDescription>
         </DialogHeader>
 

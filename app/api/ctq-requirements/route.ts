@@ -14,15 +14,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { 
-      vocId, 
-      requirement, 
-      unit, 
-      lowerSpec, 
-      targetSpec, 
-      upperSpec,
-      assignmentId 
-    } = body
+    const { vocId, requirement, unit, lowerSpec, targetSpec, upperSpec, assignmentId } = body
 
     // Input validation - assignmentId is required, vocId is optional
     if (!assignmentId) {
@@ -30,7 +22,10 @@ export async function POST(request: NextRequest) {
     }
 
     if (!requirement) {
-      return NextResponse.json({ error: 'Missing required field: requirement (CTQ description)' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Missing required field: requirement (CTQ description)' },
+        { status: 400 }
+      )
     }
 
     // Build measurement criteria from specs
@@ -42,15 +37,15 @@ export async function POST(request: NextRequest) {
     const targetValue = targetSpec ? `${targetSpec} ${unit || ''}`.trim() : null
 
     // Create CTQ requirement and audit log atomically
-    const ctq = await prisma.$transaction(async (tx) => {
+    const ctq = await prisma.$transaction(async tx => {
       const newCtq = await tx.cTQRequirement.create({
         data: {
           vocStatementId: vocId || null, // Optional link to VOC
           assignmentId,
           ctqDescription: requirement,
           measurementCriteria: measurementCriteria || 'Not specified',
-          targetValue
-        }
+          targetValue,
+        },
       })
 
       // Log the action
@@ -65,9 +60,9 @@ export async function POST(request: NextRequest) {
             requirement,
             measurementCriteria,
             targetValue,
-            vocId
-          }
-        }
+            vocId,
+          },
+        },
       })
 
       return newCtq
@@ -76,9 +71,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(ctq)
   } catch (error) {
     console.error('Failed to create CTQ requirement:', error)
-    return NextResponse.json(
-      { error: 'Failed to create CTQ requirement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create CTQ requirement' }, { status: 500 })
   }
 }

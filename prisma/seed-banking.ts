@@ -7,7 +7,7 @@ async function main() {
 
   // Get the analyst user
   const analyst = await prisma.user.findUnique({
-    where: { email: 'analyst@example.com' }
+    where: { email: 'analyst@example.com' },
   })
 
   if (!analyst) {
@@ -18,10 +18,11 @@ async function main() {
   const assignment = await prisma.assignment.create({
     data: {
       title: 'Bank Facility Granting Process Improvement',
-      objective: 'Reduce loan approval cycle time by 40%, improve accuracy to 99%, and enhance customer satisfaction score to 4.5/5',
+      objective:
+        'Reduce loan approval cycle time by 40%, improve accuracy to 99%, and enhance customer satisfaction score to 4.5/5',
       status: 'DRAFT',
       createdById: analyst.id,
-    }
+    },
   })
 
   console.log('✅ Created assignment:', assignment.title)
@@ -32,72 +33,72 @@ async function main() {
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Retail Banking Customers',
-        voiceStatement: 'I need faster loan approval process - currently takes too long'
-      }
+        voiceStatement: 'I need faster loan approval process - currently takes too long',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Business Banking Customers',
-        voiceStatement: 'The documentation requirements are confusing and excessive'
-      }
+        voiceStatement: 'The documentation requirements are confusing and excessive',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'All Customer Segments',
-        voiceStatement: 'I want real-time updates on my application status'
-      }
+        voiceStatement: 'I want real-time updates on my application status',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Price-Sensitive Customers',
-        voiceStatement: 'The interest rates are not competitive compared to other banks'
-      }
+        voiceStatement: 'The interest rates are not competitive compared to other banks',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Business Banking Customers',
-        voiceStatement: 'I need flexible repayment options that match my cash flow'
-      }
+        voiceStatement: 'I need flexible repayment options that match my cash flow',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Digital-First Customers',
-        voiceStatement: 'The online application portal is not user-friendly'
-      }
+        voiceStatement: 'The online application portal is not user-friendly',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Premium Banking Customers',
-        voiceStatement: 'I want a dedicated relationship manager throughout the process'
-      }
+        voiceStatement: 'I want a dedicated relationship manager throughout the process',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'All Customer Segments',
-        voiceStatement: 'The credit decision criteria are not transparent'
-      }
+        voiceStatement: 'The credit decision criteria are not transparent',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Mortgage Customers',
-        voiceStatement: 'I need pre-approval before shopping for property'
-      }
+        voiceStatement: 'I need pre-approval before shopping for property',
+      },
     }),
     prisma.vOCStatement.create({
       data: {
         assignmentId: assignment.id,
         customerSegment: 'Secured Loan Customers',
-        voiceStatement: 'The collateral valuation process delays approval significantly'
-      }
-    })
+        voiceStatement: 'The collateral valuation process delays approval significantly',
+      },
+    }),
   ])
 
   console.log('✅ Created', vocStatements.length, 'VOC statements')
@@ -110,8 +111,8 @@ async function main() {
         vocStatementId: vocStatements[0].id,
         ctqDescription: 'Loan approval decision time',
         measurementCriteria: 'Time from complete application to credit decision',
-        targetValue: 'Maximum 48 hours for standard loans'
-      }
+        targetValue: 'Maximum 48 hours for standard loans',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -119,8 +120,8 @@ async function main() {
         vocStatementId: vocStatements[1].id,
         ctqDescription: 'Document completeness rate',
         measurementCriteria: 'Percentage of applications submitted with all required documents',
-        targetValue: 'Minimum 95% complete on first submission'
-      }
+        targetValue: 'Minimum 95% complete on first submission',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -128,8 +129,8 @@ async function main() {
         vocStatementId: vocStatements[2].id,
         ctqDescription: 'Application status update frequency',
         measurementCriteria: 'Number of automated status updates sent to customer',
-        targetValue: 'Minimum 3 updates per application journey'
-      }
+        targetValue: 'Minimum 3 updates per application journey',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -137,8 +138,8 @@ async function main() {
         vocStatementId: vocStatements[3].id,
         ctqDescription: 'Interest rate competitiveness',
         measurementCriteria: 'Interest rate position vs top 3 competitors',
-        targetValue: 'Within 0.5% of market leader'
-      }
+        targetValue: 'Within 0.5% of market leader',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -146,8 +147,8 @@ async function main() {
         vocStatementId: vocStatements[4].id,
         ctqDescription: 'Repayment flexibility options',
         measurementCriteria: 'Number of repayment schedule options available',
-        targetValue: 'Minimum 5 different repayment structures'
-      }
+        targetValue: 'Minimum 5 different repayment structures',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -155,8 +156,8 @@ async function main() {
         vocStatementId: vocStatements[5].id,
         ctqDescription: 'Online application completion rate',
         measurementCriteria: 'Percentage of started applications that are completed',
-        targetValue: 'Minimum 80% completion rate'
-      }
+        targetValue: 'Minimum 80% completion rate',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -164,8 +165,8 @@ async function main() {
         vocStatementId: vocStatements[6].id,
         ctqDescription: 'Relationship manager assignment',
         measurementCriteria: 'Percentage of premium customers with dedicated RM',
-        targetValue: '100% for facility > $500K'
-      }
+        targetValue: '100% for facility > $500K',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -173,8 +174,8 @@ async function main() {
         vocStatementId: vocStatements[7].id,
         ctqDescription: 'Credit decision transparency score',
         measurementCriteria: 'Customer understanding of decision factors (survey)',
-        targetValue: 'Minimum 4.0/5.0 on transparency survey'
-      }
+        targetValue: 'Minimum 4.0/5.0 on transparency survey',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -182,8 +183,8 @@ async function main() {
         vocStatementId: vocStatements[8].id,
         ctqDescription: 'Pre-approval turnaround time',
         measurementCriteria: 'Time to issue pre-approval certificate',
-        targetValue: 'Maximum 24 hours'
-      }
+        targetValue: 'Maximum 24 hours',
+      },
     }),
     prisma.cTQRequirement.create({
       data: {
@@ -191,9 +192,9 @@ async function main() {
         vocStatementId: vocStatements[9].id,
         ctqDescription: 'Collateral valuation completion time',
         measurementCriteria: 'Days from valuation request to report receipt',
-        targetValue: 'Maximum 3 business days'
-      }
-    })
+        targetValue: 'Maximum 3 business days',
+      },
+    }),
   ])
 
   console.log('✅ Created', ctqRequirements.length, 'CTQ requirements')
@@ -224,10 +225,22 @@ async function main() {
           { column: 'INPUT', order: 4, value: 'Business Plan (for business loans)' },
           { column: 'INPUT', order: 5, value: 'Financial Statements (3 years)' },
           // Process Steps
-          { column: 'PROCESS', order: 1, value: 'Customer accesses application portal or visits branch' },
-          { column: 'PROCESS', order: 2, value: 'Customer fills application form with personal/business details' },
+          {
+            column: 'PROCESS',
+            order: 1,
+            value: 'Customer accesses application portal or visits branch',
+          },
+          {
+            column: 'PROCESS',
+            order: 2,
+            value: 'Customer fills application form with personal/business details',
+          },
           { column: 'PROCESS', order: 3, value: 'Customer uploads required documents' },
-          { column: 'PROCESS', order: 4, value: 'System validates form completeness and document quality' },
+          {
+            column: 'PROCESS',
+            order: 4,
+            value: 'System validates form completeness and document quality',
+          },
           { column: 'PROCESS', order: 5, value: 'Application scanned for fraud indicators' },
           { column: 'PROCESS', order: 6, value: 'Customer receives application reference number' },
           { column: 'PROCESS', order: 7, value: 'Confirmation email sent with next steps' },
@@ -243,9 +256,9 @@ async function main() {
           { column: 'CUSTOMER', order: 1, value: 'Credit Assessment Team' },
           { column: 'CUSTOMER', order: 2, value: 'Document Verification Team' },
           { column: 'CUSTOMER', order: 3, value: 'Customer Service Department' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process1)
 
@@ -270,7 +283,11 @@ async function main() {
           { column: 'INPUT', order: 3, value: 'Financial Statements' },
           { column: 'INPUT', order: 4, value: 'Bank Statements (6 months)' },
           { column: 'PROCESS', order: 1, value: 'Loan officer reviews submitted documents' },
-          { column: 'PROCESS', order: 2, value: 'Identity verification against government database' },
+          {
+            column: 'PROCESS',
+            order: 2,
+            value: 'Identity verification against government database',
+          },
           { column: 'PROCESS', order: 3, value: 'Address verification through utility bills' },
           { column: 'PROCESS', order: 4, value: 'Financial statements authenticity check' },
           { column: 'PROCESS', order: 5, value: 'Employment verification with employer' },
@@ -289,9 +306,9 @@ async function main() {
           { column: 'OUTPUT', order: 3, value: 'AML Clearance' },
           { column: 'CUSTOMER', order: 1, value: 'Credit Assessment Team' },
           { column: 'CUSTOMER', order: 2, value: 'Compliance Department' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process2)
 
@@ -328,16 +345,20 @@ async function main() {
           { column: 'PROCESS', order: 12, value: 'Review existing exposure with bank' },
           { column: 'PROCESS', order: 13, value: 'Stress testing under adverse scenarios' },
           { column: 'PROCESS', order: 14, value: 'Risk-adjusted return calculation' },
-          { column: 'PROCESS', order: 15, value: 'Generate comprehensive credit assessment report' },
+          {
+            column: 'PROCESS',
+            order: 15,
+            value: 'Generate comprehensive credit assessment report',
+          },
           { column: 'OUTPUT', order: 1, value: 'Credit Score' },
           { column: 'OUTPUT', order: 2, value: 'Risk Rating (AAA to D)' },
           { column: 'OUTPUT', order: 3, value: 'Credit Assessment Report' },
           { column: 'OUTPUT', order: 4, value: 'Preliminary Approval/Rejection' },
           { column: 'CUSTOMER', order: 1, value: 'Credit Committee' },
           { column: 'CUSTOMER', order: 2, value: 'Loan Structuring Team' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process3)
 
@@ -379,9 +400,9 @@ async function main() {
           { column: 'OUTPUT', order: 3, value: 'LTV Ratio Calculation' },
           { column: 'CUSTOMER', order: 1, value: 'Credit Committee' },
           { column: 'CUSTOMER', order: 2, value: 'Loan Documentation Team' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process4)
 
@@ -425,9 +446,9 @@ async function main() {
           { column: 'OUTPUT', order: 4, value: 'Loan Offer Letter' },
           { column: 'CUSTOMER', order: 1, value: 'Customer' },
           { column: 'CUSTOMER', order: 2, value: 'Credit Committee' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process5)
 
@@ -471,9 +492,9 @@ async function main() {
           { column: 'OUTPUT', order: 4, value: 'Committee Minutes' },
           { column: 'CUSTOMER', order: 1, value: 'Loan Documentation Team' },
           { column: 'CUSTOMER', order: 2, value: 'Customer' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process6)
 
@@ -519,9 +540,9 @@ async function main() {
           { column: 'OUTPUT', order: 4, value: 'Insurance Certificates' },
           { column: 'CUSTOMER', order: 1, value: 'Disbursement Team' },
           { column: 'CUSTOMER', order: 2, value: 'Legal Records Department' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process7)
 
@@ -565,9 +586,9 @@ async function main() {
           { column: 'CUSTOMER', order: 1, value: 'Customer' },
           { column: 'CUSTOMER', order: 2, value: 'Relationship Manager' },
           { column: 'CUSTOMER', order: 3, value: 'Accounting Department' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process8)
 
@@ -611,9 +632,9 @@ async function main() {
           { column: 'OUTPUT', order: 4, value: 'Portfolio Quality Metrics' },
           { column: 'CUSTOMER', order: 1, value: 'Credit Risk Department' },
           { column: 'CUSTOMER', order: 2, value: 'Senior Management' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   })
   processes.push(process9)
 
@@ -634,23 +655,24 @@ async function main() {
         currentControls: 'Monthly bureau refresh, manual override by senior credit officer',
         detection: 4,
         rpn: 252,
-        recommendedActions: 'Implement real-time credit bureau API integration'
-      }
+        recommendedActions: 'Implement real-time credit bureau API integration',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
         assignmentId: assignment.id,
         processId: process2.id,
         failureMode: 'Fraudulent document submission not detected',
-        effectsOfFailure: 'Loan granted to unqualified customer, high risk of default and legal issues',
+        effectsOfFailure:
+          'Loan granted to unqualified customer, high risk of default and legal issues',
         severity: 10,
         potentialCauses: 'Manual verification process, lack of AI-based fraud detection tools',
         occurrence: 5,
         currentControls: 'Two-level manual review, random sample audit',
         detection: 5,
         rpn: 250,
-        recommendedActions: 'Deploy AI-powered document authentication system'
-      }
+        recommendedActions: 'Deploy AI-powered document authentication system',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -664,8 +686,8 @@ async function main() {
         currentControls: 'Approved valuer panel, random second valuation on high-value properties',
         detection: 5,
         rpn: 240,
-        recommendedActions: 'Implement automated valuation models (AVM)'
-      }
+        recommendedActions: 'Implement automated valuation models (AVM)',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -679,8 +701,8 @@ async function main() {
         currentControls: 'FAQ section, call center support',
         detection: 4,
         rpn: 192,
-        recommendedActions: 'Redesign application with step-by-step wizard'
-      }
+        recommendedActions: 'Redesign application with step-by-step wizard',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -694,8 +716,8 @@ async function main() {
         currentControls: 'Manual email reminders',
         detection: 4,
         rpn: 192,
-        recommendedActions: 'Automated covenant tracking system with customer portal'
-      }
+        recommendedActions: 'Automated covenant tracking system with customer portal',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -709,23 +731,24 @@ async function main() {
         currentControls: 'Legal review, template version control',
         detection: 5,
         rpn: 180,
-        recommendedActions: 'Implement automated document generation system'
-      }
+        recommendedActions: 'Implement automated document generation system',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
         assignmentId: assignment.id,
         processId: process6.id,
         failureMode: 'Inconsistent credit decisions across different committees',
-        effectsOfFailure: 'Reputational risk, potential discrimination issues, portfolio quality variance',
+        effectsOfFailure:
+          'Reputational risk, potential discrimination issues, portfolio quality variance',
         severity: 7,
         potentialCauses: 'Lack of standardized decision framework, subjective judgments',
         occurrence: 5,
         currentControls: 'Written credit policy, decision documentation',
         detection: 5,
         rpn: 175,
-        recommendedActions: 'Develop credit decision scorecards'
-      }
+        recommendedActions: 'Develop credit decision scorecards',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -739,8 +762,8 @@ async function main() {
         currentControls: 'Industry reports, external research',
         detection: 5,
         rpn: 160,
-        recommendedActions: 'Establish sector specialist team'
-      }
+        recommendedActions: 'Establish sector specialist team',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -754,8 +777,8 @@ async function main() {
         currentControls: 'Senior analyst review, ratio calculation templates',
         detection: 4,
         rpn: 140,
-        recommendedActions: 'Implement automated financial spreading tool'
-      }
+        recommendedActions: 'Implement automated financial spreading tool',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -769,8 +792,8 @@ async function main() {
         currentControls: 'Weekly pricing committee',
         detection: 4,
         rpn: 140,
-        recommendedActions: 'Real-time competitive intelligence dashboard'
-      }
+        recommendedActions: 'Real-time competitive intelligence dashboard',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -784,8 +807,8 @@ async function main() {
         currentControls: 'Checklist review, dual authorization',
         detection: 4,
         rpn: 128,
-        recommendedActions: 'System-enforced checklist with hard stops'
-      }
+        recommendedActions: 'System-enforced checklist with hard stops',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -799,8 +822,8 @@ async function main() {
         currentControls: 'Cash flow projection review',
         detection: 3,
         rpn: 126,
-        recommendedActions: 'Develop cash flow modeling tool'
-      }
+        recommendedActions: 'Develop cash flow modeling tool',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -814,8 +837,8 @@ async function main() {
         currentControls: 'Monthly review meetings',
         detection: 3,
         rpn: 120,
-        recommendedActions: 'Implement predictive analytics for early warning'
-      }
+        recommendedActions: 'Implement predictive analytics for early warning',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -829,8 +852,8 @@ async function main() {
         currentControls: 'Expanded valuer panel',
         detection: 3,
         rpn: 90,
-        recommendedActions: 'Implement AVM for standard properties'
-      }
+        recommendedActions: 'Implement AVM for standard properties',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -844,8 +867,8 @@ async function main() {
         currentControls: 'Flexible appointment scheduling',
         detection: 2,
         rpn: 84,
-        recommendedActions: 'Implement e-signature capability'
-      }
+        recommendedActions: 'Implement e-signature capability',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -859,8 +882,8 @@ async function main() {
         currentControls: 'Monthly screening tool update',
         detection: 4,
         rpn: 80,
-        recommendedActions: 'Real-time sanctions list integration'
-      }
+        recommendedActions: 'Real-time sanctions list integration',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -874,8 +897,8 @@ async function main() {
         currentControls: 'Dual verification, maker-checker',
         detection: 3,
         rpn: 63,
-        recommendedActions: 'Straight-through processing automation'
-      }
+        recommendedActions: 'Straight-through processing automation',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -889,8 +912,8 @@ async function main() {
         currentControls: 'Scheduled meeting calendar',
         detection: 2,
         rpn: 60,
-        recommendedActions: 'Implement digital approval workflow'
-      }
+        recommendedActions: 'Implement digital approval workflow',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -904,8 +927,8 @@ async function main() {
         currentControls: 'SLA monitoring',
         detection: 2,
         rpn: 60,
-        recommendedActions: 'Multi-vendor KYC strategy'
-      }
+        recommendedActions: 'Multi-vendor KYC strategy',
+      },
     }),
     prisma.fMEAEntry.create({
       data: {
@@ -919,9 +942,9 @@ async function main() {
         currentControls: 'Load balancing',
         detection: 2,
         rpn: 48,
-        recommendedActions: 'Cloud infrastructure scaling'
-      }
-    })
+        recommendedActions: 'Cloud infrastructure scaling',
+      },
+    }),
   ])
 
   console.log('✅ Created', fmeaEntries.length, 'FMEA entries')
@@ -932,40 +955,43 @@ async function main() {
       data: {
         assignmentId: assignment.id,
         recommendationTitle: 'Implement End-to-End Loan Origination System (LOS)',
-        description: 'Deploy a modern, cloud-based loan origination system with workflow automation, document management, and real-time status tracking.',
+        description:
+          'Deploy a modern, cloud-based loan origination system with workflow automation, document management, and real-time status tracking.',
         expectedImpact: 'Reduce approval cycle time by 50%, improve accuracy by 30%',
         implementationDifficulty: 'MEDIUM',
         estimatedCostSavings: '$8,000,000 annually',
         linkedFMEAIds: [fmeaEntries[3].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
         assignmentId: assignment.id,
         recommendationTitle: 'Deploy AI-Powered Credit Risk Assessment',
-        description: 'Implement machine learning models for credit scoring with alternative data sources and explainable AI decisions.',
+        description:
+          'Implement machine learning models for credit scoring with alternative data sources and explainable AI decisions.',
         expectedImpact: 'Improve default prediction accuracy by 25%, reduce credit losses by 15%',
         implementationDifficulty: 'HIGH',
         estimatedCostSavings: '$12,000,000 annually',
         linkedFMEAIds: [fmeaEntries[0].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
         assignmentId: assignment.id,
         recommendationTitle: 'Establish Digital Customer Portal',
-        description: 'Create customer portal for real-time tracking, document upload, and e-signing.',
+        description:
+          'Create customer portal for real-time tracking, document upload, and e-signing.',
         expectedImpact: 'Reduce customer inquiries by 60%, improve CSAT to 4.5/5',
         implementationDifficulty: 'MEDIUM',
         estimatedCostSavings: '$4,500,000 annually',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'IMPLEMENTED'
-      }
+        status: 'IMPLEMENTED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -977,21 +1003,22 @@ async function main() {
         estimatedCostSavings: '$3,200,000 annually',
         linkedFMEAIds: [fmeaEntries[0].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
         assignmentId: assignment.id,
         recommendationTitle: 'Deploy Automated Valuation Model (AVM)',
-        description: 'Implement AVM for standard residential properties to provide instant valuations.',
+        description:
+          'Implement AVM for standard residential properties to provide instant valuations.',
         expectedImpact: 'Reduce valuation time from 72 hours to 2 hours for 70% of cases',
         implementationDifficulty: 'MEDIUM',
         estimatedCostSavings: '$2,800,000 annually',
         linkedFMEAIds: [fmeaEntries[2].id, fmeaEntries[13].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1003,8 +1030,8 @@ async function main() {
         estimatedCostSavings: '$5,500,000 annually',
         linkedFMEAIds: [fmeaEntries[1].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1016,8 +1043,8 @@ async function main() {
         estimatedCostSavings: '$2,200,000 annually',
         linkedFMEAIds: [fmeaEntries[14].id],
         linkedFishboneCauseIds: [],
-        status: 'IMPLEMENTED'
-      }
+        status: 'IMPLEMENTED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1029,21 +1056,22 @@ async function main() {
         estimatedCostSavings: '$1,800,000 annually',
         linkedFMEAIds: [fmeaEntries[8].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
         assignmentId: assignment.id,
         recommendationTitle: 'Dynamic Pricing Engine',
-        description: 'Real-time pricing engine considering market rates, risk, and competitor pricing.',
+        description:
+          'Real-time pricing engine considering market rates, risk, and competitor pricing.',
         expectedImpact: 'Improve win rate by 15%, increase margin by 0.3%',
         implementationDifficulty: 'MEDIUM',
         estimatedCostSavings: '$6,500,000 annually',
         linkedFMEAIds: [fmeaEntries[9].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1055,8 +1083,8 @@ async function main() {
         estimatedCostSavings: '$15,000,000 annually',
         linkedFMEAIds: [fmeaEntries[12].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1068,8 +1096,8 @@ async function main() {
         estimatedCostSavings: '$1,500,000 annually',
         linkedFMEAIds: [fmeaEntries[6].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1081,8 +1109,8 @@ async function main() {
         estimatedCostSavings: '$3,500,000 annually',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'IMPLEMENTED'
-      }
+        status: 'IMPLEMENTED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1094,8 +1122,8 @@ async function main() {
         estimatedCostSavings: '$3,200,000 annually',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1107,8 +1135,8 @@ async function main() {
         estimatedCostSavings: '$1,200,000 annually',
         linkedFMEAIds: [fmeaEntries[4].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1120,8 +1148,8 @@ async function main() {
         estimatedCostSavings: '$2,500,000 annually',
         linkedFMEAIds: [fmeaEntries[7].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1133,8 +1161,8 @@ async function main() {
         estimatedCostSavings: 'Risk mitigation',
         linkedFMEAIds: [fmeaEntries[15].id],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1146,21 +1174,22 @@ async function main() {
         estimatedCostSavings: '$1,500,000 annually',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
         assignmentId: assignment.id,
         recommendationTitle: 'Pre-Approval Program',
-        description: 'Fast-track pre-approval for qualified customers with instant in-principle approval.',
+        description:
+          'Fast-track pre-approval for qualified customers with instant in-principle approval.',
         expectedImpact: 'Increase conversion rate by 25%, competitive advantage',
         implementationDifficulty: 'MEDIUM',
         estimatedCostSavings: '$4,000,000 annually',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
+        status: 'PROPOSED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1172,8 +1201,8 @@ async function main() {
         estimatedCostSavings: 'Ongoing improvement',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'IMPLEMENTED'
-      }
+        status: 'IMPLEMENTED',
+      },
     }),
     prisma.recommendation.create({
       data: {
@@ -1185,9 +1214,9 @@ async function main() {
         estimatedCostSavings: '$1,800,000 annually',
         linkedFMEAIds: [],
         linkedFishboneCauseIds: [],
-        status: 'PROPOSED'
-      }
-    })
+        status: 'PROPOSED',
+      },
+    }),
   ])
 
   console.log('✅ Created', recommendations.length, 'recommendations')
@@ -1198,58 +1227,345 @@ async function main() {
   // VSM for Process 1: Application Submission
   await prisma.vSMStep.createMany({
     data: [
-      { processId: process1.id, stepNumber: 1, stepName: 'Customer accesses portal/branch', processTime: 5, waitingTime: 0, valueMeasure: 'NON_VALUE_ADDED', stakeholder: 'Customer' },
-      { processId: process1.id, stepNumber: 2, stepName: 'Fill application form', processTime: 30, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Customer' },
-      { processId: process1.id, stepNumber: 3, stepName: 'Upload documents', processTime: 20, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Customer' },
-      { processId: process1.id, stepNumber: 4, stepName: 'Wait for validation', processTime: 0, waitingTime: 120, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'System' },
-      { processId: process1.id, stepNumber: 5, stepName: 'System validation', processTime: 5, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'System' },
-      { processId: process1.id, stepNumber: 6, stepName: 'Fraud screening', processTime: 10, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'System' },
-      { processId: process1.id, stepNumber: 7, stepName: 'Generate reference number', processTime: 2, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'System' },
-      { processId: process1.id, stepNumber: 8, stepName: 'Send confirmation email', processTime: 1, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'System' },
-      { processId: process1.id, stepNumber: 9, stepName: 'Route to loan officer', processTime: 3, waitingTime: 0, valueMeasure: 'NON_VALUE_ADDED', stakeholder: 'System' },
-      { processId: process1.id, stepNumber: 10, stepName: 'Wait in queue', processTime: 0, waitingTime: 240, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'Loan Officer' }
-    ]
+      {
+        processId: process1.id,
+        stepNumber: 1,
+        stepName: 'Customer accesses portal/branch',
+        processTime: 5,
+        waitingTime: 0,
+        valueMeasure: 'NON_VALUE_ADDED',
+        stakeholder: 'Customer',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 2,
+        stepName: 'Fill application form',
+        processTime: 30,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Customer',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 3,
+        stepName: 'Upload documents',
+        processTime: 20,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Customer',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 4,
+        stepName: 'Wait for validation',
+        processTime: 0,
+        waitingTime: 120,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'System',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 5,
+        stepName: 'System validation',
+        processTime: 5,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'System',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 6,
+        stepName: 'Fraud screening',
+        processTime: 10,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'System',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 7,
+        stepName: 'Generate reference number',
+        processTime: 2,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'System',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 8,
+        stepName: 'Send confirmation email',
+        processTime: 1,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'System',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 9,
+        stepName: 'Route to loan officer',
+        processTime: 3,
+        waitingTime: 0,
+        valueMeasure: 'NON_VALUE_ADDED',
+        stakeholder: 'System',
+      },
+      {
+        processId: process1.id,
+        stepNumber: 10,
+        stepName: 'Wait in queue',
+        processTime: 0,
+        waitingTime: 240,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'Loan Officer',
+      },
+    ],
   })
 
   // VSM for Process 3: Credit Assessment
   await prisma.vSMStep.createMany({
     data: [
-      { processId: process3.id, stepNumber: 1, stepName: 'Retrieve application', processTime: 5, waitingTime: 0, valueMeasure: 'NON_VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 2, stepName: 'Pull credit report', processTime: 15, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 3, stepName: 'Wait for bureau response', processTime: 0, waitingTime: 180, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'Credit Bureau' },
-      { processId: process3.id, stepNumber: 4, stepName: 'Analyze financial statements', processTime: 60, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 5, stepName: 'Calculate financial ratios', processTime: 30, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 6, stepName: 'Review payment history', processTime: 20, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 7, stepName: 'Industry risk assessment', processTime: 45, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 8, stepName: 'Run scoring model', processTime: 10, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'System' },
-      { processId: process3.id, stepNumber: 9, stepName: 'Stress testing', processTime: 25, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 10, stepName: 'Prepare credit memo', processTime: 40, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Credit Analyst' },
-      { processId: process3.id, stepNumber: 11, stepName: 'Senior review wait', processTime: 0, waitingTime: 480, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'Senior Analyst' },
-      { processId: process3.id, stepNumber: 12, stepName: 'Senior analyst review', processTime: 30, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Senior Analyst' }
-    ]
+      {
+        processId: process3.id,
+        stepNumber: 1,
+        stepName: 'Retrieve application',
+        processTime: 5,
+        waitingTime: 0,
+        valueMeasure: 'NON_VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 2,
+        stepName: 'Pull credit report',
+        processTime: 15,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 3,
+        stepName: 'Wait for bureau response',
+        processTime: 0,
+        waitingTime: 180,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'Credit Bureau',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 4,
+        stepName: 'Analyze financial statements',
+        processTime: 60,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 5,
+        stepName: 'Calculate financial ratios',
+        processTime: 30,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 6,
+        stepName: 'Review payment history',
+        processTime: 20,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 7,
+        stepName: 'Industry risk assessment',
+        processTime: 45,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 8,
+        stepName: 'Run scoring model',
+        processTime: 10,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'System',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 9,
+        stepName: 'Stress testing',
+        processTime: 25,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 10,
+        stepName: 'Prepare credit memo',
+        processTime: 40,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Credit Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 11,
+        stepName: 'Senior review wait',
+        processTime: 0,
+        waitingTime: 480,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'Senior Analyst',
+      },
+      {
+        processId: process3.id,
+        stepNumber: 12,
+        stepName: 'Senior analyst review',
+        processTime: 30,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Senior Analyst',
+      },
+    ],
   })
 
   // VSM for Process 7: Documentation
   await prisma.vSMStep.createMany({
     data: [
-      { processId: process7.id, stepNumber: 1, stepName: 'Receive approval', processTime: 2, waitingTime: 0, valueMeasure: 'NON_VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 2, stepName: 'Select template', processTime: 5, waitingTime: 0, valueMeasure: 'NON_VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 3, stepName: 'Prepare loan agreement', processTime: 60, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 4, stepName: 'Prepare security docs', processTime: 45, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 5, stepName: 'Wait for legal review', processTime: 0, waitingTime: 1440, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'Legal Team' },
-      { processId: process7.id, stepNumber: 6, stepName: 'Legal review', processTime: 90, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Legal Team' },
-      { processId: process7.id, stepNumber: 7, stepName: 'Incorporate changes', processTime: 30, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 8, stepName: 'Send to customer', processTime: 5, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 9, stepName: 'Wait for customer review', processTime: 0, waitingTime: 2880, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'Customer' },
-      { processId: process7.id, stepNumber: 10, stepName: 'Schedule signing', processTime: 10, waitingTime: 0, valueMeasure: 'NON_VALUE_ADDED', stakeholder: 'Documentation Team' },
-      { processId: process7.id, stepNumber: 11, stepName: 'Wait for appointment', processTime: 0, waitingTime: 1440, valueMeasure: 'NON_VALUE_ADDED', wasteType: 'WAITING', stakeholder: 'Customer' },
-      { processId: process7.id, stepNumber: 12, stepName: 'Document signing', processTime: 45, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Customer' },
-      { processId: process7.id, stepNumber: 13, stepName: 'Register security', processTime: 120, waitingTime: 0, valueMeasure: 'VALUE_ADDED', stakeholder: 'Documentation Team' }
-    ]
+      {
+        processId: process7.id,
+        stepNumber: 1,
+        stepName: 'Receive approval',
+        processTime: 2,
+        waitingTime: 0,
+        valueMeasure: 'NON_VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 2,
+        stepName: 'Select template',
+        processTime: 5,
+        waitingTime: 0,
+        valueMeasure: 'NON_VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 3,
+        stepName: 'Prepare loan agreement',
+        processTime: 60,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 4,
+        stepName: 'Prepare security docs',
+        processTime: 45,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 5,
+        stepName: 'Wait for legal review',
+        processTime: 0,
+        waitingTime: 1440,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'Legal Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 6,
+        stepName: 'Legal review',
+        processTime: 90,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Legal Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 7,
+        stepName: 'Incorporate changes',
+        processTime: 30,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 8,
+        stepName: 'Send to customer',
+        processTime: 5,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 9,
+        stepName: 'Wait for customer review',
+        processTime: 0,
+        waitingTime: 2880,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'Customer',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 10,
+        stepName: 'Schedule signing',
+        processTime: 10,
+        waitingTime: 0,
+        valueMeasure: 'NON_VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 11,
+        stepName: 'Wait for appointment',
+        processTime: 0,
+        waitingTime: 1440,
+        valueMeasure: 'NON_VALUE_ADDED',
+        wasteType: 'WAITING',
+        stakeholder: 'Customer',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 12,
+        stepName: 'Document signing',
+        processTime: 45,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Customer',
+      },
+      {
+        processId: process7.id,
+        stepNumber: 13,
+        stepName: 'Register security',
+        processTime: 120,
+        waitingTime: 0,
+        valueMeasure: 'VALUE_ADDED',
+        stakeholder: 'Documentation Team',
+      },
+    ],
   })
 
   const vsmCount = await prisma.vSMStep.count({
-    where: { process: { assignmentId: assignment.id } }
+    where: { process: { assignmentId: assignment.id } },
   })
   console.log('✅ Created', vsmCount, 'VSM steps')
 
@@ -1267,10 +1583,10 @@ async function main() {
           { causeDescription: 'Insufficient number of credit analysts', order: 1 },
           { causeDescription: 'Lack of industry-specific expertise', order: 2 },
           { causeDescription: 'High analyst turnover rate', order: 3 },
-          { causeDescription: 'Inadequate training on credit scoring models', order: 4 }
-        ]
-      }
-    }
+          { causeDescription: 'Inadequate training on credit scoring models', order: 4 },
+        ],
+      },
+    },
   })
 
   const fishbone2 = await prisma.fishboneCategory.create({
@@ -1284,10 +1600,10 @@ async function main() {
           { causeDescription: 'Multiple approval layers causing delays', order: 2 },
           { causeDescription: 'Lack of standardized assessment framework', order: 3 },
           { causeDescription: 'Redundant review steps', order: 4 },
-          { causeDescription: 'No prioritization mechanism for urgent applications', order: 5 }
-        ]
-      }
-    }
+          { causeDescription: 'No prioritization mechanism for urgent applications', order: 5 },
+        ],
+      },
+    },
   })
 
   const fishbone3 = await prisma.fishboneCategory.create({
@@ -1301,10 +1617,10 @@ async function main() {
           { causeDescription: 'No automated financial spreading tool', order: 2 },
           { causeDescription: 'Legacy scoring models not using AI/ML', order: 3 },
           { causeDescription: 'Slow system response times', order: 4 },
-          { causeDescription: 'No integration between systems (manual data transfer)', order: 5 }
-        ]
-      }
-    }
+          { causeDescription: 'No integration between systems (manual data transfer)', order: 5 },
+        ],
+      },
+    },
   })
 
   const fishbone4 = await prisma.fishboneCategory.create({
@@ -1317,10 +1633,10 @@ async function main() {
           { causeDescription: 'Incomplete financial statements from customers', order: 1 },
           { causeDescription: 'Outdated industry risk reports', order: 2 },
           { causeDescription: 'Inconsistent data quality from credit bureau', order: 3 },
-          { causeDescription: 'Missing collateral valuation reports', order: 4 }
-        ]
-      }
-    }
+          { causeDescription: 'Missing collateral valuation reports', order: 4 },
+        ],
+      },
+    },
   })
 
   const fishbone5 = await prisma.fishboneCategory.create({
@@ -1332,10 +1648,10 @@ async function main() {
         create: [
           { causeDescription: 'No tracking of assessment turnaround time', order: 1 },
           { causeDescription: 'Quality metrics not defined', order: 2 },
-          { causeDescription: 'No SLA monitoring for credit assessment', order: 3 }
-        ]
-      }
-    }
+          { causeDescription: 'No SLA monitoring for credit assessment', order: 3 },
+        ],
+      },
+    },
   })
 
   const fishbone6 = await prisma.fishboneCategory.create({
@@ -1347,10 +1663,10 @@ async function main() {
         create: [
           { causeDescription: 'High application volume during peak seasons', order: 1 },
           { causeDescription: 'Regulatory changes requiring additional analysis', order: 2 },
-          { causeDescription: 'Economic uncertainty requiring deeper scrutiny', order: 3 }
-        ]
-      }
-    }
+          { causeDescription: 'Economic uncertainty requiring deeper scrutiny', order: 3 },
+        ],
+      },
+    },
   })
 
   // Fishbone for Process 1: Application - analyzing "Incomplete Applications"
@@ -1363,10 +1679,10 @@ async function main() {
         create: [
           { causeDescription: 'Customers lack understanding of requirements', order: 1 },
           { causeDescription: 'Branch staff not properly explaining requirements', order: 2 },
-          { causeDescription: 'No dedicated application support team', order: 3 }
-        ]
-      }
-    }
+          { causeDescription: 'No dedicated application support team', order: 3 },
+        ],
+      },
+    },
   })
 
   await prisma.fishboneCategory.create({
@@ -1379,10 +1695,10 @@ async function main() {
           { causeDescription: 'Unclear application instructions', order: 1 },
           { causeDescription: 'No document checklist provided upfront', order: 2 },
           { causeDescription: 'No validation at time of submission', order: 3 },
-          { causeDescription: 'Complex application form design', order: 4 }
-        ]
-      }
-    }
+          { causeDescription: 'Complex application form design', order: 4 },
+        ],
+      },
+    },
   })
 
   await prisma.fishboneCategory.create({
@@ -1395,17 +1711,17 @@ async function main() {
           { causeDescription: 'Online portal lacks real-time validation', order: 1 },
           { causeDescription: 'No document quality check (file size, readability)', order: 2 },
           { causeDescription: 'No smart form with conditional fields', order: 3 },
-          { causeDescription: 'No progress save feature (customers abandon mid-way)', order: 4 }
-        ]
-      }
-    }
+          { causeDescription: 'No progress save feature (customers abandon mid-way)', order: 4 },
+        ],
+      },
+    },
   })
 
   const fishboneCount = await prisma.fishboneCategory.count({
-    where: { process: { assignmentId: assignment.id } }
+    where: { process: { assignmentId: assignment.id } },
   })
   const fishboneCauseCount = await prisma.fishboneCause.count({
-    where: { category: { process: { assignmentId: assignment.id } } }
+    where: { category: { process: { assignmentId: assignment.id } } },
   })
   console.log('✅ Created', fishboneCount, 'Fishbone categories with', fishboneCauseCount, 'causes')
 
@@ -1416,72 +1732,72 @@ async function main() {
     where: { id: process1.id },
     data: {
       sampleMean: 11.2,
-      sampleStdDev: 2.8
-    }
+      sampleStdDev: 2.8,
+    },
   })
 
   await prisma.process.update({
     where: { id: process2.id },
     data: {
       sampleMean: 19.5,
-      sampleStdDev: 3.2
-    }
+      sampleStdDev: 3.2,
+    },
   })
 
   await prisma.process.update({
     where: { id: process3.id },
     data: {
       sampleMean: 38.4,
-      sampleStdDev: 5.6
-    }
+      sampleStdDev: 5.6,
+    },
   })
 
   await prisma.process.update({
     where: { id: process4.id },
     data: {
       sampleMean: 62.3,
-      sampleStdDev: 8.4
-    }
+      sampleStdDev: 8.4,
+    },
   })
 
   await prisma.process.update({
     where: { id: process5.id },
     data: {
       sampleMean: 13.2,
-      sampleStdDev: 2.1
-    }
+      sampleStdDev: 2.1,
+    },
   })
 
   await prisma.process.update({
     where: { id: process6.id },
     data: {
       sampleMean: 40.8,
-      sampleStdDev: 6.2
-    }
+      sampleStdDev: 6.2,
+    },
   })
 
   await prisma.process.update({
     where: { id: process7.id },
     data: {
       sampleMean: 105.6,
-      sampleStdDev: 14.3
-    }
+      sampleStdDev: 14.3,
+    },
   })
 
   await prisma.process.update({
     where: { id: process8.id },
     data: {
       sampleMean: 5.2,
-      sampleStdDev: 1.4
-    }
+      sampleStdDev: 1.4,
+    },
   })
 
   await prisma.process.update({
     where: { id: process9.id },
     data: {
       sampleMean: 720,
-      sampleStdDev: 0
-    }
+      sampleStdDev: 0,
+    },
   })
 
   console.log('✅ Updated process capability metrics for all 9 processes')
@@ -1491,8 +1807,8 @@ async function main() {
     where: { id: assignment.id },
     data: {
       status: 'COMPLETED',
-      completedAt: new Date()
-    }
+      completedAt: new Date(),
+    },
   })
 
   console.log('✅ Marked assignment as COMPLETED')
@@ -1506,7 +1822,7 @@ async function main() {
 
   // Count SIPOC entries
   const sipocCount = await prisma.sIPOCEntry.count({
-    where: { process: { assignmentId: assignment.id } }
+    where: { process: { assignmentId: assignment.id } },
   })
   console.log(`   - SIPOC Entries: ${sipocCount}`)
   console.log(`   - FMEA Entries: ${fmeaEntries.length}`)
@@ -1517,7 +1833,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Error seeding banking assignment:', e)
     process.exit(1)
   })

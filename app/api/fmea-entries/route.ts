@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       currentControls,
       detection,
       rpn,
-      recommendedActions
+      recommendedActions,
     } = await request.json()
 
     // Input validation
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create FMEA entry and audit log atomically
-    const entry = await prisma.$transaction(async (tx) => {
+    const entry = await prisma.$transaction(async tx => {
       const newEntry = await tx.fMEAEntry.create({
         data: {
           assignmentId,
@@ -49,8 +49,8 @@ export async function POST(request: NextRequest) {
           currentControls,
           detection,
           rpn,
-          recommendedActions
-        }
+          recommendedActions,
+        },
       })
 
       await tx.auditLog.create({
@@ -65,9 +65,9 @@ export async function POST(request: NextRequest) {
             severity: newEntry.severity,
             occurrence: newEntry.occurrence,
             detection: newEntry.detection,
-            rpn: newEntry.rpn
-          }
-        }
+            rpn: newEntry.rpn,
+          },
+        },
       })
 
       return newEntry
@@ -76,9 +76,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(entry)
   } catch (error) {
     console.error('Failed to create FMEA entry:', error)
-    return NextResponse.json(
-      { error: 'Failed to create FMEA entry' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create FMEA entry' }, { status: 500 })
   }
 }

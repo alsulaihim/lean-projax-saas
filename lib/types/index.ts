@@ -4,13 +4,13 @@ export enum UserRole {
   BPI_TEAM = 'BPI_TEAM',
   TEAM_LEAD = 'TEAM_LEAD',
   EXECUTIVE = 'EXECUTIVE',
-  PROCESS_OWNER = 'PROCESS_OWNER'
+  PROCESS_OWNER = 'PROCESS_OWNER',
 }
 
 export enum AssignmentStatus {
   DRAFT = 'DRAFT',
   COMPLETED = 'COMPLETED',
-  REOPENED = 'REOPENED'
+  REOPENED = 'REOPENED',
 }
 
 export enum SIPOCColumn {
@@ -18,7 +18,7 @@ export enum SIPOCColumn {
   INPUT = 'INPUT',
   PROCESS = 'PROCESS',
   OUTPUT = 'OUTPUT',
-  CUSTOMER = 'CUSTOMER'
+  CUSTOMER = 'CUSTOMER',
 }
 
 export enum FishboneCategoryType {
@@ -27,19 +27,19 @@ export enum FishboneCategoryType {
   EQUIPMENT = 'EQUIPMENT',
   MATERIALS = 'MATERIALS',
   ENVIRONMENT = 'ENVIRONMENT',
-  MANAGEMENT = 'MANAGEMENT'
+  MANAGEMENT = 'MANAGEMENT',
 }
 
 export enum ImplementationDifficulty {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH'
+  HIGH = 'HIGH',
 }
 
 export enum RecommendationStatus {
   PROPOSED = 'PROPOSED',
   APPROVED = 'APPROVED',
-  IMPLEMENTED = 'IMPLEMENTED'
+  IMPLEMENTED = 'IMPLEMENTED',
 }
 
 export enum AuditAction {
@@ -48,45 +48,45 @@ export enum AuditAction {
   COMPLETED = 'COMPLETED',
   REOPENED = 'REOPENED',
   DELETED = 'DELETED',
-  ACCESSED = 'ACCESSED'
+  ACCESSED = 'ACCESSED',
 }
 
 // Computed fields interfaces
 export interface ProcessCapability {
-  cp: number | null;  // (USL - LSL) / (6 * σ)
-  cpk: number | null; // min((USL - μ) / (3σ), (μ - LSL) / (3σ))
-  sigmaLevel: number | null; // Cpk * 3 + 1.5
+  cp: number | null // (USL - LSL) / (6 * σ)
+  cpk: number | null // min((USL - μ) / (3σ), (μ - LSL) / (3σ))
+  sigmaLevel: number | null // Cpk * 3 + 1.5
 }
 
 export interface VSMMetrics {
-  totalCycleTime: number;
-  valueAddedTime: number;
-  nonValueAddedTime: number;
-  efficiencyRatio: number; // valueAddedTime / totalCycleTime
+  totalCycleTime: number
+  valueAddedTime: number
+  nonValueAddedTime: number
+  efficiencyRatio: number // valueAddedTime / totalCycleTime
 }
 
 export interface ParetoData {
-  stepName: string;
-  duration: number;
-  cumulativePercent: number;
-  rank: number;
+  stepName: string
+  duration: number
+  cumulativePercent: number
+  rank: number
 }
 
 // API Response types
 export interface ApiResponse<T> {
-  data?: T;
-  error?: ApiError;
+  data?: T
+  error?: ApiError
   meta?: {
-    page?: number;
-    pageSize?: number;
-    total?: number;
-  };
+    page?: number
+    pageSize?: number
+    total?: number
+  }
 }
 
 export interface ApiError {
-  code: string;
-  message: string;
-  details?: Record<string, unknown>;
-  timestamp: string;
-  requestId: string;
+  code: string
+  message: string
+  details?: Record<string, unknown>
+  timestamp: string
+  requestId: string
 }

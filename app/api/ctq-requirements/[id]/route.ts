@@ -30,9 +30,9 @@ export async function DELETE(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!ctqRequirement) {
@@ -41,10 +41,7 @@ export async function DELETE(
 
     // Verify nested relations exist
     if (!ctqRequirement.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -53,9 +50,9 @@ export async function DELETE(
     }
 
     // Delete CTQ requirement and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       await tx.cTQRequirement.delete({
-        where: { id }
+        where: { id },
       })
 
       // Log the action
@@ -66,25 +63,19 @@ export async function DELETE(
           action: 'DELETED',
           entityType: 'CTQRequirement',
           entityId: id,
-          changeDetails: {}
-        }
+          changeDetails: {},
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete CTQ requirement:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete CTQ requirement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete CTQ requirement' }, { status: 500 })
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -105,9 +96,9 @@ export async function PATCH(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!existingCtq) {
@@ -116,10 +107,7 @@ export async function PATCH(
 
     // Verify nested relations exist
     if (!existingCtq.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -128,14 +116,14 @@ export async function PATCH(
     }
 
     // Update CTQ requirement and create audit log atomically
-    const ctq = await prisma.$transaction(async (tx) => {
+    const ctq = await prisma.$transaction(async tx => {
       const updatedCtq = await tx.cTQRequirement.update({
         where: { id },
         data: {
           ctqDescription,
           measurementCriteria,
-          targetValue
-        }
+          targetValue,
+        },
       })
 
       // Log the action
@@ -150,15 +138,15 @@ export async function PATCH(
             before: {
               ctqDescription: existingCtq.ctqDescription,
               measurementCriteria: existingCtq.measurementCriteria,
-              targetValue: existingCtq.targetValue
+              targetValue: existingCtq.targetValue,
             },
             after: {
               ctqDescription: updatedCtq.ctqDescription,
               measurementCriteria: updatedCtq.measurementCriteria,
-              targetValue: updatedCtq.targetValue
-            }
-          }
-        }
+              targetValue: updatedCtq.targetValue,
+            },
+          },
+        },
       })
 
       return updatedCtq
@@ -167,9 +155,6 @@ export async function PATCH(
     return NextResponse.json(ctq)
   } catch (error) {
     console.error('Failed to update CTQ requirement:', error)
-    return NextResponse.json(
-      { error: 'Failed to update CTQ requirement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update CTQ requirement' }, { status: 500 })
   }
 }

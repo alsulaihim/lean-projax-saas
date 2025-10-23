@@ -10,20 +10,20 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: connectionString
-    }
-  }
+      url: connectionString,
+    },
+  },
 })
 
 async function addMoreFMEAEntries() {
   try {
     console.log('🚀 Adding additional FMEA entries to Facility Granting Assignment...')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
 
     // Find the Facility Granting assignment
     const assignment = await prisma.assignment.findFirst({
       where: { title: 'Facility Granting Process Optimization' },
-      include: { processes: true }
+      include: { processes: true },
     })
 
     if (!assignment) {
@@ -45,7 +45,7 @@ async function addMoreFMEAEntries() {
         occurrence: 3,
         controls: 'Structural engineer sign-off required',
         detection: 9,
-        actions: 'Implement triple-check system with external validation'
+        actions: 'Implement triple-check system with external validation',
       },
       {
         processName: 'Compliance Check',
@@ -56,7 +56,7 @@ async function addMoreFMEAEntries() {
         occurrence: 2,
         controls: 'Environmental agency review',
         detection: 8,
-        actions: 'Blockchain-based approval tracking, whistleblower hotline'
+        actions: 'Blockchain-based approval tracking, whistleblower hotline',
       },
 
       // HIGH RISKS (RPN 200-250)
@@ -69,7 +69,7 @@ async function addMoreFMEAEntries() {
         occurrence: 3,
         controls: 'Background checks, reference verification',
         detection: 8,
-        actions: 'Biometric verification, AI fraud detection system'
+        actions: 'Biometric verification, AI fraud detection system',
       },
       {
         processName: 'Risk Assessment',
@@ -80,7 +80,7 @@ async function addMoreFMEAEntries() {
         occurrence: 3,
         controls: 'Independent risk review',
         detection: 7,
-        actions: 'Monte Carlo simulations, stress testing protocols'
+        actions: 'Monte Carlo simulations, stress testing protocols',
       },
       {
         processName: 'Application Submission',
@@ -91,7 +91,7 @@ async function addMoreFMEAEntries() {
         occurrence: 4,
         controls: 'Firewall, basic encryption',
         detection: 7,
-        actions: 'Zero-trust architecture, end-to-end encryption'
+        actions: 'Zero-trust architecture, end-to-end encryption',
       },
 
       // MEDIUM-HIGH RISKS (RPN 150-199)
@@ -104,7 +104,7 @@ async function addMoreFMEAEntries() {
         occurrence: 2,
         controls: 'Declaration of interest forms',
         detection: 9,
-        actions: 'Automated conflict checking, rotation of committee members'
+        actions: 'Automated conflict checking, rotation of committee members',
       },
       {
         processName: 'Facility Activation',
@@ -115,7 +115,7 @@ async function addMoreFMEAEntries() {
         occurrence: 3,
         controls: 'Activation checklist',
         detection: 6,
-        actions: 'Digital twin validation, IoT safety sensors'
+        actions: 'Digital twin validation, IoT safety sensors',
       },
       {
         processName: 'Technical Review',
@@ -126,7 +126,7 @@ async function addMoreFMEAEntries() {
         occurrence: 4,
         controls: 'Utility company consultation',
         detection: 5,
-        actions: 'Real-time grid capacity monitoring, load balancing system'
+        actions: 'Real-time grid capacity monitoring, load balancing system',
       },
 
       // MEDIUM RISKS (RPN 100-149)
@@ -139,7 +139,7 @@ async function addMoreFMEAEntries() {
         occurrence: 5,
         controls: 'Document quality guidelines',
         detection: 4,
-        actions: 'OCR enhancement, customer portal improvements'
+        actions: 'OCR enhancement, customer portal improvements',
       },
       {
         processName: 'Risk Assessment',
@@ -150,7 +150,7 @@ async function addMoreFMEAEntries() {
         occurrence: 4,
         controls: 'Scoring rubric',
         detection: 5,
-        actions: 'ML-based scoring model, calibration sessions'
+        actions: 'ML-based scoring model, calibration sessions',
       },
       {
         processName: 'Compliance Check',
@@ -161,7 +161,7 @@ async function addMoreFMEAEntries() {
         occurrence: 5,
         controls: 'Quarterly regulation review',
         detection: 5,
-        actions: 'Automated regulation feed, version control system'
+        actions: 'Automated regulation feed, version control system',
       },
 
       // LOW-MEDIUM RISKS (RPN 50-99)
@@ -174,7 +174,7 @@ async function addMoreFMEAEntries() {
         occurrence: 6,
         controls: 'Duplicate detection logic',
         detection: 3,
-        actions: 'Unique application ID, session management'
+        actions: 'Unique application ID, session management',
       },
       {
         processName: 'Management Approval',
@@ -185,7 +185,7 @@ async function addMoreFMEAEntries() {
         occurrence: 3,
         controls: 'Backup recording, written notes',
         detection: 4,
-        actions: 'Automated transcription, cloud backup'
+        actions: 'Automated transcription, cloud backup',
       },
       {
         processName: 'Facility Activation',
@@ -196,7 +196,7 @@ async function addMoreFMEAEntries() {
         occurrence: 5,
         controls: 'Delivery tracking',
         detection: 3,
-        actions: 'Digital welcome package, delivery confirmation'
+        actions: 'Digital welcome package, delivery confirmation',
       },
 
       // LOW RISKS (RPN < 50)
@@ -209,7 +209,7 @@ async function addMoreFMEAEntries() {
         occurrence: 4,
         controls: 'NTP synchronization',
         detection: 2,
-        actions: 'Time server redundancy'
+        actions: 'Time server redundancy',
       },
       {
         processName: 'Technical Review',
@@ -220,7 +220,7 @@ async function addMoreFMEAEntries() {
         occurrence: 7,
         controls: 'Template library',
         detection: 2,
-        actions: 'Standardized report generator'
+        actions: 'Standardized report generator',
       },
       {
         processName: 'Risk Assessment',
@@ -231,17 +231,17 @@ async function addMoreFMEAEntries() {
         occurrence: 8,
         controls: 'Calculation validation',
         detection: 3,
-        actions: 'Standardized precision rules'
-      }
+        actions: 'Standardized precision rules',
+      },
     ]
 
     let addedCount = 0
     let riskDistribution = {
-      critical: 0,  // RPN > 250
-      high: 0,      // RPN 200-250
+      critical: 0, // RPN > 250
+      high: 0, // RPN 200-250
       mediumHigh: 0, // RPN 150-199
-      medium: 0,    // RPN 100-149
-      low: 0        // RPN < 100
+      medium: 0, // RPN 100-149
+      low: 0, // RPN < 100
     }
 
     console.log('\nAdding FMEA entries:')
@@ -265,8 +265,8 @@ async function addMoreFMEAEntries() {
             currentControls: fmea.controls,
             detection: fmea.detection,
             rpn: rpn,
-            recommendedActions: fmea.actions
-          }
+            recommendedActions: fmea.actions,
+          },
         })
 
         // Categorize risk
@@ -278,25 +278,32 @@ async function addMoreFMEAEntries() {
 
         addedCount++
 
-        const riskLevel = rpn > 250 ? 'CRITICAL' :
-                         rpn >= 200 ? 'HIGH' :
-                         rpn >= 150 ? 'MED-HIGH' :
-                         rpn >= 100 ? 'MEDIUM' :
-                         'LOW'
+        const riskLevel =
+          rpn > 250
+            ? 'CRITICAL'
+            : rpn >= 200
+              ? 'HIGH'
+              : rpn >= 150
+                ? 'MED-HIGH'
+                : rpn >= 100
+                  ? 'MEDIUM'
+                  : 'LOW'
 
         console.log(`  ✓ ${fmea.processName}: ${fmea.failureMode}`)
-        console.log(`    RPN: ${rpn} (${riskLevel}) - S:${fmea.severity} O:${fmea.occurrence} D:${fmea.detection}`)
+        console.log(
+          `    RPN: ${rpn} (${riskLevel}) - S:${fmea.severity} O:${fmea.occurrence} D:${fmea.detection}`
+        )
       }
     }
 
     // Get total count
     const totalFmeaEntries = await prisma.fMEAEntry.count({
-      where: { assignmentId: assignment.id }
+      where: { assignmentId: assignment.id },
     })
 
-    console.log('\n' + '=' .repeat(60))
+    console.log('\n' + '='.repeat(60))
     console.log('✅ FMEA ENTRIES SUCCESSFULLY ADDED!')
-    console.log('=' .repeat(60))
+    console.log('='.repeat(60))
     console.log('\n📊 FMEA Summary:')
     console.log(`  New entries added: ${addedCount}`)
     console.log(`  Total FMEA entries: ${totalFmeaEntries}`)
@@ -311,7 +318,7 @@ async function addMoreFMEAEntries() {
     const allFmea = await prisma.fMEAEntry.findMany({
       where: { assignmentId: assignment.id },
       include: { process: true },
-      orderBy: { rpn: 'desc' }
+      orderBy: { rpn: 'desc' },
     })
 
     console.log('\n🎯 Top 10 Risks by RPN:')
@@ -320,7 +327,6 @@ async function addMoreFMEAEntries() {
       console.log(`${index + 1}. [RPN: ${entry.rpn}] ${entry.process?.processName}`)
       console.log(`   ${entry.failureMode}`)
     })
-
   } catch (error) {
     console.error('❌ Error adding FMEA entries:', error)
   } finally {

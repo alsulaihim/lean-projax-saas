@@ -10,7 +10,7 @@ import {
   TrendingUp,
   Users,
   Target,
-  Activity
+  Activity,
 } from 'lucide-react'
 
 export default async function DashboardPage() {
@@ -35,7 +35,7 @@ export default async function DashboardPage() {
     totalFMEAs,
     highRiskFMEAs,
     totalRecommendations,
-    activeUsers
+    activeUsers,
   ] = await Promise.all([
     prisma.assignment.count(),
     prisma.assignment.count({ where: { status: 'COMPLETED' } }),
@@ -45,7 +45,7 @@ export default async function DashboardPage() {
     prisma.fMEAEntry.count(),
     prisma.fMEAEntry.count({ where: { rpn: { gte: 200 } } }),
     prisma.recommendation.count(),
-    prisma.user.count()
+    prisma.user.count(),
   ])
 
   // Get recent assignments
@@ -58,10 +58,10 @@ export default async function DashboardPage() {
         select: {
           processes: true,
           vocStatements: true,
-          recommendations: true
-        }
-      }
-    }
+          recommendations: true,
+        },
+      },
+    },
   })
 
   // Get top FMEA risks
@@ -71,19 +71,16 @@ export default async function DashboardPage() {
     include: {
       process: {
         include: {
-          assignment: true
-        }
-      }
-    }
+          assignment: true,
+        },
+      },
+    },
   })
 
-  const completionRate = totalAssignments > 0
-    ? Math.round((completedAssignments / totalAssignments) * 100)
-    : 0
+  const completionRate =
+    totalAssignments > 0 ? Math.round((completedAssignments / totalAssignments) * 100) : 0
 
-  const highRiskRate = totalFMEAs > 0
-    ? Math.round((highRiskFMEAs / totalFMEAs) * 100)
-    : 0
+  const highRiskRate = totalFMEAs > 0 ? Math.round((highRiskFMEAs / totalFMEAs) * 100) : 0
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -101,9 +98,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalAssignments}</div>
-            <p className="text-xs text-gray-500">
-              {draftAssignments} in progress
-            </p>
+            <p className="text-xs text-gray-500">{draftAssignments} in progress</p>
           </CardContent>
         </Card>
 
@@ -114,9 +109,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{completionRate}%</div>
-            <p className="text-xs text-gray-500">
-              {completedAssignments} completed
-            </p>
+            <p className="text-xs text-gray-500">{completedAssignments} completed</p>
           </CardContent>
         </Card>
 
@@ -127,9 +120,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{highRiskFMEAs}</div>
-            <p className="text-xs text-gray-500">
-              {highRiskRate}% of total risks
-            </p>
+            <p className="text-xs text-gray-500">{highRiskRate}% of total risks</p>
           </CardContent>
         </Card>
 
@@ -140,9 +131,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeUsers}</div>
-            <p className="text-xs text-gray-500">
-              Across all roles
-            </p>
+            <p className="text-xs text-gray-500">Across all roles</p>
           </CardContent>
         </Card>
       </div>
@@ -191,23 +180,27 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentAssignments.map((assignment) => (
-                <div key={assignment.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              {recentAssignments.map(assignment => (
+                <div
+                  key={assignment.id}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+                >
                   <div className="space-y-1 flex-1 min-w-0">
-                    <p className="text-sm font-medium leading-none truncate">
-                      {assignment.title}
-                    </p>
+                    <p className="text-sm font-medium leading-none truncate">{assignment.title}</p>
                     <p className="text-xs md:text-sm text-gray-500 truncate">
-                      {assignment.createdBy.name} • {assignment._count.vocStatements} VOCs • {assignment._count.recommendations} Recs
+                      {assignment.createdBy.name} • {assignment._count.vocStatements} VOCs •{' '}
+                      {assignment._count.recommendations} Recs
                     </p>
                   </div>
-                  <div className={`px-2 py-1 text-xs rounded border w-fit ${
-                    assignment.status === 'COMPLETED'
-                      ? 'bg-green-100 text-green-800 border-green-300'
-                      : assignment.status === 'DRAFT'
-                      ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
-                      : 'bg-orange-100 text-orange-800 border-orange-300'
-                  }`}>
+                  <div
+                    className={`px-2 py-1 text-xs rounded border w-fit ${
+                      assignment.status === 'COMPLETED'
+                        ? 'bg-green-100 text-green-800 border-green-300'
+                        : assignment.status === 'DRAFT'
+                          ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
+                          : 'bg-orange-100 text-orange-800 border-orange-300'
+                    }`}
+                  >
                     {assignment.status}
                   </div>
                 </div>
@@ -223,19 +216,21 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {topRisks.map((risk) => (
+              {topRisks.map(risk => (
                 <div key={risk.id} className="space-y-1">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <p className="text-sm font-medium leading-none flex-1 min-w-0">
                       {risk.failureMode}
                     </p>
-                    <span className={`px-2 py-1 text-xs font-bold rounded w-fit whitespace-nowrap ${
-                      risk.rpn >= 200
-                        ? 'bg-red-100 text-red-800'
-                        : risk.rpn >= 100
-                        ? 'bg-orange-100 text-orange-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 text-xs font-bold rounded w-fit whitespace-nowrap ${
+                        risk.rpn >= 200
+                          ? 'bg-red-100 text-red-800'
+                          : risk.rpn >= 100
+                            ? 'bg-orange-100 text-orange-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
                       RPN: {risk.rpn}
                     </span>
                   </div>

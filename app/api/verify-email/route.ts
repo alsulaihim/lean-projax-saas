@@ -5,16 +5,16 @@ import { sanitizeLog } from '@/lib/api-error-handler'
 
 /**
  * Email Verification API Route
- * 
+ *
  * Purpose: Verify user's email address using token from verification email
- * 
+ *
  * Process:
  * 1. Receive verification token
  * 2. Find user with matching token
  * 3. Check token hasn't expired (24 hours)
  * 4. Mark email as verified
  * 5. Clear verification token
- * 
+ *
  * Security:
  * - Token is cryptographically secure (32 bytes)
  * - Token expires after 24 hours
@@ -24,15 +24,15 @@ import { sanitizeLog } from '@/lib/api-error-handler'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
+
     // Validate input with Zod schema
     const validation = verifyEmailSchema.safeParse(body)
-    
+
     if (!validation.success) {
       return NextResponse.json(
-        { 
+        {
           error: 'Invalid verification token',
-          details: formatZodError(validation.error)
+          details: formatZodError(validation.error),
         },
         { status: 400 }
       )
@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
         email: true,
         name: true,
         emailVerified: true,
-        verificationExpiry: true
-      }
+        verificationExpiry: true,
+      },
     })
 
     if (!user) {
@@ -70,7 +70,10 @@ export async function POST(request: NextRequest) {
     // Check if token has expired
     if (user.verificationExpiry && new Date() > user.verificationExpiry) {
       return NextResponse.json(
-        { error: 'Verification link has expired. Please sign up again or request a new verification email.' },
+        {
+          error:
+            'Verification link has expired. Please sign up again or request a new verification email.',
+        },
         { status: 410 } // 410 Gone - resource no longer available
       )
     }
@@ -81,8 +84,8 @@ export async function POST(request: NextRequest) {
       data: {
         emailVerified: true,
         verificationToken: null, // Clear token (can only be used once)
-        verificationExpiry: null
-      }
+        verificationExpiry: null,
+      },
     })
 
     // Log email verification without exposing PII
@@ -93,8 +96,8 @@ export async function POST(request: NextRequest) {
         message: 'Email verified successfully!',
         user: {
           email: user.email,
-          name: user.name
-        }
+          name: user.name,
+        },
       },
       { status: 200 }
     )
@@ -106,4 +109,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

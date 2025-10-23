@@ -9,11 +9,11 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: lean_projax_dev
     ports:
-      - "5434:5432"  # Use different port to avoid conflict with existing containers
+      - '5434:5432' # Use different port to avoid conflict with existing containers
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -24,13 +24,13 @@ services:
       dockerfile: Dockerfile.dev
     container_name: lean-projax-app
     ports:
-      - "3070:3070"
+      - '3070:3070'
     environment:
-      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/lean_projax_dev?connect_timeout=300"
-      NEXTAUTH_URL: "http://localhost:3070"
-      NEXTAUTH_SECRET: "niF0PSTK6W2Z7W4HjlFSm+eqXkiFSwEs9zWYot7TeBM="
-      NEXT_PUBLIC_API_URL: "http://localhost:3021"
-      NODE_ENV: "development"
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/lean_projax_dev?connect_timeout=300'
+      NEXTAUTH_URL: 'http://localhost:3070'
+      NEXTAUTH_SECRET: 'niF0PSTK6W2Z7W4HjlFSm+eqXkiFSwEs9zWYot7TeBM='
+      NEXT_PUBLIC_API_URL: 'http://localhost:3021'
+      NODE_ENV: 'development'
     volumes:
       - .:/app
       - /app/node_modules

@@ -7,6 +7,7 @@ This folder contains the essential files you need to copy to every new project.
 ## 📋 Quick Start
 
 ### 1. Copy This Entire Folder
+
 ```bash
 # From inside your new project root:
 cp -r /path/to/copy-to-project/.ai .
@@ -17,11 +18,13 @@ cp /path/to/copy-to-project/AGENT-START-PROMPT.md .
 ### 2. Customize These Files (15-20 minutes)
 
 **Must Customize:**
+
 - [ ] `.ai/CLAUDE.md` - Fill in project name, stack versions, cloud provider
 - [ ] `docs/PROJECT-BLUEPRINT.md` - Add your project details
 - [ ] `docs/TECH-STACK.md` - Specify exact versions
 
 **Initialize Empty:**
+
 - [ ] `.ai/SESSION-CONTEXT.md` - Set initial state
 - [ ] `.ai/DECISION-LOG.md` - Ready for first decisions
 - [ ] `.ai/FEATURE-TRACKER.md` - Ready for scope tracking
@@ -45,6 +48,7 @@ After reading, please:
 ## 📁 What's Included
 
 ### Core Configuration
+
 - **AGENT-START-PROMPT.md** - Copy/paste this at every session start
 - **.ai/CLAUDE.md** - Agent's "brain" and behavior contract
 - **.ai/SESSION-CONTEXT.md** - Living document of current state
@@ -52,6 +56,7 @@ After reading, please:
 - **.ai/FEATURE-TRACKER.md** - Track beyond-PRD features
 
 ### Documentation
+
 - **docs/PROJECT-BLUEPRINT.md** - Architecture and locked decisions
 - **docs/TECH-STACK.md** - Exact versions of all technologies
 
@@ -94,6 +99,7 @@ The reference materials folder contains additional templates you can add when ne
 ## 🔗 Need More Details?
 
 Check the reference-materials folder for:
+
 - Complete documentation templates
 - Detailed guides
 - Security checklists

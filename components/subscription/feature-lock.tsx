@@ -50,7 +50,7 @@ export function FeatureLock({
   feature,
   children,
   mode = 'disable',
-  lockedMessage
+  lockedMessage,
 }: FeatureLockProps) {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
@@ -67,9 +67,7 @@ export function FeatureLock({
           <div className="flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 mb-4">
             <Crown className="h-8 w-8 text-purple-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Pro Feature
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Pro Feature</h3>
           <p className="text-sm text-gray-600 text-center mb-4 max-w-sm">
             {lockedMessage || 'This feature is available in the Pro plan'}
           </p>
@@ -95,9 +93,7 @@ export function FeatureLock({
       <>
         <div className="relative">
           {/* Blurred content */}
-          <div className="blur-sm pointer-events-none select-none">
-            {children}
-          </div>
+          <div className="blur-sm pointer-events-none select-none">{children}</div>
 
           {/* Lock overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm">
@@ -105,9 +101,7 @@ export function FeatureLock({
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 mb-3">
                 <Lock className="h-6 w-6 text-purple-600" />
               </div>
-              <p className="text-sm font-medium text-gray-900 mb-2">
-                Pro Feature Locked
-              </p>
+              <p className="text-sm font-medium text-gray-900 mb-2">Pro Feature Locked</p>
               <Button
                 size="sm"
                 onClick={() => setShowUpgradeModal(true)}
@@ -174,7 +168,7 @@ export function LockedButton({
   onClick,
   children,
   className,
-  variant = 'default'
+  variant = 'default',
 }: LockedButtonProps) {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
@@ -188,12 +182,7 @@ export function LockedButton({
 
   return (
     <>
-      <Button
-        onClick={handleClick}
-        variant={variant}
-        className={className}
-        disabled={isLocked}
-      >
+      <Button onClick={handleClick} variant={variant} className={className} disabled={isLocked}>
         {isLocked && <Lock className="mr-2 h-4 w-4" />}
         {children}
         {isLocked && <Crown className="ml-2 h-4 w-4 text-yellow-600" />}

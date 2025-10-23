@@ -8,11 +8,7 @@ interface AutoSaveIndicatorProps {
   className?: string
 }
 
-export function AutoSaveIndicator({
-  status,
-  lastSaved,
-  className
-}: AutoSaveIndicatorProps) {
+export function AutoSaveIndicator({ status, lastSaved, className }: AutoSaveIndicatorProps) {
   const formatLastSaved = (date: Date | null | undefined) => {
     if (!date) return ''
     const now = new Date()
@@ -25,16 +21,11 @@ export function AutoSaveIndicator({
   }
 
   return (
-    <div className={cn(
-      'flex items-center gap-2 text-sm transition-all duration-300',
-      className
-    )}>
+    <div className={cn('flex items-center gap-2 text-sm transition-all duration-300', className)}>
       {status === 'idle' && lastSaved && (
         <>
           <Cloud className="h-4 w-4 text-gray-400" />
-          <span className="text-gray-500">
-            Saved {formatLastSaved(lastSaved)}
-          </span>
+          <span className="text-gray-500">Saved {formatLastSaved(lastSaved)}</span>
         </>
       )}
 

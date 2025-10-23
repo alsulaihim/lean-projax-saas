@@ -1,7 +1,9 @@
 # Model Context Protocol (MCP) Setup Guide
+
 > Your Complete MCP Configuration Reference
 
 ## 📋 Table of Contents
+
 1. [What is MCP?](#what-is-mcp)
 2. [Installation Guide](#installation-guide)
 3. [MCP Server List](#mcp-server-list)
@@ -14,6 +16,7 @@
 ## 🤔 What is MCP?
 
 Model Context Protocol (MCP) extends Claude's capabilities by connecting it to external tools and services. Think of MCPs as plugins that give Claude Code superpowers like:
+
 - Interacting with GitHub repositories
 - Managing Docker containers
 - Processing payments via Stripe/PayPal
@@ -26,6 +29,7 @@ Model Context Protocol (MCP) extends Claude's capabilities by connecting it to e
 ## 🚀 Installation Guide
 
 ### Prerequisites
+
 - Node.js 18+ installed
 - npm configured with global directory
 - API keys for services you want to use
@@ -33,6 +37,7 @@ Model Context Protocol (MCP) extends Claude's capabilities by connecting it to e
 ### Quick Setup
 
 1. **Install MCPs globally** (recommended to avoid NPX cache issues):
+
 ```bash
 npm install -g \
   @modelcontextprotocol/server-memory \
@@ -63,6 +68,7 @@ npm install -g \
 ### Core Development MCPs
 
 #### 1. **GitHub MCP** 🐙
+
 - **Package:** `@modelcontextprotocol/server-github`
 - **Purpose:** Repository, issues, PRs, and GitHub operations
 - **Requires:** GitHub Personal Access Token
@@ -73,6 +79,7 @@ npm install -g \
   - Access repository information
 
 #### 2. **Memory MCP** 🧠
+
 - **Package:** `@modelcontextprotocol/server-memory`
 - **Purpose:** Persistent knowledge storage across sessions
 - **Requires:** No API key
@@ -82,6 +89,7 @@ npm install -g \
   - Build knowledge graphs
 
 #### 3. **Filesystem MCP** 📁
+
 - **Package:** `@modelcontextprotocol/server-filesystem`
 - **Purpose:** Secure file system access
 - **Requires:** No API key (path restriction required)
@@ -92,6 +100,7 @@ npm install -g \
 - **Security:** Restricts access to specified directories only
 
 #### 4. **Docker MCP** 🐋
+
 - **Package:** `docker-mcp`
 - **Purpose:** Container and Docker management
 - **Requires:** Docker installed locally OR SSH credentials for remote
@@ -103,6 +112,7 @@ npm install -g \
   - Cleanup operations
 
 #### 5. **Chrome DevTools MCP** 🌐
+
 - **Package:** `chrome-devtools-mcp`
 - **Purpose:** Browser automation and testing
 - **Requires:** Chrome installed
@@ -117,6 +127,7 @@ npm install -g \
 ### Payment MCPs
 
 #### 6. **Stripe MCP** 💳
+
 - **Package:** `@stripe/mcp`
 - **Purpose:** Payment processing and Stripe API integration
 - **Requires:** Stripe API Key (test or live)
@@ -128,6 +139,7 @@ npm install -g \
   - Revenue analytics
 
 #### 7. **PayPal MCP** 💰
+
 - **Package:** `@paypal/mcp`
 - **Purpose:** PayPal payment processing
 - **Requires:** PayPal Access Token
@@ -141,11 +153,13 @@ npm install -g \
 ### Additional MCPs (NPX-based)
 
 #### 8. **Firebase MCP** 🔥
+
 - **Package:** `firebase-tools` (experimental MCP)
 - **Purpose:** Firebase services management
 - **Requires:** Firebase authentication
 
 #### 9. **Supabase MCP** 🐘
+
 - **Package:** `supabase-mcp`
 - **Purpose:** Supabase CRUD operations on database tables
 - **Requires:** Supabase project URL, Anon Key, and Service Role Key
@@ -156,6 +170,7 @@ npm install -g \
   - Full PostgreSQL-compatible operations
 
 #### 10. **Railway MCP** 🚂
+
 - **Package:** `@railway/mcp-server`
 - **Purpose:** Railway cloud deployment and infrastructure management
 - **Requires:** Railway CLI installed and authenticated
@@ -169,20 +184,24 @@ npm install -g \
   - Monitor deployments
 
 #### 11. **ShadCN MCP** 🎨
+
 - **Package:** `@jpisnice/shadcn-ui-mcp-server`
 - **Purpose:** UI component generation with shadcn/ui
 
 #### 12. **GCP MCP** ☁️
+
 - **Package:** `@google-cloud/gcloud-mcp`
 - **Purpose:** Google Cloud Platform integration
 - **Requires:** GCP credentials
 
 #### 13. **SonarQube MCP** 🔍
+
 - **Package:** `sonarqube-mcp-server`
 - **Purpose:** Code quality analysis
 - **Requires:** SonarQube/SonarCloud token
 
 #### 14. **GitKraken MCP** 🦑
+
 - **Purpose:** Advanced Git operations via GitLens
 - **Requires:** GitLens extension installed
 
@@ -208,9 +227,7 @@ npm install -g \
     },
     "filesystem": {
       "command": "/Users/YOUR_USERNAME/.npm-global/bin/mcp-server-filesystem",
-      "args": [
-        "/Users/YOUR_USERNAME"
-      ]
+      "args": ["/Users/YOUR_USERNAME"]
     },
     "docker": {
       "command": "/Users/YOUR_USERNAME/.npm-global/bin/docker-mcp",
@@ -249,6 +266,7 @@ npm install -g \
 ## 🔑 API Keys Required
 
 ### GitHub Personal Access Token
+
 1. Go to [GitHub Settings → Tokens](https://github.com/settings/tokens)
 2. Generate new token (classic)
 3. Select scopes:
@@ -259,6 +277,7 @@ npm install -g \
 4. Copy token and add to config
 
 ### Stripe API Key
+
 1. Go to [Stripe Dashboard → API Keys](https://dashboard.stripe.com/apikeys)
 2. Copy **Secret Key**:
    - `sk_test_...` for test mode
@@ -266,6 +285,7 @@ npm install -g \
 3. Add to config
 
 ### PayPal Access Token
+
 1. Go to [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/)
 2. Create or select an app
 3. Generate access token
@@ -274,6 +294,7 @@ npm install -g \
    - `LIVE` for production
 
 ### Supabase Keys
+
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
 2. Select your project (or create new one)
 3. Go to Settings → API
@@ -284,7 +305,9 @@ npm install -g \
 5. Add all three to your MCP config
 
 ### Railway CLI Setup
+
 1. **Install Railway CLI:**
+
    ```bash
    # macOS/Linux
    brew install railway
@@ -297,9 +320,11 @@ npm install -g \
    ```
 
 2. **Authenticate:**
+
    ```bash
    railway login
    ```
+
    This will open your browser to authenticate
 
 3. **Verify Installation:**
@@ -310,6 +335,7 @@ npm install -g \
 **Note:** Railway MCP requires Railway CLI to be installed and authenticated. No additional config needed in mcp.json.
 
 ### SonarQube Token (Optional)
+
 1. Go to [SonarCloud](https://sonarcloud.io)
 2. My Account → Security → Generate Token
 3. Add to config
@@ -325,7 +351,9 @@ npm install -g \
 **Cause:** MCP server failed to start
 
 **Solutions:**
+
 1. Clear NPX cache:
+
    ```bash
    rm -rf ~/.npm/_npx ~/.npm/_cacache
    npm cache clean --force
@@ -344,11 +372,13 @@ npm install -g \
 #### ❌ GitHub MCP Shows Red Dot
 
 **Causes:**
+
 - Invalid or expired token
 - Wrong package name (`@octokit/mcp-server` doesn't exist)
 - Missing token in env
 
 **Solution:**
+
 - Use correct package: `@modelcontextprotocol/server-github`
 - Verify token is valid
 - Ensure token is in `env.GITHUB_PERSONAL_ACCESS_TOKEN`
@@ -356,11 +386,13 @@ npm install -g \
 #### ❌ Stripe/PayPal MCP Not Working
 
 **Causes:**
+
 - Missing `--tools=all` parameter (Stripe)
 - Using command-line args instead of env vars (PayPal)
 - Invalid API keys
 
 **Solution:**
+
 - Follow exact configuration format above
 - Verify API keys are valid
 - Check sandbox vs production environment
@@ -393,12 +425,14 @@ npm update -g \
 ## 🎯 Quick Reference
 
 ### Essential MCPs for Most Projects
+
 - ✅ **GitHub** - Version control
 - ✅ **Memory** - Context persistence
 - ✅ **Filesystem** - File operations
 - ✅ **Docker** - Container management (if using Docker)
 
 ### Add as Needed
+
 - 💳 **Stripe/PayPal** - Payment features
 - 🌐 **Chrome DevTools** - Browser testing/automation
 - 🐘 **Supabase** - Database operations
@@ -417,11 +451,13 @@ npm update -g \
 ## 🔄 Maintenance
 
 **Monthly:**
+
 - Update MCP packages
 - Review and rotate API keys
 - Remove unused MCPs
 
 **Per Project:**
+
 - Copy this config as template
 - Adjust filesystem paths
 - Enable only needed MCPs

@@ -30,9 +30,9 @@ export async function DELETE(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!vocStatement) {
@@ -41,10 +41,7 @@ export async function DELETE(
 
     // Verify nested relations exist
     if (!vocStatement.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -53,10 +50,10 @@ export async function DELETE(
     }
 
     // Delete VOC statement and create audit log atomically
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       // Delete VOC statement (cascades to CTQ requirements)
       await tx.vOCStatement.delete({
-        where: { id }
+        where: { id },
       })
 
       // Log the action
@@ -67,25 +64,19 @@ export async function DELETE(
           action: 'DELETED',
           entityType: 'VOCStatement',
           entityId: id,
-          changeDetails: {}
-        }
+          changeDetails: {},
+        },
       })
     })
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Failed to delete VOC statement:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete VOC statement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to delete VOC statement' }, { status: 500 })
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -110,9 +101,9 @@ export async function PATCH(
       where: { id },
       include: {
         assignment: {
-          select: { createdById: true }
-        }
-      }
+          select: { createdById: true },
+        },
+      },
     })
 
     if (!existingVoc) {
@@ -121,10 +112,7 @@ export async function PATCH(
 
     // Verify nested relations exist
     if (!existingVoc.assignment) {
-      return NextResponse.json(
-        { error: 'Assignment not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
     // Verify assignment access
@@ -133,13 +121,13 @@ export async function PATCH(
     }
 
     // Update VOC statement and create audit log atomically
-    const voc = await prisma.$transaction(async (tx) => {
+    const voc = await prisma.$transaction(async tx => {
       const updatedVoc = await tx.vOCStatement.update({
         where: { id },
         data: {
           customerSegment,
-          voiceStatement
-        }
+          voiceStatement,
+        },
       })
 
       // Log the action
@@ -153,14 +141,14 @@ export async function PATCH(
           changeDetails: {
             before: {
               customerSegment: existingVoc.customerSegment,
-              voiceStatement: existingVoc.voiceStatement
+              voiceStatement: existingVoc.voiceStatement,
             },
             after: {
               customerSegment: updatedVoc.customerSegment,
-              voiceStatement: updatedVoc.voiceStatement
-            }
-          }
-        }
+              voiceStatement: updatedVoc.voiceStatement,
+            },
+          },
+        },
       })
 
       return updatedVoc
@@ -169,9 +157,6 @@ export async function PATCH(
     return NextResponse.json(voc)
   } catch (error) {
     console.error('Failed to update VOC statement:', error)
-    return NextResponse.json(
-      { error: 'Failed to update VOC statement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to update VOC statement' }, { status: 500 })
   }
 }

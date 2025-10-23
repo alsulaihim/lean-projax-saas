@@ -9,7 +9,7 @@ async function createSampleAssignment() {
   }
 
   const client = new Client({
-    connectionString: connectionString
+    connectionString: connectionString,
   })
 
   try {
@@ -30,12 +30,11 @@ async function createSampleAssignment() {
       'Order Fulfillment Process Analysis',
       'Reduce order cycle time by 30% and improve accuracy to 99.5%',
       'DRAFT',
-      'user-1' // analyst user ID
+      'user-1', // analyst user ID
     ])
 
     console.log('✅ Sample assignment created:', result.rows[0])
     console.log('\nYou should now see this assignment in the assignments page!')
-
   } catch (error) {
     console.error('Error:', error)
   } finally {

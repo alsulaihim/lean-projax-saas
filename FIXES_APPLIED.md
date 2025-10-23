@@ -3,12 +3,14 @@
 ## ✅ COMPLETED FIXES
 
 ### 1. Critical Security - XSS Vulnerability
+
 - **File:** `lib/pdf-generation.ts`
 - **Fix:** Added `escapeHtml()` function to sanitize all user-controlled data
 - **Status:** ✅ Complete
 - **Note:** Function created but needs to be applied to ALL user data in HTML generation
 
 ### 2. Path Traversal - Filename Sanitization
+
 - **Files:**
   - `app/api/assignments/[id]/export/route.ts` (PDF export)
   - `app/api/assignments/[id]/export/route.ts` (HTML export)
@@ -16,6 +18,7 @@
 - **Status:** ✅ Complete
 
 ### 3. Hardcoded Database Credentials
+
 - **Files:**
   - `README.md` - Removed hardcoded credentials from documentation
   - `lib/db.ts` - Now uses `DATABASE_URL` environment variable
@@ -25,6 +28,7 @@
 - **Action Required:** Remove credentials from all script files in `/scripts` directory
 
 ### 4. Hardcoded JWT Secrets
+
 - **Files:**
   - `lib/auth-check.ts` - Removed fallback secret, now requires `NEXTAUTH_SECRET`
   - `app/api/login/route.ts` - Removed fallback secret
@@ -32,32 +36,38 @@
 - **Status:** ✅ Complete
 
 ### 5. JWT Payload Validation
+
 - **File:** `lib/auth-check.ts`
 - **Fix:** Added structure validation before casting JWT payload
 - **Status:** ✅ Complete
 
 ### 6. Input Validation - Login
+
 - **File:** `app/api/login/route.ts`
 - **Fix:** Added type validation for email and password
 - **Status:** ✅ Complete
 
 ### 7. Authentication on Export Endpoint
+
 - **File:** `app/api/assignments/[id]/export/route.ts`
 - **Fix:** Already has authentication check (comment added for clarity)
 - **Status:** ✅ Complete
 
 ### 8. Puppeteer Timeout Configuration
+
 - **File:** `lib/pdf-generation.ts`
 - **Fix:** Added 30-second timeout for browser launch and page content loading
 - **Status:** ✅ Complete
 
 ### 9. Query Logging Security
+
 - **File:** `lib/db.ts`
 - **Fix:** Removed query text from logs to prevent sensitive data exposure
 - **Fix:** Only log in development mode
 - **Status:** ✅ Complete
 
 ### 10. TypeScript/ESLint Production Checks
+
 - **File:** `next.config.ts`
 - **Fix:** Re-enabled TypeScript and ESLint checks for production builds
 - **Status:** ✅ Complete
@@ -65,7 +75,9 @@
 ## 🔴 CRITICAL - Still Need Fixing
 
 ### 11. userId Privilege Escalation (CRITICAL)
+
 **Files affected (12 files):**
+
 - `/app/api/vsm-steps/[id]/route.ts`
 - `/app/api/voc-statements/[id]/route.ts`
 - `/app/api/ctq-requirements/route.ts`
@@ -82,6 +94,7 @@
 **Issue:** These routes accept `userId` from request body, allowing privilege escalation
 
 **Fix Required:**
+
 ```typescript
 // WRONG - Current code
 const { userId } = await request.json()
@@ -93,7 +106,9 @@ const userId = user.id
 ```
 
 ### 12. Script Files with Hardcoded Credentials
+
 **Files in `/scripts` directory:**
+
 - `fix-fishbone-for-vital-steps.js`
 - `add-more-fmea-entries.js`
 - `create-facility-granting-assignment.js`
@@ -107,23 +122,28 @@ const userId = user.id
 **Fix Required:** Update all scripts to use environment variables
 
 ### 13. Root Files with Hardcoded Credentials
+
 - `create-sample-assignment.js`
 - `create-local-user.js`
 
 ## 🟠 HIGH PRIORITY - Need Fixing
 
 ### 14. Race Conditions
+
 - **Fishbone category creation** - Multiple requests could create duplicate categories
 - **Status reset timeout** - Race condition in component state
 - **Recommendation fetch-then-update** - Unsafe pattern
 
 ### 15. Transaction Safety
+
 - Data deletion operations need to be wrapped in transactions
 - Fishbone creation needs transactions
 - SIPOC operations need atomic updates
 
 ### 16. Input Validation
+
 Missing validation on:
+
 - SIPOC entry fields
 - VSM step fields
 - Fishbone cause fields
@@ -132,19 +152,23 @@ Missing validation on:
 - All PATCH/POST endpoints
 
 ### 17. Null Safety Checks
+
 Missing null checks:
+
 - `oldProcess` access
 - `oldEntry` access
 - User object access
 - Various optional chaining issues
 
 ### 18. Field Name Mismatches
+
 - Audit log field names don't match schema
 - Process field names inconsistent
 
 ## 🟡 MEDIUM PRIORITY
 
 ### 19. Error Handling & User Feedback
+
 - Add user feedback for update failures
 - Add user feedback for delete failures
 - Add user feedback for API failures
@@ -152,11 +176,13 @@ Missing null checks:
 - Handle onConfirm failures
 
 ### 20. Type Safety
+
 - Replace `any` types with proper interfaces
 - Fix type annotations
 - Add proper interfaces for all data structures
 
 ### 21. Code Quality
+
 - Remove debug console.log statements
 - Replace alert() with proper UI feedback
 - Extract duplicated category name mappings
@@ -167,16 +193,20 @@ Missing null checks:
 ## 🔵 LOW PRIORITY / REFACTORING
 
 ### 22. Regex Injection
+
 - Fix regex in formula substitution
 
 ### 23. SIPOC Table Rendering
+
 - Fix SIPOC table rendering logic
 
 ### 24. Chart Issues
+
 - Line color conflicts with legend
 - Empty chart when showDistribution is false
 
 ### 25. Component Improvements
+
 - Add ref forwarding for form components
 - Fix ref type mismatch in AlertTitle
 
@@ -193,6 +223,7 @@ Missing null checks:
 ## 🔍 Testing Checklist
 
 After fixes:
+
 - [ ] Test all API routes with missing/invalid authentication
 - [ ] Test all endpoints with invalid input
 - [ ] Verify no hardcoded credentials remain

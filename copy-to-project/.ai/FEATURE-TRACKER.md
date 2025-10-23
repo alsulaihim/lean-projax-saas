@@ -1,4 +1,5 @@
 # Feature Tracker
+
 > Track features added beyond the original PRD
 
 ---
@@ -8,6 +9,7 @@
 This document tracks all features and changes made **beyond the original PRD**.
 
 **When to Add Entries:**
+
 - User requests a new feature not in PRD
 - Agent suggests an enhancement
 - Emergency feature needed
@@ -31,6 +33,7 @@ This document tracks all features and changes made **beyond the original PRD**.
 As a [user type], I want [action], so that [benefit].
 
 **Acceptance Criteria:**
+
 - [ ] [Criterion 1]
 - [ ] [Criterion 2]
 - [ ] [Criterion 3]
@@ -42,6 +45,7 @@ As a [user type], I want [action], so that [benefit].
 [Small / Medium / Large] or [X hours/days]
 
 **Impact Assessment:**
+
 - Security: [Impact on security]
 - Performance: [Impact on performance]
 - Technical Debt: [Does this add debt?]

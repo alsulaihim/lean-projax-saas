@@ -10,7 +10,7 @@ import type {
   FishboneCategory,
   FishboneCause,
   FMEAEntry,
-  CTQRequirement
+  CTQRequirement,
 } from '@prisma/client'
 import { calculatePareto, getParetoInsights } from './calculations/pareto'
 
@@ -54,7 +54,7 @@ export async function generatePDF(assignment: FullAssignment): Promise<Buffer> {
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    timeout: 30000 // 30 second timeout
+    timeout: 30000, // 30 second timeout
   })
 
   try {
@@ -66,7 +66,7 @@ export async function generatePDF(assignment: FullAssignment): Promise<Buffer> {
     // Set content with timeout
     await page.setContent(html, {
       waitUntil: 'networkidle0',
-      timeout: 30000 // 30 second timeout
+      timeout: 30000, // 30 second timeout
     })
 
     // Generate PDF
@@ -85,8 +85,8 @@ export async function generatePDF(assignment: FullAssignment): Promise<Buffer> {
         top: '12.7mm',
         right: '12.7mm',
         bottom: '12.7mm',
-        left: '12.7mm'
-      }
+        left: '12.7mm',
+      },
     })
 
     return Buffer.from(pdf)
@@ -103,12 +103,21 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
     .flatMap(p => p.fmeaEntries)
     .filter(f => f.rpn >= 200).length
 
-  const totalCycleTime = assignment.processes.reduce((sum, p) =>
-    sum + p.vsmSteps.reduce((s, step) => s + (step.durationMinutes || 0) + (step.waitTimeMinutes || 0), 0), 0
+  const totalCycleTime = assignment.processes.reduce(
+    (sum, p) =>
+      sum +
+      p.vsmSteps.reduce(
+        (s, step) => s + (step.durationMinutes || 0) + (step.waitTimeMinutes || 0),
+        0
+      ),
+    0
   )
 
-  const valueAddedTime = assignment.processes.reduce((sum, p) =>
-    sum + p.vsmSteps.filter(s => s.valueAdded).reduce((s, step) => s + (step.durationMinutes || 0), 0), 0
+  const valueAddedTime = assignment.processes.reduce(
+    (sum, p) =>
+      sum +
+      p.vsmSteps.filter(s => s.valueAdded).reduce((s, step) => s + (step.durationMinutes || 0), 0),
+    0
   )
 
   const efficiency = totalCycleTime > 0 ? ((valueAddedTime / totalCycleTime) * 100).toFixed(1) : '0'
@@ -670,12 +679,16 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
 
   <!-- Section 3: Voice of Customer (VOC) & Critical to Quality (CTQ) -->
   <h1>Section 3: Voice of Customer (VOC) & Critical to Quality (CTQ)</h1>
-  ${assignment.vocStatements.map(voc => `
+  ${assignment.vocStatements
+    .map(
+      voc => `
     <div style="margin-bottom: 30px;">
       <h3>${escapeHtml(voc.voiceStatement)}</h3>
       <p><strong>Customer Segment:</strong> ${escapeHtml(voc.customerSegment)}</p>
 
-      ${voc.ctqRequirements.length > 0 ? `
+      ${
+        voc.ctqRequirements.length > 0
+          ? `
         <table>
           <thead>
             <tr>
@@ -685,28 +698,40 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
             </tr>
           </thead>
           <tbody>
-            ${voc.ctqRequirements.map(ctq => `
+            ${voc.ctqRequirements
+              .map(
+                ctq => `
               <tr>
                 <td>${escapeHtml(ctq.ctqDescription)}</td>
                 <td>${escapeHtml(ctq.measurementCriteria)}</td>
                 <td>${escapeHtml(ctq.targetValue) || 'Not specified'}</td>
               </tr>
-            `).join('')}
+            `
+              )
+              .join('')}
           </tbody>
         </table>
-      ` : '<p style="color: #666;">No CTQ requirements defined for this VOC statement.</p>'}
+      `
+          : '<p style="color: #666;">No CTQ requirements defined for this VOC statement.</p>'
+      }
     </div>
-  `).join('')}
+  `
+    )
+    .join('')}
 
   <div class="page-break"></div>
 
   <!-- Section 4: Process Analysis with SIPOC and Associated Tools -->
-  ${assignment.processes.map((process, index) => `
+  ${assignment.processes
+    .map(
+      (process, index) => `
     <h1>Section 4.${index + 1}: ${escapeHtml(process.processName)}</h1>
     ${process.processOwner ? `<p><strong>Process Owner:</strong> ${escapeHtml(process.processOwner)}</p>` : ''}
 
     <!-- SIPOC Analysis -->
-    ${process.sipocEntries.length > 0 ? `
+    ${
+      process.sipocEntries.length > 0
+        ? `
       <h2>SIPOC Analysis</h2>
       <table>
         <thead>
@@ -720,35 +745,44 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
         </thead>
         <tbody>
           <tr>
-            ${['SUPPLIER', 'INPUT', 'PROCESS', 'OUTPUT', 'CUSTOMER'].map(col => `
+            ${['SUPPLIER', 'INPUT', 'PROCESS', 'OUTPUT', 'CUSTOMER']
+              .map(
+                col => `
               <td style="vertical-align: top;">
                 ${process.sipocEntries
                   .filter(e => e.column === col)
                   .map(e => `• ${escapeHtml(e.value)}`)
                   .join('<br>')}
               </td>
-            `).join('')}
+            `
+              )
+              .join('')}
           </tr>
         </tbody>
       </table>
-    ` : ''}
+    `
+        : ''
+    }
 
     <!-- Pareto Analysis -->
-    ${process.vsmSteps.length > 0 ? `
+    ${
+      process.vsmSteps.length > 0
+        ? `
       <h2>Pareto Analysis - Cycle Time Distribution</h2>
       ${(() => {
         const allSteps = process.vsmSteps.map((step: VSMStep) => {
           const processTime = step.processTime ?? step.durationMinutes ?? 0
           const waitingTime = step.waitingTime ?? step.waitTimeMinutes ?? 0
-          const isValueAdded = step.valueMeasure === 'VALUE_ADDED' ||
-                              step.valueMeasure === 'ESSENTIAL_NON_VALUE' ||
-                              step.valueAdded === true
+          const isValueAdded =
+            step.valueMeasure === 'VALUE_ADDED' ||
+            step.valueMeasure === 'ESSENTIAL_NON_VALUE' ||
+            step.valueAdded === true
 
           return {
             id: step.id,
             name: escapeHtml(step.stepName),
             value: processTime + waitingTime,
-            category: isValueAdded ? 'Value-Added' : 'Non-Value-Added'
+            category: isValueAdded ? 'Value-Added' : 'Non-Value-Added',
           }
         })
 
@@ -759,13 +793,18 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
         return `
           <div class="pareto-chart">
             <div class="pareto-bars">
-              ${paretoResult.items.slice(0, 10).map(item => `
+              ${paretoResult.items
+                .slice(0, 10)
+                .map(
+                  item => `
                 <div class="pareto-bar ${item.isVitalFew ? '' : 'trivial'}"
                      style="height: ${(item.value / maxValue) * 100}%;">
                   <div class="pareto-bar-value">${Math.round(item.value)}</div>
                   <div class="pareto-bar-label">${item.name.substring(0, 15)}</div>
                 </div>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
             <div style="text-align: center; margin-top: 50px;">
               <p style="font-size: 12px; color: #666;">
@@ -794,7 +833,9 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
               </tr>
             </thead>
             <tbody>
-              ${paretoResult.items.map(item => `
+              ${paretoResult.items
+                .map(
+                  item => `
                 <tr class="${item.isVitalFew ? 'rpn-critical' : ''}">
                   <td style="text-align: center; font-weight: bold;">${item.rank}</td>
                   <td>${item.name}</td>
@@ -802,21 +843,28 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
                   <td style="text-align: center;">${item.percentage.toFixed(1)}%</td>
                   <td style="text-align: center; font-weight: bold;">${item.cumulativePercentage.toFixed(1)}%</td>
                   <td>
-                    ${item.isVitalFew
-                      ? '<span style="background: #fee; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Vital Few</span>'
-                      : '<span style="background: #e3f2fd; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Trivial Many</span>'
+                    ${
+                      item.isVitalFew
+                        ? '<span style="background: #fee; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Vital Few</span>'
+                        : '<span style="background: #e3f2fd; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Trivial Many</span>'
                     }
                   </td>
                 </tr>
-              `).join('')}
+              `
+                )
+                .join('')}
             </tbody>
           </table>
         `
       })()}
-    ` : ''}
+    `
+        : ''
+    }
 
     <!-- Value Stream Map -->
-    ${process.vsmSteps.length > 0 ? `
+    ${
+      process.vsmSteps.length > 0
+        ? `
       <h2>Value Stream Mapping</h2>
       <table>
         <thead>
@@ -830,9 +878,10 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
           </tr>
         </thead>
         <tbody>
-          ${process.vsmSteps.map(step => {
-            const totalTime = (step.durationMinutes || 0) + (step.waitTimeMinutes || 0)
-            return `
+          ${process.vsmSteps
+            .map(step => {
+              const totalTime = (step.durationMinutes || 0) + (step.waitTimeMinutes || 0)
+              return `
               <tr class="${step.valueAdded ? 'value-added' : 'non-value-added'}">
                 <td>${step.stepNumber}</td>
                 <td>${escapeHtml(step.stepName)}</td>
@@ -842,7 +891,8 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
                 <td>${step.valueAdded ? '✓ Value-Added' : '✗ Non-Value'}</td>
               </tr>
             `
-          }).join('')}
+            })
+            .join('')}
         </tbody>
       </table>
 
@@ -851,19 +901,26 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
         <ul>
           <li>Total Lead Time: ${process.vsmSteps.reduce((sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0), 0)} minutes</li>
           <li>Value-Added Time: ${process.vsmSteps.filter(s => s.valueAdded).reduce((sum, s) => sum + (s.durationMinutes || 0), 0)} minutes</li>
-          <li>Process Efficiency: ${
-            (() => {
-              const total = process.vsmSteps.reduce((sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0), 0)
-              const valueAdded = process.vsmSteps.filter(s => s.valueAdded).reduce((sum, s) => sum + (s.durationMinutes || 0), 0)
-              return total > 0 ? ((valueAdded / total) * 100).toFixed(1) : '0'
-            })()
-          }%</li>
+          <li>Process Efficiency: ${(() => {
+            const total = process.vsmSteps.reduce(
+              (sum, s) => sum + (s.durationMinutes || 0) + (s.waitTimeMinutes || 0),
+              0
+            )
+            const valueAdded = process.vsmSteps
+              .filter(s => s.valueAdded)
+              .reduce((sum, s) => sum + (s.durationMinutes || 0), 0)
+            return total > 0 ? ((valueAdded / total) * 100).toFixed(1) : '0'
+          })()}%</li>
         </ul>
       </div>
-    ` : ''}
+    `
+        : ''
+    }
 
     <!-- Fishbone Diagram -->
-    ${process.fishboneCategories && process.fishboneCategories.length > 0 ? `
+    ${
+      process.fishboneCategories && process.fishboneCategories.length > 0
+        ? `
       <h2>Fishbone Diagram (Cause and Effect Analysis)</h2>
       <div class="fishbone-diagram">
         <!-- Spine -->
@@ -874,47 +931,65 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
 
         <!-- Categories -->
         ${(() => {
-          const categories = ['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT']
+          const categories = [
+            'PEOPLE',
+            'PROCESS',
+            'EQUIPMENT',
+            'MATERIALS',
+            'ENVIRONMENT',
+            'MANAGEMENT',
+          ]
           const positions = [
             { left: '15%', top: true },
             { left: '30%', top: false },
             { left: '45%', top: true },
             { left: '15%', top: false },
             { left: '30%', top: true },
-            { left: '45%', top: false }
+            { left: '45%', top: false },
           ]
 
-          return categories.map((cat, idx) => {
-            const categoryData = process.fishboneCategories.find((c) => c.category === cat)
-            const causes = categoryData?.causes || []
-            const position = positions[idx]
+          return categories
+            .map((cat, idx) => {
+              const categoryData = process.fishboneCategories.find(c => c.category === cat)
+              const causes = categoryData?.causes || []
+              const position = positions[idx]
 
-            const categoryLabels: Record<string, string> = {
-              PEOPLE: 'People',
-              PROCESS: 'Process',
-              EQUIPMENT: 'Equipment',
-              MATERIALS: 'Materials',
-              ENVIRONMENT: 'Environment',
-              MANAGEMENT: 'Management'
-            }
+              const categoryLabels: Record<string, string> = {
+                PEOPLE: 'People',
+                PROCESS: 'Process',
+                EQUIPMENT: 'Equipment',
+                MATERIALS: 'Materials',
+                ENVIRONMENT: 'Environment',
+                MANAGEMENT: 'Management',
+              }
 
-            return `
+              return `
               <div class="fishbone-category ${position.top ? 'top' : 'bottom'}"
                    style="left: ${position.left};">
                 <h4>${categoryLabels[cat] || cat}</h4>
-                ${causes.length > 0 ? `
+                ${
+                  causes.length > 0
+                    ? `
                   <ul>
-                    ${causes.slice(0, 5).map((cause: FishboneCause) => `
+                    ${causes
+                      .slice(0, 5)
+                      .map(
+                        (cause: FishboneCause) => `
                       <li>${escapeHtml(cause.causeDescription)}</li>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                   </ul>
-                ` : '<p style="font-size: 11px; color: #999;">No causes identified</p>'}
+                `
+                    : '<p style="font-size: 11px; color: #999;">No causes identified</p>'
+                }
               </div>
               <!-- Bone line -->
               <div class="fishbone-bone ${position.top ? 'top' : 'bottom'}"
                    style="left: ${position.left}; width: 80px; top: ${position.top ? '40%' : '60%'};"></div>
             `
-          }).join('')
+            })
+            .join('')
         })()}
       </div>
 
@@ -927,36 +1002,45 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
           </tr>
         </thead>
         <tbody>
-          ${['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT'].map(cat => {
-            const categoryData = process.fishboneCategories.find((c) => c.category === cat)
-            const causes = categoryData?.causes || []
-            const categoryLabels: Record<string, string> = {
-              PEOPLE: 'People (Manpower)',
-              PROCESS: 'Process (Method)',
-              EQUIPMENT: 'Equipment (Machine)',
-              MATERIALS: 'Materials',
-              ENVIRONMENT: 'Environment',
-              MANAGEMENT: 'Management (Measurement)'
-            }
+          ${['PEOPLE', 'PROCESS', 'EQUIPMENT', 'MATERIALS', 'ENVIRONMENT', 'MANAGEMENT']
+            .map(cat => {
+              const categoryData = process.fishboneCategories.find(c => c.category === cat)
+              const causes = categoryData?.causes || []
+              const categoryLabels: Record<string, string> = {
+                PEOPLE: 'People (Manpower)',
+                PROCESS: 'Process (Method)',
+                EQUIPMENT: 'Equipment (Machine)',
+                MATERIALS: 'Materials',
+                ENVIRONMENT: 'Environment',
+                MANAGEMENT: 'Management (Measurement)',
+              }
 
-            return `
+              return `
               <tr>
                 <td style="font-weight: bold;">${categoryLabels[cat] || cat}</td>
                 <td>
-                  ${causes.length > 0
-                    ? causes.map((c: FishboneCause) => `• ${escapeHtml(c.causeDescription)}`).join('<br>')
-                    : '<em style="color: #999;">No causes identified</em>'
+                  ${
+                    causes.length > 0
+                      ? causes
+                          .map((c: FishboneCause) => `• ${escapeHtml(c.causeDescription)}`)
+                          .join('<br>')
+                      : '<em style="color: #999;">No causes identified</em>'
                   }
                 </td>
               </tr>
             `
-          }).join('')}
+            })
+            .join('')}
         </tbody>
       </table>
-    ` : ''}
+    `
+        : ''
+    }
 
     <!-- FMEA -->
-    ${process.fmeaEntries.length > 0 ? `
+    ${
+      process.fmeaEntries.length > 0
+        ? `
       <h2>Failure Mode and Effects Analysis (FMEA)</h2>
       <table>
         <thead>
@@ -993,13 +1077,18 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
                   <td>${escapeHtml(fmea.recommendedActions) || 'TBD'}</td>
                 </tr>
               `
-            }).join('')}
+            })
+            .join('')}
         </tbody>
       </table>
-    ` : ''}
+    `
+        : ''
+    }
 
     <!-- Process Capability -->
-    ${(process.lowerSpecLimit !== null || process.upperSpecLimit !== null) ? `
+    ${
+      process.lowerSpecLimit !== null || process.upperSpecLimit !== null
+        ? `
       <h2>Process Capability Analysis</h2>
       ${(() => {
         const lsl = process.lowerSpecLimit
@@ -1055,30 +1144,44 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
           </div>
 
           <!-- Bell Curve Visualization -->
-          ${mean !== null && stdDev !== null ? `
+          ${
+            mean !== null && stdDev !== null
+              ? `
             <div class="capability-chart">
               <h3 style="text-align: center; margin-bottom: 20px;">Process Distribution</h3>
               <div class="bell-curve-container">
                 <!-- LSL Line -->
-                ${lsl !== null ? `
+                ${
+                  lsl !== null
+                    ? `
                   <div class="spec-limit-line lsl">
                     <div class="spec-limit-label" style="left: 0; color: #dc2626;">LSL: ${lsl}</div>
                   </div>
-                ` : ''}
+                `
+                    : ''
+                }
 
                 <!-- Target Line -->
-                ${target !== null ? `
+                ${
+                  target !== null
+                    ? `
                   <div class="spec-limit-line target">
                     <div class="spec-limit-label" style="left: 0; color: #16a34a;">Target: ${target}</div>
                   </div>
-                ` : ''}
+                `
+                    : ''
+                }
 
                 <!-- USL Line -->
-                ${usl !== null ? `
+                ${
+                  usl !== null
+                    ? `
                   <div class="spec-limit-line usl">
                     <div class="spec-limit-label" style="right: 0; left: auto; color: #dc2626;">USL: ${usl}</div>
                   </div>
-                ` : ''}
+                `
+                    : ''
+                }
 
                 <!-- Bell Curve (approximation using CSS) -->
                 <div class="bell-curve">
@@ -1097,7 +1200,9 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
                 </div>
               </div>
             </div>
-          ` : ''}
+          `
+              : ''
+          }
 
           <!-- Detailed Specification Table -->
           <table>
@@ -1139,13 +1244,19 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
           </div>
         `
       })()}
-    ` : ''}
+    `
+        : ''
+    }
 
     <div class="page-break"></div>
-  `).join('')}
+  `
+    )
+    .join('')}
 
   <!-- Recommendations -->
-  ${assignment.recommendations.length > 0 ? `
+  ${
+    assignment.recommendations.length > 0
+      ? `
     <h1>Recommendations</h1>
     <table>
       <thead>
@@ -1159,7 +1270,9 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
         </tr>
       </thead>
       <tbody>
-        ${assignment.recommendations.map(rec => `
+        ${assignment.recommendations
+          .map(
+            rec => `
           <tr>
             <td><strong>${escapeHtml(rec.recommendationTitle)}</strong></td>
             <td>${escapeHtml(rec.description)}</td>
@@ -1168,10 +1281,14 @@ function generateEnhancedHTML(assignment: FullAssignment): string {
             <td>${escapeHtml(rec.estimatedCostSavings) || 'TBD'}</td>
             <td><span class="badge badge-${rec.status.toLowerCase()}">${escapeHtml(rec.status)}</span></td>
           </tr>
-        `).join('')}
+        `
+          )
+          .join('')}
       </tbody>
     </table>
-  ` : ''}
+  `
+      : ''
+  }
 
   <!-- Footer -->
   <div class="footer">

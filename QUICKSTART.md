@@ -19,6 +19,7 @@ psql --version   # If using local PostgreSQL
 ### 1. Database Setup (Choose One)
 
 #### Option A: Docker (Recommended for Development)
+
 ```bash
 docker run -d \
   -e POSTGRES_PASSWORD=postgres \
@@ -28,7 +29,9 @@ docker run -d \
 ```
 
 #### Option B: Local PostgreSQL
+
 Make sure PostgreSQL is running and create a database:
+
 ```bash
 createdb bpi_platform_dev
 ```
@@ -61,6 +64,7 @@ npm run dev
 Open [http://localhost:3070](http://localhost:3070)
 
 **Login with test account:**
+
 - Email: `analyst@example.com`
 - Password: `password123`
 
@@ -79,6 +83,7 @@ Open [http://localhost:3070](http://localhost:3070)
 ## Troubleshooting
 
 ### Database Connection Error
+
 ```bash
 # Check if PostgreSQL is running
 docker ps  # Should show bpi-postgres container
@@ -88,6 +93,7 @@ docker start bpi-postgres
 ```
 
 ### Port 3020 Already in Use
+
 ```bash
 # Kill the process using port 3020
 lsof -ti:3020 | xargs kill
@@ -97,6 +103,7 @@ PORT=3021 npm run dev
 ```
 
 ### Prisma Client Issues
+
 ```bash
 # Regenerate Prisma Client
 npm run db:generate

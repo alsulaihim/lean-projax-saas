@@ -8,16 +8,16 @@ async function main() {
   // Find the demo assignment and its processes
   const demoAssignment = await prisma.assignment.findFirst({
     where: {
-      isDemo: true
+      isDemo: true,
     },
     include: {
       processes: {
         include: {
           vsmSteps: true,
-          fmeaEntries: true
-        }
-      }
-    }
+          fmeaEntries: true,
+        },
+      },
+    },
   })
 
   if (!demoAssignment) {
@@ -40,23 +40,27 @@ async function main() {
     console.log(`   - Sample Mean: ${process.sampleMean}`)
     console.log(`   - Sample Std Dev: ${process.sampleStdDev}`)
 
-    const hasCapabilityData = process.lowerSpecLimit !== null &&
-                             process.upperSpecLimit !== null &&
-                             process.sampleMean !== null &&
-                             process.sampleStdDev !== null
+    const hasCapabilityData =
+      process.lowerSpecLimit !== null &&
+      process.upperSpecLimit !== null &&
+      process.sampleMean !== null &&
+      process.sampleStdDev !== null
 
     console.log(`   - Has Complete Capability Data: ${hasCapabilityData ? '✅ YES' : '❌ NO'}`)
   })
 
   console.log('\n=== Summary ===')
-  const processesWithCapability = demoAssignment.processes.filter(p =>
-    p.lowerSpecLimit !== null &&
-    p.upperSpecLimit !== null &&
-    p.sampleMean !== null &&
-    p.sampleStdDev !== null
+  const processesWithCapability = demoAssignment.processes.filter(
+    p =>
+      p.lowerSpecLimit !== null &&
+      p.upperSpecLimit !== null &&
+      p.sampleMean !== null &&
+      p.sampleStdDev !== null
   )
 
-  console.log(`Processes with capability data: ${processesWithCapability.length}/${demoAssignment.processes.length}`)
+  console.log(
+    `Processes with capability data: ${processesWithCapability.length}/${demoAssignment.processes.length}`
+  )
 
   if (processesWithCapability.length === 0) {
     console.log('\n⚠️  No processes have capability data. Adding sample data...')
@@ -71,8 +75,8 @@ async function main() {
           upperSpecLimit: 12,
           targetValue: 10,
           sampleMean: 10.2,
-          sampleStdDev: 0.8
-        }
+          sampleStdDev: 0.8,
+        },
       })
 
       console.log(`\n✅ Added capability data to process: ${firstProcess.processName}`)
@@ -82,7 +86,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error:', e)
     process.exit(1)
   })

@@ -36,42 +36,42 @@ export default async function DemoAssignmentPage({ params }: DemoAssignmentPageP
       charter: {
         include: {
           scheduleItems: {
-            orderBy: { order: 'asc' }
-          }
-        }
+            orderBy: { order: 'asc' },
+          },
+        },
       },
       processes: {
         include: {
           sipocEntries: true,
           vsmSteps: {
-            orderBy: { stepNumber: 'asc' }
+            orderBy: { stepNumber: 'asc' },
           },
           fishboneCategories: {
             include: {
-              causes: true
-            }
+              causes: true,
+            },
           },
-          fmeaEntries: true
+          fmeaEntries: true,
         },
-        orderBy: { order: 'asc' }
+        orderBy: { order: 'asc' },
       },
       vocStatements: {
         include: {
-          ctqRequirements: true
+          ctqRequirements: true,
         },
-        orderBy: { createdAt: 'asc' }
+        orderBy: { createdAt: 'asc' },
       },
       recommendations: {
-        orderBy: { createdAt: 'asc' }
+        orderBy: { createdAt: 'asc' },
       },
       auditLogs: {
         include: {
-          user: true
+          user: true,
         },
         orderBy: { timestamp: 'desc' },
-        take: 50
-      }
-    }
+        take: 50,
+      },
+    },
   })
 
   if (!assignment) {
