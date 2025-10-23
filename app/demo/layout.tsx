@@ -16,11 +16,11 @@ export default async function DemoLayout({ children }: { children: React.ReactNo
     redirect('/assignments')
   }
 
-  // Add subscription fields for demo user
+  // Add subscription fields for demo user (demo users are always free tier)
   const userWithSubscription = {
     ...user,
-    subscriptionTier: user.subscriptionTier || SubscriptionTier.FREE,
-    subscriptionStatus: user.subscriptionStatus || SubscriptionStatus.ACTIVE,
+    subscriptionTier: SubscriptionTier.FREE,
+    subscriptionStatus: SubscriptionStatus.ACTIVE,
   }
 
   return (
