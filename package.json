@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev --turbopack -p 3070",
     "build": "next build --turbopack",
+    "build:prod": "next build",
     "start": "next start -p 3070",
+    "start:prod": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
