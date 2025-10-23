@@ -46,7 +46,8 @@
       "Bash(xargs kill:*)",
       "Bash(gh pr list:*)",
       "Bash(gh run list:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
