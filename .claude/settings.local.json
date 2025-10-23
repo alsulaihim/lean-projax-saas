@@ -30,7 +30,11 @@
       "Bash(source:*)",
       "Bash(npx tsx:*)",
       "Bash(open test-login.html)",
-      "Bash(git revert:*)"
+      "Bash(git revert:*)",
+      "Bash(git reset:*)",
+      "Bash(npm test)",
+      "Bash(npm run:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

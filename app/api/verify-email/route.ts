@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyEmailSchema, formatZodError } from '@/lib/validations/auth'
+import { sanitizeLog } from '@/lib/api-error-handler'
 
 /**
  * Email Verification API Route
@@ -84,7 +85,8 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log('✅ Email verified for user:', user.email)
+    // Log email verification without exposing PII
+    sanitizeLog({ userId: user.id, email: user.email }, 'Email verified')
 
     return NextResponse.json(
       {

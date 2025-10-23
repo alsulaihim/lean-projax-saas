@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import { rateLimitSignup } from '@/lib/rate-limit'
 import { generateVerificationToken, sendVerificationEmail } from '@/lib/email'
 import { signupSchema, formatZodError } from '@/lib/validations/auth'
+import { sanitizeLog } from '@/lib/api-error-handler'
 
 /**
  * User Signup API Route
@@ -117,13 +118,14 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log('✅ New user created:', {
+    // Log user creation without exposing PII
+    sanitizeLog({
       id: user.id,
       email: user.email,
       tier: user.subscriptionTier,
       trialEnds: user.trialEndsAt,
       emailVerified: user.emailVerified
-    })
+    }, 'New user created')
 
     // Send verification email
     const emailSent = await sendVerificationEmail(user.email, user.name, verificationToken)
