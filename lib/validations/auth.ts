@@ -122,16 +122,16 @@ export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>
  * @param error - Zod error object
  * @returns Object with field names and error messages
  */
-export function formatZodError(error: z.ZodError | undefined) {
-  if (!error || !error.errors) {
-    console.error('formatZodError called with invalid error:', error)
+export function formatZodError(error: z.ZodError) {
+  if (!error?.errors || !Array.isArray(error.errors) || error.errors.length === 0) {
+    // Return generic error without logging in production
     return { _error: ['Validation failed'] }
   }
 
   const formatted: Record<string, string[]> = {}
 
   error.errors.forEach((err) => {
-    const field = err.path.join('.')
+    const field = err.path.join('.') || '_error'
     if (!formatted[field]) {
       formatted[field] = []
     }
