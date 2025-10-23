@@ -4,7 +4,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { Adapter } from 'next-auth/adapters'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
-import { UserRole } from '@/lib/types'
+import { UserRole } from '@prisma/client'
 
 export const authOptions: NextAuthOptions = {
   // Type assertion needed due to adapter interface mismatch between @auth/prisma-adapter and next-auth

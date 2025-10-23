@@ -62,7 +62,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <Alert
             key={toast.id}
-            variant={toast.variant === 'success' ? 'default' : toast.variant}
+            variant={toast.variant === 'success' || toast.variant === 'info' ? 'default' : toast.variant}
             className={cn(
               'transition-all duration-300 shadow-lg',
               toast.variant === 'success' && 'border-green-500 bg-green-50 text-green-900',

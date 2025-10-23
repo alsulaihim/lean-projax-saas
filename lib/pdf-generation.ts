@@ -89,7 +89,7 @@ export async function generatePDF(assignment: FullAssignment): Promise<Buffer> {
       }
     })
 
-    return pdf
+    return Buffer.from(pdf)
   } finally {
     await browser.close()
   }

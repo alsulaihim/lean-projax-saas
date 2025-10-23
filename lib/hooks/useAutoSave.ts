@@ -24,7 +24,7 @@ export function useAutoSave<T>(
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [error, setError] = useState<Error | null>(null)
-  const saveTimeoutRef = useRef<NodeJS.Timeout>()
+  const saveTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const isMountedRef = useRef(true)
   const lastDataRef = useRef(data)
 
