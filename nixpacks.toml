@@ -7,7 +7,7 @@ cmds = ['npm install']
 [phases.build]
 cmds = [
   'npx prisma generate',
-  'npm run build:prod'
+  'NEXTAUTH_SECRET=build-time-placeholder npm run build:prod'
 ]
 
 [start]
