@@ -414,7 +414,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
                               {((parseFloat(editForm.processTime) || 0) + (parseFloat(editForm.waitingTime) || 0)).toFixed(1)}
                             </TableCell>
                             <TableCell>
-                              <Select value={editForm.valueMeasure} onValueChange={(value) => setEditForm({ ...editForm, valueMeasure: value })}>
+                              <Select value={editForm.valueMeasure} onValueChange={(value: 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED') => setEditForm({ ...editForm, valueMeasure: value })}>
                                 <SelectTrigger className="text-sm">
                                   <SelectValue />
                                 </SelectTrigger>
@@ -614,7 +614,7 @@ export function VSMSection({ assignmentId, processes, canEdit, userId }: VSMSect
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">Value Measure *</label>
-                        <Select value={stepForm.valueMeasure} onValueChange={(value) => setStepForm({ ...stepForm, valueMeasure: value })}>
+                        <Select value={stepForm.valueMeasure} onValueChange={(value: 'VALUE_ADDED' | 'ESSENTIAL_NON_VALUE' | 'NON_VALUE_ADDED') => setStepForm({ ...stepForm, valueMeasure: value })}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>

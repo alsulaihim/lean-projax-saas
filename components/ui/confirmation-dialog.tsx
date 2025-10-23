@@ -19,7 +19,7 @@ interface ConfirmationDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   title: string
-  description: string
+  description: React.ReactNode
   type?: DialogType
   confirmText?: string
   cancelText?: string

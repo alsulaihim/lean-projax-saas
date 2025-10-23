@@ -38,7 +38,9 @@
       "Bash(while read file)",
       "Bash(do if ! grep -q \"from ''''@/lib/demo-check''''\" \"$file\")",
       "Bash(then echo \"$file\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(npx tsc:*)",
+      "Bash(timeout 120 npm run build)"
     ],
     "deny": [],
     "ask": []

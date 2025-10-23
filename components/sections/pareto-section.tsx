@@ -235,12 +235,14 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
               </TableHeader>
               <TableBody>
                 {paretoAnalysis.items.map((item) => {
-                  const processName = selectedProcessId === 'all'
-                    ? item.name.split(': ')[0]
-                    : item.processName
-                  const stepName = selectedProcessId === 'all'
-                    ? (item.name.split(': ')[1] || item.name)
-                    : item.name
+                  // Extract process and step names from the formatted name string
+                  const nameParts = item.name.split(': ')
+                  const processName = nameParts.length > 1 ? nameParts[0] : ''
+                  const stepName = nameParts.length > 1 ? nameParts[1] : item.name
+
+                  // Type assertion: these properties are added in the useMemo above
+                  // but not included in ParetoItemWithAnalysis type definition
+                  const itemData = item as any
 
                   return (
                     <TableRow
@@ -253,10 +255,10 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
                       )}
                       <TableCell className="font-medium">{stepName}</TableCell>
                       <TableCell className="text-center">
-                        {formatDuration(item.durationMinutes || 0)}
+                        {formatDuration(itemData.durationMinutes || 0)}
                       </TableCell>
                       <TableCell className="text-center">
-                        {formatDuration(item.waitTimeMinutes || 0)}
+                        {formatDuration(itemData.waitTimeMinutes || 0)}
                       </TableCell>
                       <TableCell className="text-center font-bold">
                         {formatDuration(item.value)}
@@ -266,7 +268,7 @@ export function ParetoSection({ assignmentId: _assignmentId, processes }: Pareto
                         {item.cumulativePercentage.toFixed(1)}%
                       </TableCell>
                       <TableCell>
-                        {item.valueAdded ? (
+                        {itemData.valueAdded ? (
                           <span className="px-2 py-1 text-xs bg-green-100 text-green-800 border border-green-300 rounded">
                             Value-Added
                           </span>
