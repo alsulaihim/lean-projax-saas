@@ -62,8 +62,8 @@ export default function DemoLoginPage() {
                 <Play className="h-3 w-3 sm:h-4 sm:w-4" />
                 Interactive Demo
               </div>
-              <a
-                href="http://localhost:3071"
+              <Link
+                href="/"
                 className="inline-block hover:opacity-80 transition-opacity"
               >
                 <h1
@@ -71,7 +71,7 @@ export default function DemoLoginPage() {
                 >
                   Lean Projax
                 </h1>
-              </a>
+              </Link>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-4 sm:mb-6">
                 Experience Six Sigma Workflow Automation
               </p>
