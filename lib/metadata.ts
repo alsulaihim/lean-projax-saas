@@ -10,7 +10,7 @@ interface MetadataConfig {
 export function generateMetadata({
   title,
   description,
-  image = '/images/hero-six-sigma.png',
+  image = '/images/og-image.png',
   url = 'https://lean-projax-saas-production.up.railway.app',
 }: MetadataConfig): Metadata {
   const fullTitle = `${title} | Lean Projax`
