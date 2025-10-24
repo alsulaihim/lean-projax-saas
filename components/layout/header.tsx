@@ -30,7 +30,7 @@ const roleLabels: Record<UserRole, string> = {
   [UserRole.PROCESS_OWNER]: 'Process Owner',
 }
 
-const MARKETING_URL = process.env.NEXT_PUBLIC_MARKETING_URL || 'http://localhost:3071'
+const MARKETING_URL = process.env.NEXT_PUBLIC_MARKETING_URL || '/'
 
 export function Header({ user }: HeaderProps) {
   const router = useRouter()
