@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Orbitron } from 'next/font/google'
 import './globals.css'
 import { SessionProvider } from '@/components/providers/session-provider'
 import { ToastProvider } from '@/lib/hooks/useToast'
+import { defaultMetadata } from '@/lib/metadata'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -20,10 +21,7 @@ const orbitron = Orbitron({
   variable: '--font-orbitron',
 })
 
-export const metadata: Metadata = {
-  title: 'BPI Assignment Platform',
-  description: 'Six Sigma Workflow Automation Platform',
-}
+export const metadata: Metadata = defaultMetadata
 
 export default function RootLayout({
   children,

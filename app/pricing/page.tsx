@@ -3,6 +3,13 @@ import { Check, ArrowRight } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import { generateMetadata as createMetadata } from '@/lib/metadata'
+
+export const metadata = createMetadata({
+  title: 'Pricing - Simple & Transparent Plans',
+  description:
+    'Start free with 1 active project. Upgrade to Pro ($29/month) for unlimited projects, advanced AI, PDF exports, and team collaboration. 14-day free trial, no credit card required.',
+})
 
 export default async function PricingPage() {
   const session = await getServerSession(authOptions)

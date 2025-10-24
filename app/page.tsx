@@ -4,6 +4,13 @@ import { ArrowRight, CheckCircle2, BarChart3, FileText, Users, Zap } from 'lucid
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import { generateMetadata as createMetadata } from '@/lib/metadata'
+
+export const metadata = createMetadata({
+  title: 'Six Sigma Workflow Automation Platform',
+  description:
+    'Create professional Six Sigma reports in minutes. The only platform built specifically for Business Process Improvement teams. Reduce report creation time by 60-70%. Start free today.',
+})
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions)
