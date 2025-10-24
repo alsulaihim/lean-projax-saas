@@ -85,8 +85,8 @@ export default async function HomePage() {
             {/* Right Column - Hero Image */}
             <div className="relative lg:scale-110">
               <Image
-                src="/images/hero-meeting.png"
-                alt="Six Sigma team collaboration"
+                src="/images/hero-six-sigma.png"
+                alt="Six Sigma team collaboration - Japanese ink style illustration"
                 width={1000}
                 height={750}
                 className="w-full h-auto rounded-lg"
