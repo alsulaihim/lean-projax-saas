@@ -84,11 +84,14 @@ export default async function HomePage() {
 
             {/* Right Column - Hero Image */}
             <div className="relative lg:scale-110">
-              <div className="w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                <p className="text-gray-400 text-center px-4">
-                  Six Sigma Process Improvement Platform
-                </p>
-              </div>
+              <Image
+                src="/images/hero-meeting.png"
+                alt="Six Sigma team collaboration"
+                width={1000}
+                height={750}
+                className="w-full h-auto rounded-lg"
+                priority
+              />
             </div>
           </div>
         </div>

@@ -70,14 +70,14 @@ function LoginContent() {
     <div className="min-h-screen flex items-center justify-center bg-white p-4 sm:p-6">
       <Card className="w-full max-w-md border-2 border-black">
         <CardHeader className="space-y-3 sm:space-y-4 text-center px-4 sm:px-6">
-          <a
-            href="http://localhost:3071"
+          <Link
+            href="/"
             className="inline-block hover:opacity-80 transition-opacity"
           >
             <CardTitle className={`text-3xl sm:text-4xl text-red-700 ${orbitron.className}`}>
               Lean Projax
             </CardTitle>
-          </a>
+          </Link>
           <div className="h-px bg-black" />
           <CardDescription className="text-sm sm:text-base text-gray-600">
             Six Sigma Workflow Automation
@@ -167,14 +167,14 @@ export default function LoginPage() {
         <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
           <Card className="w-full max-w-md border-2 border-black">
             <CardHeader className="space-y-3 sm:space-y-4 px-4 sm:px-6 text-center">
-              <a
-                href="http://localhost:3071"
+              <Link
+                href="/"
                 className="inline-block hover:opacity-80 transition-opacity"
               >
                 <CardTitle className={`text-3xl sm:text-4xl font-bold ${orbitron.className}`}>
                   <span className="text-red-700">Lean Projax</span>
                 </CardTitle>
-              </a>
+              </Link>
               <CardDescription className="text-gray-600 text-sm sm:text-base">
                 Loading...
               </CardDescription>
