@@ -58,20 +58,20 @@ export default function DemoLoginPage() {
           {/* Left side - Demo info */}
           <div className="space-y-4 sm:space-y-6 order-2 lg:order-1">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
-                Interactive Demo
-              </div>
               <Link
                 href="/"
-                className="inline-block hover:opacity-80 transition-opacity"
+                className="block hover:opacity-80 transition-opacity mb-3 sm:mb-4"
               >
                 <h1
-                  className={`text-3xl sm:text-4xl lg:text-5xl mb-3 sm:mb-4 text-gray-900 ${orbitron.className}`}
+                  className={`text-3xl sm:text-4xl lg:text-5xl text-gray-900 ${orbitron.className}`}
                 >
                   Lean Projax
                 </h1>
               </Link>
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4">
+                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
+                Interactive Demo
+              </div>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-4 sm:mb-6">
                 Experience Six Sigma Workflow Automation
               </p>
